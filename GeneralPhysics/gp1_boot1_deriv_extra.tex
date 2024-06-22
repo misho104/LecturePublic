@@ -1,0 +1,349 @@
+%!TEX program=lualatex
+
+\def\LectureName/{General Physics I}
+%\def\LectureNumber/{}
+%\def\LectureDate/{}
+\PassOptionsToPackage{fleqn}{amsmath}
+\PassOptionsToPackage{hyperfootnotes=false}{hyperref}
+\documentclass[11pt,pdfa,lastpage]{MishoNote}
+\title{General Physics I: Derivative Boot Camp Extra Session}
+\author{Sho Iwamoto}
+\hypersetup{
+  pdflang={en-US},
+  pdfauthortitle={Assistant Professor, National Sun Yat-sen University},
+  pdfsubject={An extra session of Derivative Boot Camp, which is a preview of General Physics 1 lectures.},
+  pdfcontactemail={iwamoto@g-mail.nsysu.edu.tw},
+  pdfcontacturl={https://www2.nsysu.edu.tw/iwamoto/},
+  pdfcaptionwriter={Sho Iwamoto},
+  pdfcopyright={2024 Sho Iwamoto\textLF This document is licensed under the Creative Commons CC BY–NC 4.0 International Public License.},
+  pdflicenseurl={https://creativecommons.org/licenses/by-nc/4.0/},
+}
+
+\usepackage{GP}
+\usepackage{pgfornament}
+\setlist{itemsep=0.3\baselineskip}
+\makeatletter
+\def\thesection{A$\mathbf{'}$}
+\def\theenumi{\@Alph\c@enumi$\mathbf{'}$}
+\makeatother
+
+\newcommand\INT[2][\relax]{\item$\displaystyle\int#2\,\dd x$\ifx\relax#1\relax\relax\relax\else{\quad#1}\fi}
+\newcommand\INP[1]{\INT{\left(#1\right)}}
+\newcommand\INC[3]{\item$\displaystyle\int^{#2}_{#1}#3\,\dd x$}
+\NewDocumentCommand\DIFF{O{x}om}{\item$\displaystyle\gdiff[\dd][#2]{}{#1}#3$}
+
+\newcommand\hrefFN[2]{\href{#1}{#2}\footnote{\url{#1}}}
+\newcommand\starskip{\bigskip\begin{center}\pgfornament[width=7cm]{88}\end{center}\medskip}
+
+\let\origfootnote\footnote
+\let\origfootnoterule\footnoterule
+
+\begin{document}%
+\title{Derivative Boot Camp Extra Session}\begin{maketitle}
+\let\footnote\origfootnote
+\let\footnoterule\origfootnoterule
+
+\subsection*{Preface}
+Welcome to your first year of university!
+You, who completed the true form of the Derivative Boot Camp, are now ready to take on more challenging tasks in your engineering studies.
+For those who still have the energy and motivation to go deeper, Sho has prepared this extra session of the Boot Camp.
+
+This session aims to complete your knowledge and skills of derivatives to the university standard.
+By the end of the exercises, you will be able to calculate ``simple'' derivatives such as
+\[
+\diff{}{x}\frac{x^2+\tan(\ln x)}{\sinh(2x^2+1)}.
+\]
+
+
+Tasks are classified to $\bigstar$ (\Emph{minimal}), $^{***}$ (basic), $^{**}$ (intermediate), and $^{*}$ (for motivated students).
+You don't have to solve all of them, but try to solve as many as you can.
+Good Luck!
+
+\enlargethispage{-5em}
+
+\makeatletter
+\begin{tikzpicture}[remember picture,overlay]
+  \begingroup
+  \fontsize{9}{13}\selectfont
+    \node[xshift=\@total@leftsep,yshift=25.5mm,anchor=south west,align=left,text width=\textwidth] at (current page.south west) {%
+      \href{https://creativecommons.org/licenses/by-nc/4.0/}{\includegraphics[width=2.2cm]{../figs/by-nc.pdf}}\\[.4em]
+      \noindent\textsf{\color{gray}%
+      Visit \url{https://github.com/misho104/LecturePublic} for further information, updates, and to report issues.}\par
+    };
+    \node[xshift=-\@total@leftsep+26mm,yshift=32mm,align=left,text width=\textwidth,anchor=south east] at (current page.south east) {%
+      \noindent\textsf{\color{gray}%
+      This document is licensed under
+      \href{https://creativecommons.org/licenses/by-nc/4.0/}{the Creative Commons CC--BY--NC 4.0 International Public License.}\\
+      You may use this document only if you do in compliance with the license.}\par
+    };
+  \endgroup
+\end{tikzpicture}
+\makeatother
+
+\end{maketitle}
+\newpage
+
+
+
+
+\newpage
+\begin{enumerate}
+\itemB \textsf{(a bit tough problems)}
+\begin{menumerate}{3}
+  \DIFF{(5x^2 - 2x + 1)^{-3}}
+  \DIFF{(x^4+1)^{-3/5}}
+  \DIFF{\sin^2[(x^2+2x)^2]}
+  \DIFF{\tan \left(x+\sqrt{2x}\right)}
+  \DIFF{\frac{\sin(x^2 + 1)}{\sin(x - 1)}}
+
+  \DIFF{\frac{1}{\sqrt{x^2 + 4}}}
+  \DIFF{x^{-1/2}\cos x^2}
+  \DIFF{x^2\sin x\tan2x}
+  \DIFF{x(x - 1)^{-3/4}}
+  \DIFF{\frac{2\sin x}{(x - 1)^{3/4}}}
+
+  \DIFF{\frac {x^3\tan x}{\cos x}}
+  \DIFF{\frac {x\sin x}{\cos2x}}
+  \DIFF{\frac {x^2\sin^2x}{\cos x^2}}
+  \DIFF{\frac{x^3 + 1}{\sqrt{x - 1}}}
+  \DIFF{\tan^2\left(x \sqrt{x}\right)}
+\end{menumerate}
+\end{enumerate}
+
+\subsection{Workout 3: Harder Practice for motivated students}
+If you have not satisfied with the above problems, you can try the following ones.
+First, you need to understand the following procedure.
+\begin{itemize}
+  \item Consider $\sin\sqrt{x^2+1}$ and we let $u=x^2+1$.
+  \[
+    \diff{}{x}\sqrt{x^2+1}=\diff{}{x}\sqrt u=\diff{\sqrt u}{u}\diff ux=\frac{1}{2\sqrt u}\cdot2x=\frac{x}{\sqrt{x^2+1}}.
+  \]
+  Therefore, with letting $v=\sqrt{x^2+1}$,
+  \[
+  \diff{}{x}\sin\sqrt{x^2+1}=\diff{\sin v}{x}=\diff{\sin v}{v}\diff vx=\cos v\cdot\frac{x}{\sqrt{x^2+1}}=\frac{x\cos\sqrt{x^2+1}}{\sqrt{x^2+1}}.
+  \]
+  \item You can calculate it at once, where we let $u(x)=x^2+1$ and $v=v(u)=\sqrt{u}$:
+  \[
+   \diff{}{x}\sin\sqrt{x^2+1}=\diff{\sin v}{v}\diff{v}{u}\diff{u}{x}=(\cos v)\frac{1}{2\sqrt{u}}(2x)=\frac{x\cos\sqrt{x^2+1}}{\sqrt{x^2+1}}.
+   \]
+\end{itemize}
+Now you are ready to calculate very complicated functions.
+\starskip
+
+\begin{enumerate}
+ \itemC[*] \textsf{(The final problems)}
+   \begin{menumerate}{2}
+     \DIFF{\left[\sin\left(x+\sqrt{x}\right)\right]^2}
+     \DIFF{\frac{1}{\sqrt{\cos(2x^2 + 1)}}}
+     \DIFF{\frac{3x + 1}{\sin(3x+1)}}
+     \DIFF{\cos^2(x^2 - 1)}
+     \DIFF{\left(x+ \tan x\right)^{4/3}}
+     \DIFF{\left(\frac{\sin x}{3x^2 + 2x} \right)^4}
+     \DIFF{\left(x - \sqrt{x^2 + 1} \right)^2}
+     \DIFF{\tan\sqrt{x+x^{-1}}}
+     \DIFF{\cos^5(x^2 + x)}
+     \DIFF{\cos(\sin(\cos x))}
+   \end{menumerate}
+ \end{enumerate}
+
+
+
+\newpage
+\subsection{Exponential Functions}
+We want to consider the functions
+\[f(x)=a^x\qquad\text{with}\quad a>0.\]
+They are called exponential functions.
+Let's begin with the basic part, and then try to calculate its derivative.
+(Recall that any derivatives can be calculated by the definition of the derivative!)
+
+\starskip
+
+\begin{enumerate}
+  \itemA Let $f(x)=2^x$ and $g(x)=0.5^x$.  Calculate the following values. You can use a calculator \Emph{only for} (5) and (6).
+  \begin{menumerate}{2}
+    \item $f(0)$, $f(1)$, $f(2)$, $f(10)$.
+    \item $g(0)$, $g(1)$, $g(2)$.
+    \item $f(-1)$, $f(-3)$, $g(-1)$, $g(-2)$.
+    \item $f(1/2)$, $f(-1/2)$, $g(1/2)$, $g(-1/2)$.
+    \item $f(1.585)$, $g(1.585)$, $f(1.585\times 2)$.
+    \item $f(0.01)$, $f(-0.01)$, $g(0.01)$, $g(-0.01)$.
+  \end{menumerate}
+  \itemA Simplify the following expressions, where $x$ and $y$ are real numbers, $a>0$, and $b>0$.
+  \begin{menumerate}{3}
+    \item $4^{2.5}\times 4^{3.5}$
+    \item $3^{x}\times 3^{y}$
+    \item $\dfrac{7^{x+5}}{7^{2}}$
+    \item $1/a^x$
+    \item $a^x/a^y$
+    \item $\dfrac{(ab)^3}{b^2}$
+    \item $a^5\times a^5\times a^5$
+    \item $(a^x)^2$
+    \item $\dfrac{(a^x)^y}{a^y}$
+  \end{menumerate}
+
+ \itemB Check the following equations based on the definition od differentials.
+\begin{equation*}
+  \diff{}{x}2^x = 2^x\times\lim_{h\to 0}\frac{2^h-1}{h},\qquad
+  \diff{}{x}3^x = 3^x\times\lim_{h\to 0}\frac{3^h-1}{h}.
+\end{equation*}
+\itemB Using online resources, evaluate the above limits. You will find
+\[
+  \lim_{h\to 0}\frac{2^h-1}{h}\simeq0.7, \qquad \lim_{h\to 0}\frac{3^h-1}{h}\simeq1.1.
+\]
+\itemC The next goal is to find a number $\xi$ that satisfies $\displaystyle\lim_{h\to 0}\frac{\xi^h-1}{h}=1$.
+Let us consider a function \[ \lambda(x)=\lim_{h\to 0}\frac{x^h-1}{h};\]
+then we need to find $\xi$ satisfying $f(\xi)=1$.
+Now, observing the result of the previous problem, we can guess $2<a<3$ because we have found $\lambda(2)\simeq 0.7$ and $\lambda(3)\simeq1.1$.
+
+Using online resources, evaluate $\lambda(2.7)$, $\lambda(2.71828)$, and $\lambda(2.8)$.
+\end{enumerate}
+
+\newpage
+\subsection{Napier's Constant}
+The number,
+\begin{equation}
+  \lim_{n\to\infty}\left(1+\frac{1}n\right)^n=\lim_{n\to\infty}\sum_{k=0}^n\frac{1}{k!}=2.7182818284590452\cdots\label{eq:napier}
+\end{equation}
+is called Napier's constant, and is denoted by $\ee$. It is the number which satisfies $\lambda(\ee)=1$ in the previous page:
+\begin{equation}
+  \lim_{h\to 0}\frac{\ee^h-1}{h}= \lim_{h\to 0}\frac{(2.718\cdots)^h-1}{h}=1.
+\end{equation}
+
+Logarithmic function with base $\ee$ is called the natural logarithm:
+\[
+  \ln x \coloneq \log_{\ee} x,
+\]
+which we will review in the next page. Here, you need to recall  the relation
+\[
+  a^{\log_a b}= b,\qquad\text{thus}\quad \ee^{\ln x}=x.
+\]
+\Remark{Students tend to understand this as a complicated theorem, but it isn't. Rather, this is a \emph{definition} of $\log_a b$.\\
+Recall that the number $x$ satisfying $a^x=b$ is defined as $x=\log_a b$.
+Then, if we put it onto the shoulder of $a$, it should give $a^x=a^{\log_a b}= b$.}
+
+Now we can prove this theorem:
+
+\begin{theorem}{}{}
+  \begin{equation}
+      \diff{}x{\ee^x}=\ee^x,\qquad
+      \diff{}x{a^x}=\ee^x\ln a\qquad(a>0).
+  \end{equation}
+\end{theorem}
+Note that this is valid even for $a=1$. (What is $\ln 1$?)
+
+\starskip
+
+
+\begin{enumerate}[resume]
+  \itemA Prove the first part of the above theorem. You should start from the definition of derivatives and find
+  \begin{equation}
+    \diff{}x{\ee^x}=\lim_{h\to 0}\frac{\ee^h-1}{h}\times\ee^x=\ee^x.
+  \end{equation}
+  \itemA Prove the latter part of the above theorem, using $a^x=\ee^{x\ln a}$ and the formula of derivatives for composite functions.
+\end{enumerate}
+
+\newpage
+\subsection{Logarithm}
+Derivatives of logarithmic functions are also important.
+
+\begin{theorem}{}{}
+  \begin{equation}
+      \diff{}x{\ln x}=\frac{1}{x},\qquad
+      \diff{}x{\log_a x}=\frac{1}{x\ln a}\qquad(a>0,a\neq 1).
+  \end{equation}
+\end{theorem}
+The proof of the first part, $(\ln x)'=1/x$, is a bit tricky. We will skip the proof here.
+If we accept it, we can easily prove the latter part if you recall the formula
+ \[\log_a b = \frac{\log_c b}{\log_c a}
+ \qquad(a>0,~~b>0,~~c>0;\quad a\neq 1,~~c\neq 1).
+ \]
+
+\starskip
+
+\begin{enumerate}[resume]
+  \itemA Using $(\ln x)'=1/x$, prove the latter part of the above theorem.\\
+   \Hint{Replace $c$ in the above equation by $\ee$.}
+\end{enumerate}
+
+\bigskip
+\begin{enumerate}[resume]
+  \itemB Calculate the following values. You will need a calculator for, but only for, (5) and (6).
+\begin{menumerate}{2}
+  \item $\log_{10}100$, $\log_{10}0.01$, $\log_{10}0.001$.
+  \item $\log_2 4$, $\log_{3}27$, $\log_5\sqrt{5}$, $\log_{9}3$.
+  \item $\ln e$, $\ln \sqrt{\\e}$, $\ln \dfrac{1}{e}$.
+  \item $\log_{0.5}0.5$, $\log_{0.5}0.25$, $\log_{1/3}3$.
+  \item $\ln 1$, $\ln 1.001$, $\ln 1.000001$
+  \item $\ln 0.1$, $\ln 0.001$, $\ln 0.000001$
+\end{menumerate}
+\itemA Simplify the following expressions. Here, $x$ and $y$ are real numbers and  $a>0$, $a\neq 1$.
+\begin{menumerate}{3}
+  \item $\dfrac{\log_{2}8}{\log_{2}4}$
+  \item $\log_a{10}+\log_a{5}$
+  \item $\log_a{10}-\log_a{5}$
+  \item $\ln x-\ln y$
+  \item $\log_a x^{10}$
+  \item $\log_a \dfrac{1}{x^{10}}$
+\end{menumerate}
+\itemB Simplify the following expressions. Here, $a>0$, $a\neq 1$, and $b>0$, $b\neq 1$.
+\begin{menumerate}{3}
+  \item $\dfrac{\log_{a}8}{\log_{a}4}$
+  \item $\dfrac{\log_{a}5}{\log_{b}5}$
+  \item $\ln 2^{20}+\ln 3^{10}$
+  \item $\dfrac{\log_{a}5}{\log_{1/a}5}$
+  \item $\ln 8-2\ln 4+\ln\dfrac{1}{20}$
+  \item $(\log_a b)(\log_b a)^2$
+\end{menumerate}
+\itemB Express the following expressions using natural logarithm ($\ln x$). Here, $a>0$ and $b>0$.
+\begin{menumerate}{3}
+  \item $\log_2 3$
+  \item $\log_2a^b$
+  \item $\log_7(3\ee^2/49)$
+\end{menumerate}
+\end{enumerate}
+
+\newpage
+\subsection{Hints for Motivated Students}
+These are more mathematical, more advanced, and less important. You may well skip them.
+
+\starskip
+
+\begin{enumerate}[resume]
+  \item For $f(x)=a^x$, check the following facts.
+  \begin{enumerate}
+    \item If $a>0$, $f(x)$ is defined for any $x\in\RR$. Also, $f(x)$ is always positive and continuous.
+    \item If $a<0$, $f(x)$ is defined only for $x\in\ZZ$. It is difficult to define, e.g., $(-2)^{0.49}$.
+    \item If $a=0$, $f(x)$ is defined only for $x>0$. The value is always zero.\addnote{%
+After you learn complex analysis, we can define $a^x$ for negative $a$. Namely,
+\[
+a^x=(-1)^x|a|^x=(\ee^{\ii\pi})^x|a|^x=|a|^x\ee^{\ii\pi x},
+\]
+which is not real but complex for $x\not\in\ZZ$.
+On the other hand, $0^x$ is well-defined only for $x>0$. In fact, there is no good way to define $0^0$. (We sometimes use $0^0=1$, but this is mathematically incorrect.)
+}
+  \end{enumerate}
+\end{enumerate}
+  \OutputNote
+\begin{enumerate}[resume]
+  \item Try to derive $(\ln x)'=1/x$ from the definition. Notice that $x>0$.
+  \begin{enumerate}
+    \item Prove the following equation: \Hint{$\tilde h=h/x$}
+     \[\diff{}x{\ln x}=\frac{1}{x}\lim_{\tilde h\to 0}\frac{\ln(1+\tilde h)}{\tilde h}\]
+    \item From the equation~\eqref{eq:napier}, prove that
+    \[\ee=\lim_{h\to+0}(1+h)^{1/h}.\]
+  \end{enumerate}
+  Now, we want to use $\ee=\lim_{h\to0}(1+h)^{1/h}$. This is slightly different from the above expression and, mathematically, an independent proof is required.
+  However, to simplify discussion, we accept this formula.
+  \begin{enumerate}[resume]
+    \item Using $\ee=\lim_{h\to0}(1+h)^{1/h}$, show that
+    \[
+      \lim_{h\to 0}\frac{\ln(1+h)}{h}=\ln\ee.
+    \]
+    \item Combine the above discussion to show $(\ln x)'=1/x$.
+  \end{enumerate}
+
+\end{enumerate}
+
+
+
+\end{document}
