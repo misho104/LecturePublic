@@ -9,6 +9,8 @@
 \usetikzlibrary{quotes,angles}
 \usepackage{tabto}
 \usepackage{esvect}
+\DeclareFontFamily{U}{esvect}{}
+\DeclareFontShape{U}{esvect}{m}{n}{<-5.5>vect5<5.5-6.5>vect6<6.5-7.5>vect7<7.5-8.5>vect8<8.5-9.5>vect9<9.5->vect10}{}
 
 \def\Heavenly#1{\expandafter\@Heavenly\csname c@#1\endcsname}
 \newcommand*{\@Heavenly}[1]{%
@@ -114,7 +116,7 @@
 \newcommand*\taskP[1][\relax]{\Emph*{(pair\ifx#1\relax\relax\else{\mdseries : #1}\fi)}\xspace}
 \newcommand*\taskG[1][\relax]{\Emph*{(group\ifx#1\relax\relax\else{\mdseries : #1}\fi)}\xspace}
 
-\newcommand*\Item[1]{\stepcounter{enumi}\item[{#1\labelenumi}]}
+\newcommand*\Item[1]{\stepcounter{\@enumctr}\item[{#1\csname label\@enumctr\endcsname}]}
 \newcommand*\itemS{\Item{$\bigstar$}}
 \newcommand*\itemA{\Item{$^{***}$}}
 \newcommand*\itemB{\Item{$^{**}$}}

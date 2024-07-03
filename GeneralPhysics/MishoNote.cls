@@ -1,4 +1,4 @@
-% Time-Stamp: <2024-06-23 13:40:25>
+% Time-Stamp: <2024-07-03 17:00:00>
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{MishoNote}[2022/11/23 Sho Iwamoto]
 
@@ -201,7 +201,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand*\@convertto[2]{\strip@pt\dimexpr #2*65536/\number\dimexpr 1#1}
-\newcommand*\ShowLength[1]{\@convertto{em}{#1}em = \@convertto{mm}{#1}mm} % for debugging
+\newcommand*\ShowLength[1]{\@convertto{em}{#1}em = \@convertto{mm}{#1}mm = \@convertto{pt}{#1}pt} % for debugging
 
 \setlength\textwidth{160mm}  % 25mm margin
 \setlength\textheight{237mm}  % 30mm margin
@@ -564,7 +564,7 @@ end
 \newenvironment{problems}{%
   \advance\@enumdepth\@ne
   \begin{tcolorbox}[myprobbox]
-   \list{}{\labelwidth2.5em\leftmargin2.5em\itemsep4mm\labelsep.7em\itemindent\z@%
+   \list{}{\labelwidth2.5em\leftmargin2.5em\itemsep4mm\labelsep.5em\itemindent\z@%
     \let\makelabel\descriptionlabel}%
 }{\endlist\end{tcolorbox}}
 
@@ -773,3 +773,16 @@ end
 \newcommand{\TOCHECK}[1][needs proofreeding]{\RED{$\spadesuit$#1$\spadesuit$}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               plain itemize  mini
+% topsep                9pt
+% partopsep             3pt
+% itemsep               4.5pt
+% parsep                4.5pt
+% parskip       0       4.5pt   0
+% leftmargin            2.5em
+% rightmargin           0
+% listparindent         0
+% parindent     17pt    (0)
+% itemindent            0
+% labelwidth            2em
+% labelsep              0.5em

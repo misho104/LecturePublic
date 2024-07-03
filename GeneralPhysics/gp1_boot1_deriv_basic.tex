@@ -21,7 +21,7 @@
 
 \usepackage{GP}
 \usepackage{pgfornament}
-\setlist{itemsep=0.3\baselineskip}
+\setlist{itemsep=4pt}
 \def\thesection{A}
 
 \newcommand\INT[2][\relax]{\item$\displaystyle\int#2\,\dd x$\ifx\relax#1\relax\relax\relax\else{\quad#1}\fi}
@@ -31,6 +31,12 @@
 
 \newcommand\hrefFN[2]{\href{#1}{#2}\footnote{\url{#1}}}
 \newcommand\starskip{\bigskip\begin{center}\pgfornament[width=7cm]{88}\end{center}\medskip}
+\makeatletter
+\RenewDocumentCommand\new@problem{mm}{%
+  \stepcounter{Problem}\item[\kern-2em\kern-\labelsep{\makebox[4.5em][r]{%
+        \IfValueTF{#2}{\csname G#2\endcsname}{}{\sffamily\bfseries[\Alph{Problem}]}}}]\relax}
+\makeatother
+
 
 \let\origfootnote\footnote
 \let\origfootnoterule\footnoterule
@@ -102,13 +108,13 @@ Sho recommends you to identify $\displaystyle \diff{f}{x} \stackrel!= f'$. Then,
 \end{itemize}
 
 \begin{problems}
-  \itemS Calculate the following derivatives.
+  \Problem[S] Calculate the following derivatives.
   \begin{menumerate}{3}
     \DIFF{x^2}
     \DIFF{\left(3x^8+2x^5-1\right)}
     \DIFF{\left(x+1\right)^3}
   \end{menumerate}
-  \itemS Let $f(x)=x^4$. Calculate $f'(x)$, $f'(c)$, $f'(0)$ and $f'(1)$.
+  \Problem[S] Let $f(x)=x^4$. Calculate $f'(x)$, $f'(c)$, $f'(0)$ and $f'(1)$.
 \end{problems}
 
 \subsection{Trigonometric functions}
@@ -129,7 +135,7 @@ etc. You need to get accustomed to this convention.
 }
 
 \begin{problems}
-  \itemS Calculate the following values.
+  \Problem[S] Calculate the following values.
   \begin{menumerate}{4}
     \item $\displaystyle\sin\frac\pi6$
     \item $\displaystyle\sin\frac\pi4$
@@ -154,14 +160,14 @@ Any derivatives can be calculated based on this definition.
 
 
 \begin{problems}
-\itemS
+\Problem[S]\relax
   \Emph{Based on the definition}~\eqref{eq:diff}, calculate the following derivatives.
   \begin{menumerate}{3}
     \DIFF{x^2}
     \DIFF{\left(2x^3\right)}
     \DIFF{\left(4x\right)}
   \end{menumerate}
- \itemS We know that a function $f(x)$ satisfies an equation $f'(x)=4x$. Can you find what $f(x)$ is? If you can, find more than one.
+ \Problem[S] We know that a function $f(x)$ satisfies an equation $f'(x)=4x$. Can you find what $f(x)$ is? If you can, find more than one.
 \end{problems}
 
 \subsection{The formulae you need to memorize}
@@ -187,17 +193,17 @@ I mean, \emph{you need to do exercise until you've memorized them and can use th
 \end{theorem}
 
 \begin{problems}
-  \itemS
+  \Problem[S]
   Use online resources to check that these are correct (i.e., Sho didn't make any typo).
 \end{problems}
 \begin{problems}
-  \itemS Calculate the following derivatives.
+  \Problem[S] Calculate the following derivatives.
   \begin{menumerate}{3}
     \DIFF{3\sin x}
     \DIFF{\left(2\sin x+\tan x\right)}
     \DIFF{\left(1+x+\tan x\right)}
   \end{menumerate}
-  \itemS Calculate the following derivatives, using Eqs.~\eqref{eq:reci}--\eqref{eq:quot}.
+  \Problem[S] Calculate the following derivatives, using Eqs.~\eqref{eq:reci}--\eqref{eq:quot}.
   \begin{menumerate}{3}
     \DIFF{(x+1)(x^2 + 2)}
     \DIFF{x  \sin x}
@@ -213,7 +219,7 @@ I mean, \emph{you need to do exercise until you've memorized them and can use th
 
 \subsection{Workout 1: Practice!}
 \begin{problems}
-\itemS Practice for the formulae~\eqref{eq:reci} and~\eqref{eq:prod}.
+\Problem[S] Practice for the formulae~\eqref{eq:reci} and~\eqref{eq:prod}.
 \begin{menumerate}{3}
   \DIFF{\frac{1}{\sin x}}
   \DIFF{\frac{1}{3x^2+1}}
@@ -225,7 +231,7 @@ I mean, \emph{you need to do exercise until you've memorized them and can use th
   \DIFF{x^5\cos x}
   \DIFF{(x^2\cdot x^3)}
 \end{menumerate}
-\itemS Practice for the formulae~\eqref{eq:reci} and~\eqref{eq:quot}. Here, $n$ is a positive integer.
+\Problem[S] Practice for the formulae~\eqref{eq:reci} and~\eqref{eq:quot}. Here, $n$ is a positive integer.
 \begin{menumerate}{4}
   \DIFF{\frac{x+1}{x-1}}
   \DIFF{\frac{x+1}{x^2+1}}
@@ -247,7 +253,7 @@ Notice you can use this formula for $a=1/2$, $a=-1$, $a=-3/2$, or even $a=0$.
 \end{theorem}
 
 \begin{problems}
-\itemS Calculate the following derivatives based on the theorem above.
+\Problem[S] Calculate the following derivatives based on the theorem above.
 \begin{menumerate}{3}
   \DIFF{x^{64}}
   \DIFF{\sqrt x}
@@ -281,7 +287,7 @@ You can calculate more complicated functions. One example is $\cos(\sin x)$. If 
   \]
 
 \begin{problems}
-  \itemS Practice.
+  \Problem[S] Practice.
   \begin{menumerate}{3}
     \DIFF{(x^2+1)^3}
     \DIFF{(x^2+2x+1)^4}
@@ -313,7 +319,7 @@ Some of the following may be a bit complicated, but you can solve them by combin
 If you are lost, try using online resources, ask your colleagues, or ask Sho.
 
 \begin{problems}
-  \itemS Practice more.
+  \Problem[S] Practice more.
 \begin{menumerate}{3}
   \DIFF{(5x^2 - 2x + 1)}
   \DIFF{(x^4 + \sqrt{x})}
