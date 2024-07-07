@@ -1,0 +1,332 @@
+%!TEX program=lualatex
+
+\def\LectureName/{General Physics I}
+%\def\LectureNumber/{}
+%\def\LectureDate/{}
+\PassOptionsToPackage{fleqn}{amsmath}
+\PassOptionsToPackage{hyperfootnotes=false}{hyperref}
+\documentclass[11pt,pdfa,lastpage]{MishoNote}
+\title{General Physics I: Integral Boot Camp}
+\author{Sho Iwamoto}
+\hypersetup{
+  pdflang={en-US},
+  pdfauthortitle={Assistant Professor, National Sun Yat-sen University},
+  pdfsubject={Integral Boot Camp as a preparation to General Physics 1 and 2 lectures.},
+  pdfcontactemail={iwamoto@g-mail.nsysu.edu.tw},
+  pdfcontacturl={https://www2.nsysu.edu.tw/iwamoto/},
+  pdfcaptionwriter={Sho Iwamoto},
+  pdfcopyright={2024 Sho Iwamoto\textLF This document is licensed under the Creative Commons CC BY–NC 4.0 International Public License.},
+  pdflicenseurl={https://creativecommons.org/licenses/by-nc/4.0/},
+}
+
+\usepackage{GP}
+\usepackage{pgfornament}
+\setlist{itemsep=4pt}
+\def\thesection{C}
+
+\newcommand\intdx{\displaystyle\int\!\dd x\,}
+\newcommand\incdx[2]{\displaystyle\int_{#1}^{#2}\!\dd x\,}
+\newcommand\INT[2][\relax]{\item$\displaystyle\int\!#2\,\dd x$\ifx\relax#1\relax\relax\relax\else{\quad#1}\fi}
+\newcommand\INN[2][\relax]{\item$\displaystyle\int\!#2$\ifx\relax#1\relax\relax\relax\else{\quad#1}\fi}
+\newcommand\INP[1]{\INT{\left(#1\right)}}
+\newcommand\INC[3]{\item$\displaystyle\int^{#2}_{#1}#3\,\dd x$}
+
+\newcommand\hrefFN[2]{\href{#1}{#2}\addnote{\url{#1}}}
+\newcommand\starskip{\bigskip\begin{center}\pgfornament[width=7cm]{88}\end{center}\medskip}
+\newcommand\fakebullet{\makebox[2.5em][r]{\textbullet\kern.5em}}
+\makeatletter
+\RenewDocumentCommand\new@problem{mm}{%
+  \stepcounter{Problem}\item[\kern-2em\kern-\labelsep{\makebox[4.5em][r]{%
+        \IfValueTF{#2}{\csname G#2\endcsname}{}{\sffamily\bfseries[\Alph{Problem}]}}}]\relax}
+\makeatother
+
+\let\origfootnote\footnote
+\let\origfootnoterule\footnoterule
+
+\begin{document}%
+\title{Integral Boot Camp}
+\begin{maketitle}
+\let\footnote\origfootnote
+\let\footnoterule\origfootnoterule
+
+\subsection*{Prerequisite}
+Highschool mathematics. Derivative Boot Camp all-pass (basic + true + extra sessions).
+
+\subsection*{Preface}
+The last Boot Camp on integrals are a bit different from the previous ones.
+As you have seen (otherwise you need to go back!), derivative calculation is straightforward; you just need to apply the machinery you learned on the expressions.
+Meanwhile, integration may requires extreme trick to obtain the answer, or even not have a clear-cut answer.
+Therefore, Sho \emph{always} use Mathematica or \hrefFN{https://www.wolframalpha.com/}{Wolfram Alpha} for integral calculations, and you can do so.
+
+However, in a very rare occasion, you may need to calculate easy integrals by hand.
+Then, most of other people around you will solve that easily, even without Mathematica, and it will be shameful if you solely cannot solve it.
+This may happen only once in a decade, but people's reputation is usually determined by such occasions.
+
+\subsection*{Remarks}
+Most of those integrals here will not be discussed during Sho's lecture (General Physics 1 and 2), so you do not have to be so serious now.
+Meanwhile, some faculties in your department think that students should easily calculate them by hand.
+This exercise may help you somewhat good feelings from your future boss.
+
+\medskip
+
+Sho never provides you with solutions because of his principle as a scientist.
+\Emph{You students} need to make the solution. To this end,
+\begin{miniitemize}
+  \item Take derivative of the obtained answer to check if the result matches the integrand.
+  \item Share your answers to other colleagues, using LINE or \hrefFN{https://docs.google.com/}{Google Docs}. Compare your answers with theirs.
+  \item Ask questions to colleagues, to the TA, or to Sho. You can utilize Sho's \hrefFN{https://www2.nsysu.edu.tw/iwamoto/}{office hours}.
+\end{miniitemize}
+
+\OutputNote
+
+\enlargethispage{-5em}
+
+\makeatletter
+\begin{tikzpicture}[remember picture,overlay]
+  \begingroup
+  \fontsize{9}{13}\selectfont
+    \node[xshift=\@total@leftsep,yshift=25.5mm,anchor=south west,align=left,text width=\textwidth] at (current page.south west) {%
+      \href{https://creativecommons.org/licenses/by-nc/4.0/}{\includegraphics[width=2.2cm]{../figs/by-nc.pdf}}\\[.4em]
+      \noindent\textsf{\color{gray}%
+      Visit \url{https://github.com/misho104/LecturePublic} for further information, updates, and to report issues.}\par
+    };
+    \node[xshift=-\@total@leftsep+26mm,yshift=32mm,align=left,text width=\textwidth,anchor=south east] at (current page.south east) {%
+      \noindent\textsf{\color{gray}%
+      This document is licensed under
+      \href{https://creativecommons.org/licenses/by-nc/4.0/}{the Creative Commons CC--BY--NC 4.0 International Public License.}\\
+      You may use this document only if you do in compliance with the license.}\par
+    };
+  \endgroup
+\end{tikzpicture}
+\makeatother
+\end{maketitle}
+\newpage
+
+
+\subsection{Very Basic Integrals}
+Integral is the reverse operation of derivative, so we begin with derivatives.
+\begin{menumerate}{3}
+  \item[\textbullet] $(\sin x)'=$
+  \item[\textbullet] $(\cos x)'=$
+  \item[\textbullet] $(\tan x)'=$
+  \item[\textbullet] $(\cot x)'=-\csc^2x$
+  \item[\textbullet] $(\csc x)'=$
+  \item[\textbullet] $(\sec x)'=$
+  \item[\textbullet] $(\ee^x)'=\ee^x$
+  \item[\textbullet] $(\ln x)'=$
+  \item[\textbullet] $|\ln x|'=$
+  \item[\textbullet] $(\sinh x)'=$
+  \item[\textbullet] $(\cosh x)'=$
+  \item[\textbullet] $(\tanh x)'=$
+  \item[\textbullet] $(\coth x)'=-\csch^2x$
+  \item[\textbullet] $(\csch x)'=$
+  \item[\textbullet] $(\sech x)'=$
+\end{menumerate}
+\begin{quizzes}
+\Quiz[S]{Calculate the above derivatives (on $x$). Great attention is required for $|\ln x|'$.}
+\end{quizzes}
+Now it is easy for us to solve some integrals:
+\begin{align}
+  &\intdx (-\csc^2x)=\cot x+C,&
+  &\intdx 4\ee^x=-4\ee^x+C,&
+  &\int \frac{\dd x}{\sinh^2x}=-\coth x.
+\end{align}
+
+
+\begin{problems}
+\Problem[A] Level 0. Here, $r$ is a real number.
+\begin{menumerate}{3}
+  \INT{x^2}
+  \INT{\sin x}
+  \INT{\sqrt x}
+  \INN{\frac{\dd x}{x^2}}
+  \INT[$(r\ge 0)$]{x^r}
+  \INN[$(r\ge 2)$]{\frac{\dd x}{x^r}}
+  \INN{\frac{\dd x}{\cos^2x}}
+  \INN{\frac{\dd x}{\cosh^2x}}
+  \INT{}
+\end{menumerate}
+\end{problems}
+
+Simple replacements of variables would be easy for you.
+\[
+\intdx\frac{x^3}{\sqrt{x^2-1}}= \int\!\frac{2t\dd t}{2x}\,\frac{x^3}{t}=\int\!\dd t\,(t^2+1)=\frac{t^3}3+t+C=
+\frac{(x^2-1)^{3/2}}3+\sqrt{x^2-1}+C,
+\]
+where $t=\sqrt{x^2-1}$, $t^2=x^2-1$, and thus $2x\dd x=2t\dd t$. Instead, we can use $u=x^2-1$.
+\[
+\intdx\frac{x^3}{\sqrt{x^2-1}}= \int\!\frac{\dd u}{2x}\,\frac{x(u+1)}{\sqrt{u}}
+=\int\!\dd u\,\frac{u^{1/2}+u^{-1/2}}2
+=\frac{u^{3/2}}{3}+u^{1/2}+C=\cdots
+\]
+and the same result is obtained, where $\dd u=2x\dd x$.
+
+\begin{problems}
+\Problem[A] Level 0.5. Try a few ideas of replacement. Some of them will work.
+\begin{menumerate}{3}
+  \INT{\frac{x^3}{\sqrt{x^2+1}}}
+  \INT{\frac{x}{\sqrt{x^2+1}}}
+  \INT{\sin(2x+5)}
+  \INT{\ee^{2x+5}}
+  \INT{\sinh4x}
+  \INT{x\ee^{x^2}}
+\end{menumerate}
+\end{problems}
+
+\newpage
+\subsection{Must-Know Integrals (1)}
+You may often need these derivatives when you calculate integrals.
+\begin{menumerate}{2}
+  \item[\textbullet] $(\tan x)'=\tan ^2x+1$
+  \item[\textbullet] $(-\cot x)'=\cot ^2x+1$  \phantom{$\dfrac{f'(x)}{f(x)}$}
+  \item[\textbullet] $(x \ln x)'=\ln x+1$
+  \item[\textbullet] $\Bigl[\ln|f(x)|\Bigr]'=\dfrac{f'(x)}{f(x)}$
+\end{menumerate}
+The last one is surprisingly useful:
+\[
+\intdx \cot x=\intdx \frac{\cos x}{\sin x}=\ln|\sin x|+C,\qquad
+\intdx \frac{5x^4+4x^3}{x^5+x^4+1}=\ln|x^5+x^4+1|+C.
+\]
+\begin{quizzes}
+\Quiz[S]{Prove all the above. Calculate $\intdx \tan^2x$ and $\intdx \tan x$.}
+\end{quizzes}
+The integrals related to logarithm is a bit tricky. It is better just to memorized
+\begin{equation}
+  \intdx \frac{1}{x}=\ln|x|+C\qquad\Bigl(\ln (x)+C \text{~is insufficient/incorrect}\Bigr).
+\end{equation}
+\Remark{ Consider the function $f(x)=1/x$ and its integral $\displaystyle F(x)=\int\!\frac{\dd x}{x}$.
+As $f(x)$ is defined for $x\neq 0$, i.e., $x>0$ and $x<0$, $F(x)$ should be obtained for both regions.
+Hence $F(x)=\ln x+C_1$, defined only for $x>0$, is insufficient. We need to consider $F(x)=\ln(-x)+C_2$, defined for $x<0$ and satisfies $F'(x)=(-1)/(-x)=f(x)$. Comgining both functions, we should write $F(x)=\ln|x|+C$.}
+
+Another technique you may often use is \Emph*{partial fraction decomposition}:
+\[\frac {1}{x(x+1)}=\frac {1}{x}-\frac {1}{x+1},\qquad
+\frac{1-2 x}{(2 x+1)^2}=\frac{2}{(2 x+1)^2}-\frac{1}{2 x+1},
+\]
+where you need to transform the left-hand side to right-hand side, i.e., decompose a fraction to two or more fractions whose numerators do not contain $x$. Then
+\begin{align*}
+& \int\!\frac{\dd x}{x(x+1)}=\ln|x|-\ln|x+1|+C=\ln\left|\frac{x}{x+1}\right|+C,\\
+& \int\!\frac{1-2 x}{(2 x+1)^2}\,\dd x=-\frac{1}{2 x+1}-\frac{1}{2} \ln|2 x+1|+C
+\end{align*}
+
+\begin{quizzes}
+\Quiz[S]{Check the above equations. Practice for $\dfrac{x+1}{(x+2) (x+3)}$ and $\dfrac{x}{(2x+3)(x+3)}$.}
+\Quiz[A]{Check the integration by taking the derivative of the result.}
+\end{quizzes}
+\Remark{It is worth memorizing the formula $\displaystyle\dfrac1{AB}=\frac{1}{A-B}\left(\dfrac1B-\dfrac1A\right)$.}
+
+\begin{problems}
+  \Problem[S] Level 1.
+  \begin{menumerate}{3}
+    \INT{\ln x}
+    \INT{\tan x}
+    \INT{\cot 7x}
+    \INT{\ln 7x}
+    \INT{\frac{1}{(x+2)(x+3)}}
+    \INT{\frac{2x+5}{(x+2)(x+3)}}
+    \INT{\frac{1/x}{\ln x}}
+    \INT{\frac{2}{x^2-1}}
+    \INT{\frac{2x}{x^2-1}}
+ \end{menumerate}
+  \Problem[S] Calculate $\intdx x^a$, where $a$ is a (any) real number.
+  \Problem[A] Level 1.5. \Hint[Note:~]{These are the minimal requirement for Sho's General Physics 1 and 2.}
+  \begin{menumerate}{2}
+    \INT{(x+1)^4}
+    \INT{\sin(2x+1)}
+    \INT{\tan(2x+1)}
+    \INT{\frac1{\sqrt{1-x}}}
+    \INT{\frac1{(1-x)\sqrt{1-x}}}
+    \INT{\sqrt{1-x}}
+    \INT{\left(\sqrt x+1\right)\left(\sqrt x+2\right)}
+    \INT{\ee^{-x}}
+  \end{menumerate}
+  \Problem[B] Level 2.
+  \begin{menumerate}{3}
+    \INT{\frac{1}{x^2 - 4x + 3}}
+    \INT{\cos^3x}
+    \INT{2x\ee^{x^2}}
+    \INT{\frac{1}{\cos^2(2x-1)}}
+    \INT{\ee^{\sin x}\cos x}
+    \INT{\ee^{\ee^x+x}}
+  \end{menumerate}
+  \end{problems}
+
+\newpage
+\subsection{Must-Know Integrals (2)}
+Definite integrals are just an extension of indefinite integrals, but there are two important properties that you need to understand \emph{graphically} without math manipulation.
+\[
+\incdx st f(x)=-\incdx ts f(x),\qquad
+\incdx st f(x)=\incdx{s+\Delta}{t+\Delta} f(x-\Delta),\\
+\]
+The following manipulation looks very tricky but is common, so you should be prepared.
+\[
+\incdx st f(x)
+=\int_{s}^{t}\dd(-z)\,f(-z)
+=\int_{-s}^{-t}(-\dd z)\,f(-z)
+=-\int_{-s}^{-t}\dd z\,f(-z)
+=-\int_{-s}^{-t}\dd x\,f(-x),
+\]
+where the last equality is just a replacement of variables.
+
+Combining these facts,
+\begin{theorem}{Odd and Even functions}{thm:odd}\vspace{-1em}
+  \begin{align}
+    \int_{-A}^{A}f(x)\,\dd x&=2\int_{0}^{A}f(x)\,\dd x
+    &&\text{if $f(x)=f(-x)$\qquad  (i.e., $f$ is an \Emph*{even function}),}\\
+    \int_{-A}^{A}f(x)\,\dd x&=0
+    &&\text{if $f(x)+f(-x)=0$\qquad  (i.e., $f$ is an \Emph*{odd function}).}
+  \end{align}
+\end{theorem}
+\begin{quizzes}
+  \Quiz[B]{Prove.}
+\end{quizzes}
+
+One more thing that you need to memorize is the \Emph*{Gaussian integral}:
+\begin{theorem}{Gaussian integral}{thm:gauss}\vspace{-1em}
+  \begin{align}
+  &\int_{-\infty}^{+\infty}\ee^{-x^2}\,\dd x=\sqrt{\pi},\\\notag
+    &\text{and thus, for $k>0$, }\quad\int_{-\infty}^{+\infty}\ee^{-kx^2}\,\dd x=\sqrt{\frac{\pi}{k}},\quad
+    \int_{-\infty}^{+\infty}\exp\left(-\frac{x^2}{k}\right)\,\dd x=\sqrt{k\pi}.
+  \end{align}
+\end{theorem}
+The proof is too technical and skipped, but scientists use this integral at least 100 times per year.
+\begin{problems}
+  \Problem[A] Level 1.5.
+  \begin{menumerate}{3}
+\INC{-1}{1}{x^3}
+\INC{-2}{2}{x^4}
+\INC{-\pi}{\pi}{\sin x}
+\INC{-\pi/6}{\pi/6}{\cos x}
+\INC{-2}{2}{\tanh x}
+\INC{0}{2}{\sin(x-1)}
+\INC{0}{2}{\cosh(x-1)}
+\INC{-\infty}{\infty}{\ee^{-2x^2}}
+\INC{0}{\infty}{\ee^{-x^2}}
+\end{menumerate}\end{problems}
+\newpage
+\subsection{Advanced Techniques}
+Sho thinks that, for more complicated integrals, we should use computers or online resources. If, however, you want to solve them by hand, you may practice the following technique:
+\begin{theorem}{Integration by parts}{thm:parts}\vspace{-.7em}
+  \begin{align}
+    &\int f(x)g'(x)\,\dd x=f(x)g(x)-\int f'(x)g(x)\,\dd x,
+\end{align}
+\end{theorem}
+In particular, $\intdx f(x)=f(x)x-\intdx xf'(x)$ is useful if $xf'(x)$ becomes simpler than $f(x)$.
+
+Furthermore, the following hints could be useful.
+\begin{itemize}
+  \item If $\dfrac1{x^2+a^2}$ appears, try $x=a\tan\theta$.
+  \item If $\dfrac1{x^2-a^2}$ appears, try $x=a\sinh\theta$.
+  \item If $\sqrt{x^2-a^2}$ appears, try $x=a\sin\theta$.
+  \item If $\sqrt{x^2+a^2}$ appears, try $x=a\sinh\theta$.
+  \item If (only) trigonometric functions ($\sin x$ etc.) appear and you are lost, try $x=2\arctan t$, i.e., $\tan(x/2)=t$.
+  \item King property: $\incdx ab f(x)=\incdx abf(a+b-x)$.
+\end{itemize}
+
+\vspace{3em}
+
+There are many well-prepared problems on integrals on the internet. If you are interested in, try
+\begin{itemize}
+  \item \href{https://sites.google.com/view/chhs-math/%E4%B8%8D%E5%AE%9A%E7%A7%AF%E5%88%86/%E7%A7%AF%E5%88%86%E7%BB%83%E4%B9%A0/%E7%A7%AF%E5%88%86100}{\JA{積分100題}} on CHHS mathematics
+\end{itemize}
+which seems to contain many nice problems.
+\end{document}

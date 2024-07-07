@@ -20,7 +20,7 @@ Contents
 
   Most of the concepts they need during General Physics 1 and 2 are introduced.
 
-- (Integral Boot Camp: to be written?)
+- Integral Boot Camp
 
 
 Notice
@@ -32,4 +32,5 @@ Some browsers may not display the PDF files. In such cases, download the files d
 - `gp1_boot1_deriv_true.pdf  <https://raw.githubusercontent.com/misho104/LecturePublic/main/GeneralPhysics/gp1_boot1_deriv_true.pdf>`_
 - `gp1_boot1_deriv_extra.pdf <https://raw.githubusercontent.com/misho104/LecturePublic/main/GeneralPhysics/gp1_boot1_deriv_extra.pdf>`_
 - `gp1_boot2_vector.pdf      <https://raw.githubusercontent.com/misho104/LecturePublic/main/GeneralPhysics/gp1_boot2_vector.pdf>`_
+- `gp1_boot3_integ.pdf       <https://raw.githubusercontent.com/misho104/LecturePublic/main/GeneralPhysics/gp1_boot3_integ.pdf>`_
 
