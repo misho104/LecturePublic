@@ -1,4 +1,4 @@
-% Time-Stamp: <2024-07-11 15:07:46>
+% Time-Stamp: <2024-08-29 12:39:33>
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{MishoNote}[2022/11/23 Sho Iwamoto]
 
@@ -463,6 +463,7 @@ end
   left skip=17.647mm, left=4.706mm, width=1.176\NoteBoxWidthA,
   coltitle=black,fonttitle=\headfont\bfseries,
   scale=0.85,
+  before skip=0mm, after skip=0mm,
   attach title to upper,after title={:~},#1
 }
 \newcommand\Note[1]{\begin{NoteBox}#1\end{NoteBox}}
@@ -506,7 +507,7 @@ end
   \protected@xdef\NoteBoxStack{\@NoteBoxStack\noexpand\OutputNote@{\notetag}{#3}}%
   \mbox{$^{\text{\ref{Note:\notetag}}}$}\relax}
 \def\OutputNote@#1#2{{\NoteBox[label=Note:#1]{#2}\endNoteBox}\relax}
-\def\OutputNote{\NoteBoxStack\global\def\NoteBoxStack{}}
+\def\OutputNote{\par\vspace{3mm}\NoteBoxStack\global\def\NoteBoxStack{}\par\vspace{3mm}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
