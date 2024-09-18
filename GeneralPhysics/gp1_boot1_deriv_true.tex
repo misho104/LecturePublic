@@ -113,16 +113,22 @@ Good Luck!
 \end{enumerate}
 
 \subsection{Get into the University}
+Recall that derivatives are \Emph{defined by}
+$\displaystyle\diff{}{x}f(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}$. For example,
+\begin{equation}
+  \diff{}{x}x^2=\lim_{h\to 0}\frac{(x+h)^2-x^2}{h}=\lim_{h\to 0}\frac{2xh+h^2}{h}=\lim_{h\to 0}(2x+h)=2x.
+  \label{eq:diffdefex}\tag{A.2}
+\end{equation}
+\medskip
 \begin{enumerate}[resume]
-  \itemC Calculate\footnote{Hint: $\sqrt{a}-\sqrt{b}=\dfrac{a-b}{\sqrt{a}+\sqrt{b}}$.}
-  the following based on the definition,
-  $\displaystyle\diff{}{x}f(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}$.
+  \itemC Calculate the following derivatives, not using formulae but \Emph{starting from the definition}. Namely, do the same thing as \eqref{eq:diffdefex} for each function.
+  \medskip
   \begin{menumerate}{3}
-    \DIFF{\left(2x+3\right)}
     \DIFF{\frac1x}
+    \DIFF{\frac1{x^2}}
     \DIFF{\sqrt{x}}
   \end{menumerate}
-  \bigskip
+  For the last problem, the equation $\displaystyle\sqrt{a}-\sqrt{b}=\dfrac{a-b}{\sqrt{a}+\sqrt{b}}$ will be useful.
 
   \itemA We know that $f(x)$ satisfies $f''(x)=5$. Find $f(x)$. If you can, find more than one.
   \itemB We know that $f(x)$ satisfies $f'(x)=x$ and $f(1)=3$. Find $f(x)$. (Are there more than one?)
@@ -134,16 +140,15 @@ Good Luck!
 \begin{enumerate}[resume]
  \itemC Prove the following equations.
 \begin{enumerate}
-  \item $\displaystyle\diff{}{x}\sin x=\cos x$ from the definition of the derivative, using the following equations:
+  \item $\displaystyle\diff{}{x}\sin x=\cos x$. Namely, do the same thing as \eqref{eq:diffdefex} for $f(x)=\sin x$. You may use
 \begin{equation*}
-  \lim_{x\to 0}\frac{\sin x}{x}=0\qquad\text{and}\qquad1+\cos\theta = \frac{1-\cos^2\theta}{1-\cos\theta} = \frac{\sin^2\theta}{1-\cos\theta}.
+  \lim_{x\to 0}\frac{\sin x}{x}=1\qquad\text{and}\qquad1+\cos\theta = \frac{1-\cos^2\theta}{1-\cos\theta} = \frac{\sin^2\theta}{1-\cos\theta}.
 \end{equation*}
   \item Equation (A.5) from from Eqs.~(A.3) and (A.4).
   \item Equations (A.3) and (A.4). \Hint{This is not easy.}
 \end{enumerate} 
 \end{enumerate}
 
-\newpage
 
 \subsection{Workout 1: Practice!}
 \begin{enumerate}[resume]

@@ -29,7 +29,7 @@
 \newcommand\INC[3]{\item$\displaystyle\int^{#2}_{#1}#3\,\dd x$}
 \NewDocumentCommand\DIFF{O{x}om}{\item$\displaystyle\gdiff[\dd][#2]{}{#1}#3$}
 
-\newcommand\hrefFN[2]{\href{#1}{#2}\footnote{\url{#1}}}
+\newcommand\hrefFN[2]{\href{#1}{#2}\addnote{\url{#1}}}
 \newcommand\starskip{\bigskip\begin{center}\pgfornament[width=7cm]{88}\end{center}\medskip}
 \makeatletter
 \RenewDocumentCommand\new@problem{mm}{%
@@ -66,6 +66,7 @@ Sho never provides you with solutions. \Emph{You students} need to make the solu
   \item Ask questions to colleagues, to the TA, or to Sho. You can utilize Sho's \hrefFN{https://www2.nsysu.edu.tw/iwamoto/}{office hours}.
 \end{miniitemize}
 
+\OutputNote
 
 \enlargethispage{-5em}
 
@@ -133,12 +134,15 @@ etc. You need to get accustomed to this convention.
   \sin^2x~~=~~(\sin x)^2~~\neq~~\sin x^2~~=~~\sin(x^2).
 \end{equation*}
 }
-\Remark{However, this ``$\sin^kx$'' notation is used only if $k$ is a positive integer ($k\ge 2$). For negative power or fractional power, we \Emph{always} write as $(\sin x)^k$:
+\Remark{However, we should use this ``$\sin^kx$'' notation only for $k>0$. Sho suggests you to use specifically for positive-\emph{integer} $k$, such as $\cos^2x$ or $\tan^24\theta$. For negative or fractional exponents, it is preferable to use expressions like $(\sin x)^{3/2}$ or $(\sin x)^{-2}$:
 \begin{equation*}
-  (\sin x)^{-2}=\frac{1}{\sin^2x},\qquad(\tan x)^{-1}=\frac1{\tan x}=\cot x,\qquad (\cos x)^{1/2}=\sqrt{\cos x},\quad\text{etc.}
+  (\sin x)^{-2}=\frac{1}{\sin^2x},\qquad(\tan x)^{-1/2}=\frac1{(\tan x)^{1/2}}=\frac{1}{\sqrt{\tan x}}=(\cot x)^{1/2},\quad\text{etc.}
 \end{equation*}
-(You will soon learn that $\sin^{-1}x$ etc.~are used to express different functions.)
+It is best important to  avoid ambiguous expressions.\addnote{For the same reason, do not write $\sin(x)^2$. It will only confuse readers.}\addnote{%
+You will soon learn about inverse trigonometric functions such as~~~$\arcsin x$~~~and~~~$\arctan \theta$~. They are sometimes written as $\sin^{-1}x$ or $\tan^{-1}\theta$.}
 }
+\OutputNote
+
 
 \begin{problems}
   \Problem[S] Calculate the following values.
@@ -155,22 +159,22 @@ etc. You need to get accustomed to this convention.
 \end{problems}
 \subsection{Get into the University}
 Recall that derivatives are \Emph{defined by}
-\begin{equation*}
-\diff{f}{x}(x_0)=\lim_{x\to x_0}\frac{f(x)-f(x_0)}{x-x_0}
-\end{equation*}
-or, equivalently,
+$\displaystyle\diff{f}{x}(x_0)=\lim_{x\to x_0}\frac{f(x)-f(x_0)}{x-x_0}$, or equivalently,
 \begin{equation}
 \diff{}{x}f(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}.\label{eq:diff}
 \end{equation}
-Any derivatives can be calculated based on this definition.
+Any derivatives can be calculated based on this definition. For example, with $f(x)=x^2$,
+\begin{equation}
+  \diff{}{x}x^2=\lim_{h\to 0}\frac{(x+h)^2-x^2}{h}=\lim_{h\to 0}\frac{2xh+h^2}{h}=\lim_{h\to 0}(2x+h)=2x.
+  \label{eq:diffdefex}
+\end{equation}
 
 
 \begin{problems}
 \Problem[S]\relax
-  \Emph{Based on the definition}~\eqref{eq:diff}, calculate the following derivatives.
-  \begin{menumerate}{3}
-    \DIFF{x^2}
-    \DIFF{\left(2x^3\right)}
+  Calculate the following derivatives, not using formulae but \Emph{starting from the definition}~\eqref{eq:diff}. Namely, do the same thing as \eqref{eq:diffdefex} for each function.
+  \begin{menumerate}{4}
+    \DIFF{x^3}
     \DIFF{\left(4x\right)}
   \end{menumerate}
  \Problem[S] We know that a function $f(x)$ satisfies an equation $f'(x)=4x$. Can you find what $f(x)$ is? If you can, find more than one.
