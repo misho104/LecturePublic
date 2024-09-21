@@ -21,6 +21,15 @@
 
 \usepackage{GP}
 \usepackage{pgfornament}
+
+\makeatletter
+\begingroup
+\let\pgfsyspdfmark\@gobblethree
+\let\@writefile\@gobbletwo
+\input{gp1_boot1_deriv_basic.aux}
+\endgroup
+\makeatother
+
 \setlist{itemsep=4pt}
 \def\thesection{A}
 
@@ -86,7 +95,7 @@ Good Luck!
 \newpage
 \subsection{The first step: High-school review}
 \begin{enumerate}[start=14]
-  \itemB Let $f(x)=(x+1)^4$. Calculate $f'(x)$, $f'(c)$, $f'(0)$ and $f'(1)$, but only with using high-school level formulae.
+  \itemC Let $f(x)=x^5$ and $g(x)=(x+1)^5$. Calculate $f'(0)$, $f'(1)$, $g'(0)$ and $g'(1)$. It's nice if you can find the value in a clever way, with less calculation.
 \end{enumerate}
 
 \subsection{Trigonometric functions}
@@ -113,11 +122,10 @@ Good Luck!
 \end{enumerate}
 
 \subsection{Get into the University}
-Recall that derivatives are \Emph{defined by}
-$\displaystyle\diff{}{x}f(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}$. For example,
+Recall Eqs.~\eqref{eq:diff}--\eqref{eq:diffdefex} in the basic part. We saw that derivatives are \Emph{defined by} Eq.~\eqref{eq:diff} and thus., for example,
 \begin{equation}
   \diff{}{x}x^2=\lim_{h\to 0}\frac{(x+h)^2-x^2}{h}=\lim_{h\to 0}\frac{2xh+h^2}{h}=\lim_{h\to 0}(2x+h)=2x.
-  \label{eq:diffdefex}\tag{A.2}
+  \tag{\ref{eq:diffdefex}}
 \end{equation}
 \medskip
 \begin{enumerate}[resume]
@@ -132,25 +140,37 @@ $\displaystyle\diff{}{x}f(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}$. For example,
 
   \itemA We know that $f(x)$ satisfies $f''(x)=5$. Find $f(x)$. If you can, find more than one.
   \itemB We know that $f(x)$ satisfies $f'(x)=x$ and $f(1)=3$. Find $f(x)$. (Are there more than one?)
-  \itemC We know that $f(x)$ satisfies $f''(x)=a$, $f'(0)=b$, and $f(x)=c$, where $a$, $b$, and $c$ are real constants. Find $f(x)$.
+  \itemC We know that $f(x)$ satisfies $f''(x)=a$, $f'(0)=b$, and $f(0)=c$, where $a$, $b$, and $c$ are real constants. Find $f(x)$.
 \end{enumerate}
 
 \subsection{The formulae you need to memorize}
+This section had many formulae, such as $(\sin x)'=\cos x$ or
+\begin{align}
+  &\tag{\ref{eq:reci}} \diff{}{x}\frac{1}{f(x)}=-\frac{f'(x)}{[f(x)]^2},\\
+   &\tag{\ref{eq:prod}} \diff{}{x}\Bigl[f(x)g(x)\Bigr]=f'(x)g(x)+f(x)g'(x),\\
+   &\tag{\ref{eq:quot}} \diff{}{x}\frac{g(x)}{f(x)}=\frac{f(x)g'(x)-f'(x)g(x)}{[f(x)]^2},
+ \end{align}
+ but we did not prove them in the basic camp. Now...
+
+
+
 
 \begin{enumerate}[resume]
- \itemC Prove the following equations.
+ \itemC
 \begin{enumerate}
-  \item $\displaystyle\diff{}{x}\sin x=\cos x$. Namely, do the same thing as \eqref{eq:diffdefex} for $f(x)=\sin x$. You may use
+  \item Prove $\displaystyle\diff{}{x}\sin x=\cos x$ by doing the same thing as \eqref{eq:diffdefex} for $f(x)=\sin x$. You may use
 \begin{equation*}
   \lim_{x\to 0}\frac{\sin x}{x}=1\qquad\text{and}\qquad1+\cos\theta = \frac{1-\cos^2\theta}{1-\cos\theta} = \frac{\sin^2\theta}{1-\cos\theta}.
 \end{equation*}
-  \item Equation (A.5) from from Eqs.~(A.3) and (A.4).
-  \item Equations (A.3) and (A.4). \Hint{This is not easy.}
+\smallskip
+  \item Prove Eq.~\eqref{eq:quot}, where you can use the formulae \eqref{eq:reci} and \eqref{eq:prod} without proof.
+  \item Now, prove Eqs.~\eqref{eq:reci} and \eqref{eq:prod}. \Hint{This is not easy.}
 \end{enumerate} 
 \end{enumerate}
 
 
 \subsection{Workout 1: Practice!}
+Practice makes perfect, so I can provide you with as many problems as you want!
 \begin{enumerate}[resume]
 \itemA Practice more. Here, $n$ is a positive integer.
 \begin{menumerate}{3}
@@ -164,7 +184,7 @@ $\displaystyle\diff{}{x}f(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}$. For example,
   \DIFF{\frac{\cos x}{x^3}}
   \DIFF{x^{-n}\sin x}
 \end{menumerate}
-\itemB Use the formula (A.4) repeatedly to calculate the following derivatives.
+\itemB Use the formula \eqref{eq:prod} repeatedly to calculate the following derivatives.
 \begin{menumerate}{2}
   \DIFF{\left(x\cdot\tan x \cdot\sin x\right)}
   \DIFF{(x^2 + 1)(x+1)(x+2)}
@@ -195,6 +215,7 @@ $\displaystyle\diff{}{x}f(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}$. For example,
 
 \end{enumerate}
 
+\newpage
 \subsection{Workout 2: Practice, Practice, Practice!}
 \begin{enumerate}[resume]
 \itemA \textsf{(intermediate-level problems)}
@@ -217,7 +238,7 @@ $\displaystyle\diff{}{x}f(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}$. For example,
   \DIFF{\cos(x^2+1)^2}
   \DIFF{\tan^2(x^2+1)}
 \end{menumerate}
-\newpage
+
 \itemB \textsf{(a bit tough problems)}
 \begin{menumerate}{3}
   \DIFF{(5x^2 - 2x + 1)^{-3}}
