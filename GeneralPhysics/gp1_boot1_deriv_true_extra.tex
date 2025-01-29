@@ -1,26 +1,25 @@
 %!TEX program=lualatex
-
-\def\LectureName/{General Physics I}
+%!TEX options=-synctex=1 -interaction=nonstopmode -halt-on-error "%DOC%.tex"
+\def\LectureName/{General Physics}
 %\def\LectureNumber/{}
 %\def\LectureDate/{}
 \PassOptionsToPackage{fleqn}{amsmath}
 \PassOptionsToPackage{hyperfootnotes=false}{hyperref}
 \documentclass[11pt,pdfa,lastpage]{MishoNote}
-\title{General Physics I: Derivative Boot Camp Extra Session}
+\title{\LectureName/: Derivative Boot Camp Extra Session}
 \author{Sho Iwamoto}
 \hypersetup{
   pdflang={en-US},
   pdfauthortitle={Assistant Professor, National Sun Yat-sen University},
-  pdfsubject={An extra session of Derivative Boot Camp, which is a preview of General Physics 1 lectures.},
+  pdfsubject={An extra session of Derivative Boot Camp, which is a preview of \LectureName/ lectures.},
   pdfcontactemail={iwamoto@g-mail.nsysu.edu.tw},
   pdfcontacturl={https://www2.nsysu.edu.tw/iwamoto/},
   pdfcaptionwriter={Sho Iwamoto},
-  pdfcopyright={2024 Sho Iwamoto\textLF This document is licensed under the Creative Commons CC BY–NC 4.0 International Public License.},
+  pdfcopyright={2024–2025 Sho Iwamoto\textLF This document is licensed under the Creative Commons CC BY–NC 4.0 International Public License.},
   pdflicenseurl={https://creativecommons.org/licenses/by-nc/4.0/},
 }
 
 \usepackage{GP}
-\usepackage{pgfornament}
 \setlist{itemsep=4pt}
 \makeatletter
 \def\thesection{A$\mathbf{'}$}
@@ -31,9 +30,6 @@
 \newcommand\INP[1]{\INT{\left(#1\right)}}
 \newcommand\INC[3]{\item$\displaystyle\int^{#2}_{#1}#3\,\dd x$}
 \NewDocumentCommand\DIFF{O{x}om}{\item$\displaystyle\gdiff[\dd][#2]{}{#1}#3$}
-
-\newcommand\hrefFN[2]{\href{#1}{#2}\footnote{\url{#1}}}
-\newcommand\starskip{\bigskip\begin{center}\pgfornament[width=7cm]{88}\end{center}\medskip}
 
 \let\origfootnote\footnote
 \let\origfootnoterule\footnoterule
@@ -104,7 +100,7 @@ They are called exponential functions.
 Let's begin with a review of highschool mathematics.
 
 
-\starskip
+\ornamentskip
 
 \begin{enumerate}
   \itemA Let $f(x)=2^x$ and $g(x)=0.5^x$.  Calculate the following values. You can use a calculator \Emph{only for} (5) and (6).
@@ -192,7 +188,7 @@ Students tend to understand this second equation as a complicated theorem, but i
 Now you need to recall various equations related to $\log_b A$.
 
 
-\starskip
+\ornamentskip
 
 \begin{enumerate}[resume]
   \itemA Calculate the following values (without using a calculator).
@@ -240,7 +236,7 @@ In principle, we can calculate any derivatives from the definition,
 \end{equation}
 What you need to do is to apply the substitution $f(x)=2^x$.
 
-\starskip
+\ornamentskip
 
 \begin{enumerate}[resume]
  \itemB
@@ -299,7 +295,7 @@ we can prove this theorem:
 \end{theorem}
 Note that this is valid even for $a=1$. (What is $\ln 1$?)
 
-\starskip
+\ornamentskip
 
 \begin{enumerate}[resume]
   \itemB Prove the following equations, where $a>0$.
@@ -341,7 +337,7 @@ This is the last formula for your memory: derivatives of logarithmic functions.
 \end{theorem}
 The proof is a bit tricky and postponed to the later pages. You first practice the calculation.
 
-\starskip
+\ornamentskip
 
 \begin{enumerate}[resume]
  \itemA Calculate the following expression. Use a calculator for (2), (3), and (4).
@@ -403,7 +399,7 @@ Here we introduce hyperbolic functions, but this is just for completeness and yo
 These are similar to the trigonometric functions. For example,
 \[ \sinh^2x-\cosh^2x=1 \qquad\text{(note the sign!)} \]
 
-\starskip
+\ornamentskip
 
 \begin{enumerate}[resume]
   \itemA Prove the following equations. Then, based on the equations, draw graphs of $\sinh x$, $\cosh x$, and $\tanh x$.
@@ -442,7 +438,7 @@ Another simple differential equation is
 \[ f'(x) = f(x). \]
 It is not easy to find the solution at first glance, but if you have done this Extra Session carefully, you will notice that $f(x)=\ee^x$ satisfies this equation. Indeed, $f(x)=\ee^x$ is \Emph{a} solution.
 
-\starskip
+\ornamentskip
 
 \begin{enumerate}[resume]
   \itemA Verify each of the following statement.
@@ -499,11 +495,11 @@ where $C$ is any number. (Notice that they are first-order differential equation
 \end{itemize}
 where $C_1$ and $C_2$ are any numbers. (Notice that they are second-order differential equations.)
 \end{theorem}
-\emph{In most of the simple cases}, the \Emph{general solution} of a first-order differential equation has one unknown constant $C$, and the general solution of second-order differential equation has two unknown constant $C_1$ and $C_2$.
-(As you see in the following problems, these unknown constants may be determined by some other conditions.)
+\emph{In most of simple cases}, the \Emph{general solution} of a first-order differential equation has one unknown constant $C$, and the general solution of second-order differential equation has two unknown constant $C_1$ and $C_2$.
+(As you see in the following problems, they may be determined by other conditions.)
 
 
-\starskip
+\ornamentskip
 
 \begin{enumerate}[resume]
   \itemB Write down the general solution for the following differential equations.
@@ -608,7 +604,7 @@ First, you need to understand the following procedure.
 \end{itemize}
 Now you are ready to calculate any simple functions!
 
-\starskip
+\ornamentskip
 
 \begin{enumerate}[resume]
  \itemC \textsf{(The final problems: Vale Tudo)}
@@ -645,7 +641,7 @@ without proof.
 The proof is a bit involved and will be introduced in calculus lectures.
 }
 
-\starskip
+\ornamentskip
 \begin{enumerate}[resume]
   \itemC Let's derive the derivative of logarithms,  Eq.~\eqref{eq:log-deriv}. Notice that $x>0$ throughout this problem.
   \begin{enumerate}

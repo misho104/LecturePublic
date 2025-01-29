@@ -1,37 +1,30 @@
 %!TEX program=lualatex
-
-\def\LectureName/{General Physics I}
+%!TEX options=-synctex=1 -interaction=nonstopmode -halt-on-error "%DOC%.tex"
+\def\LectureName/{General Physics}
 %\def\LectureNumber/{}
 %\def\LectureDate/{}
 \PassOptionsToPackage{fleqn}{amsmath}
 \PassOptionsToPackage{hyperfootnotes=false}{hyperref}
 \documentclass[11pt,pdfa,lastpage]{MishoNote}
-\title{General Physics I: Vector Boot Camp}
+\title{\LectureName/: Vector Boot Camp}
 \author{Sho Iwamoto}
 \hypersetup{
   pdflang={en-US},
   pdfauthortitle={Assistant Professor, National Sun Yat-sen University},
-  pdfsubject={Vector Boot Camp (Basic) as a preparation to General Physics 1 lecture.},
+  pdfsubject={Vector Boot Camp as a preparation to \LectureName/ lecture.},
   pdfcontactemail={iwamoto@g-mail.nsysu.edu.tw},
   pdfcontacturl={https://www2.nsysu.edu.tw/iwamoto/},
   pdfcaptionwriter={Sho Iwamoto},
-  pdfcopyright={2024 Sho Iwamoto\textLF This document is licensed under the Creative Commons CC BY–NC 4.0 International Public License.},
+  pdfcopyright={2024–2025 Sho Iwamoto\textLF This document is licensed under the Creative Commons CC BY–NC 4.0 International Public License.},
   pdflicenseurl={https://creativecommons.org/licenses/by-nc/4.0/},
 }
 
 \usepackage{GP}
-\usepackage{pgfornament}
 \setlist{itemsep=4pt}
-\def\thesection{B}
+\tikzset{>={Stealth[scale=1]}}
+\usetikzlibrary{fadings}
 
-\newcommand\hrefFN[2]{\href{#1}{#2}\addnote{\url{#1}}}
-\newcommand\starskip{\bigskip\begin{center}\pgfornament[width=7cm]{88}\end{center}\medskip}
-\newcommand\fakebullet{\makebox[2.5em][r]{\textbullet\kern.5em}}
-\makeatletter
-\RenewDocumentCommand\new@problem{mm}{%
-  \stepcounter{Problem}\item[\kern-2em\kern-\labelsep{\makebox[4.5em][r]{%
-        \IfValueTF{#2}{\csname G#2\endcsname}{}{\sffamily\bfseries[\Alph{Problem}]}}}]\relax}
-\makeatother
+\def\thesection{B}
 
 \let\origfootnote\footnote
 \let\origfootnoterule\footnoterule
@@ -43,9 +36,9 @@
 \let\footnoterule\origfootnoterule
 
 \subsection*{Preface}
-Vectors are a familiar concept from high school mathematics, and you likely already have a good understanding of them.
+Vectors are likely a familiar concept to you from high school mathematics.
 However, vectors are far more important than you might realize.
-They are arguably one of the most crucial mathematical concepts not only in science but also in the modern society.
+Vectors are among the most fundamental mathematical tools, essential not only in science but also in modern technology and society.
 
 A vector can take on many forms: in high school math, it's often seen as two or three numbers; in university physics, it's represented as an arrow; and in university mathematics, it's an element of a vector space.
 What you have learned is just the beginning, and you will need to develop a deeper and more versatile understanding of vectors.
@@ -60,7 +53,7 @@ Most of the topics will be discussed during Sho's lecture, so you do not have to
 
 \medskip
 
-Sho never provides you with solutions\addnote{Think why. Sho thinks that proding solutions is against the integrity (or a moral) as a scientist.}. \Emph{You students} need to make the solution. To this end,
+Sho never provides you with solutions\addnote{Think why. Sho thinks that giving you solutions would violate Sho's integrity as a scientist.}. \Emph{You students} need to make the solution. To this end,
 \begin{miniitemize}
   \item Share your answers to other colleagues, using LINE or \hrefFN{https://docs.google.com/}{Google Docs}. Compare your answers with theirs.
   \item Ask questions to colleagues, to the TA, or to Sho. You can utilize Sho's \hrefFN{https://www2.nsysu.edu.tw/iwamoto/}{office hours}.
@@ -100,14 +93,14 @@ Sho never provides you with solutions\addnote{Think why. Sho thinks that proding
   %\draw[->]                     (-3.2,  0 ) --   ++(18.6, 0 ) node[below left,xshift=1.3mm]{$x$};
   %\draw[->]                     (  0 ,-1.2) --   ++( 0  ,6.6) node[below left,yshift=1.3mm]{$y$};
   %\coordinate (O) at (0,0) node [below left,xshift=.5mm,yshift=.5mm] at (O) {O}; %\fill (O) circle (4pt);
-  \draw[-stealth, very thick] (1,4)--node [above]{$\vc a$} ++(5,0);
-  \draw[-stealth, very thick] (-2,4)--node [left]{$\vc b$} ++(0,-2);
-  \draw[-stealth, very thick] (1, 0)--node [left]{$\vc c$} ++(0,3);
-  \draw[-stealth, very thick] (2,-1)--node [above left,yshift=-3mm]{$\vc p$} ++(3,3);
-  \draw[-stealth, very thick] (6,2)--node [above right]{$\vc q$} ++(2,-2);
-  \draw[-stealth, very thick] (9,5)--node [above left]{$\vc r$} ++(-2,-2);
-  \draw[-stealth, very thick] (8,-1)--node [above left,xshift=2mm]{$\vc A$} ++(3,4);
-  \draw[-stealth, very thick] (13,5)--node [above]{$\vc B$} ++(-1,-1);
+  \draw[->, very thick] (1,4)--node [above]{$\vc a$} ++(5,0);
+  \draw[->, very thick] (-2,4)--node [left]{$\vc b$} ++(0,-2);
+  \draw[->, very thick] (1, 0)--node [left]{$\vc c$} ++(0,3);
+  \draw[->, very thick] (2,-1)--node [above left,yshift=-3mm]{$\vc p$} ++(3,3);
+  \draw[->, very thick] (6,2)--node [above right]{$\vc q$} ++(2,-2);
+  \draw[->, very thick] (9,5)--node [above left]{$\vc r$} ++(-2,-2);
+  \draw[->, very thick] (8,-1)--node [above left,xshift=2mm]{$\vc A$} ++(3,4);
+  \draw[->, very thick] (13,5)--node [above]{$\vc B$} ++(-1,-1);
   \draw[->,very thick] (13,1)--node [below]{$\vvex$} ++(1,0);
   \draw[->,very thick] (13,1)--node [left] {$\vvey$} ++(0,1);
   %\fill (O) circle (4pt) (A) circle (4pt) (B) circle (4pt) (C) circle (4pt) (D) circle (4pt);
@@ -137,29 +130,71 @@ Sho never provides you with solutions\addnote{Think why. Sho thinks that proding
   \end{tikzpicture}
 \end{lrbox}
 \subsection{Definition of Vectors}
-\begin{definition}{Vectors (for physics)}{def:vec}
+You might already know vectors are $\vc a=(1,0,0)$ or $\vc A=(4,4)$, but let's forget everything for a moment (until Section~\ref{sec:component}).
+We \Emph{define} vectors in an easier way.
+
+\begin{definition}{Vectors (for physics)}{vec}
+  A vector is a physical quantity that has both \Emph*{magnitude} and \Emph*{direction}.
+\end{definition}
+\begin{definition}{How to write vectors}{notation}
 \begin{miniitemize}
-  \item A vector is a physical quantity that has both \Emph*{magnitude} and \Emph*{direction}.
-  \item We describe them by $\vc a$, $\vc A$, $\vc p\w F$, etc.\addnote{%
-    Professionals use boldface, e.g., $\mathbf{a}$, $\mathbf{A}$, $\mathbf{p}\w F$, etc., but in this lecture we only use the beginners' style.},
-    and their magnitudes by $|\vc a|$, $|\vc A|$, $|\vc p\w F|$, etc.
-  \item We often describe them by arrows. The arrow's direction should match the vector's direction. The arrow's length should be \emph{proportional to} the vector's magnitude.
+\item We describe vectors by a symbol with arrows. For example, $\vc v$, $\vc V$, $\vc x$, and $\vc p\w i$ are vectors.%
+\addnote{%
+    Professionals use boldface, e.g., $\mathbf{v}$, $\mathbf{V}$, $\mathbf x$, $\mathbf{p}\w i$ but most textbooks for beginners use the arrow style.}
+\item We describe their magnitude by, e.g., $|\vc v|$, $|\vc V|$, $|\vc x|$, and $|\vc p\w i|$.
+  \item In figures, vectors can be drawn by arrows. The arrow's direction should match the vector's direction. The arrow's length should be proportional to the vector's magnitude.
 \end{miniitemize}
 \end{definition}
 \OutputNote
 
-\begin{definition}{Vector quantity and Scalar quantity}{def:vecsca}
+Two symbols $a$ and $b$ usually describe different numbers. Similarly, $v$ and $V$ are different symbols, even though look similar. So, $\vc v$ and $\vc V$ are different vectors; they are totally unrelated. Since $\vc a$ and $\vc A$, or $\vc x$ and $\vc X$, are totally unrelated, different objects, we need to write them clearly so the difference is obvious and we can distinguish them easily.
+
+
+
+
+Furthermore, \Emph{$v$ and $\vc v$ are totally unrelated, different objects}.
+While $\vc v$ is a vector and has a direction, $v$ is a number without direction.
+Just as $a$ and $B$ are completely different symbols, $\vc v$ and $v$ are also treated as entirely different symbols, in principle.
+
+However, most physicists are lazy. Consider a vector $\vc v$. To describe its magnitude, we should write $|\vc v|$ (and mathematicians do so) but Sho and other lazy physicists tend to write $v$. In other words, in physics lectures, \emph{sometimes}, $E$ means $|\vc E|$ (the magnitude of a vector $\vc E$).
+
+Further bad news is that we sometimes write an equation like
+\[\vc x=\pmat{x\\y\\z}.\]
+Here, $\vc x$ is a vector and $x$, $y$, and $z$ are its components.
+It means that $\vc x$ and $x$ are totally unrelated objects and, of course, $|\vc x|$ is not equal to $x$. Rather, you might have already learned $|\vc x|=\sqrt{x^2+y^2+z^2}\neq x$.
+Sho tries to avoid this kind of bad notations, but you will see them occasionally and you need to be prepared.
+
+\Remark{The following symbols are similar and confusing but we often see all of them:
+  \begin{multicols}{4}\begin{itemize}
+   \item $a$ / $\alpha$
+   \item $b$ / $\beta$
+   \item $c$ / $C$
+   \item $e$ / $E$ / $\epsilon$
+   \item $g$ / $q$ / $9$
+   \item $i$ / $l$ / $1$ / $I$
+   \item $k$ / $K$ / $\kappa$
+   \item $m$ / $\mu$
+   \item $p$ / $\rho$
+   \item $s$ / $S$
+   \item $t$ / $\tau$ / $T$
+   \item $u$ / $v$ / $\nu$
+   \item $w$ / $\omega$ / $W$
+   \item $x$ / $X$ / $\chi$
+  \end{itemize}\end{multicols}
+}
+
+\begin{definition}{Vector quantity and Scalar quantity}{vecsca}
   \begin{miniitemize}
-    \item Physical quantities with direction are called \Emph*{vector quantity}.
-    \begin{miniitemize} \item They can be described by vectors.\addnote{%
-      If the space considered is one-dimensional, we can describe the direction by $+$ or $-$ and a vector quantity can be described by a number. Here, however, \Emph{you} must specify which direction is positive.} \end{miniitemize}
+    \item Physical quantities with direction are called \Emph*{vector quantity}.\addnote{\Hint[]{a very technical note} If you notice a circular argument in this and the previous definitions and become unhappy, you may define a vector as ``a mathematical object that is used to describe a physical quantity with magnitude and direction,'' but this statement will raise a question ``what are mathematical objects?'', which is beyond this course.}
+    \begin{miniitemize} \item They can be described by vectors.\end{miniitemize}
     \item Physical quantities without direction are called \Emph*{scalar quantity}.
     \begin{miniitemize} \item They can be described by numbers.\end{miniitemize}
     \item Consider a vector quantity $\vc A$. Its magnitude $|\vc A|$ is a scalar quantity.
   \end{miniitemize}
   \end{definition}
-\OutputNote
-For example, \Emph*{mass} $m$ and \Emph*{temperature} $T$ are scalar quantities. \Emph*{Velocity} $\vc v$ is a vector quantity and its magnitude $|\vc v|$ (it has a special name ``\Emph*{speed}'')  is a scalar quantity. Acceleration $\vc a$ is a vector quantity.
+Let us discuss a few examples.
+\Emph*{Mass} $m$ is obviously a scalar quantity. \Emph*{Temperature} $T$ can be positive or negative but is a scalar quantity, because it has no direction. \Emph*{Velocity} $\vc v$ is a vector quantity, and its magnitude $|\vc v|$ is a scalar quantity. This quantity has a special name ``\Emph*{speed}''.
+Furthermore, \Emph*{area} and \Emph*{volume} are scalar quantities, while \Emph*{acceleration} $\vc a$ is a vector quantity.
 
 \begin{quizzes}
   \Quiz[S] Choose vector quantities. Choose scalar quantities.
@@ -169,6 +204,7 @@ For example, \Emph*{mass} $m$ and \Emph*{temperature} $T$ are scalar quantities.
     \item wind speed
     \item velocity
     \item electric charge
+    \item Sho
     \item Sho's height
     \item Sho's weight
     \item Sho's mass
@@ -184,16 +220,39 @@ For example, \Emph*{mass} $m$ and \Emph*{temperature} $T$ are scalar quantities.
     \item conductor
     \item conductance
     \item conductivity
+    \item $\vc x$
+    \item $x$
+    \item $|\vc x|$
+    \item $v+|\vc x|$
+    \item magnitude of $\vc v$
+    \item direction of $\vc v$
   \end{menumerate}
+  \Quiz[S] Assume $\vc a$ is a vector quantity and $k$ is a scalar quantity.\\
+  \TAB\QSub{1} What does $|\vc a|$ mean?\qquad\QSub{2} What does $|k|$ mean?\\
+  \TAB\hfill\Hint{They are different! The answer can be found in these two pages.}
 \end{quizzes}
 
-\newpage
+\OutputNote
+
 \subsection{How to describe directions}
+When you describe a vector, you need to specify its magnitude and direction. The magnitude is easy (we can use a number), but the direction is not, because now you need to describe it \Emph{in English}!
+
+\def\UDL#1{$\langle$\textsf{#1}$\rangle$}
+
+If the space is one-dimensional, we can describe the direction by $\pm$. For example, if we only consider vertical direction (up-down), we may define \UDL{up} as $+$ and \UDL{down} as $-$, and then the number $+3$ means \UDL{up, 3} and $-5$ means \UDL{down, 5}.
+Or, instead, you may define \UDL{down} as the positive direction and \UDL{up} as negative, in which case $+3$ means \UDL{down, 3} and $-5$ means \UDL{up, 5}. Obviously, if you use the sign ($\pm$) to describe the direction, \Emph{YOU must specify which direction is positive}.
+
 \Remark{
   Using natural English is nice, but \Emph{clarity} is much more important in science. We should pay greater attention to ensure that our expressions are clear and does not cause any misunderstanding.
 }
+
+\newpage
+
+\subsubsection{Directions in two-dimensional space}
+Now, how can we describe the direction in two-dimensional space?
+
 \paragraph{Basic}
-\emph{We} need to learn how to describe directions of vectors \Emph{in English}. The easiest one is
+The easiest method is to use the following expressions:
 \begin{tabbing}
  \fakebullet \= downward   \== toward the bottom      \=\kill
  \fakebullet \> leftward   \>= toward the left        \>= to the left\\[\itemsep]
@@ -208,11 +267,28 @@ If you need to describe the third dimension which is perpendicular to the textbo
   \fakebullet \> into   the \> (sheet | page | blackboard) \> = toward    the \> (sheet | page | blackboard)\\[\itemsep]
   \fakebullet \> out of the \> (sheet | page | blackboard) \> = away from the \> (sheet | page | blackboard)
 \end{tabbing}
-For 2d case, \Emph{once you specify the ``north'' direction,} you can use the following expressions:
+Sometimes the word ``the horizontal'' is useful:
+\begin{miniitemize}
+  \item $10^\circ$ above the horizontal / $30^\circ$ below the horizontal
+\end{miniitemize}
+
+\paragraph{N-E-W-S}
+For 2d case, \Emph{if you specify the ``north'' direction,} you can use the following expressions:
 \begin{miniitemize}
  \item northward, southward, eastward, westward (= (to | toward) the north, etc.)
  \item northwestward, southwestward, etc. (= (to | toward) the northwest, etc.)
 \end{miniitemize}
+The following expressions are equivalent:
+\begin{multicols}{2}\begin{miniitemize}
+ \item northwestward
+ \item $45$ degrees (= $45^\circ$) west of north
+ \item $45^\circ$ counterclockwise from due north
+ \item $-45$ degrees clockwise from due north
+\end{miniitemize}\end{multicols}
+\noindent
+Try to find your favorite expression and use it, but don't forget to define the ``north'' direction!
+\Remark{$45$ and $45^\circ$ are completely different: $45^\circ$ means 45 degrees, while 45 is \emph{always} understood as 45 radians ($= 45\times180/\pi\unit{degrees}\simeq2578^\circ$). In other words, $\cos60^\circ=1/2$ but $\cos60\simeq-0.95$.
+}
 
 \paragraph{With axes}
 Usually, we define $x$-axis and $y$-axis (and $z$-axis, if 3d). \Emph{If such axes are defined} (or once you have defined them), we can use
@@ -231,87 +307,189 @@ In particular, for 2d cases, we can use the angle from the positive $x$-axis (co
   \item $-15^\circ$ from the $+x$ axis (= $15^\circ$ clockwise from the positive $x$-axis)
   \item angle $\theta$ from the $+x$ axis, where $\tan\theta=0.1$ and $0<\theta<\pi/2$.
  \end{miniitemize}
-Sometimes the word ``the horizontal'' is useful:
-\begin{miniitemize}
-  \item $10^\circ$ above the horizontal / $30^\circ$ below the horizontal
-\end{miniitemize}
 \Remark{It is difficult to describe general 3d directions by words. For this purpose, we usually use mathematical expressions (i.e., vectors).}
 
-\paragraph{Rotations}
-To describe the direction of rotation, we use
-\begin{miniitemize}
-  \item clockwise / counterclockwise
-\end{miniitemize}
-If you have an arrow and discuss rotations about the arrow, you can use the following expressions:
-\begin{miniitemize}
-  \item following the right-hand rule (= counterclockwise when viewed from the arrow's direction)
-  \item following the left-hand rule (= clockwise when viewed from the arrow's direction)
-\end{miniitemize}
-We will often use these expressions in General Physics 2.
 
-\newpage
-
-\subsection{Vectors: Magnitude and Direction}
-In this Boot Camp, we forget about physics\addnote{%
- We do not consider units or significant figures, which you will learn in the beginning of General Physics~1.
- However, the ignorance is allowed only in this Boot Camp. Outside of this Boot Camp, \Emph{you must always remember to consider units and significant figures} of vector quantities.
-}
-Focusing on mathematics, we will discuss vectors in its mathematical aspects.
-We will begin with a few more expressions useful for vectors.
-
+\subsubsection{Relationship of two vectors}
+When you need to describe the angle between two vectors, you can use the following expressions:
 If the angle between $\vc a$ and $\vc b$ is $90^\circ$, we say
 \begin{tabbing}
-  \fakebullet \= \kern16em \=\kill
-  \fakebullet \> $\vc a$ is \Emph{perpendicular to} $\vc b$. \> \fakebullet $\vc a$ and $\vc b$ are perpendicular to each other.\\[\itemsep]
+  \fakebullet \= \kern18em \=\kill
+\fakebullet \> $\vc a$ is \Emph{perpendicular to} $\vc b$. {\footnotesize (most common)} \> \fakebullet $\vc a$ and $\vc b$ are perpendicular to each other.\\[\itemsep]
   \fakebullet \> $\vc a$ is orthogonal to $\vc b$.   \>    \fakebullet $\vc a$ and $\vc b$ are orthogonal  to each other.\\[\itemsep]
   \fakebullet \> $\vc a$ is normal to $\vc b$.       \>    \fakebullet $\vc a$ and $\vc b$ are normal to each other.
  \end{tabbing}
-(all of them are correct but the first one is the most common). If the angle is $0^\circ$, we say\addnote{%
-\Emph{Avoid} the word ``parallel'' because some people think it includes both $0^\circ$ and $180^\circ$ cases. Clarity is important in science.}
+If the angle is $180^\circ$, we say
+\begin{tabbing}
+  \fakebullet \= \kern18em \=\kill
+\fakebullet \> $\vc a$ is \Emph{anti-parallel to} $\vc b$. {\footnotesize (most common)} \> \fakebullet $\vc a$ and $\vc b$ are anti-parallel.\\[\itemsep]
+  \fakebullet \> $\vc a$ is opposite to $\vc b$.      \> \fakebullet $\vc a$ and $\vc b$ are in opposite directions.
+\end{tabbing}
+Finally, if the angle is $0^\circ$,
 \begin{tabbing}
   \fakebullet \= \kern16em \=\kill
   \fakebullet \> $\vc a$ is \Emph{in the same direction as} $\vc b$. \> \fakebullet $\vc a$ and $\vc b$ are in the same direction.
 \end{tabbing}
-Finally, if the angle is $180^\circ$,
-\begin{tabbing}
-  \fakebullet \= \kern16em \=\kill
-  \fakebullet \> $\vc a$ is \Emph{anti-parallel to} $\vc b$. \> \fakebullet $\vc a$ and $\vc b$ are anti-parallel.\\[\itemsep]
-  \fakebullet \> $\vc a$ is opposite to $\vc b$.      \> \fakebullet $\vc a$ and $\vc b$ are in opposite directions.
-\end{tabbing}
+For $0^\circ$, we should avoid the word ``parallel'' because it is ambiguous; some of your readers may think it includes both $0^\circ$ and $180^\circ$ cases. Clarity is important in science.
 
 \OutputNote
 
 
 
 \begin{problems}
- \Problem[S] Vectors are drawn on the grid, which has a spacing of 1. Answer the following questions.
+ \Problem[S] {}\label{q:vecbasic} Vectors are drawn on the grid. Answer the following questions.
  \par\smallskip\par\usebox{\VectorSetA}
 
 \begin{enumerate}
-  \item Describe the direction (in English words) and magnitude of each vector. Try to use multiple expressions.
+  \item Assume the grid has a spacing of 1. Describe the direction (in English words) and magnitude of each vector. Try to use multiple expressions.
   \item Describe relationship between the directions of the following vector pairs:\\
    ($\vc a$ and $\vc b$), ($\vc b$ and $\vc c$), ($\vc p$ and $\vc q$), ($\vc p$ and $\vc r$), ($\vvex$ and $\vvey$), and ($\vc a$ and $\vvex$).\\
    For example, ``$\vc a$ is perpendicular to $\vc b$''.
+   \item Draw a vector that is normal to $\vc p$ and has a length $\sqrt 8$.
+   \item Can you draw another vector that is normal to $\vc p$ and has a length $\sqrt 8$, but different from the one you drew in the previous question?
 \end{enumerate}
 
 \end{problems}
 
+\subsubsection{Extra note: How to describe the direction of rotations}
+\begin{minipage}[b]{0.66\textwidth}
+To express the direction of rotations or revolution, the words \Emph*{clockwise} and \Emph*{counterclockwise} are the best useful.
+For example, the disk in the right figure is rotating
+\begin{miniitemize}
+  \item counterclockwise if viewed from the positive $x$-direction
+  \item clockwise if viewed from the negative $x$-direction
+\end{miniitemize}
+
+If the rotation is about an arrow (or an axis), you can use the following expressions:
+\end{minipage}\hfill
+\begin{minipage}[b]{0.32\textwidth}
+\begin{tikzpicture}[rotate=-90,scale=0.9]
+\tikzstyle{disk}=[line width=0.5,orange!30!black,fill=orange!40!black!10, top color=orange!40!black!20,bottom color=orange!40!black!10,shading angle=20]
+    \draw[disk] (-2,0) --++ (0,-0.2) arc(180:360:{2} and {0.4*2}) --++ (0,0.2);
+    \draw[disk] (0,0) ellipse({2} and {0.4*2});
+    \draw[] (20:0.6*2) arc(20:85:{0.6*2} and {0.18*2});
+    \draw[<-] (160:0.6*2) arc(160:95:{0.6*2} and {0.18*2});
+    \draw[->] (200:0.6*2) arc(200:340:{0.6*2} and {0.18*2});
+%    \node at (-1.3,0.3) { $\omega$ };
+    \draw[very thick,->] (0,0) --++ (0,3)  node [right]{$x$};
+    \draw[very thick] (0,-2)--(0,-1);
+\end{tikzpicture}
+\end{minipage}
+\begin{miniitemize}
+  \item following the right-hand rule
+  \item following left-hand rule
+\end{miniitemize}
+Here, you use your right hand (or left hand): align the thumb to the arrow (or the axis) and curl your fingers. The direction of the curling fingers is the direction of the rotation. For example,
+
+\begin{miniitemize}
+  \item The above disk is rotating about the $x$-axis following the \emph{right-hand} rule.
+\end{miniitemize}
+
+\Remark{Later in General Physics lecture, you will learn that any 3d rotations can be described by vectors (called angular speed vectors). For a rotation with the anguar speed vector $\vc \omega$, the direction of $\vc \omega$ describes the axis of the rotation (under the right-hand rule) and $|\vc \omega|$ is the angular speed $\dd\theta/\dd t$.}
+
 \newpage
 
-
 \subsection{Vector Basics}
-These are a few basic things that you have learned in highschool:
-\begin{itemize}
-\item \Emph*{(Zero vector)} There is a special vector $\vc 0$. Its magnitude is $0$ (zero) and it has no direction.
-\item \Emph*{(Scalar multiplication)} If $\vc v$ is a vector, $2\vc v$ and $-3\vc v$ are both vectors.
-\item \Emph*{(Addition)} If $\vc p$ and $\vc q$ are vectors, $\vc p + \vc q$ is a vector.
-\end{itemize}
-By extending the last two items, we can obtain the following statement.
-\begin{itemize}
-  \item \Emph*{(Linear combination)} If $a$ and $b$ are scalars (i.e., real numbers) and $\vc p$ and $\vc q$ are vectors,
-  \[ a\vc p+b\vc q \]
-  is a vector. (Of course, $a$ and $b$ can be positive, zero, or negative.)
-\end{itemize}
+These are a few basic things that you have learned in highschool, such as
+\par\smallskip
+\tikzfading[name=fade left, left color=transparent!100, right color=transparent!0]
+\begin{tikzpicture}
+  \node[inner sep=0pt,inner ysep=2pt,outer sep=0pt,clip] (A) {\makebox[0.95\linewidth][l]{$
+  \displaystyle\vc a=\pmat{1\\2},\qquad\vc b=\pmat{4\\4}\quad\then\quad \vc a+\vc b=\pmat{1+4\\2+4}=\pmat{5\\6}.$}};
+   \path (A.north) -- (A.north east) coordinate[midway] (M);
+  \fill[white,path fading=fade left] (A.south west) rectangle (M);
+\end{tikzpicture}
+\par\smallskip\noindent
+However, we have forgotten that vectors are described by numbers!
+We need to reinvent everything by thinking \emph{vectors as arrows}. For example, there is a special arrow with length zero:
+
+
+\begin{definition}{Zero vector}{zero}
+There is a special vector $\vc 0$, called \Emph*{zero vector}.
+Its magnitude is 0 (zero) and it has no direction.
+\end{definition}
+Notice that $\vc 0$ is a vector quantity and $|\vc 0|=0$ is a scalar quantity.
+\begin{quizzes}
+  \Quiz[S] Explain the difference between $\vc 0$ and 0. Explain why $|\vc 0|=0$.
+\end{quizzes}
+
+Arrows can be extended or added, which are \emph{our definition} of scalar multiplication and addition.
+%
+\begin{definition}{Scalar multiplication}{scamul}
+If $\vc v$ is a vector and $k$ is a number, $k\vc v$ is a vector specified by the following rule:
+\begin{miniitemize}
+  \item If $k>0$, the direction of $k\vc v$ is the same as $\vc v$ and the magnitude is $k$-times larger than $\vc v$.
+  \item If $k<0$, $k\vc v$ is anti-parallel to $\vc v$ and the magnitude is $|k|$-times larger than $\vc v$.
+  \item If $k=0$, then $k\vc v$ is the zero vector.
+\end{miniitemize}
+In other words,
+\begin{miniitemize}
+  \item The magnitude of $k \vc v$ is equal to $|k||\vc v|$.
+  \item The direction of $k \vc v$ is the same as (anti-parallel to) $\vc v$ if $k$ is positive (negative).
+\end{miniitemize}
+\end{definition}
+
+\begin{quizzes}
+  \Quiz[S] Most of first-year students misunderstand the formula
+\begin{equation}
+  |k\vc v|=|k|\,|\vc v|.
+\end{equation}
+  Explain the meaning of $|k|$, $|\vc v|$, and $|k\vc v|$. (They are not the same!) Then, explain the meaning of $|k|\,|\vc v|$. Finally, explain why $|k\vc v|$ is equal to $|k|\,|\vc v|$.
+
+  \Hint[Remark:~]{Here you \Emph{cannot} use $\vc v=\spmat{a\\b\\c}$ etc.\ since we have forgotten this expression.}
+\end{quizzes}
+
+\newpage
+
+\begin{definition}{Addition}{addition}
+\begin{minipage}[b]{0.5\textwidth}
+If $\vc a$ and $\vc b$ are vectors, $\vc a+\vc b$ is a vector that is obtained by, as in the right figure, placing the tail of $\vc b$ at the head of $\vc a$.
+\vspace{3em}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.4\textwidth}
+\begin{tikzpicture}
+    \coordinate (A) at (-2, 1.3);
+    \coordinate (B) at (3, 0.7);
+    \coordinate (C) at (1, 2);
+    \draw[very thick,->] (O) -- (A) node[pos=0.7, below left] {$\vec{a}$};
+    \draw[very thick,->] (O) -- ++(B) node[pos=0.5,above] {$\vec{b}$};
+    \draw[very thick,->] (A) -- ++(B) node[pos=0.5,above] {$\vec{b}$};
+    \draw[->,very thick,pBlue] (O) -- (C) node[pos=0.6,left] {$\vec{a} + \vec{b}$};
+    \draw[dashed] (A) -- (C);
+    \draw[dashed] (O) -- (A);
+\end{tikzpicture}
+\end{minipage}
+\end{definition}
+There are two $\vc b$s in the figure but it is not a mistake. The two arrows have the same direction and the same magnitude, so they are the same vector. Both of the two arrows are $\vc b$.
+
+\pagebreak[3]
+
+\begin{quizzes}
+  \Quiz[A] While $\vc a+\vc a$ and $2\vc a$ are the same vectors, their meaning is slightly different. Explain the difference \Emph{based on the above definitions}.
+\end{quizzes}
+
+It is not difficult to prove the following formulae from the above definitions:
+\begin{align}
+  &\vc a+\vc b=\vc b+\vc a,&
+  &p\vc a+q\vc a=(p+q)\vc a,&
+  &\vc a+(\vc b+\vc c)=(\vc a+\vc b)+\vc c,\notag\\
+  &\vc a+\vc 0=\vc a,&
+  &p\vc a+p\vc b=p(\vc a+\vc b),&
+  &|\vc a+\vc b|\le|\vc a|+|\vc b|.\label{eq:addformula}
+\end{align}
+
+
+
+%If we combine scalar multiplication and addition, we obtain the following statement:
+%\begin{miniitemize}
+%  \item If $p$ and $q$ are numbers and $\vc a$ and $\vc b$ are vectors,
+%  \[ p\vc a+q\vc b \]
+%  is a vector. This is called \Emph*{linear combination} of $\vc a$ and $\vc b$.
+%\end{miniitemize}
+%Of course, $p$ and $q$ can be positive, zero, or negative.\addnote{They can actually be a complex number, but we consider only real numbers in this course.}
+%\OutputNote
+
+
 
 \begin{problems}
  \Problem[S] Vectors are drawn on the grid, which has a spacing of 1.
@@ -320,112 +498,168 @@ By extending the last two items, we can obtain the following statement.
    \item Describe $\vc a$ by using $\vvex$ (and a number).  Describe $\vc b$ and $\vc c$ by using $\vvey$.
    \item Describe $\vc B$ by using $\vc r$. Describe $\vc p$ by using $\vc r$.
    \item Describe $\vc A$ and $\vc B$ by using $\vvex$ and $\vvey$.
-   \item Describe $\vvex$ and $\vvey$ by using $\vc A$ and $\vc B$.\\
+   \item Describe $\vvex$ and $\vvey$ by using $\vc A$ and $\vc B$.
     \Hint{See your answer of the previous problem.}
-   \item Draw a vector $\vc \beta$ that is in the same direction as $\vc b$ and $|\vc \beta|=1$.
+   \item A vector $\vc \beta$ has the same direction as $\vc b$ but its magnitude is 1. Describe $\vc \beta$ by using $\vc \beta$. Draw $\vc \beta$ in the above grid.
  \end{enumerate}
+\end{problems}
+\begin{problems}
  \Problem[S] Consider a vector $\vc s$ whose length is 3, i.e., $|\vc s|=3$.
  \begin{enumerate}
-   \item Calculate the magnitude of $2\vc s$, $-3\vc s$, and $0\vc s$.
-   \item Calculate the magnitude of $\dfrac{\vc s}{|\vc s|}$.
-   \item Describe relationship between the directions of the following vector pairs:\\
-        ($\vc s$ and $4\vc s$), ($0.1\vc s$ and $-4\vc s$), and ($\vc s$ and $\dfrac{\vc s}{|\vc s|}$).
-   \item Let $\vc S=-3\vc s$ and $k$ be a real number. Find the direction and magnitude of $\vc s+k\vc S$.
+   \item Calculate the magnitude of $2\vc s$, $-3\vc s$, $0\vc s$, and $\dfrac{\vc s}{|\vc s|}$.
  \end{enumerate}
+ Consider another vector $\vc w$, whose magnitude is not zero. We define $\vc{e_w}= \dfrac{\vc w}{|\vc w|}$.
+ \begin{enumerate}[resume]
+  \item Calculate the magnitude of $\vc{e_w}$.
+ \end{enumerate}
+Consider another vector $\vc t=-3\vc s$. Assume $k$ is a real number.
+\begin{enumerate}[resume]
+  \item Calculate the magnitude of $\vc t$ and $k\vc t$. \Hint{$k$ can be negative.}
+  \item If $|\vc s+k\vc t|=0$, what is $k$?
+  \item Find the magnitude and the direction of $\vc s+k\vc t$.
+ \end{enumerate}
+ \Problem[B] For each of the six equations in \eqref{eq:addformula}, explain why it is true. However, you need to explain it based only on the above definitions. Namely, you cannot use the expression like $\vc v=\spmat{a\\b}$ in the explanation.
 \end{problems}
-\newpage
 
 Here is one more important concept:
-\begin{itemize}
-  \item \Emph*{(Unit vector)} If a vector has a magnitude of one, it is called a \Emph*{unit vector}.
-\end{itemize}
+\begin{definition}{Unit vector}{unitvector}
+If a vector has a magnitude of one, it is called a \Emph*{unit vector}.
+\end{definition}
 If $\vc a$ is not the zero vector,
 \begin{itemize}
-  \item the unit vector in the same direction as $\vc a$ is given by $\dfrac{\vc a}{|\vc a|}$; it is denoted by $\vc{\hat{a}}$ (hat + arrow);
-  \item the unit vector that is anti-parallel to $\vc a$ is given by $-\dfrac{\vc a}{|\vc a|}$\quad($=-\vc{\hat{a}}$).
+  \item the unit vector in the same direction as $\vc a$ is given by $\dfrac{\vc a}{|\vc a|}$.
 \end{itemize}
-\Remark{In the textbook, vectors are written by $\vc{\mathbfup{a}}$ and unit vectors are written by $\hat{\mathbfup{a}}$. (This notation may, in General Physics 2, cause confusion among some students.)
-Sho will use $\vc{\hat a}$, i.e., put both hat and arrow, for unit vectors in order to keep clarity.
+We write it as $\vc{\hat{a}}$ (hat + arrow).
+\Remark{In the textbook, vectors are written by $\vc{\mathbfup{a}}$ and unit vectors are written by $\hat{\mathbfup{a}}$. Since this notation may cause confusion among some students (especially in General Physics 2),
+Sho will use $\vc{\hat a}$, i.e., put both hat and arrow, for unit vectors.
 }
 
-
 \begin{problems}
- \Problem[A] Consider $\vc s$ and $\vc t$, which satisfy $|\vc s|=3$ and $|\vc t|=2$. Here, $k>0$.
+ \Problem[S] Assume $\vc e$ is a unit vector and $k$ is a real constant. Assume $\vc a\neq \vc 0$.
  \begin{enumerate}
-   \item Find the unit vector whose direction is the same as $\vc s$.
-   \item Find the unit vector whose direction is the same as $-2\vc t$.
-   \item Find the unit vector whose direction is the same as $4\vc s+3\vc t$.
-   \item Find the unit vector anti-parallel to $\vc s$.
-   \item Find the vector which is anti-parallel to $\vc s$ and has a magnitude of 12.
-   \item Find the vector which is in the same direction as $\vc t$ and has a magnitude of $k$.
+   \item Find the magnitude of $-3\vc e$.
+   \item Find the magnitude of $k\vc e$, $k^2\vc e$, $k^2\vc e/5$, and $-k\vc e$.
+   \item Find the magnitude of $\dfrac{\vc a}{|\vc a|}$, $\dfrac{k\vc a}{|\vc a|}$, and $\dfrac{-k\vc a}{|\vc a|}$. \quad\Hint{Are they scalar? or vector?}
  \end{enumerate}
+ \Problem[S] Consider $\vc a$ and $\vc b$, which satisfy $|\vc a|=3$ and $|\vc b|\neq 0$. Assume $k>0$.
+ \begin{enumerate}
+  \item Find the unit vector whose direction is the same as $\vc a$.
+   \item Find the vector whose direction is the same as $\vc a$ and has a magnitude of 3.
+   \item Find the vector whose direction is the same as $\vc a$ and has a magnitude of 6.
+   \item Find the vector whose direction is the same as $\vc a$ and has a magnitude of $k$.
+   \item Find the unit vector that is anti-parallel to $\vc a$.
+   \item Find the vector that is anti-parallel to $\vc a$ and has a magnitude of $k$.
+   \item Find the unit vector whose direction is the same as $\vc b$.
+   \item Find the vector which is in the same direction as $\vc b$ and has a magnitude of $k$.
+ \end{enumerate}
+ \Problem[S] Consider two points A and B and assume the distance between them is 5. We can consider the vector $\vvv{AB}$, which is an arrow pointing from A to B.
+  \begin{enumerate}
+    \item Calculate $|\vvv{AB}|$.
+    \item Describe the unit vector whose direction is the same as $\vvv{AB}$.
+    \item Assume $\vc F=\displaystyle\frac{k}{4\pi}\frac{\vvv{AB}}{|\vvv{AB}|^3}$, where $k$ is a real number. Describe the direction and magnitude of $\vc F$.
+  \end{enumerate}
+ \Problem[A] Consider $\vc s$ and $\vc t$, which satisfy $|\vc s|=3$ and $|\vc t|=2$. Assume $k>0$.
+ \begin{enumerate}
+   \item Do we know $|\vc s+\vc t|$? If yes, calculate it. If no, explain why we do not know it.
+   \item Calculate the magnitude of the vector $\dfrac{\vc s+\vc t}{|\vc s+\vc t|}$.
+   \item Find the unit vector whose direction is the same as $\vc s+\vc t$.
+   \item Find the vector which is in the same direction as $\vc s+\vc t$ and has a magnitude of $k$.
+ \end{enumerate}
+\Problem[B] Consider $\vc s$ and $\vc t$, which satisfy $|\vc s|=3$ and $|\vc t|=2$. Find the minimal and maximal values of $|\vc s+\vc t|$ and when they are achieved.
 \end{problems}
 
-You will see unit vectors many times in the later exercises.
-
 \newpage
+
 \subsection{Inner product}
-We use this definition, which may be different from what you learned in highschool.
-\begin{definition}{Inner product}{def:inner}
+Now we want to discuss inner product of vectors. However, we (still) have forgotten that vectors are described by numbers!
+We have to define the inner product in a different way.
+\begin{definition}{Inner product}{inner}
   For vectors $\vc a$ and $\vc b$, the \Emph*{inner product} of $\vc a$ and $\vc b$ is defined by
   \[ \vc a\cdot\vc b\deq|\vc a||\vc b|\cos\theta, \qquad \text{where $\theta$ is the angle between $\vc a$ and $\vc b$.} \]
 \end{definition}
-\begin{problems}
-  \Problem[A] Prove the following equations \Emph{from the above definition}.
-  \begin{enumerate}
-    \item $\vc a\cdot\vc b=\vc b\cdot\vc a$ for any vectors $\vc a$ and $\vc b$.
-    \item $(k\vc a)\cdot\vc b=k(\vc a\cdot\vc b)$ for any vectors $\vc a$ and $\vc b$ and any number $k$.
-    \item $\vc a\cdot\vc a=|\vc a|^2$ for any vector $\vc a$.
+Notice this definition only uses the magnitude and the direction of vectors.
+Now it is straightforward to prove the next formula \emph{(extremely important!)}
+\begin{enumerate}[label=\textsf{(\arabic*)}]
+\item
+  For any vector $\vc a$,\qquad $\vc a\cdot\vc a=|\vc a|^2$
+\end{enumerate}
+\begin{quizzes}
+\Quiz[S] Prove this formula only from the above definition. Prove $|\vc a|=\sqrt{\vc a\cdot\vc a}$.
+\end{quizzes}
+There are a few more important formulae: for any vectors $\vc a$, $\vc b$, and $\vc c$ and any number $k$,
+\begin{enumerate}[label=\textsf{(\arabic*)},resume]
+    \item $\vc a\cdot\vc b=\vc b\cdot\vc a$,
+    \item $(k\vc a)\cdot\vc b=k(\vc a\cdot\vc b)$,
     \item $\vc a\cdot\vc b=0$ if $\vc a=\vc 0$, $\vc b=\vc 0$, or $\vc a$ is perpendicular to $\vc b$.
-    \item $-|\vc a||\vc b|\le \vc a\cdot\vc b\le|\vc a||\vc b|$ for any vectors $\vc a$ and $\vc b$.
-  \end{enumerate}
-\end{problems}
-We can also prove $(\vc a+\vc b)\cdot\vc c=\vc a\cdot\vc c+\vc b\cdot \vc c$ from the above definition. However, the proof is a bit technical and thus skipped. You will anyway use this equation.
+    \item[\textsf{(\arabic{enumi}')}] If $\vc a\neq \vc 0$, $\vc b\neq\vc 0$, and $\vc a\cdot\vc b=0$, then $\vc a$ is perpendicular to $\vc b$.
+    \item $-|\vc a||\vc b|\le \vc a\cdot\vc b\le|\vc a||\vc b|$,
+    \item $(\vc a+\vc b)\cdot\vc c=\vc a\cdot\vc c+\vc b\cdot \vc c$.
+\end{enumerate}
+\begin{quizzes}
+  \Quiz[B] Explain why the above formulae (2) (3) (4) (4') and (5) are correct.
+  \\\phantom.\hfill\Hint{We skip the proof of (6) because it is a bit complicated.}
+  \Quiz[S] Explain why the following equations are correct.
+  \begin{align*}
+    \text{\textsf{(a)}}\quad &(\vc a+\vc b)\cdot\vc a=|\vc a|^2+\vc a\cdot\vc b &
+    \text{\textsf{(b)}}\quad &|\vc a+\vc b|^2=|\vc a|^2+2\vc a\cdot\vc b+|\vc b|^2
+  \end{align*}
+\end{quizzes}
 
-\medskip
-
-\noindent\Emph{The next two problems are the most important ones in this Boot Camp.}
 \begin{problems}
-  \Problem[S] Two vectors $\vc x$ and $\vc y$ satisfy $|\vc x|=|\vc y|=1$ and $\vc x\cdot\vc y=1/2$. 
+  \Problem[S] \relax\relax\label{q:ipbasic}%
+  Two vectors $\vc a$ and $\vc b$ satisfy $|\vc a|=2$, $|\vc b|=3$, and $\vc a\cdot\vc b=3$. Assume $x$, $y$, $p$, and $q$ are real numbers.
   \begin{enumerate}
-    \item Calculate the angle between $\vc x$ and $\vc y$.
-    \item Expand $|a\vc x+b\vc y|^2$ and calculate its value. Calculate $|a\vc x+b\vc y|$.
-  \end{enumerate}
-  Now, assume $\vc s=3\vc x+3\vc y$ and $\vc t=2\vc x-\vc y$. Also, let $\vc{\hat s}$ be the unit vector whose direction is the same as $\vc s$.
+    \item Calculate the angle between $\vc a$ and $\vc b$.
+    \item Calculate $|\vc a|^2+2\vc a\cdot\vc b+|\vc b|^2$.
+    \item Calculate $|\vc a+\vc b|$.
+    \item Explain why $|x\vc a+y\vc b|^2$ is \Emph{not} equal to $x^2+y^2$.
+    \item Calculate the magnitude of the vectors $4\vc a+3\vc b$ and $x\vc a+y\vc b$.
+   \end{enumerate}
+  Two other vectors $\vc e_1$ and $\vc e_2$ satisfy $|\vc e_1|=1$, $|\vc e_2|=1$, and $\vc e_1\cdot\vc e_2=0$.
   \begin{enumerate}[resume]
+    \item Calculate the angle between $\vc e_1$ and $\vc e_2$.
+    \item Explain why $(p\vc e_1+q\vc e_2)\cdot(x\vc e_1+y\vc e_2)$ \Emph{is} equal to $px+qy$.
+    \item Explain why $|x\vc e_1+y\vc e_2|^2$ \Emph{is} equal to $x^2+y^2$.
+    \item Explain why $|x\vc e_1+y\vc e_2|$ \Emph{is} equal to $\sqrt{x^2+y^2}$.
+    \item Calculate the magnitude of the vectors $4\vc e_1+3\vc e_2$ and $x\vc e_1+y\vc e_2$.
+   \end{enumerate}
+  \Problem[A] Consider the same vectors $\vc a$, $\vc b$, $\vc e_1$, and $\vc e_2$ given in the previous problem.
+
+ Two vectors $\vc s$ and $\vc t$ are given by $\vc s=3\vc a+3\vc b$ and $\vc t=2\vc a-\vc b$.
+  \begin{enumerate}
     \item Calculate $|\vc s|$, $|\vc t|$, and $\vc s\cdot\vc t$. Find the angle between $\vc s$ and $\vc t$.
-    \item Describe $\vc{\hat s}$. \Hint{The answer will contain $\vc x$ and $\vc y$.}
     \item Assume $\vc u=\vc x+k\vc y$ is perpendicular to $\vc s$. Find the value of $k$.
   \end{enumerate}
-  \Problem[S] Two vectors $\vvex$ and $\vvey$ satisfy $|\vvex|=|\vvey|=1$ and $\vvex\cdot\vvey=0$. 
-  \begin{enumerate}
-    \item Calculate the angle between $\vvex$ and $\vvey$.
-    \item Expand $|a\vvex+b\vvey|^2$ and calculate its value. Calculate $|a\vvex+b\vvey|$.
+  Two vectors $\vc S$ and $\vc T$ are given by $\vc S=3\vc e_1+3\vc e_2$ and $\vc T=2\vc e_1-\vc e_2$.
+  \begin{enumerate}[resume]
+    \item Calculate $|\vc S|$, $|\vc T|$, and $\vc S\cdot\vc T$. Find the angle between $\vc s$ and $\vc t$.
+    \item Assume $\vc u=\vc x+k\vc y$ is perpendicular to $\vc s$. Find the value of $k$.
   \end{enumerate}
-  Now, assume $\vc p=a\vvex+b\vvey$, which is not $\vc 0$, and $\vc q=3\vvex+4\vvey$.
+  Now, assume $\vc p=a\vvex+b\vvey$, which is not $\vc 0$.
   \begin{enumerate}[resume]
     \item Calculate $|\vc p|$, $\vc p\cdot\vvex$, and $\vc p\cdot\vvey$. Check that $\vc p=(\vc p\cdot\vvex)\vvex+(\vc p\cdot\vvey)\vvey$.
-    \item Calculate $|\vc q|$, $\vc q\cdot\vvex$, $\vc q\cdot\vvey$, and $\vc p\cdot\vc q$.
     \item Find the unit vector whose direction is the same as $\vc p$.
   \end{enumerate}
 \end{problems}
+
 \begin{problems}
-  \Problem[S] Let $ \vc a=a_1\vc i+a_2\vc j+a_3\vc k$ and $\vc b=b_1\vc i+b_2\vc j+b_3\vc k$,
-  where $\vc i$, $\vc j$, and $\vc k$ are (any) vectors.
+  \Problem[B] Let $ \vc a=a_1\vc i+a_2\vc j+a_3\vc k$ and $\vc b=b_1\vc i+b_2\vc j+b_3\vc k$.
+   \label{q:ipexpand}
   \begin{enumerate}
-    \item Expand $|\vc a|^2$ and $\vc a\cdot\vc b$.
+    \item First, assume that $\vc i$, $\vc j$, and $\vc k$ are (any) vectors. Fill in the blanks:
+    \begin{align*}
+      &|\vc a|^2=a_1^2|\vc i|^2+2a_1a_2(\vc i\cdot\vc j)+\GrayBox{~}{h\hspace{5em}}+a_3^2|\vc k|^2,\\
+      &\vc a\cdot\vc b=a_1b_1|\vc i|^2+a_1b_2(\vc i\cdot\vc j)+\GrayBox{~}{h\hspace{5em}}+a_3b_3|\vc k|^2.
+    \end{align*}
   \end{enumerate}
   Now, assume they satisfy $|\vc i|=|\vc j|=|\vc k|=1$ and $\vc i\cdot\vc j=\vc j\cdot\vc k=\vc k\cdot\vc i=0$.
   \begin{enumerate}[resume]
-    \item Simplify the answer of the previous question.
-    \item Calculate the angle between $\vc a$ and $\vc b $.
-    \item Write down $\vc{\hat a}$ (the unit vector in $\vc a$'s direction) by using $a_{1,2,3}$, $\vc i$, $\vc j$, and $\vc k$.
+    \item Simplify the above two equations.
+    \item By using $a_{1,2,3}$, $b_{1,2,3}$, $\vc i$, $\vc j$, and $\vc k$, express $\vc{\hat a}$ (the unit vector in $\vc a$'s direction) and the angle between $\vc a$ and $\vc b$.
   \end{enumerate}
-\end{problems}
 
-
-\begin{problems}
-  \Problem[A] Three vectors $\vc A$, $\vc B$, and $\vc C$ satisfy $|\vc A|=2$, $|\vc B|=3$, $\vc A\cdot \vc B=3\sqrt2$, and $\vc A\cdot\vc C=-1$.
+  \Problem[B] \relax\relax\label{q:cpexpand}%
+  Three vectors $\vc A$, $\vc B$, and $\vc C$ satisfy $|\vc A|=2$, $|\vc B|=3$, $\vc A\cdot \vc B=3\sqrt2$, and $\vc A\cdot\vc C=-1$.
   \begin{enumerate}
     \item Find the angle between $\vc A$ and $\vc B$.
     \item Calculate $|\vc A+\vc B|^2$, $|\vc A-\vc B|^2$, and $|2\vc A+4\vc B|^2$.
@@ -434,8 +668,8 @@ We can also prove $(\vc a+\vc b)\cdot\vc c=\vc a\cdot\vc c+\vc b\cdot \vc c$ fro
     \item Assume $\vc B+c\vc C$ is perpendicular to $\vc A$. Find the value of $c$.
     \item What do we know about the values of $|\vc C|$ and $|\vc A-\vc C|$?
   \end{enumerate}
-  \Problem[C] Two vectors $\vvex$ and $\vvey$ satisfy  $|\vvex|=|\vvey|=1$ and $\vvex\cdot\vvey=0$.
-Define
+  \Problem[C] \relax\label{q:vecbasisrot}
+  Two vectors $\vvex$ and $\vvey$ satisfy  $|\vvex|=|\vvey|=1$ and $\vvex\cdot\vvey=0$. Define
 \begin{align*}
   \vc{a_x}&=\frac12\vvex+\frac12\vvey,&
   \vc{f_x}&=\vvex\cos\theta+\vvey\sin\theta,  \\
@@ -444,8 +678,7 @@ Define
 \end{align*}
 First, consider $\vc A=A\vc{a_x}+B\vc{a_y}$.
 \begin{enumerate}
-  \item Calculate $\vc{a_x}\cdot\vc{a_y}$, $|\vc{a_x}|$, and $|\vc {a_y}|$.
-  \item Calculate $|\vc A|$.
+  \item Calculate $\vc{a_x}\cdot\vc{a_y}$, $|\vc{a_x}|$, and $|\vc {a_y}|$. Also, calculate $|\vc A|$.
   \item Write down $\vc A$ by using $\vc{e_x}$, $\vc{e_y}$, $A$, and $B$.
 \end{enumerate}
 Next, consider $\vc P=P\vc{f_x}+Q\vc{f_y}$ and $\vc S=S\vc{f_x}+T\vc{f_y}$.
@@ -454,62 +687,77 @@ Next, consider $\vc P=P\vc{f_x}+Q\vc{f_y}$ and $\vc S=S\vc{f_x}+T\vc{f_y}$.
   \item Calculate $\vc P\cdot\vc S$, $|\vc P|$, and $|\vc S|$.
   \item Write down $\vc P$ by using $\vvex$, $\vvey$, $P$, $Q$, and $\theta$.
   \item Write down $\vvex$ and $\vvey$ by using $\vc{f_x}$, $\vc{f_y}$, and $\theta$.
-  \item Check the following equation:
-  \[ \vc P=(\vc P\cdot\vc{f_x})\vc{f_x}+(\vc P\cdot\vc{f_y})\vc{f_y}
+  \item Verify the following equation is correct:
+  \[\vc P=(\vc P\cdot\vc{f_x})\vc{f_x}+(\vc P\cdot\vc{f_y})\vc{f_y}
   =(\vc P\cdot\vc{e_x})\vc{e_x}+(\vc P\cdot\vc{e_y})\vc{e_y}\]
 \end{enumerate}
 \end{problems}
-\newpage
+
+\pagebreak
 \subsection{Cross product}\label{sec:cross}
 The definition of the cross product may also be different from highschool mathematics.
-\begin{definition}{Cross product}{def:cross}
+\begin{definition}{Cross product}{cross}
   For vectors $\vc a$ and $\vc b$, the \Emph*{cross product} of $\vc a$ and $\vc b$ is defined as follows:
 \begin{itemize}
   \item it is a vector and denoted by $\vc a\times\vc b$;
   \item its magnitude $|\vc a\times\vc b|$ is given by $|\vc a||\vc b|\sin\theta$, where $\theta$ is the angle between $\vc a$ and $\vc b$;
-  \item if $|\vc a\times\vc b|\neq 0$, its direction is specified so that
+  \item if the magnitude is not zero, its direction is specified so that
   \begin{itemize}
     \item $\vc a\times\vc b$ is perpendicular to both $\vc a$ and $\vc b$;
     \item The triplet $(\vc a,\vc b,\vc a\times\vc b)$ satisfies the right-hand rule.
   \end{itemize}
 \end{itemize}
 \end{definition}
-Here, ``$(\vc p,\vc q,\vc r) $ satisfies the right-hand rule'' means that if you hold your right hand so that your thumb points in the direction of $\vc p$ and your index finger $\vc q$, then your middle finger points in the direction of $\vc r$. Or, if you draw $\vc p$ upward and $\vc q$ leftward on a sheet, then $\vc p\times\vc q$ points out of the sheet toward you.%
-\mbox{$^{\text{\ref{Note:vec}}}$}\
-\NoteBox[label=Note:vec]
- More precisely, if $\vc p$ and $\vc q$ are on the sheet and the direction of $\vc q$ is $\theta$ clockwise from $\vc p$ with $0^\circ<\theta<180^\circ$, then $\vc p\times\vc q$ is normal to the sheet and points out of the sheet. If $180^\circ<\theta<360^\circ$, then $\vc p\times \vc q$ is normal to the sheet and points toward the sheet.
-\endNoteBox
-\begin{problems}
-  \Problem[A] Prove the following equations \Emph{from the above definition}.
-  \begin{enumerate}
+%
+\def\TEMP{More precisely, if $\vc p$ and $\vc q$ are on the sheet and the direction of $\vc q$ is $\theta$ clockwise from $\vc p$ with $0^\circ<\theta<180^\circ$, then $\vc p\times\vc q$ is normal to the sheet and points out of the sheet. If $180^\circ<\theta<360^\circ$, then $\vc p\times \vc q$ is normal to the sheet and points toward the sheet.}
+%
+Here, ``$(\vc p,\vc q,\vc r) $ satisfies the right-hand rule'' means that if you hold your right hand so that your thumb points in the direction of $\vc p$ and your index finger $\vc q$, then your middle finger points in the direction of $\vc r$. Or, if you draw $\vc p$ upward and $\vc q$ leftward on a sheet, then $\vc p\times\vc q$ points out of the sheet toward you\addnote{\noexpand\TEMP}.%
+
+\OutputNote
+
+The following properties are important: for any vectors $\vc a$, $\vc b$, and $\vc c$ and any real number $k$,
+\begin{enumerate}[label=\textsf{(\arabic*)}]
     \item $\vc a\times\vc a=\vc 0$.
+    \item $\vc a\times\vc b=-\vc b\times\vc a$.
+    \item $(\vc a+\vc b)\times\vc c=\vc a\times\vc c+\vc b\times \vc c$.
+    \item $0\le|\vc a\times\vc b|\le|\vc a||\vc b|$.
+    \item $(k\vc a)\times\vc b=\vc a\times(k\vc b)=k(\vc a\times\vc b)$.
+\end{enumerate}
+Furthermore, cross products have the following properties:
+we can prove the following formulae:
+\begin{enumerate}[label=\textsf{(\arabic*)},resume]
     \item $\vc a\times\vc 0=\vc 0\times\vc a=\vc 0$.
     \item $\vc a\times\vc b=\vc 0$ if $\vc a$ and $\vc b$ are parallel or anti-parallel.
-    \item $\vc a\times\vc b=-\vc b\times\vc a$.
-    \item $(k\vc a)\times\vc b=\vc a\times(k\vc b)=k(\vc a\times\vc b)$.
-    \item $0\le|\vc a\times\vc b|\le|\vc a||\vc b|$.
-    \item $\vc a\cdot(\vc a\times\vc b)=0$.
+    \item $\vc a\cdot(\vc a\times\vc b)=\vc b\cdot(\vc a\times\vc b)=0$.
     \item $(\vc a\cdot\vc b)^2+|\vc a\times\vc b|^2=|\vc a|^2|\vc b|^2$.
-  \end{enumerate}
-\end{problems}
-We can also prove $(\vc a+\vc b)\times\vc c=\vc a\times\vc c+\vc b\times \vc c$ from the above definition. However, the proof is extremely technical and thus skipped. You need this equation in the next problem.
+    \item $\vc a\cdot(\vc b\times\vc c)=\vc b\cdot(\vc c\times\vc a)=\vc c\cdot(\vc a\times\vc b)$.
+    \item $\vc a\times(\vc b\times\vc c)=(\vc a\cdot\vc c)\vc b-(\vc a\cdot\vc b)\vc c$.
+\end{enumerate}
+\begin{quizzes}
+  \Quiz[B] Explain why the above formulae (1), (2), (4), and (6)--(9) are valid. You can use only the above definitions.~\Hint{We skip (3) because its proof is extremely complicated.}
+
+  \Quiz[S]{}\QSub{1}  Explain why $(\vc a+\vc b)\times \vc a=-\vc a\times\vc b$.
+  \\\TAB\QSub{2}
+    See the vectors in Problem~\ref{q:vecbasic}. Describe $\vc a\times \vc b$, $\vc b\times \vc a$, $\vc b\times \vc c$, and $\vc a\times \vc p$.
+\end{quizzes}
+
 \begin{problems}
-  \Problem[S] Three vectors $\vvex$, $\vvey$, and $\vvez$ satisfy
+  \Problem[A] Three vectors $\vvex$, $\vvey$, and $\vvez$ satisfy
   \[ |\vvex|=|\vvey|=|\vvez|=1,
    \quad \vvex\times\vvey=\vvez,
    \quad \vvey\times\vvez=\vvex,
    \quad \vvez\times\vvex=\vvey.
   \]
   \begin{enumerate}
-    \item Calculate $\vvex\cdot\vvey$. Find the angles among $\vvex$, $\vvey$, and $\vvez$. You can use the equations in the previous problem.
-    \item Expand $(a\vvex+b\vvey+c\vvez)\times(p\vvex+q\vvey+r\vvez)$ and simplify.
+    \item Calculate $\vvex\cdot\vvey$. Find the angles among $\vvex$, $\vvey$, and $\vvez$.
+    \item Expand $(a\vvex+b\vvey+c\vvez)\times(p\vvex+q\vvey+r\vvez)$ and simplify.\\
+      \phantom.\hfill\Hint{You are asked to do the similar operation as in Problem~\ref{q:ipexpand}\QSub1.}
   \end{enumerate}
 \end{problems}
 
 
-\newpage
 \subsection[Operation on Vectors]{Operation on vectors — Introduction to the Vector/Scalar/Not game}
-We have seen all the operations. Namely, (only) the following operations are possible on vectors:
+Let's summarize what we have discussed: with $k$ being a real number and $\vc a$ and $\vc b$ being vectors,
 \begin{tabbing}
 \fakebullet \= \Emph*{scalar multiplication}:~~\= $\vc a\times\vc b$\quad \= \kill
 \fakebullet \> \Emph*{magnitude}:              \> $|\vc a|$           \> ($\leftarrow$ scalar)\\
@@ -518,14 +766,14 @@ We have seen all the operations. Namely, (only) the following operations are pos
 \fakebullet \> \Emph*{inner product}:          \> $\vc a\cdot\vc b$   \> ($\leftarrow$ scalar)\\
 \fakebullet \> \Emph*{cross product}:          \> $\vc a\times\vc b$  \> ($\leftarrow$ vector)
 \end{tabbing}
-where $k$ is a scalar and $\vc a$ and $\vc b$ are vectors. Any complicated symbols, such as
+For vectors, \Emph{you only need to learn these operations!} In other words, only these operations are possible on vectors, and any complicated expressions, such as
 \[
 \frac{\vc a\times \vc b+(\vc x\cdot\vc y)\vc d}{(\vc a\cdot\vc b)|\vc b\times\vc c+\vc d|}
 \]
-can be obtained by combining these five operations.
-\Remark{The numerator is the sum of two vectors: the first one is $\vc a\times\vc b$, and the second one is $\vc d$ multiplied by a scalar (number) $\vc x\cdot\vc y$. The denominator is made of two numbers; the first number is $\vc a\cdot\vc b$, while in the second, $\vc b\times\vc c$ is a vector, so it can be added to $\vc d$, and then its magnitude is evaluated.}
+can be obtained by combining these five.
+\Remark{The numerator is the sum of two vectors: $\vc a\times\vc b$ plus $(\vc x\cdot\vc y)\vc d$. Here, $\vc x\cdot \vc y$ is just a number. The denominator has two numbers: $\vc a\cdot\vc b$ and $|\vc b\times\vc c+\vc d|$, where the latter is the magnitude of the vector $\vc b\times\vc c+\vc d$.}
 
-In other words, \Emph{we cannot apply any other operations} except for these five. Namely,
+Therefore, \Emph{we cannot do any other operations}. For example, these are all \Emph{invalid} expression:
 {
 \color{AltDefA}
 \begin{align*}
@@ -537,15 +785,14 @@ In other words, \Emph{we cannot apply any other operations} except for these fiv
  && \frac{\vc a}{\,\vc a\,},
  && a+\vc a,
  && \vc a\cdot\vc b+\vc a\times\vc b,
- && (\vc a+\vc b)\vc c
+ && (\vc a+\vc b)\vc c;
 \end{align*}
 }
-are all invalid expression; they do not express any mathematical concept.
+these never appears in correct math equations and do not express any mathematical concept.
 
-Now, you need to distinguish \Emph{which is vector, which is scalar, and which is invalid}.
+Now, let's try the \Emph*{Vector/Scalar/Not game}.
 \begin{problems}
-\Problem[S] For each expression, answer \Emph*{V} if it is vector; \Emph*{S} if it is scalar, and \Emph*{N} if it is an invalid expression (neither vector nor scalar).\\
-\Hint[]{Notice that symbols with an arrow are vectors and symbols without an arrow are scalars.}
+\Problem[S] For each expression, answer \Emph*{V} if it is vector; \Emph*{S} if it is scalar, and \Emph*{N} if it is an invalid expression (neither vector nor scalar).
 \begin{align*}\def\baselinestretch{2}
   & 3+|\vc a|
   && \vc a-\vc b
@@ -576,46 +823,84 @@ Now, you need to distinguish \Emph{which is vector, which is scalar, and which i
 \end{problems}
 
 \newpage
-\subsection{Axes and Components}
+\subsection{Axes and Components}\label{sec:component}
+Sho wants to emphasize a remarkable fact: in all our discussions so far, \Emph{we have not talked about the components of vectors!} In highschool, vectors are expressed as $\vc a=(5,-7)$, where $5$ is the $x$-component and $-7$ is the $y$-component. However, our discussion so far does not include this form of vectors; we have not defined $x$- or $y$-axes yet.
 
-We have had various discussions about vectors and have covered all important concepts.
-Remarkably, in all our discussions so far, \Emph{we have not talked about the components of vectors!}
-In fact, \Emph{we haven not even introduced $\mathbf{x}$-axis or $\mathbf{y}$-axis!}
-This demonstrates that the aforementioned concepts, including inner product and cross product, can be defined and understood without a coordinate system and without components of vectors.
-Namely, \Emph{vectors are independent of any coordinate system}.
+This fact demonstrates that the aforementioned concepts, including inner product and cross product, are free from a coordinate system ($x$, $y$, and $z$-axes) or from the component-wise notation. \Emph{Vectors are independent of any coordinate system} and the notations $(5,-7)$ etc.\ are \emph{superficial}.
 
-This fact is related to physics, because our Universe does not have predefined axes.
-Axes and coordinates are artificial concepts, introduced by us, just for the sake of calculation.
+It is not so surprising in physics. Physics discusses phenomena in this Universe, but our Universe does not have any $x$- or $y$-direction predefined. Axes and coordinates are artificial, human-made concepts. \Emph{We} define $x$-, $y$-, and $z$-axes so that we can easily calculate vectors and we can clearly express the vector direction in this three-dimensional universe.
 
-Now, we will introduce three axes to discuss our three-dimensional Universe.
-The Cartesian coordinate system is defined by ${x}$-axis, ${y}$-axis, and ${z}$-axis, defined so that each axis is perpendicular to the other two axes.
 
-In physics, we always use \Emph*{right-handed Cartesian coordinate system}. Namely, we define $z$-axis so that ($+x$ axis, $+y$ axis, $+z$ axis) satisfies the right-hand rule (cf.~Sec.~\ref{sec:cross}).
-Namely,
-\begin{definition}{Unit vectors in the direction of the axes}{def:unit}
+Now, in order to discuss our \emph{three}-dimensional universe, we will introduce coordinate systems with \emph{three} axes.
+The \Emph{Cartesian coordinate system} is the simplest coordinate system. It has ${x}$-axis, ${y}$-axis, and ${z}$-axis, and these axes are defined so that each one is perpendicular to the other two axes.
+Namely, if we \emph{define}
+\begin{definition}{Unit vectors representing the axes}{unit}
   The symbol $\vvex$ denotes the unit vector in the positive $x$-direction; $\vvey$ and $\vvez$ are similarly defined.\\[.5em]
   (In the textbook, they are denoted by $\hat{\mathbfup{i}}$, $\hat{\mathbfup{j}}$, and $\hat{\mathbfup{k}}$. Please not be confused.)
 \end{definition}
-and then (we can easily prove that) these unit vectors satisfy
-\begin{align*}
-  &|\vvex|=|\vvey|=|\vvez|=1,\qquad \vvex\cdot\vvey=\vvey\cdot\vvez=\vvez\cdot\vvex=0,\\
-  &\vvex\times\vvey=\vvez, \qquad \vvey\times\vvez=\vvex, \qquad \vvez\times\vvex=\vvey.
-\end{align*}
+then
+\begin{miniitemize}
+  \item any vectors $k\vvex$ with $k>0$ (such as $\vvex$, $2\vvex$, or $\pi\vvex$) direct toward the positive $x$-direction,
+  \item any vectors $k\vvez$ with $k<0$ direct toward the negative $z$-direction, and
+  \item the \emph{basis vectors} satisfy $\vvex\cdot\vvey=0$, $\vvey\cdot\vvez=0$, and $\vvez\cdot\vvex=0$.
+\end{miniitemize}
+Beware that the Cartesian coordinate system is not unique but two-fold. Draw $x$- and $y$-axis so that $\vvex\cdot\vvey=0$ and observe you have two (and only two) options for the $z$-axis direction.
+In physics, we always use \Emph*{right-handed Cartesian coordinate system}:
+\begin{definition}{Right-handed Cartesiaon Coordinate system}{cartesian}
+  The \Emph*{Cartesian coordinate system} is characterized by unit vectors $(\vvex,\vvey,\vvez)$ satisfying
+  \begin{align}
+    &|\vvex|=|\vvey|=|\vvez|=1,&
+    &\vvex\cdot\vvey=\vvey\cdot\vvez=\vvez\cdot\vvex=0;
+  \end{align}
+  namely, with $x$-, $y$-, and $z$-axes chosen so that they are perpendicular to each other.
+
+ \Emph*{Right-handed Cartesian coordinate system} is defined so that the triplet $(\vvex,\vvey,\vvez)$ satisfies the right-hand rule. In other words, they satisfy
+  \begin{align}
+    &\vvex\times\vvey=\vvez,
+    &&\vvey\times\vvez=\vvex,
+    &&\vvez\times\vvex=\vvey
+  \end{align}
+\end{definition}
+So, you \emph{have to} draw $z$-axis so that (1) it is normal to both $x$- and $y$-axes and (2) they corresponds to
+ $\langle x$-axis\ $\to$\ thumb$\rangle$,
+ $\langle y$-axis\ $\to$\ index finger$\rangle$,
+ $\langle z$-axis\ $\to$\ middle finger$\rangle$ of your \Emph{right} hand.
+(Observe that you get a different result if you use your left hand.)
 \Remark{The definition of cross product uses right-hand rule because we use right-handed Cartesian coordinate system.}
 
-\newcommand*\idrel{\mathrel{\stackrel{!!}{~\longleftrightarrow~}}}
+\pagebreak
 
-Now, we introduced \emph{a notation rule}: we identify
+\Emph{After we define the axes}, we can express vectors in their components:
+\begin{definition}{Components of vectors}{components}
+  If a vector $\vc v$ can be written by
+  \[ \vc v=A\vvex+B\vvey+C\vvez, \]
+  we say $A$ is the $x$-component of $\vc v$, $B$ is the $y$-component of $\vc v$, and $C$ is the $z$-component of $\vc v$. We write this vector $\vc v$ as
+  \[
+    \vc v=\pmat{A\\B\\C},
+  \]
+  where a Cartesian coordinate system is assumed (but it is \emph{understood} and not explicitly written).
+\end{definition}
+\newcommand*\idrel{\mathrel{\stackrel{!!}{~\longleftrightarrow~}}}
+It may be helpful to understand this rule as the identification of
 $
-  A\vvex+B\vvey+C\vvez \idrel \pmat{A\\B\\C}. 
+  A\vvex+B\vvey+C\vvez \idrel \pmat{A\\B\\C}.
 $
-Then it is obvious that\quad $\vvex\idrel\pmat{1\\0\\0}$,\quad$\vvey\idrel\pmat{0\\1\\0}$,\quad$\vvez\idrel\pmat{0\\0\\1}$,\quad etc.
+Check that $\vvex\idrel\pmat{1\\0\\0}$,\quad$\vvey\idrel\pmat{0\\1\\0}$,\quad$\vvez\idrel\pmat{0\\0\\1}$,\quad etc.\ are correct.
 \Remark{You probably use the horizontal notation $(A,B,C)$ in highschool. In university, try to use this vertical notation $\spmat{A\\B\\C}$ because it is consistent with the notation of matrices and thus natural when you learn linear algebra.}
-In practice, we simply use the equal sign. For example,
+
+\noindent In practice, we simply use the equal sign:
+$\displaystyle \vc v=2\vvex+\vvey-3\vvez=\pmat{2\\1\\-3}$, $\displaystyle -\vvez=\pmat{0\\0\\-1}$, etc.
+
+\Remark{Consider the equation
 \[
-\vc v=2\vvex+\vvey-3\vvez ~~\idrel~~ \vc v=\pmat{2\\1\\-3}.
+  \pmat{3\\2}+\pmat{5\\-3}=\pmat{8\\-1}.
 \]
-However, it should be noted that the right-hand side, $\spmat{2\\1\\-3}$, is artificial and superficial; the true meaning of $\vc v$ is the left-hand side.
+This was a kind of \emph{definition} in high school mathematics, but in this Boot Camp, this equation \emph{should be proved} by the following way:
+\[
+  \pmat{3\\2}+\pmat{5\\-3}\idrel(3\vvex+2\vvey)+(5\vvex-3\vvey)=(3+5)\vvex+(2-3)\vvey\idrel\pmat{8\\-1},
+\]
+where we have used Eq.~\eqref{eq:addformula} at the equal ($=$) symbol.
+}
 
 
 \Remark{It might be interesting to observe the following transformation:
@@ -627,13 +912,15 @@ However, it should be noted that the right-hand side, $\spmat{2\\1\\-3}$, is art
 In university mathematics, vectors are \emph{defined} based on these equations.}
 
 \begin{problems}
-\Problem[S] Let $\vc A=\pmat{a\\b\\c}$ and $\vc B=\pmat{p\\q\\r}$. \Emph{Prove} the following equations.\\
-\phantom.\hfill\Hint{You must have already proved them in previous sections.}
-\begin{menumerate}{3}
-  \item \rule{0pt}{2.3em}$|\vc A|=\sqrt{a^2+b^2+c^2}$
-  \item \rule{0pt}{2.3em}$\vc A\cdot\vc B=ap+bq+cr$
-  \item \rule{0pt}{2.3em}$\vc A\times\vc B=\pmat{br-cq\\cp-ar\\aq-bp}$
-\end{menumerate}
+\Problem[A] Let $\vc A=\pmat{a\\b\\c}$ and $\vc B=\pmat{p\\q\\r}$. \Emph{Prove} the following equations.
+\begin{enumerate}
+  \item $|\vc A|=\sqrt{a^2+b^2+c^2}$
+  \item $\vc A\cdot\vc B=ap+bq+cr$
+  \item $\vc A\times\vc B=\pmat{br-cq\\cp-ar\\aq-bp}$
+\end{enumerate}
+\Hint{Actually, you have already proved these equations in the previous problems.
+  For (1) or (2), check your answer to Problems \ref{q:ipbasic} and \ref{q:ipexpand}. For (3), see Problem \ref{q:cpexpand}.}
+  \Problem[C] Verify that $\displaystyle \vc v=\pmat{\vc v\cdot\vvex\\\vc v\cdot\vvey\\\vc v\cdot\vvez}$. Review Problem \ref{q:vecbasisrot} and think why Sho includes that problem in this Boot Camp.
 \end{problems}
 
 \newpage
@@ -658,7 +945,7 @@ In university mathematics, vectors are \emph{defined} based on these equations.}
   \end{minipage}
 \begin{enumerate}[start=5]
   \item We want to define M so that $\vvv{OM}=(\vc b+\vc c)/2$. Draw $(\vc b+\vc c)/2$. Where is M?
-  \item Let G be the geometric center of the triangle ABC. Express $\vvv{OG}$ by $\vc a$, $\vc b$, and $\vc c$.
+  \item Let G be the geometric center of the triangle ABC. Show that $\vvv{OG}=(\vc a+\vc b+\vc c)/3$.
 \end{enumerate}
 \end{problems}
 \noindent
@@ -668,19 +955,61 @@ Namely, by defining a point O, we can identify a position (in $xyz$-space) and a
 &\text{point A}\idrel \vc a,&
 &\text{point B}\idrel \vc b,&
 &\text{point M}\idrel \vc m,&
-&\text{point G}\idrel \vc g, \text{~etc.,}
+&\text{point G}\idrel \vc g, \text{~etc.}
 \end{align*}
-where the vectors defined by $\vc a=\vvv{OA}$ etc.\ are called \Emph*{position vectors}; in the following, we will use the notation $\posvec Aa$ and so on.
-Of course, the position vectors vary depending on the choice of O.
+\begin{definition}{Position vectors}{posvec}
+  We can identify a point P by a vector $\vvv{OP}$, which is called a \Emph{position vector} of Point P.
+  This is \Emph{one-to-one correspondence}, i.e., $\vvv{OP}=\vvv{OQ}$ if and only if P and Q are the same point; different points have different position vectors, and different vectors represent different points.
+\end{definition}
+Sho often writes $\posvec Pp$ to express that $\vc p$ is the position vector of Point P, i.e., $\vc p=\vvv{OP}$.
 
-The merit of position vector is that, if a point P is defined by other points A, B, etc., then $\vc p=\vvv{OP}$ can be expressed by $\vc{a}$, $\vc b$, etc.
-For example, if we define $\posvec Mm$ by the midpoint of B and C, then $\vc m$ is given by $(\vc b+\vc c)/2$. Similarly, for the geometric center G, we can express $\vvv{OG}$ by $\vc a$, $\vc b$, and $\vc c$, as you did in the above problem.
-
-The following two facts must be \Emph{firmly} memorized (for General Physics 2).
+Position vectors are useful because of the following properties:
 \begin{itemize}
-  \item $\vvv{AB}=\vc b-\vc a$ for points $\posvec Aa$ and $\posvec Bb$.
-  \item $\plen{AB}=|\vc b-\vc a|$ for points $\posvec Aa$ and $\posvec Bb$.
+  \item $\vvv{AB}=\vc b-\vc a$ for points A and B.
+  \item The midpoint of A and B is given by $(\vc a+\vc b)/2$.
+  \item Any points between A and B is given by $(1-t)\vc a+t\vc b$ with $0<t<1$.
+  \item Consider a line (with infinite length) passing through A and B. Any points on the line is given by $(1-t)\vc a+t\vc b$, where $t$ is any real number.
+  \item The geometric center of A, B, and C is given by $(\vc a+\vc b+\vc c)/3$.
 \end{itemize}
+Notice that these properties are independent of the choice of Point O, as you have observed in the previous problem.
+
+
+
+
+\begin{quizzes}
+  \Quiz[S] Draw two Points $\posvec Aa$ and $\posvec Bb$ as you like. Namely, we consider two points A and B and define $\vc a\coloneq\vvv{OA}$ and $\vc b\coloneq\vvv{OB}$.
+  \begin{enumerate}
+    \item Explain why $\vvv{AB}=\vc b-\vc a$.
+    \item Explain why $\plen{AB}=|\vc a-\vc b|$, where $\plen{AB}$ is the distance between A and B.
+    \item Explain why $\plen{AB}=\sqrt{|\vc a|^2-2\vc a\cdot\vc b+|\vc b|^2}$.
+    \item Consider a point P defined by $\vvv{OP}=\vvv{OA}+(1/2)\vvv{AB}$. Draw Point P.
+    \item Check that $\vvv{OP}=(\vc a+\vc b)/2$.
+  \end{enumerate}
+  \end{quizzes}
+
+
+\begin{problems}
+  \Problem[S] Consider two points $\posvec Aa$ and $\posvec Bb$. Two vectors are defined as
+  \begin{align*}
+    & \vc F_1=\frac{q}{4\pi C|\vc b-\vc a|^3}\left(\vc b-\vc a\right)
+    &&\vc F_2=\frac{q}{4\pi C|\vc a-\vc b|^3}\left(\vc a-\vc b\right),
+  \end{align*}
+  where $q$ and $C$ are real constants; $q\neq 0$ and $C>0$, but $q$ can be positive and negative.
+  \begin{enumerate}
+    \item Express $\vc F_1$ by using $\vvv{AB}$ but not using $\vc a$ and $\vc b$.
+    \item Explain why $\vc F_1=-\vc F_2$.
+    \item Calculate the magnitude of $\vc F_1$ and $\vc F_2$.
+    \item Describe the direction of $\vc F_1$ and $\vc F_2$.\\
+      \Hint{Answer will be $\langle$it is in the same direction as $\vvv{AB}$$\rangle$ or $\langle$it is anti-parallel to $\vvv{AB}$$\rangle$.}
+  \end{enumerate}
+  Assume $\vc e_1$ is the unit vector in the same direction as $\vc F_1$ and $\vc e_2$ is the unit vector in the same direction as $\vc F_2$.
+  \begin{enumerate}[resume]
+    \item Explain why $\vc e_1=\dfrac{q}{|q|}\dfrac{\vc b-\vc a}{|\vc b-\vc a|}$.
+    \item Explain why $\vc e_1$ and $\vc e_2$ are anti-parallel.
+    \item Explain why $\vc F_1=\dfrac{|q|}{4\pi C}\dfrac{\vc e_1}{|\vc b-\vc a|^2}$.
+  \end{enumerate}
+\end{problems}
+
 
 \begin{problems}
 \Problem[S] Points $\posvec Aa$, $\posvec Bb$, and $\posvec Cc$ are drawn on the grid, which has a spacing of 1.
@@ -755,12 +1084,12 @@ These problems are taken from \JA{高校数学例題＆問題集} \url{https://w
 \begin{minipage}[t]{0.4\textwidth}\kern20pt\vspace{-2.5em}
  \begin{tikzpicture}[scale=0.6]
 \draw [help lines,thin,dashed] (-0.2,0.6) grid (10.2,5.4);
-\draw[-stealth,very thick] (3,5)--node [below] {$\vc a$} ++(-2,-1);
-\draw[-stealth,very thick] (4,5)--node [left] {$\vc b$} ++(0,-2);
-\draw[-stealth,very thick] (8,3)--node [left] {$\vc c$} ++(-1,2);
-\draw[-stealth,very thick] (3,2)--node [above] {$\vc d$} ++(-2,0);
-\draw[-stealth,very thick] (7,3)--node [above] {$\vc e$} ++(-4,-2);
-\draw[-stealth,very thick] (9,2)--node [above] {$\vc f$} ++(-2,-1);
+\draw[->,very thick] (3,5)--node [below] {$\vc a$} ++(-2,-1);
+\draw[->,very thick] (4,5)--node [left] {$\vc b$} ++(0,-2);
+\draw[->,very thick] (8,3)--node [left] {$\vc c$} ++(-1,2);
+\draw[->,very thick] (3,2)--node [above] {$\vc d$} ++(-2,0);
+\draw[->,very thick] (7,3)--node [above] {$\vc e$} ++(-4,-2);
+\draw[->,very thick] (9,2)--node [above] {$\vc f$} ++(-2,-1);
 \end{tikzpicture}
 \end{minipage}
 
@@ -770,7 +1099,7 @@ These problems are taken from \JA{高校数学例題＆問題集} \url{https://w
   \item A vector $\vc x$ satisfies $2(\vc a+2\vc x)-4\vc a=5(\vc x-3\vc b)$. Express $\vc x$ by $\vc a$ and $\vc b$.
  \item Vectors $\vc x$ and $\vc y$ satisfy $\vc x+\vc y=\vc a$ and $3\vc x+2\vc y=\vc b$. Express them by $\vc a$ and $\vc b$.
 \end{enumerate}
-\itemA Consider a triangle ABC, where $\overline{\mathrm{AB}}=1$, $\overline{\mathrm{AC}}=\sqrt5$, $\overline{\mathrm{BC}}=2$, and $\angle{\mathrm B}=90^\circ$.
+\itemA Consider a triangle ABC, where $\plen{AB}=1$, $\plen{AC}=\sqrt5$, $\plen{BC}=2$, and $\angle{\mathrm B}=90^\circ$.
 Let $\vc e$ be a unit vector whose direction is the same as $\vvv{BC}$. Express $\vc e$ by $\vvv{AB}$ and $\vvv{AC}$.
  \itemA Let $\vc a=\pmat{2\\-4}$, $\vc b=\pmat{5\\ -3}$, and $\vc c=-3\vc a+2\vc b$. Find the components of $\vc c$ and calculate $|\vc c|$.
  \itemB Let $\vc a=\pmat{2\\-4}$, $\vc b=\pmat{5\\ -3}$, and $\vc p=\pmat{7\\0}$. Find $s$ and $t$ that satisfy $\vc p=s\vc a+t\vc b$.
@@ -793,7 +1122,7 @@ Let $\vc e$ be a unit vector whose direction is the same as $\vvv{BC}$. Express 
 
 \item[\GB{\sffamily\bfseries[12]}] \begin{enumerate}[leftmargin=1.5em,labelsep=-0.3em]
     \item Consider two points $\posvec Aa$ and $\posvec Bb$. Two points P and M are on the line AB. They are between A and B and satisfy $\overline{\mathrm{AP}}:\overline{\mathrm{PB}}=5:3$ and $\overline{\mathrm{AM}}:\overline{\mathrm{MB}}=1:1$. Describe the position vectors of P and M by using $\vc a$ and $\vc b$.
-\item Consider a triangle ABC formed by three points $\posvec Aa$, $\posvec Bb$, and $\posvec Cc$. Let $\posvec Gg$ be its geometric center, and $\posvec{G'}{g'}$ be the geometric center of the triangle GBC. Describe $\vc g'$ by $\vc a$, $\vc b$, and $\vc c$.
+\item Consider a triangle ABC with points $\posvec Aa$, $\posvec Bb$, and $\posvec Cc$. Let $\posvec Gg$ be its geometric center and $\posvec{H}{h}$ be the geometric center of the triangle GBC. Describe $\vc h$ by $\vc a$, $\vc b$, and $\vc c$.
 \end{enumerate}
 \item[\GC{\sffamily\bfseries[15]}] Consider a triangle ABC and let O be its circumcenter. Consider a point H satisfying $\vvv{OH}=\vvv{OA}+\vvv{OB}+\vvv{OC}$. Prove H is the orthocenter of the triangle ABC.
 \end{enumerate}
