@@ -1,6 +1,8 @@
+% Time-Stamp: <2025-01-29 15:51:59>
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesPackage{GP}
-    [2024/02/21 v1.2 For 2023-2 lecture]
+    [2025/01/29 v1.3 For 2024-2 lecture]
+%   [2024/02/21 v1.2 For 2023-2 lecture]
 %   [2024/01/06 v1.1 End of 2023-1 lecture]
 %   [2023/07/01 v1.0 Taken from 2022-2 lecture]
 
@@ -31,6 +33,11 @@
     tmp = tmp:sub(7, 7) == "0" and tmp:sub(1, 6) .. tmp:sub(8, 9) or tmp
     return tmp:sub(2, 4) == "May" and tmp:gsub("%.", "") or tmp
   end
+  function to_ymd (date)
+    tmp = os.date("{%b.~%d, %Y}", date)
+    tmp = tmp:sub(7, 7) == "0" and tmp:sub(1, 6) .. tmp:sub(8, 15) or tmp
+    return tmp:sub(2, 4) == "May" and tmp:gsub("%.", "") or tmp
+  end
   function define_next_days (date)
     yy = string.sub(date, 1, 4)
     mm = string.sub(date, 5, 6)
@@ -39,6 +46,7 @@
     origin_dow = os.date("%w", origin)
     print("\nDefine dates based on " .. to_md(origin))
     tex.sprint("\\def\\OriginDay" .. to_md(origin))
+    tex.sprint("\\def\\OriginDayYMD" .. to_ymd(origin))
     for i = 1, 7 do
       dow = tostring(math.floor((origin_dow + i) % 7 + 0.1))
       tex.sprint("\\expandafter\\def\\csname NextDay" .. dow .. "\\endcsname" .. to_md(origin + 86400 * i))
@@ -63,14 +71,19 @@
 \newcommand*{\cm}{\unit{cm}}
 \newcommand*{\Hz}{\unit{Hz}}
 
+\newcommand*{\mps}{\unit{m/s}}
+\newcommand*{\mpss}{\unit{m/s^2}}
+
 \newcommand*{\nC}{\unit{nC}}
 \newcommand*{\muC}{\unit{\mu C}}
 \newcommand*{\muF}{\unit{\mu F}}
 
-\renewcommand*\deq{\eqdef}
+\let\eqdef\eqdef@orig % restore
 
 % vector: use arrow
-\let\vc\vv
+\def\vc#1{\@ifnextchar_{\@vc@two{#1}}{\@vc@one{#1}}}
+\def\@vc@one#1{\vv{#1}}
+\def\@vc@two#1_#2{\vv*{#1}{#2}}
 \newcommand*{\point}[1]{\mathrm{#1}}     % point A
 \newcommand*{\vvv}[1]{\vv{\mathrm{#1}}}  % vector AB
 \newcommand*{\posvec}[2]{{\mathrm{#1}}(\vc #2)} % position vector A(a)
@@ -80,17 +93,19 @@
 \newcommand*{\vvex}{\vc{e_x}}
 \newcommand*{\vvey}{\vc{e_y}}
 \newcommand*{\vvez}{\vc{e_z}}
-\newcommand*{\vvev}[1]{\vc{e}_{\vvv{#1}}}
+\newcommand*{\vvev}[1]{\vv{e}_{\vvv{#1}}}
 
 \newcommand*{\vgrad}{\@ifstar{\mathord{\nabla}}{\qopname\relax o{grad}}}
 \newcommand*{\vdiv}{\@ifstar{\mathord{\nabla}\mathop{\cdot}}{\qopname\relax o{div}}}
 \newcommand*{\vrot}{\@ifstar{\mathord{\nabla}\mathop{\times}}{\qopname\relax o{rot}}}
 
 % sheet env
+\newcommand*\QPart[1]{\styleproblem{[#1]}}
+\newcommand*\QSub[1]{\styleproblem{(#1)}}
 \renewcommand\theenumi{\@Alph\c@enumi}
 \renewcommand\theenumii{\@arabic\c@enumii}
-\renewcommand\labelenumi{{\sffamily\bfseries[\theenumi]}}
-\renewcommand\labelenumii{{\sffamily\bfseries(\theenumii)}~~~}
+\renewcommand\labelenumi{\QPart{\theenumi}}
+\renewcommand\labelenumii{\QSub{\theenumii}~~~}
 
 \long\def\ScoreBox#1{\begin{tikzpicture}[remember picture,overlay]%
   \node[xshift=-25mm,yshift=-30mm,anchor=north east,inner sep=0pt,outer sep=0pt] at (current page.north east){#1};%
@@ -110,15 +125,33 @@
 \NewDocumentEnvironment{menumerate}{O{}m+b}%
   {\begin{multicols}{#2}\begin{enumerate}[#1]#3\end{enumerate}\end{multicols}}\relax
 
+\renewenvironment{problems}{%
+  \begin{tcolorbox}[myprobbox]\stepcounter{Problem}%
+  \begin{enumerate}[ProblemList,start=\value{Problem},label={\noexpand\MaybeLevel\QPart{\Alph*}},ref={\QPart{\Alph*}}]%
+}{\end{enumerate}\end{tcolorbox}\setcounter{Problem}{\value{enumi}}}
+\renewenvironment{quizzes}{%
+  \begin{tcolorbox}[myquizbox]\stepcounter{Problem}%
+  \begin{enumerate}[QuizList,start=\value{Problem},label={\noexpand\MaybeLevel\QPart{\Alph*}},ref={\QPart{\Alph*}}]%
+}{\end{enumerate}\end{tcolorbox}\setcounter{Problem}{\value{enumi}}}
+\RenewDocumentCommand\new@problem{m}{%
+  \gdef\MaybeLevel{\IfValueTF{#1}{\csname G#1\endcsname}{\relax}}\relax\item}
+\RenewDocumentCommand\Quiz{o}{\new@problem{#1}}
+\RenewDocumentCommand\Problem{o}{\new@problem{#1}}
+
+\def\@Alph#1{%
+  \ifcase#1\or A\or B\or C\or D\or E\or F\or G\or H\or I\or J\or
+   K\or L\or M\or N\or O\or P\or Q\or R\or S\or T\or U\or V\or W\or X\or
+    Y\or Z\or AA\or BB\or CC\or DD\or EE\or FF\or GG\or HH\or II\or JJ\or
+    KK\or LL\or MM\or NN\or OO\or PP\or QQ\or RR\or SS\or TT\or UU\or VV\or
+    WW\or XX\or YY\or ZZ\else\@ctrerr\fi}
 
 \newcommand*\Hint[2][Hint:~]{\textsf{[#1#2]}}
 
 \newcommand*{\score}[1]{{$\mathsf{(#1)}$\,}}
 \newcommand*{\scoreG}[2]{\textsf{(#1, $\mathsf{#2}$\,pts)\,}}
 
-\newcommand*\taskI[1][\relax]{\Emph*{(individual\ifx#1\relax\relax\else{\mdseries : #1}\fi)}\xspace}
-\newcommand*\taskP[1][\relax]{\Emph*{(pair\ifx#1\relax\relax\else{\mdseries : #1}\fi)}\xspace}
-\newcommand*\taskG[1][\relax]{\Emph*{(group\ifx#1\relax\relax\else{\mdseries : #1}\fi)}\xspace}
+\newcommand\GrayBox[2]{#1\fcolorbox{black}{lightgray}{\phantom{#2}}#1}
+\newcommand\fakebullet{\makebox[2.5em][r]{\textbullet\kern.5em}}
 
 \newcommand*\Item[1]{\stepcounter{\@enumctr}\item[{#1\csname label\@enumctr\endcsname}]}
 \newcommand*\itemS{\Item{$\bigstar$}}
@@ -130,9 +163,6 @@
 \newcommand\GB{$^{**}$}
 \newcommand\GC{$^{*}$}
 
-\newcommand*\Think{\textsf{Think}\xspace}
-\newcommand*\Pair{\textsf{Pair}\xspace}
-\newcommand*\Share{\textsf{Share}\xspace}
-\newcommand*\TPS{\textsf{Think--Pair--Share}\xspace}
-
+\usepackage{pgfornament}
+\newcommand\ornamentskip{\bigskip\begin{center}\pgfornament[width=7cm]{88}\end{center}\medskip}
 \endinput

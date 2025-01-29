@@ -1,12 +1,12 @@
 %!TEX program=lualatex
 
-\def\LectureName/{General Physics I}
+\def\LectureName/{General Physics}
 %\def\LectureNumber/{}
 %\def\LectureDate/{}
 \PassOptionsToPackage{fleqn}{amsmath}
 \PassOptionsToPackage{hyperfootnotes=false}{hyperref}
 \documentclass[11pt,pdfa,lastpage]{MishoNote}
-\title{General Physics I: Integral Boot Camp}
+\title{\LectureName/: Integral Boot Camp}
 \author{Sho Iwamoto}
 \hypersetup{
   pdflang={en-US},
@@ -30,15 +30,6 @@
 \newcommand\INN[2][\relax]{\item$\displaystyle\int\!#2$\ifx\relax#1\relax\relax\relax\else{\quad#1}\fi}
 \newcommand\INP[1]{\INT{\left(#1\right)}}
 \newcommand\INC[3]{\item$\displaystyle\int^{#2}_{#1}#3\,\dd x$}
-
-\newcommand\hrefFN[2]{\href{#1}{#2}\addnote{\url{#1}}}
-\newcommand\starskip{\bigskip\begin{center}\pgfornament[width=7cm]{88}\end{center}\medskip}
-\newcommand\fakebullet{\makebox[2.5em][r]{\textbullet\kern.5em}}
-\makeatletter
-\RenewDocumentCommand\new@problem{mm}{%
-  \stepcounter{Problem}\item[\kern-2em\kern-\labelsep{\makebox[4.5em][r]{%
-        \IfValueTF{#2}{\csname G#2\endcsname}{}{\sffamily\bfseries[\Alph{Problem}]}}}]\relax}
-\makeatother
 
 \let\origfootnote\footnote
 \let\origfootnoterule\footnoterule
