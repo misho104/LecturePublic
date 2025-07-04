@@ -112,20 +112,19 @@ Sho never provides you with solutions. \Emph{You students} need to make the solu
 \end{maketitle}
 \newpage
 \subsection{The first step: High-school review}
-We begin with a review of high-school mathematics, but with taking care of a typical pitfall.
+First we review high-school mathematics, but with taking care of a typical pitfall.
 Namely, some students are confused by the notation of derivatives.
 
-Consider a function $f(x)$. The derivative of $f(x)$ is written by $f'(x)$, which is (usually) a different function from $f(x)$.
-We express this function $f'(x)$ by
+Consider a function $f(x)$. The derivative of $f(x)$ is written by $f'(x)$, which is (usually) a different function from $f(x)$. For example, if $f(x)=x^2$, then $f'(x)=2x$.
+We may express it in several ways:
 \[ f'(x) = \diff{f}{x}(x) = \diff{f(x)}{x} = \diff{}{x}f(x); \]
-these three expressions are equivalent.
-Don't be confused by the tricky notation!
+these expressions are all equivalent. Don't be confused!
 
 Sho recommends you to identify $\displaystyle \diff{f}{x} \stackrel!= f'$. Then, you will easily see that
 \begin{itemize}
   \item $\displaystyle f'(x)=\diff{f}{x}(x)=\diff{f(x)}{x}=\diff{}{x}f(x)$ is a function,
   \item but we often omit the ``$(x)$'' part and write $\displaystyle f'$, $\displaystyle\diff fx$, or $\displaystyle\diff{}xf$.
-  \item $\displaystyle f'(a)=\diff{f}{x}(a)=\diff{}xf(a)$ means the value of $f'(x)$ at $x=a$.
+  \item \emph{If $a$ is a constant}, $\displaystyle f'(a)=\diff{f}{x}(a)=\diff{}xf(a)$ means the value of $f'(x)$ at $x=a$.
 \end{itemize}
 
 \begin{problems}
@@ -136,10 +135,10 @@ Sho recommends you to identify $\displaystyle \diff{f}{x} \stackrel!= f'$. Then,
     \item$\displaystyle\diff[2]{}x x^5$
     \DIFF{\left(x^8+x^3\right)}
     \DIFF{\left(x+1\right)^3}
-    \DIFF{\left(x^3-4ax\right)}
     \item $\displaystyle\diff fx$
     \item $\displaystyle\diff{}{x}f(1)$
-    \item $f''(3)$
+    \item $f''(1)$\phantom{$\displaystyle\frac12$}
+    \item $f''(a)$\phantom{$\displaystyle\frac12$}
   \end{menumerate}
   }
   \Problem[C]{Let $f(x)=x^5$ and $g(x)=(x+1)^5$, calculate the following expressions.
@@ -157,7 +156,7 @@ Sho recommends you to identify $\displaystyle \diff{f}{x} \stackrel!= f'$. Then,
 \subsection{Trigonometric functions}
 For arguments of \Emph{trigonometric functions} $\sin x$, $\cos x$, etc., we usually use \Emph{radians} instead of degrees. The degree $180^\circ$ is equal to $\pi$ radian, so
 \begin{equation*}
-  180^\circ = \pi\unit{rad},\qquad\text{i.e.,}\qquad 1\unit{rad}=\frac{180^\circ}\pi\approx57.30^\circ.
+  180\unit{deg} = 180^\circ = \pi\unit{rad},\qquad\text{i.e.,}\qquad 1\unit{rad}=\frac{180^\circ}\pi\approx57.30^\circ.
 \end{equation*}
 Furthermore, the unit ``rad'' is often omitted. Namely, e.g.,
 \begin{equation*}
@@ -165,25 +164,34 @@ Furthermore, the unit ``rad'' is often omitted. Namely, e.g.,
 \end{equation*}
 and you need to get accustomed to this convention.
 
-\Remark{Be careful that $\sin x^\circ\neq \sin x$. Rather,
-\begin{equation*}
-  \sin x^\circ=\sin\left(\frac{\pi x}{180}\unit{rad}\right)=\sin\frac{\pi x}{180}.
-\end{equation*}
-}
+In particular, notice that \Emph{the small circle $^\circ$ means ``degrees''}. If you write the small circle, it is equivalent to ``degrees''. Meanwhile, if you do not write the circle $^\circ$, we interpret it in radians. So,
+\[
+\sin30^\circ = \frac12,\quad \sin30 \simeq -0.988,\qquad
+\Bigl(\text{or}\quad
+\sin(30\unit{deg}) = \frac12,\quad\sin(30\unit{rad}) \simeq -0.988\Bigr).
+\]
+In general,
+\begin{equation}
+ \sin x^\circ=\sin\left(\frac{\pi x}{180}\unit{rad}\right)=\sin\frac{\pi x}{180}.
+ \end{equation}
+
+
+
 \Remark{\Emph{Almost all students are confused by the notation}, $(\sin x^2)\neq(\sin x)^2$.
 \begin{equation*}
   \text{Namely,}\quad\sin^2x~~=~~(\sin x)^2~~\neq~~\sin x^2~~=~~\sin(x^2).
 \end{equation*}
 }
-\Remark{However, we should use this ``$\sin^kx$'' notation only for $k>0$. Sho suggests you to use specifically for positive-\emph{integer} $k$, such as $\cos^2x$ or $\tan^24\theta$. For negative or fractional exponents, it is preferable to use expressions like $(\sin x)^{3/2}$ or $(\sin x)^{-2}$:
+\Remark{We should use this ``$\sin^kx$'' notation only for $k>0$. Sho suggests you to use specifically for positive-\emph{integer} $k$, such as $\cos^2x$ or $\tan^24\theta$. For negative or fractional exponents, it is preferable to use expressions like $(\sin x)^{3/2}$ or $(\sin x)^{-2}$:
 \begin{equation*}
   (\sin x)^{-2}=\frac{1}{\sin^2x},\qquad(\tan x)^{-1/2}=\frac1{(\tan x)^{1/2}}=\frac{1}{\sqrt{\tan x}}=(\cot x)^{1/2},\quad\text{etc.}
 \end{equation*}
-It is best important to  avoid ambiguous expressions.\addnote{Do not write $\sin(x)^2$. It will only confuse readers.}\addnote{%
-You will soon learn about inverse trigonometric functions such as~~~$\arcsin x$~~~and~~~$\arctan \theta$~. They are sometimes written as $\sin^{-1}x$ or $\tan^{-1}\theta$.}
+Avoid ambiguous expressions.\addnote{Do not write $\sin(x)^2$. It will only confuse readers.}\addnote{%
+You will soon learn ``inverse trigonometric functions'' such as~~~$\arcsin x$~~~and~~~$\arctan \theta$~. They are sometimes written as $\sin^{-1}x$ or $\tan^{-1}\theta$.}
 }
+\vspace{-.5em}
 \OutputNote
-
+\vspace{-.5em}
 
 \begin{problems}
   \Problem[S]{Calculate the following values.
@@ -242,6 +250,7 @@ Any derivatives can be calculated based on this definition. For example, with $f
   \label{eq:diffdefex}
 \end{equation}
 
+\vspace{.1em}
 
 \def\GrayBox#1#2{#1\fcolorbox{black}{lightgray}{\phantom{#2}}#1}
 \def\GrayBoxTall{\GrayBox{~}{\phantom{$\frac12$xxxxxxxxx}}}
@@ -276,11 +285,9 @@ Any derivatives can be calculated based on this definition. For example, with $f
     \item We know $F(x)$ satisfies $F''(x)=1$. Find $F(x)$.
     \item We know $G(x)$ satisfies $G''(x)=1$ and $G'(0)=2$. Find $G(x)$.
     \item We know $H(x)$ satisfies $H''(x)=1$, $H'(0)=2$, and $H''(0)=k$, where $k$ is a real constant. Find $H(x)$.
-    \item We know $\mathcal F(x)$ satisfies $\mathcal F''(x)=a$, $\mathcal F'(0)=b$, and $\mathcal F(0)=c$, where $a$, $b$, and $c$ are real constans. Find $H(x)$.
+    \item We know $\mathcal F(x)$ satisfies $\mathcal F''(x)=a$, $\mathcal F'(0)=b$, and $\mathcal F(0)=c$, where $a$, $b$, and $c$ are real constants. Find $\mathcal F(x)$.
     \end{enumerate}}
 \end{problems}
-
-\pagebreak
 
 \subsection{The formulae you need to memorize}
 Now it's time for more complicated functions. First, you need to memorize the following formulae.
@@ -291,7 +298,7 @@ I mean, \emph{you need to do exercise until you've memorized them and can use th
   \begin{align}
    \diff{}{x}\sin x &= \cos x,&
    \diff{}{x}\cos x &= -\sin x,&
-   \diff{}{x}\tan x &= \frac1{\cos^2x}.
+   \diff{}{x}\tan x &= \frac1{\cos^2x}.\label{eq:trig}
   \end{align}
 \end{theorem}
 \begin{theorem}{}{}
@@ -325,17 +332,27 @@ I mean, \emph{you need to do exercise until you've memorized them and can use th
     \DIFF{\frac{\sin x}{x}}
     \DIFF{\frac{\sin x}{\cos x}}
   \end{menumerate}}
- \Problem[C]{We can prove all the above theorems. Let's try!
+\end{problems}
+\ifBasicForm\else
+\begin{problems}
+ \Problem[C]{We can prove all the above theorems, \eqref{eq:trig}--\eqref{eq:quot}. It is not easy, but let's try!
  \begin{enumerate}
-  \item Prove $(\sin x)'=\cos x$ and $(\cos x)'=-\sin x$ by the same method as Problem [H].\\
-    (You can use $\displaystyle\lim_{x\to 0}\frac{\sin x}{x}=1$ and $\displaystyle1+\cos\theta = \frac{1-\cos^2\theta}{1-\cos\theta} = \frac{\sin^2\theta}{1-\cos\theta})$.
+  \item Check that $\displaystyle 1+\cos\theta = \frac{\sin^2\theta}{1-\cos\theta}$. You may need this in the next question.
   \end{enumerate}
-  Now, we prove Eqs.~\eqref{eq:reci}--\eqref{eq:quot}. First, let's assume Eqs.~\eqref{eq:reci} and \eqref{eq:prod} are correct.
+  To prove \eqref{eq:trig}, we need to use $\displaystyle\lim_{x\to 0}\frac{\sin x}{x}=1$. However, its proof is nontrivial and related to a deeper issue in the definition of sine functions. So, in this Boot Camp, we accept this equation.
+  \begin{enumerate}[resume]
+  \item Prove $\displaystyle\diff{}{x}\sin x=\cos x$ and $\displaystyle\diff{}{x}\cos x=-\sin x$ by the same method as Problem [H], using $\displaystyle\lim_{x\to 0}\frac{\sin x}{x}=1$.
+  \end{enumerate}
+  Next, we prove Eqs.~\eqref{eq:reci}--\eqref{eq:quot}. First, let's assume Eqs.~\eqref{eq:reci} and \eqref{eq:prod} are correct.
   \begin{enumerate}[resume]
   \item Prove Eq.~\eqref{eq:quot} from Eqs.~\eqref{eq:reci} and \eqref{eq:prod}.
+  \end{enumerate}
+  All that remains is to show Eqs.~\eqref{eq:reci} and \eqref{eq:prod}. So,
+  \begin{enumerate}[resume]
   \item Prove Eqs.~\eqref{eq:reci} and \eqref{eq:prod} by the method of Problem [H]. \Hint{This is not easy.}
-\end{enumerate}}
+  \end{enumerate}}
 \end{problems}
+\fi
 
 \pagebreak
 
@@ -559,8 +576,8 @@ If you are lost, try using online resources, ask your colleagues, or ask Sho.
 \ifBasicForm
 Have you finished all the problems? Great job! You're now ready for the mini test and well-prepared for your upcoming university life!
 
-If you are going to take Sho's lecture, \Emph{you can email your answers to Sho}.
-Sho will look at it and give you feedback. This will \emph{not} be included in the grade evaluation, but Sho will acknowledge see your hard work and you might get some recognition for your effort.
+If you are going to take Sho's lecture, \Emph{you can send your answers/questions to Sho} via an email (\url{mailto:iwamoto@g-mail.nsysu.edu.tw}).
+Sho will look at it and give you feedback. It will \emph{not} be included in the grade evaluation, but Sho will acknowledge your hard work and you might get some recognition for your effort.
 
 
 \vfill
@@ -572,8 +589,8 @@ Sho will look at it and give you feedback. This will \emph{not} be included in t
 
 Have you finished all the problems? Great job! You're now 100\% ready for your university learning!
 
-If you are going to take Sho's lecture, \Emph{you can email your answers to Sho}.
-Sho will look at it and give you feedback. This will \emph{not} be included in the grade evaluation, but Sho will acknowledge see your hard work and you might get some recognition for your effort.
+If you are going to take Sho's lecture, \Emph{you can send your answers/questions to Sho} via an email (\url{mailto:iwamoto@g-mail.nsysu.edu.tw}).
+Sho will look at it and give you feedback. It will \emph{not} be included in the grade evaluation, but Sho will acknowledge your hard work and you might get some recognition for your effort.
 
 
 \vfill
