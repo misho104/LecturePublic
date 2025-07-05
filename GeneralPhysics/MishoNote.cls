@@ -1,4 +1,4 @@
-% Time-Stamp: <2025-01-29 00:00:00>
+% Time-Stamp: <2025-07-06 00:00:00>
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{MishoNote}[2022/11/23 Sho Iwamoto]
 
@@ -517,8 +517,6 @@ end
 \renewcommand\p@enumiii{{\sffamily\theenumi(\theenumii)}}
 \renewcommand\p@enumiv{{\sffamily\p@enumiii\theenumiii}}
 
-\DeclareRobustCommand\styleproblem[1]{{\sffamily\bfseries #1}}
-
 %%% To be rewritten
 %\DeclareRobustCommand\misho@ref[4]{%
 %  #1~\ref{#2#3}\if#4\relax\relax\else.{\sffamily\@roman#4}\fi}
@@ -594,19 +592,20 @@ end
   \ifmmode $\QED$\else\leavevmode\unskip\penalty9999 \hbox{}\nobreak%
   \hfill\quad\hbox{$\QED$}\fi}
 
-\SetEnumitemKey{ProblemList}{align=left,labelwidth=\BaseTab,itemsep=4mm,labelsep=.5em,labelindent=\z@}
-\SetEnumitemKey{QuizList}   {align=left,labelwidth=\BaseTab,leftmargin=\z@,itemsep=4mm,itemindent=\BaseTab}
+
+\SetEnumitemKey{problems@property}{align=left,labelwidth=\BaseTab,itemsep=4mm,labelsep=.5em,labelindent=\z@,start=\value{Problem}}
+\SetEnumitemKey{quizzes@property} {align=left,labelwidth=\BaseTab,leftmargin=\z@,itemsep=4mm,itemindent=\BaseTab,start=\value{Problem}}
+\def\begin@@problems{\begin{enumerate}[problems@property,label=\textbfsf{Problem~\Alph*}]}
+\def\begin@@quizzes {\begin{enumerate}[quizzes@property, label=\textbfsf{Quiz~\Alph*}]}
 
 \newcounter{Problem}
 %\renewcommand\theProblem{\thesection.\@arabic\c@Problem}
 %\@addtoreset{Problem}{section}
 \newenvironment{problems}{%
-  \begin{tcolorbox}[myprobbox]\stepcounter{Problem}%
-  \begin{enumerate}[ProblemList,start=\value{Problem},label=\styleproblem{Problem~\Alph*}]%
+  \begin{tcolorbox}[myprobbox]\stepcounter{Problem}\begin@@problems%
 }{\end{enumerate}\end{tcolorbox}\setcounter{Problem}{\value{enumi}}}
 \newenvironment{quizzes}{%
-  \begin{tcolorbox}[myquizbox]\stepcounter{Problem}%
-  \begin{enumerate}[QuizList,start=\value{Problem},label=\styleproblem{Quiz~\Alph*}]%
+  \begin{tcolorbox}[myquizbox]\stepcounter{Problem}\begin@@quizzes%
 }{\end{enumerate}\end{tcolorbox}\setcounter{Problem}{\value{enumi}}}
 \NewDocumentCommand\new@problem{+m}{\refstepcounter{Problem}\item}
 \let\Problem\new@problem % should be customized in each style
@@ -732,7 +731,8 @@ end
 \DeclareMathOperator{\sign}   {\mathrm{sign}}
 \DeclareMathOperator{\Br}     {\mathrm{Br}}
 
-\newcommand*\deq{\coloneq}
+\newcommand*\deq{\coloneq} % or change \eqdef at the document level
+\newcommand*\eqd{\eqcolon} % or change \eqdef at the document level
 
 
 \newcommand*\EE{\@ifnextchar-{\@@EE}{\@EE}}
@@ -775,6 +775,7 @@ end
 \renewcommand\thefootnote{*\arabic{footnote}}
 \numberwithin{equation}{section}
 \newcommand\hrefFN[2]{\href{#1}{#2}\addnote{\url{#1}}}
+\newcommand\MAILTO[2][\ttfamily]{\href{mailto:#2}{#1#2}}
 
 \urlstyle{englishfonttt}
 \DeclareTextFontCommand{\textbfsf}{\bfseries\sffamily}

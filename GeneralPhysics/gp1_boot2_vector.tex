@@ -199,23 +199,15 @@ Furthermore, \Emph*{area} and \Emph*{volume} are scalar quantities, while \Emph*
 \begin{quizzes}
   \Quiz[S] Choose vector quantities. Choose scalar quantities.
   \begin{menumerate}[labelsep=0em,labelwidth=0em,itemindent=1em,label={},leftmargin=0.3em]{4}
-    \item temperature
     \item air pressure
     \item wind speed
-    \item velocity
+    \item wind velocity
     \item electric charge
-    \item Sho
-    \item Sho's height
-    \item Sho's weight
-    \item Sho's mass
-    \item city name
     \item position
+    \item distance
     \item time difference
     \item time
     \item duration
-    \item distance
-    \item kilometer
-    \item resistor
     \item resistance
     \item conductor
     \item conductance
@@ -226,11 +218,18 @@ Furthermore, \Emph*{area} and \Emph*{volume} are scalar quantities, while \Emph*
     \item $v+|\vc x|$
     \item magnitude of $\vc v$
     \item direction of $\vc v$
+    \item Sho
+    \item Sho's height
+    \item Sho's weight
+    \item Sho's mass
   \end{menumerate}
-  \Quiz[S] Assume $\vc a$ is a vector quantity and $k$ is a scalar quantity.\\
-  \TAB\QSub{1} What does $|\vc a|$ mean?\qquad\QSub{2} What does $|k|$ mean?\\
-  \TAB\hfill\Hint{They are different! The answer can be found in these two pages.}
+  \Quiz[S]
+   \QSub{1} Assume $\vc a$ is a vector quantity. What does $|\vc a|$ mean?
+   \\[.5em]\TAB
+   \QSub{2} Assume $v$ is a scalar quantity. What does $|v|$ mean?\\[.5em]
+    \TAB\TAB\Hint{They are different! The answer can be found in these two pages.}
 \end{quizzes}
+
 
 \OutputNote
 
@@ -772,28 +771,24 @@ For vectors, \Emph{you only need to learn these operations!} In other words, onl
 \]
 can be obtained by combining these five.
 \Remark{The numerator is the sum of two vectors: $\vc a\times\vc b$ plus $(\vc x\cdot\vc y)\vc d$. Here, $\vc x\cdot \vc y$ is just a number. The denominator has two numbers: $\vc a\cdot\vc b$ and $|\vc b\times\vc c+\vc d|$, where the latter is the magnitude of the vector $\vc b\times\vc c+\vc d$.}
-
-Therefore, \Emph{we cannot do any other operations}. For example, these are all \Emph{invalid} expression:
-{
-\color{AltDefA}
+Therefore, \Emph{we cannot do any other operations}. For example, these are all \Emph{\C{invalid}} expression:
 \begin{align*}
-   (\vc a)^2,
- && \frac{1}{\,\vc a\,},
- && k+\vc a,
- && \vc a\vc b,
- && \sqrt{\vc a},
- && \frac{\vc a}{\,\vc a\,},
- && a+\vc a,
- && \vc a\cdot\vc b+\vc a\times\vc b,
- && (\vc a+\vc b)\vc c;
+    \C{(\vc a)^2},
+ && \C{\frac{1}{\,\vc a\,}},
+ && \C{k+\vc a},
+ && \C{\vc a\vc b},
+ && \C{\sqrt{\vc a}},
+ && \C{\frac{\vc a}{\,\vc a\,}},
+ && \C{a+\vc a},
+ && \C{\vc a\cdot\vc b+\vc a\times\vc b},
+ && \C{(\vc a+\vc b)\vc c};
 \end{align*}
-}
 these never appears in correct math equations and do not express any mathematical concept.
 
 Now, let's try the \Emph*{Vector/Scalar/Not game}.
 \begin{problems}
 \Problem[S] For each expression, answer \Emph*{V} if it is vector; \Emph*{S} if it is scalar, and \Emph*{N} if it is an invalid expression (neither vector nor scalar).
-\begin{align*}\def\baselinestretch{2}
+\begin{align*}
   & 3+|\vc a|
   && \vc a-\vc b
   && \vc a\vc b

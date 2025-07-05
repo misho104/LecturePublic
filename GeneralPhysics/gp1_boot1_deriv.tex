@@ -153,28 +153,28 @@ Sho recommends you to identify $\displaystyle \diff{f}{x} \stackrel!= f'$. Then,
   }
 \end{problems}
 
+\newpage
+
 \subsection{Trigonometric functions}
-For arguments of \Emph{trigonometric functions} $\sin x$, $\cos x$, etc., we usually use \Emph{radians} instead of degrees. The degree $180^\circ$ is equal to $\pi$ radian, so
+Functions such as $\sin x$ and $\cos x$ are called \Emph{trigonometric functions}. For their argument $x$, we usually use \Emph{radians} instead of degrees. The degree $180^\circ$ is equal to $\pi$ radian, so
 \begin{equation*}
   180\unit{deg} = 180^\circ = \pi\unit{rad},\qquad\text{i.e.,}\qquad 1\unit{rad}=\frac{180^\circ}\pi\approx57.30^\circ.
 \end{equation*}
-Furthermore, the unit ``rad'' is often omitted. Namely, e.g.,
+Furthermore, the unit ``rad'' is often omitted. Namely, we write
 \begin{equation*}
   \cos\frac{\pi}{3} = \cos\left(\frac\pi3\unit{rad}\right) = \cos60^\circ = \frac12
 \end{equation*}
 and you need to get accustomed to this convention.
 
-In particular, notice that \Emph{the small circle $^\circ$ means ``degrees''}. If you write the small circle, it is equivalent to ``degrees''. Meanwhile, if you do not write the circle $^\circ$, we interpret it in radians. So,
+Be sure that the small circle $^\circ$ makes the meaning very different: it means ``degrees''. For example, $30^\circ$ is equivalent to $30\unit{deg}$ and $30$ is equivalent to $30\unit{rad}$:
 \[
-\sin30^\circ = \frac12,\quad \sin30 \simeq -0.988,\qquad
-\Bigl(\text{or}\quad
-\sin(30\unit{deg}) = \frac12,\quad\sin(30\unit{rad}) \simeq -0.988\Bigr).
+30^\circ = \frac\pi6 \qquad\text{and}\qquad 30 = \frac{1}{\pi}\times5400^\circ
 \]
+because $30\unit{deg}=(\pi/6)\unit{rad}$ and $30\unit{rad}=(30/\pi)(\pi\unit{rad})=(30/\pi)\times180\unit{deg}$.
 In general,
 \begin{equation}
- \sin x^\circ=\sin\left(\frac{\pi x}{180}\unit{rad}\right)=\sin\frac{\pi x}{180}.
+ x^\circ=x\unit{deg}=\left(\frac{\pi x}{180}\unit{rad}\right)=\frac{\pi x}{180}.
  \end{equation}
-
 
 
 \Remark{\Emph{Almost all students are confused by the notation}, $(\sin x^2)\neq(\sin x)^2$.
@@ -189,9 +189,7 @@ In general,
 Avoid ambiguous expressions.\addnote{Do not write $\sin(x)^2$. It will only confuse readers.}\addnote{%
 You will soon learn ``inverse trigonometric functions'' such as~~~$\arcsin x$~~~and~~~$\arctan \theta$~. They are sometimes written as $\sin^{-1}x$ or $\tan^{-1}\theta$.}
 }
-\vspace{-.5em}
 \OutputNote
-\vspace{-.5em}
 
 \begin{problems}
   \Problem[S]{Calculate the following values.
@@ -250,8 +248,6 @@ Any derivatives can be calculated based on this definition. For example, with $f
   \label{eq:diffdefex}
 \end{equation}
 
-\vspace{.1em}
-
 \def\GrayBox#1#2{#1\fcolorbox{black}{lightgray}{\phantom{#2}}#1}
 \def\GrayBoxTall{\GrayBox{~}{\phantom{$\frac12$xxxxxxxxx}}}
 \begin{problems}
@@ -288,6 +284,8 @@ Any derivatives can be calculated based on this definition. For example, with $f
     \item We know $\mathcal F(x)$ satisfies $\mathcal F''(x)=a$, $\mathcal F'(0)=b$, and $\mathcal F(0)=c$, where $a$, $b$, and $c$ are real constants. Find $\mathcal F(x)$.
     \end{enumerate}}
 \end{problems}
+
+\ifBasicForm\pagebreak\else\fi
 
 \subsection{The formulae you need to memorize}
 Now it's time for more complicated functions. First, you need to memorize the following formulae.
