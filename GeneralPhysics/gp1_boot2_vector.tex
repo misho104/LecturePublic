@@ -499,7 +499,7 @@ It is not difficult to prove the following formulae from the above definitions:
    \item Describe $\vc A$ and $\vc B$ by using $\vvex$ and $\vvey$.
    \item Describe $\vvex$ and $\vvey$ by using $\vc A$ and $\vc B$.
     \Hint{See your answer of the previous problem.}
-   \item A vector $\vc \beta$ has the same direction as $\vc b$ but its magnitude is 1. Describe $\vc \beta$ by using $\vc \beta$. Draw $\vc \beta$ in the above grid.
+   \item A vector $\vc \beta$ has the same direction as $\vc b$ but its magnitude is 1. Describe $\vc \beta$ by using $\vc b$. Also, draw $\vc \beta$ in the above grid.
  \end{enumerate}
 \end{problems}
 \begin{problems}
@@ -611,7 +611,7 @@ There are a few more important formulae: for any vectors $\vc a$, $\vc b$, and $
     \item Calculate the angle between $\vc a$ and $\vc b$.
     \item Calculate $|\vc a|^2+2\vc a\cdot\vc b+|\vc b|^2$.
     \item Calculate $|\vc a+\vc b|$.
-    \item Explain why $|x\vc a+y\vc b|^2$ is \Emph{not} equal to $x^2+y^2$.
+    \item Explain why $|x\vc a+y\vc b|^2$ \Emph{is not} equal to $x^2+y^2$.
     \item Calculate the magnitude of the vectors $4\vc a+3\vc b$ and $x\vc a+y\vc b$.
    \end{enumerate}
   Two other vectors $\vc e_1$ and $\vc e_2$ satisfy $|\vc e_1|=1$, $|\vc e_2|=1$, and $\vc e_1\cdot\vc e_2=0$.
@@ -627,16 +627,16 @@ There are a few more important formulae: for any vectors $\vc a$, $\vc b$, and $
  Two vectors $\vc s$ and $\vc t$ are given by $\vc s=3\vc a+3\vc b$ and $\vc t=2\vc a-\vc b$.
   \begin{enumerate}
     \item Calculate $|\vc s|$, $|\vc t|$, and $\vc s\cdot\vc t$. Find the angle between $\vc s$ and $\vc t$.
-    \item Assume $\vc u=\vc x+k\vc y$ is perpendicular to $\vc s$. Find the value of $k$.
+    \item Assume $\vc u=\vc a+k\vc b$ is perpendicular to $\vc s$. Find the value of $k$.
   \end{enumerate}
   Two vectors $\vc S$ and $\vc T$ are given by $\vc S=3\vc e_1+3\vc e_2$ and $\vc T=2\vc e_1-\vc e_2$.
   \begin{enumerate}[resume]
-    \item Calculate $|\vc S|$, $|\vc T|$, and $\vc S\cdot\vc T$. Find the angle between $\vc s$ and $\vc t$.
-    \item Assume $\vc u=\vc x+k\vc y$ is perpendicular to $\vc s$. Find the value of $k$.
+    \item Calculate $|\vc S|$, $|\vc T|$, and $\vc S\cdot\vc T$. Find the angle between $\vc S$ and $\vc T$.
+    \item Assume $\vc U=\vc a+k'\vc b$ is perpendicular to $\vc S$. Find the value of $k'$.
   \end{enumerate}
-  Now, assume $\vc p=a\vvex+b\vvey$, which is not $\vc 0$.
+  Now, assume $\vc p=a\vc e_1+b\vc e_2$, which is not equal to $\vc 0$.
   \begin{enumerate}[resume]
-    \item Calculate $|\vc p|$, $\vc p\cdot\vvex$, and $\vc p\cdot\vvey$. Check that $\vc p=(\vc p\cdot\vvex)\vvex+(\vc p\cdot\vvey)\vvey$.
+    \item Calculate $|\vc p|$, $\vc p\cdot\vc e_1$, and $\vc p\cdot\vc e_2$. Check that $\vc p=(\vc p\cdot\vc e_1)\vc e_1+(\vc p\cdot\vc e_2)\vc e_2$.
     \item Find the unit vector whose direction is the same as $\vc p$.
   \end{enumerate}
 \end{problems}
@@ -647,8 +647,8 @@ There are a few more important formulae: for any vectors $\vc a$, $\vc b$, and $
   \begin{enumerate}
     \item First, assume that $\vc i$, $\vc j$, and $\vc k$ are (any) vectors. Fill in the blanks:
     \begin{align*}
-      &|\vc a|^2=a_1^2|\vc i|^2+2a_1a_2(\vc i\cdot\vc j)+\GrayBox{~}{h\hspace{5em}}+a_3^2|\vc k|^2,\\
-      &\vc a\cdot\vc b=a_1b_1|\vc i|^2+a_1b_2(\vc i\cdot\vc j)+\GrayBox{~}{h\hspace{5em}}+a_3b_3|\vc k|^2.
+      &|\vc a|^2=a_1^2|\vc i|^2+2a_1a_2(\vc i\cdot\vc j)+\GrayBox{\strut\hspace{8em}}+a_3^2|\vc k|^2,\\
+      &\vc a\cdot\vc b=a_1b_1|\vc i|^2+a_1b_2(\vc i\cdot\vc j)+\GrayBox{\strut\hspace{8em}}+a_3b_3|\vc k|^2.
     \end{align*}
   \end{enumerate}
   Now, assume they satisfy $|\vc i|=|\vc j|=|\vc k|=1$ and $\vc i\cdot\vc j=\vc j\cdot\vc k=\vc k\cdot\vc i=0$.
