@@ -129,9 +129,13 @@ Let's begin with a review of highschool mathematics.
   \end{menumerate}
   \itemC It is worth noticing that the expression $b^x$ is a bit tricky. Check and be convinced/comfortable with the following facts.
   \begin{itemize}
-    \item For positive $b$, the exponential $b^x$ is well-defined for any $x\in\RR$, i.e., $x$ can be positive, negative, fractional, or zero.
-    \item If $b$ is zero, $b^x=0^x$ is well-defined only for $x>0$. The value is always zero.
-    \item If $b$ is negative, $b^x$ is well-defined only for an integer $x\in\ZZ$.
+    \item If $b>0$, then the exponential $b^x$ is well-defined for any $x\in\RR$, i.e., $x$ can be positive, negative, fractional, or zero.
+    \item If $b<0$, then $b^x$ is well-defined only for an integer $x\in\ZZ$.\addnote{%
+In fact, $b^x$ can be defined as a real number if $b<0$ and $x$ is a rational number with an odd denominator, such as $(-2)^{1/7}=-1.10409$, but we rarely see (and maybe should not use) such expressions.
+    }\addnote{In \emph{complex analysis}, we may define $b^x=(\ee^{\ln b})^x =\ee^{x\ln b}$ for $b<0$. However, $\ln b$ is multi-valued for $b<0$ and may be a complex number. For example, we can check that
+    $z=1+\ii\sqrt{3}$, $z=1-\ii\sqrt{3}$, and $z=-2$ all satisfy $z^3=-8$, so we can say any of them is $(-8)^{1/3}$.}
+    \item If $b=0$, then $b^x=0^x$ is well-defined only for $x>0$ (and its value is always zero).\addnote{%
+There is no good way to define $0^x$ for $x\le 0$. For example, the value of $0^0$ is not well-defined. We sometimes use $0^0\stackrel!=1$ but it is not a global consensus.}
   \end{itemize}
   Now, choose the well-defined values from the following.
   \begin{multicols}{7}\begin{enumerate}[labelsep=0em,labelwidth=0em,itemindent=0em,label={},leftmargin=0.3em]
@@ -158,14 +162,7 @@ Let's begin with a review of highschool mathematics.
    \item $0^{0}$
 \end{enumerate}\end{multicols}
 \end{enumerate}
-\Remark{
-After you learn complex analysis, you can define $b^x$ for $b<0$ and any real number $x\in\RR$, which is given by
-\[
-b^x=|b|^x(-1)^x=|b|^x(\ee^{\ii\pi})^x=|b|^x\ee^{\ii\pi x}.
-\]
-For example, $(-3)^{0.2} \simeq 1.12+0.81\ii$ and $(-\pi)^{-\sqrt{3}}\simeq 0.092+0.10\ii$.
-Meanwhile, there is no good way to define $0^x$ for $x\le 0$. For example, the value of $0^0$ is not well-defined. We sometimes use $0^0\stackrel!=1$ but it is not a global consensus.
-}
+\OutputNote
 \newpage
 \subsection{Highschool Review 2: Logarithmic Functions}
 Logarithmic functions are defined as follows. Notice the allowed range of $a$ and $x$.
@@ -432,7 +429,7 @@ The last part of this session, before the exercises, is a brief introduction to 
 A simple example is
 \[ f'(x)=4x. \]
 Now you need to find $f(x)$ that satisfies this equation.
-\Emph{One} solution is $f(x)=2x^2$. However, you will see that there are many more solutions in the following problems.
+\Emph{One} solution is $f(x)=2x^2$. However, later in the problems, you will see that there are many more solutions.
 
 Another simple differential equation is
 \[ f'(x) = f(x). \]
@@ -465,9 +462,9 @@ It is not easy to find the solution at first glance, but if you have done this E
   \itemC Verify each of the following statement.
   \begin{enumerate}
     \item $f(x)=\ee^x$, $f(x)=-\ee^x$, and $f(x)=\ee^{-x}$ all satisfy $f''(x)=f(x)$.
-    \item For any number $A$ and $B$, $f(x)=A\ee^x+B\ee^{-x}$ satisfies $f''(x)=f(x)$.
+    \item For any numbers $A$ and $B$, $f(x)=A\ee^x+B\ee^{-x}$ satisfies $f''(x)=f(x)$.
     \item $f(x)=\sinh x$ and $f(x)=\cosh x$ also satisfy $f''(x)=f(x)$.
-    \item We can express $\sinh x$ in the form of $A\ee^{x}+B\ee^{-x}$ if we choose $A$ and $B$. We can do the same for $\cosh x$.
+    \item We can express $\sinh x$ in the form of $A\ee^{x}+B\ee^{-x}$ if we choose $A$ and $B$ properly. We can do the same for $\cosh x$.
   \end{enumerate}
 \end{enumerate}
 
@@ -587,9 +584,9 @@ Now, again, it's time to do exercise! In fact, for physics, the above discussion
 \subsection{Advanced Practice}
 
 If you have not satisfied with the above problems, you can try the following ones.
-First, you need to understand the following procedure.
+First, you need to understand the following procedure: we are going to calculate the derivative of $\sin\sqrt{x^2+1}$.
 \begin{itemize}
-  \item Consider $\sin\sqrt{x^2+1}$ and we let $u=x^2+1$.
+  \item To calculate the derivative of $\sin\sqrt{x^2+1}$, we let $u=x^2+1$. Then, we can first obtain
   \[
     \diff{}{x}\sqrt{x^2+1}=\diff{}{x}\sqrt u=\diff{\sqrt u}{u}\diff ux=\frac{1}{2\sqrt u}\cdot2x=\frac{x}{\sqrt{x^2+1}}.
   \]
