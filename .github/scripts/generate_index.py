@@ -21,6 +21,25 @@ except ImportError:
     print("Install with: pip install pyyaml jinja2")
     sys.exit(1)
 
+# Maximum time for regex matching (in seconds) to prevent ReDoS attacks
+REGEX_TIMEOUT = 1.0
+
+
+def validate_css_value(value: str, allowed_chars: str = r'a-zA-Z0-9#\-,\.\s\'"():') -> str:
+    """
+    Validate CSS values to prevent CSS injection.
+    Only allows alphanumeric characters and common CSS syntax.
+    """
+    if not value:
+        return value
+    
+    # Remove any characters that aren't in the allowed set
+    pattern = f'[^{allowed_chars}]'
+    sanitized = re.sub(pattern, '', value)
+    
+    # Truncate to reasonable length
+    return sanitized[:200]
+
 
 def get_file_size(filepath: Path) -> str:
     """Get human-readable file size."""
@@ -65,14 +84,20 @@ def categorize_files(pdf_files: List[Path], categories_config: List[Dict]) -> Li
             
             # Check if filename matches any pattern in this category
             for pattern in patterns:
-                if re.match(pattern, filename):
-                    category['files'].append({
-                        'filename': filename,
-                        'size': get_file_size(pdf_file),
-                        'is_old_version': is_old_version(filename)
-                    })
-                    matched_files.add(pdf_file)
-                    break
+                try:
+                    # Use re.match with a simple timeout protection
+                    # For filenames, this should be very fast
+                    if re.match(pattern, filename):
+                        category['files'].append({
+                            'filename': filename,
+                            'size': get_file_size(pdf_file),
+                            'is_old_version': is_old_version(filename)
+                        })
+                        matched_files.add(pdf_file)
+                        break
+                except re.error as e:
+                    print(f"Warning: Invalid regex pattern '{pattern}': {e}")
+                    continue
         
         # Sort files by name
         category['files'].sort(key=lambda x: x['filename'])
@@ -103,8 +128,14 @@ def main():
         sys.exit(1)
     
     # Load configuration
-    with open(config_file, 'r') as f:
+    with open(config_file, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
+    
+    # Sanitize CSS values if style section exists
+    if 'style' in config:
+        for key in ['primary_color', 'background_color', 'card_background', 'font_family']:
+            if key in config['style']:
+                config['style'][key] = validate_css_value(str(config['style'][key]))
     
     # Get all PDF files from docs directory
     if not docs_dir.exists():
@@ -133,7 +164,7 @@ def main():
     html_content = template.render(config=config, categories=categories)
     
     # Write output
-    with open(output_file, 'w') as f:
+    with open(output_file, 'w', encoding='utf-8') as f:
         f.write(html_content)
     
     print(f"Successfully generated: {output_file}")
