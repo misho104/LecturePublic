@@ -23,6 +23,11 @@ except ImportError:
     sys.exit(1)
 
 
+# Category matching keywords
+GENERAL_PHYSICS_PREFIX = 'gp'
+POLICIES_KEYWORDS = ['grading', 'submission', 'generative', 'policy', 'guideline']
+
+
 def validate_css_value(value: str, allowed_chars: str = r'a-zA-Z0-9#\-,\.\s\'') -> str:
     """
     Validate CSS values to prevent CSS injection.
@@ -103,9 +108,15 @@ def get_last_commit_date(filename: str, repo_root: Path) -> Optional[str]:
         if not original_path:
             return None
         
+        # Validate path to prevent command injection
+        path_str = str(original_path)
+        if '..' in path_str or path_str.startswith('/'):
+            print(f"Warning: Invalid path detected for {filename}")
+            return None
+        
         # Use git log to get the last commit date for this file
         result = subprocess.run(
-            ['git', 'log', '-1', '--format=%ci', '--', str(original_path)],
+            ['git', 'log', '-1', '--format=%ci', '--', path_str],
             cwd=repo_root,
             capture_output=True,
             text=True,
@@ -208,11 +219,11 @@ def main():
     
     for file in all_files:
         filename = file['filename']
-        # General Physics: files starting with 'gp'
-        if filename.startswith('gp'):
+        # General Physics: files starting with the defined prefix
+        if filename.startswith(GENERAL_PHYSICS_PREFIX):
             general_physics_files.append(file)
         # Policies: files containing policy-related keywords
-        elif any(keyword in filename for keyword in ['grading', 'submission', 'generative', 'policy', 'guideline']):
+        elif any(keyword in filename for keyword in POLICIES_KEYWORDS):
             policies_files.append(file)
         # Other: everything else
         else:
