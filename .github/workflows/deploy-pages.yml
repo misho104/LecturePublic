@@ -80,6 +80,7 @@ jobs:
       - name: Generate HTML index
         run: |
           python .github/scripts/generate_index.py
+          cp .github/templates/style.css docs/style.css
           echo "HTML index generated"
           cat docs/index.html
 

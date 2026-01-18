@@ -23,23 +23,6 @@ except ImportError:
     sys.exit(1)
 
 
-def validate_css_value(value: str, allowed_chars: str = r'a-zA-Z0-9#\-,\.\s\'') -> str:
-    """
-    Validate CSS values to prevent CSS injection.
-    Only allows alphanumeric characters and basic CSS syntax.
-    Does not allow parentheses, colons, or other potentially dangerous characters.
-    """
-    if not value:
-        return value
-    
-    # Remove any characters that aren't in the allowed set
-    pattern = f'[^{allowed_chars}]'
-    sanitized = re.sub(pattern, '', value)
-    
-    # Truncate to reasonable length
-    return sanitized[:200]
-
-
 def sanitize_html(html: str) -> str:
     """
     Sanitize HTML to allow only safe tags and attributes.
@@ -179,12 +162,6 @@ def main():
     # Load configuration
     with open(config_file, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
-    
-    # Sanitize CSS values if style section exists
-    if 'style' in config:
-        for key in ['primary_color', 'background_color', 'card_background', 'font_family']:
-            if key in config['style']:
-                config['style'][key] = validate_css_value(str(config['style'][key]))
     
     # Sanitize HTML in site section
     if 'site' in config:
