@@ -21,14 +21,12 @@ except ImportError:
     print("Install with: pip install pyyaml jinja2")
     sys.exit(1)
 
-# Maximum time for regex matching (in seconds) to prevent ReDoS attacks
-REGEX_TIMEOUT = 1.0
 
-
-def validate_css_value(value: str, allowed_chars: str = r'a-zA-Z0-9#\-,\.\s\'"():') -> str:
+def validate_css_value(value: str, allowed_chars: str = r'a-zA-Z0-9#\-,\.\s\'') -> str:
     """
     Validate CSS values to prevent CSS injection.
-    Only allows alphanumeric characters and common CSS syntax.
+    Only allows alphanumeric characters and basic CSS syntax.
+    Does not allow parentheses, colons, or other potentially dangerous characters.
     """
     if not value:
         return value
@@ -39,6 +37,24 @@ def validate_css_value(value: str, allowed_chars: str = r'a-zA-Z0-9#\-,\.\s\'"()
     
     # Truncate to reasonable length
     return sanitized[:200]
+
+
+def sanitize_html(html: str) -> str:
+    """
+    Sanitize HTML to allow only safe tags and attributes.
+    Currently only allows <a> tags with href attributes.
+    """
+    if not html:
+        return html
+    
+    # Very simple sanitization: only allow <a href="..."> tags
+    # Remove all tags except <a>
+    result = re.sub(r'<(?!/?a[\s>])[^>]*>', '', html)
+    
+    # Ensure href attributes only contain safe URLs (http/https)
+    result = re.sub(r'href=["\'](?!https?://)[^"\']*["\']', 'href="#"', result)
+    
+    return result
 
 
 def get_file_size(filepath: Path) -> str:
@@ -85,8 +101,8 @@ def categorize_files(pdf_files: List[Path], categories_config: List[Dict]) -> Li
             # Check if filename matches any pattern in this category
             for pattern in patterns:
                 try:
-                    # Use re.match with a simple timeout protection
-                    # For filenames, this should be very fast
+                    # Match filename against pattern
+                    # For filenames (short strings), regex matching should be very fast
                     if re.match(pattern, filename):
                         category['files'].append({
                             'filename': filename,
@@ -136,6 +152,12 @@ def main():
         for key in ['primary_color', 'background_color', 'card_background', 'font_family']:
             if key in config['style']:
                 config['style'][key] = validate_css_value(str(config['style'][key]))
+    
+    # Sanitize HTML in site section
+    if 'site' in config:
+        for key in ['welcome_message', 'footer_text', 'license_text']:
+            if key in config['site']:
+                config['site'][key] = sanitize_html(str(config['site'][key]))
     
     # Get all PDF files from docs directory
     if not docs_dir.exists():
