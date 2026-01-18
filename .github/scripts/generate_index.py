@@ -73,6 +73,25 @@ def is_old_version(filename: str) -> bool:
     return bool(re.search(r'-v\d', filename))
 
 
+def find_original_file_path(filename: str, repo_root: Path) -> Optional[Path]:
+    """
+    Find the original file path in the repository (outside docs and .git directories).
+    Returns the relative path from repo root, or None if not found.
+    """
+    try:
+        for pdf_path in repo_root.glob(f'**/{filename}'):
+            try:
+                relative = pdf_path.relative_to(repo_root)
+                if not str(relative).startswith('docs/') and not str(relative).startswith('.git/'):
+                    return relative
+            except ValueError:
+                continue
+        return None
+    except Exception as e:
+        print(f"Warning: Could not search for original location of {filename}: {e}")
+        return None
+
+
 def get_last_commit_date(filename: str, repo_root: Path) -> Optional[str]:
     """
     Get the last commit date for a file using git log.
@@ -80,19 +99,7 @@ def get_last_commit_date(filename: str, repo_root: Path) -> Optional[str]:
     Returns formatted date string or None if unavailable.
     """
     try:
-        # Try to find the original file in the repository (outside docs directory)
-        original_path = None
-        
-        for pdf_path in repo_root.glob(f'**/{filename}'):
-            # Skip files in docs or .git directories
-            try:
-                relative = pdf_path.relative_to(repo_root)
-                if not str(relative).startswith('docs/') and not str(relative).startswith('.git/'):
-                    original_path = relative
-                    break
-            except ValueError:
-                continue
-        
+        original_path = find_original_file_path(filename, repo_root)
         if not original_path:
             return None
         
@@ -122,26 +129,8 @@ def get_github_history_url(filename: str, github_repo: str, repo_root: Path) -> 
     Searches for the original file location in the repository.
     Format: https://github.com/owner/repo/commits/main/path/to/file.pdf
     """
-    # Try to find the original file in the repository (outside docs directory)
-    original_path = None
-    
-    try:
-        # Search for the file in the repository
-        for pdf_path in repo_root.glob(f'**/{filename}'):
-            # Skip files in docs or .git directories
-            try:
-                relative = pdf_path.relative_to(repo_root)
-                if not str(relative).startswith('docs/') and not str(relative).startswith('.git/'):
-                    original_path = relative
-                    break
-            except ValueError:
-                continue
-    except Exception as e:
-        print(f"Warning: Could not search for original location of {filename}: {e}")
-    
-    # If we found the original path, use it; otherwise just use the filename
+    original_path = find_original_file_path(filename, repo_root)
     file_path = str(original_path) if original_path else filename
-    
     return f"https://github.com/{github_repo}/commits/main/{file_path}"
 
 
@@ -212,14 +201,39 @@ def main():
     # Sort files by name
     all_files.sort(key=lambda x: x['filename'])
     
-    print(f"Processed {len(all_files)} PDF files")
+    # Categorize files for better template performance
+    general_physics_files = []
+    policies_files = []
+    other_files = []
+    
+    for file in all_files:
+        filename = file['filename']
+        # General Physics: files starting with 'gp'
+        if filename.startswith('gp'):
+            general_physics_files.append(file)
+        # Policies: files containing policy-related keywords
+        elif any(keyword in filename for keyword in ['grading', 'submission', 'generative', 'policy', 'guideline']):
+            policies_files.append(file)
+        # Other: everything else
+        else:
+            other_files.append(file)
+    
+    print(f"Processed {len(all_files)} PDF files:")
+    print(f"  - General Physics: {len(general_physics_files)} files")
+    print(f"  - Policies: {len(policies_files)} files")
+    print(f"  - Other Resources: {len(other_files)} files")
     
     # Setup Jinja2 environment
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template(template_file)
     
     # Render template
-    html_content = template.render(config=config, all_files=all_files)
+    html_content = template.render(
+        config=config,
+        general_physics_files=general_physics_files,
+        policies_files=policies_files,
+        other_files=other_files
+    )
     
     # Write output
     with open(output_file, 'w', encoding='utf-8') as f:

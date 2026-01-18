@@ -174,8 +174,7 @@
     <h3>📐 General Physics</h3>
     <p class="category-description">General Physics lecture materials for engineering students</p>
     <ul class="pdf-list">
-        {% for file in all_files %}
-        {% if file.filename.startswith('gp') %}
+        {% for file in general_physics_files %}
         <li class="pdf-item">
             <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
             <div class="pdf-info">
@@ -195,15 +194,13 @@
                 <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
             </div>
         </li>
-        {% endif %}
         {% endfor %}
     </ul>
     
     <h3>📋 Policies</h3>
     <p class="category-description">Course policies and guidelines</p>
     <ul class="pdf-list">
-        {% for file in all_files %}
-        {% if 'grading' in file.filename or 'submission' in file.filename or 'generative' in file.filename or 'policy' in file.filename or 'guideline' in file.filename %}
+        {% for file in policies_files %}
         <li class="pdf-item">
             <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
             <div class="pdf-info">
@@ -223,15 +220,13 @@
                 <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
             </div>
         </li>
-        {% endif %}
         {% endfor %}
     </ul>
     
     <h3>📚 Other Resources</h3>
     <p class="category-description">Additional materials and resources</p>
     <ul class="pdf-list">
-        {% for file in all_files %}
-        {% if not file.filename.startswith('gp') and not ('grading' in file.filename or 'submission' in file.filename or 'generative' in file.filename or 'policy' in file.filename or 'guideline' in file.filename) %}
+        {% for file in other_files %}
         <li class="pdf-item">
             <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
             <div class="pdf-info">
@@ -251,7 +246,6 @@
                 <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
             </div>
         </li>
-        {% endif %}
         {% endfor %}
     </ul>
     
