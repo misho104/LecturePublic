@@ -20,7 +20,7 @@ This file (`versions.json`) specifies which PDF files should have their older ve
 
 - **file**: The path to the PDF file in the repository (e.g., `GeneralPhysics/gp1_boot1_deriv.pdf`)
 - **tag**: The git tag or commit hash from which to retrieve this version
-- **version**: The version identifier that will be appended to the filename (e.g., `v1.0` will create `filename-v1.0.pdf`)
+- **version**: The version identifier that will be appended to the filename. Supports various formats like `v1.0`, `v1.0.0`, `v2.1-beta`, or `v1.0.0-rc1`. The version string will create filenames like `filename-v1.0.pdf`
 
 ## Example
 
@@ -44,9 +44,14 @@ To archive version 1.0 of a General Physics PDF from tag `v1.0`:
 ```
 
 This will create:
-- `gp1_boot1_deriv.pdf` (latest version from main branch)
-- `gp1_boot1_deriv-v1.0.pdf` (from tag v1.0)
-- `gp1_boot1_deriv-v1.1.pdf` (from tag v1.1)
+- `gp1_boot1_deriv.pdf` (latest version from main branch, marked with "Latest" badge)
+- `gp1_boot1_deriv-v1.0.pdf` (from tag v1.0, marked with "Old Version" badge)
+- `gp1_boot1_deriv-v1.1.pdf` (from tag v1.1, marked with "Old Version" badge)
+
+All PDFs are organized into categories on the index page:
+- **General Physics**: Files matching `gp*.pdf`
+- **Policies**: Files matching policy-related keywords (grading, submission, generative, policy, guideline)
+- **Other Resources**: All remaining PDF files
 
 ## Workflow
 
