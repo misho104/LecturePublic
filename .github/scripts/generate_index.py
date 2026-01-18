@@ -154,6 +154,11 @@ def main():
         """List PDFs in a given directory.
 
         Files that are not published in docs_dir is excluded."""
+        for file in list_pdf_data_in_directory(directory_path, repo_root):
+            print(f"::: {file['filename']} {directory_path}")
+            print(f"    {docs_dir / file['filename']}")
+            print(f"    {(docs_dir / file['filename']).exists()}")
+            print(f"{file}")
         return [
             file
             for file in list_pdf_data_in_directory(directory_path, repo_root)
