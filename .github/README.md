@@ -122,7 +122,7 @@ xdg-open docs/index.html  # Linux
 
 1. **GitHub Actions Workflow** (`.github/workflows/deploy-pages.yml`):
    - Copies all PDFs to `docs/` directory
-   - Processes versioned PDFs from `versions.json`
+   - Processes versioned PDFs from `.github/versions.json`
    - Installs Python dependencies (PyYAML, Jinja2)
    - Runs the generator script
    - Deploys to GitHub Pages

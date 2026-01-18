@@ -42,7 +42,7 @@ For information about managing PDF versions, see |VERSIONING|_.
 .. |GITHUB_README| replace:: GitHub Pages customization guide
 .. _GITHUB_README: https://github.com/misho104/LecturePublic/blob/main/.github/README.md
 .. |VERSIONING| replace:: ``VERSIONING.md``
-.. _VERSIONING: https://github.com/misho104/LecturePublic/blob/main/VERSIONING.md
+.. _VERSIONING: https://github.com/misho104/LecturePublic/blob/main/.github/VERSIONING.md
 
 License
 -------
