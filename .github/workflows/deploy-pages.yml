@@ -171,8 +171,8 @@ jobs:
               filename=$(basename "$pdf")
               size=$(du -h "$pdf" | cut -f1)
               
-              # Check if it's a versioned file
-              if [[ "$filename" =~ -v[0-9]+\.[0-9]+ ]]; then
+              # Check if it's a versioned file (matches -v followed by any version string)
+              if [[ "$filename" =~ -v[0-9] ]]; then
                 badge="<span class=\"old-version-badge\">Old Version</span>"
               else
                 badge="<span class=\"version-badge\">Latest</span>"
@@ -189,7 +189,7 @@ jobs:
           echo "        </ul>" >> docs/index.html
           echo "    </div>" >> docs/index.html
 
-          # Policies section
+          # Policies section - files that match common policy patterns
           echo "    <div class=\"category\">" >> docs/index.html
           echo "        <h2>Policies</h2>" >> docs/index.html
           echo "        <ul class=\"pdf-list\">" >> docs/index.html
@@ -197,12 +197,12 @@ jobs:
           for pdf in docs/*.pdf; do
             if [ -f "$pdf" ]; then
               filename=$(basename "$pdf")
-              # Skip if already processed (gp*.pdf or by-nc.pdf)
-              if [[ ! "$filename" =~ ^gp ]] && [[ "$filename" != "by-nc.pdf" ]]; then
+              # Include files that match policy patterns (but not gp*.pdf or figs/license files)
+              if [[ "$filename" =~ (grading|submission|generative|policy|guideline) ]]; then
                 size=$(du -h "$pdf" | cut -f1)
                 
-                # Check if it's a versioned file
-                if [[ "$filename" =~ -v[0-9]+\.[0-9]+ ]]; then
+                # Check if it's a versioned file (matches -v followed by any version string)
+                if [[ "$filename" =~ -v[0-9] ]]; then
                   badge="<span class=\"old-version-badge\">Old Version</span>"
                 else
                   badge="<span class=\"version-badge\">Latest</span>"
@@ -220,15 +220,18 @@ jobs:
           echo "        </ul>" >> docs/index.html
           echo "    </div>" >> docs/index.html
 
-          # Other files section
-          if compgen -G "docs/by-nc.pdf" > /dev/null; then
-            echo "    <div class=\"category\">" >> docs/index.html
-            echo "        <h2>Other Resources</h2>" >> docs/index.html
-            echo "        <ul class=\"pdf-list\">" >> docs/index.html
-            
-            for pdf in docs/by-nc.pdf; do
-              if [ -f "$pdf" ]; then
-                filename=$(basename "$pdf")
+          # Other Resources section - remaining files not categorized above
+          echo "    <div class=\"category\">" >> docs/index.html
+          echo "        <h2>Other Resources</h2>" >> docs/index.html
+          echo "        <ul class=\"pdf-list\">" >> docs/index.html
+          
+          has_other_files=false
+          for pdf in docs/*.pdf; do
+            if [ -f "$pdf" ]; then
+              filename=$(basename "$pdf")
+              # Include files that don't match gp* or policy patterns
+              if [[ ! "$filename" =~ ^gp ]] && [[ ! "$filename" =~ (grading|submission|generative|policy|guideline) ]]; then
+                has_other_files=true
                 size=$(du -h "$pdf" | cut -f1)
                 
                 echo "            <li class=\"pdf-item\">" >> docs/index.html
@@ -236,11 +239,11 @@ jobs:
                 echo "                <span class=\"pdf-size\">$size</span>" >> docs/index.html
                 echo "            </li>" >> docs/index.html
               fi
-            done
-            
-            echo "        </ul>" >> docs/index.html
-            echo "    </div>" >> docs/index.html
-          fi
+            fi
+          done
+          
+          echo "        </ul>" >> docs/index.html
+          echo "    </div>" >> docs/index.html
 
           cat >> docs/index.html << 'EOF'
               <div class="footer">
