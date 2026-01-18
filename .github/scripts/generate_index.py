@@ -13,13 +13,8 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-try:
-    import yaml
-    from jinja2 import Environment, FileSystemLoader
-except ImportError:
-    print("Error: Required packages not installed.")
-    print("Install with: pip install pyyaml jinja2")
-    sys.exit(1)
+import yaml
+from jinja2 import Environment, FileSystemLoader
 
 
 def sanitize_html(html: str) -> str:
@@ -29,20 +24,17 @@ def sanitize_html(html: str) -> str:
     """
     if not html:
         return html
-
     # Very simple sanitization: only allow <a href="..."> tags
     # Remove all tags except <a>
     result = re.sub(r"<(?!/?a[\s>])[^>]*>", "", html)
-
     # Ensure href attributes only contain safe URLs (http/https)
     result = re.sub(r'href=["\'](?!https?://)[^"\']*["\']', 'href="#"', result)
-
     return result
 
 
 def get_file_size(filepath: Path) -> str:
     """Get human-readable file size."""
-    size_bytes = filepath.stat().st_size
+    size_bytes = float(filepath.stat().st_size)
     for unit in ["B", "KB", "MB", "GB"]:
         if size_bytes < 1024.0:
             return f"{size_bytes:.1f}{unit}"
