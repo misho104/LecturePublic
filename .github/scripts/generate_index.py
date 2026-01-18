@@ -250,19 +250,29 @@ def main():
     # Get GitHub repository information
     github_repo = config.get('site', {}).get('github_repo', 'misho104/LecturePublic')
     
-    # Categorize files
-    categories = categorize_files(pdf_files, config.get('categories', []), repo_root, github_repo)
+    # Build file list with metadata
+    all_files = []
+    for pdf_file in pdf_files:
+        filename = pdf_file.name
+        all_files.append({
+            'filename': filename,
+            'size': get_file_size(pdf_file),
+            'is_old_version': is_old_version(filename),
+            'last_commit_date': get_last_commit_date(filename, repo_root),
+            'github_history_url': get_github_history_url(filename, github_repo, repo_root)
+        })
     
-    # Print summary
-    for category in categories:
-        print(f"Category '{category['name']}': {len(category['files'])} files")
+    # Sort files by name
+    all_files.sort(key=lambda x: x['filename'])
+    
+    print(f"Processed {len(all_files)} PDF files")
     
     # Setup Jinja2 environment
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template(template_file)
     
     # Render template
-    html_content = template.render(config=config, categories=categories)
+    html_content = template.render(config=config, all_files=all_files)
     
     # Write output
     with open(output_file, 'w', encoding='utf-8') as f:

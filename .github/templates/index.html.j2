@@ -171,42 +171,89 @@
     <h1>{{ config.site.title }}</h1>
     <p>{{ config.site.welcome_message }}</p>
     
-    {% for category in categories %}
-    <div class="category">
-        <h3>{% if category.icon %}{{ category.icon }} {% endif %}{{ category.name }}</h3>
-        {% if category.description %}
-        <p class="category-description">{{ category.description }}</p>
+    <h3>📐 General Physics</h3>
+    <p class="category-description">General Physics lecture materials for engineering students</p>
+    <ul class="pdf-list">
+        {% for file in all_files %}
+        {% if file.filename.startswith('gp') %}
+        <li class="pdf-item">
+            <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
+            <div class="pdf-info">
+                {% if file.last_commit_date %}
+                <span class="pdf-date">Updated: {{ file.last_commit_date }}</span>
+                {% endif %}
+                {% if config.display.show_version_badges %}
+                    {% if file.is_old_version %}
+                    <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
+                    {% else %}
+                    <span class="version-badge">{{ config.display.version_badge_text }}</span>
+                    {% endif %}
+                {% endif %}
+                {% if config.display.show_file_sizes %}
+                <span class="pdf-size">{{ file.size }}</span>
+                {% endif %}
+                <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
+            </div>
+        </li>
         {% endif %}
-        
-        {% if category.files %}
-        <ul class="pdf-list">
-            {% for file in category.files %}
-            <li class="pdf-item">
-                <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
-                <div class="pdf-info">
-                    {% if file.last_commit_date %}
-                    <span class="pdf-date">Updated: {{ file.last_commit_date }}</span>
+        {% endfor %}
+    </ul>
+    
+    <h3>📋 Policies</h3>
+    <p class="category-description">Course policies and guidelines</p>
+    <ul class="pdf-list">
+        {% for file in all_files %}
+        {% if 'grading' in file.filename or 'submission' in file.filename or 'generative' in file.filename or 'policy' in file.filename or 'guideline' in file.filename %}
+        <li class="pdf-item">
+            <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
+            <div class="pdf-info">
+                {% if file.last_commit_date %}
+                <span class="pdf-date">Updated: {{ file.last_commit_date }}</span>
+                {% endif %}
+                {% if config.display.show_version_badges %}
+                    {% if file.is_old_version %}
+                    <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
+                    {% else %}
+                    <span class="version-badge">{{ config.display.version_badge_text }}</span>
                     {% endif %}
-                    {% if config.display.show_version_badges %}
-                        {% if file.is_old_version %}
-                        <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
-                        {% else %}
-                        <span class="version-badge">{{ config.display.version_badge_text }}</span>
-                        {% endif %}
-                    {% endif %}
-                    {% if config.display.show_file_sizes %}
-                    <span class="pdf-size">{{ file.size }}</span>
-                    {% endif %}
-                    <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p class="empty-category">No files in this category</p>
+                {% endif %}
+                {% if config.display.show_file_sizes %}
+                <span class="pdf-size">{{ file.size }}</span>
+                {% endif %}
+                <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
+            </div>
+        </li>
         {% endif %}
-    </div>
-    {% endfor %}
+        {% endfor %}
+    </ul>
+    
+    <h3>📚 Other Resources</h3>
+    <p class="category-description">Additional materials and resources</p>
+    <ul class="pdf-list">
+        {% for file in all_files %}
+        {% if not file.filename.startswith('gp') and not ('grading' in file.filename or 'submission' in file.filename or 'generative' in file.filename or 'policy' in file.filename or 'guideline' in file.filename) %}
+        <li class="pdf-item">
+            <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
+            <div class="pdf-info">
+                {% if file.last_commit_date %}
+                <span class="pdf-date">Updated: {{ file.last_commit_date }}</span>
+                {% endif %}
+                {% if config.display.show_version_badges %}
+                    {% if file.is_old_version %}
+                    <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
+                    {% else %}
+                    <span class="version-badge">{{ config.display.version_badge_text }}</span>
+                    {% endif %}
+                {% endif %}
+                {% if config.display.show_file_sizes %}
+                <span class="pdf-size">{{ file.size }}</span>
+                {% endif %}
+                <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
+            </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
     
     <div class="footer">
         <p>{{ config.site.footer_text }}</p>
