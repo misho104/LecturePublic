@@ -1,0 +1,271 @@
+name: Deploy PDFs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all tags and branches
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Create docs directory
+        run: mkdir -p docs
+
+      - name: Copy all current PDF files
+        run: |
+          echo "Copying latest PDF files..."
+          find . -type f -name "*.pdf" ! -path "./docs/*" ! -path "./.git/*" -exec cp {} docs/ \;
+          echo "Latest PDFs copied:"
+          ls -lh docs/
+
+      - name: Process versioned PDFs
+        run: |
+          echo "Processing versions.json..."
+          if [ -f versions.json ]; then
+            # Check if versions array is not empty
+            version_count=$(jq '.versions | length' versions.json)
+            if [ "$version_count" -gt 0 ]; then
+              jq -c '.versions[]' versions.json | while read -r version; do
+                file=$(echo "$version" | jq -r '.file')
+                tag=$(echo "$version" | jq -r '.tag')
+                version_name=$(echo "$version" | jq -r '.version')
+                
+                echo "Fetching $file from tag/commit $tag as version $version_name..."
+                
+                # Get the file from the specified tag/commit
+                git show "$tag:$file" > "docs/$(basename "${file%.*}")-${version_name}.pdf" 2>/dev/null || {
+                  echo "Warning: Could not fetch $file from $tag"
+                  continue
+                }
+                
+                echo "Created: $(basename "${file%.*}")-${version_name}.pdf"
+              done
+            else
+              echo "No versions defined in versions.json"
+            fi
+          else
+            echo "No versions.json file found, skipping version processing"
+          fi
+
+      - name: Generate HTML index
+        run: |
+          cat > docs/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Lecture Materials - PDF Archive</title>
+              <style>
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                      max-width: 1200px;
+                      margin: 0 auto;
+                      padding: 20px;
+                      background-color: #f5f5f5;
+                  }
+                  h1 {
+                      color: #333;
+                      border-bottom: 3px solid #0366d6;
+                      padding-bottom: 10px;
+                  }
+                  h2 {
+                      color: #444;
+                      margin-top: 30px;
+                      border-bottom: 2px solid #ddd;
+                      padding-bottom: 5px;
+                  }
+                  .pdf-list {
+                      list-style: none;
+                      padding: 0;
+                  }
+                  .pdf-item {
+                      background: white;
+                      margin: 10px 0;
+                      padding: 15px 20px;
+                      border-radius: 6px;
+                      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                  }
+                  .pdf-item:hover {
+                      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                  }
+                  .pdf-name {
+                      font-weight: 500;
+                      color: #0366d6;
+                      text-decoration: none;
+                      flex-grow: 1;
+                  }
+                  .pdf-name:hover {
+                      text-decoration: underline;
+                  }
+                  .pdf-size {
+                      color: #666;
+                      font-size: 0.9em;
+                      margin-left: 15px;
+                  }
+                  .version-badge {
+                      background-color: #28a745;
+                      color: white;
+                      padding: 3px 8px;
+                      border-radius: 3px;
+                      font-size: 0.85em;
+                      margin-left: 10px;
+                  }
+                  .old-version-badge {
+                      background-color: #6c757d;
+                      color: white;
+                      padding: 3px 8px;
+                      border-radius: 3px;
+                      font-size: 0.85em;
+                      margin-left: 10px;
+                  }
+                  .footer {
+                      margin-top: 50px;
+                      padding-top: 20px;
+                      border-top: 1px solid #ddd;
+                      text-align: center;
+                      color: #666;
+                      font-size: 0.9em;
+                  }
+                  .category {
+                      margin-bottom: 30px;
+                  }
+              </style>
+          </head>
+          <body>
+              <h1>📚 Lecture Materials - PDF Archive</h1>
+              <p>Welcome to the PDF archive. Below you can find all available lecture materials organized by category.</p>
+          EOF
+
+          # Group PDFs by category
+          echo "    <div class=\"category\">" >> docs/index.html
+          echo "        <h2>General Physics</h2>" >> docs/index.html
+          echo "        <ul class=\"pdf-list\">" >> docs/index.html
+          
+          for pdf in docs/gp*.pdf; do
+            if [ -f "$pdf" ]; then
+              filename=$(basename "$pdf")
+              size=$(du -h "$pdf" | cut -f1)
+              
+              # Check if it's a versioned file
+              if [[ "$filename" =~ -v[0-9]+\.[0-9]+ ]]; then
+                badge="<span class=\"old-version-badge\">Old Version</span>"
+              else
+                badge="<span class=\"version-badge\">Latest</span>"
+              fi
+              
+              echo "            <li class=\"pdf-item\">" >> docs/index.html
+              echo "                <a href=\"$filename\" class=\"pdf-name\" target=\"_blank\">$filename</a>" >> docs/index.html
+              echo "                $badge" >> docs/index.html
+              echo "                <span class=\"pdf-size\">$size</span>" >> docs/index.html
+              echo "            </li>" >> docs/index.html
+            fi
+          done
+          
+          echo "        </ul>" >> docs/index.html
+          echo "    </div>" >> docs/index.html
+
+          # Policies section
+          echo "    <div class=\"category\">" >> docs/index.html
+          echo "        <h2>Policies</h2>" >> docs/index.html
+          echo "        <ul class=\"pdf-list\">" >> docs/index.html
+          
+          for pdf in docs/*.pdf; do
+            if [ -f "$pdf" ]; then
+              filename=$(basename "$pdf")
+              # Skip if already processed (gp*.pdf or by-nc.pdf)
+              if [[ ! "$filename" =~ ^gp ]] && [[ "$filename" != "by-nc.pdf" ]]; then
+                size=$(du -h "$pdf" | cut -f1)
+                
+                # Check if it's a versioned file
+                if [[ "$filename" =~ -v[0-9]+\.[0-9]+ ]]; then
+                  badge="<span class=\"old-version-badge\">Old Version</span>"
+                else
+                  badge="<span class=\"version-badge\">Latest</span>"
+                fi
+                
+                echo "            <li class=\"pdf-item\">" >> docs/index.html
+                echo "                <a href=\"$filename\" class=\"pdf-name\" target=\"_blank\">$filename</a>" >> docs/index.html
+                echo "                $badge" >> docs/index.html
+                echo "                <span class=\"pdf-size\">$size</span>" >> docs/index.html
+                echo "            </li>" >> docs/index.html
+              fi
+            fi
+          done
+          
+          echo "        </ul>" >> docs/index.html
+          echo "    </div>" >> docs/index.html
+
+          # Other files section
+          if compgen -G "docs/by-nc.pdf" > /dev/null; then
+            echo "    <div class=\"category\">" >> docs/index.html
+            echo "        <h2>Other Resources</h2>" >> docs/index.html
+            echo "        <ul class=\"pdf-list\">" >> docs/index.html
+            
+            for pdf in docs/by-nc.pdf; do
+              if [ -f "$pdf" ]; then
+                filename=$(basename "$pdf")
+                size=$(du -h "$pdf" | cut -f1)
+                
+                echo "            <li class=\"pdf-item\">" >> docs/index.html
+                echo "                <a href=\"$filename\" class=\"pdf-name\" target=\"_blank\">$filename</a>" >> docs/index.html
+                echo "                <span class=\"pdf-size\">$size</span>" >> docs/index.html
+                echo "            </li>" >> docs/index.html
+              fi
+            done
+            
+            echo "        </ul>" >> docs/index.html
+            echo "    </div>" >> docs/index.html
+          fi
+
+          cat >> docs/index.html << 'EOF'
+              <div class="footer">
+                  <p>Generated automatically by GitHub Actions</p>
+                  <p>Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></p>
+              </div>
+          </body>
+          </html>
+          EOF
+
+          echo "HTML index generated"
+          cat docs/index.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
