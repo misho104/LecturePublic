@@ -1,32 +1,9 @@
 # GitHub Pages Configuration
-# This file controls the appearance and organization of the PDF archive page
 
 # Site metadata
 site:
   title: "Learning Resources and Previous Lecture Documents"
   description: "Sho's lecture materials for university physics and mathematics courses, including learning resources and documents for past lectures."
-  github_repo: "misho104/LecturePublic"
-
-# NOTE: Categories are now hard-coded in the HTML template (index.html.j2)
-# The categories section below is kept for reference but is no longer actively used
-# To modify categories, edit the template file directly
-
-# Categories define how PDFs are organized on the page (DEPRECATED - see note above)
-categories:
-  - name: "General Physics"
-    patterns:
-      - "^gp.*\\.pdf$"
-    description: "General Physics lecture materials for engineering students"
-
-  - name: "Policies"
-    patterns:
-      - ".*(grading|submission|generative|policy|guideline).*\\.pdf$"
-    description: "Course policies and guidelines"
-
-  - name: "Other Resources"
-    patterns:
-      - ".*\\.pdf$"  # Catch-all pattern for remaining PDFs
-    description: "Additional materials and resources"
 
 # Display options
 display:

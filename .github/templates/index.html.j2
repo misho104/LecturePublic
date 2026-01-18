@@ -1,3 +1,20 @@
+{% macro pdf_item(file) %}
+    <li class="pdf-item">
+        <a href="{{ file.filename }}" class="pdf-name">{{ file.filename }}</a>
+        <div class="pdf-info">
+            {% if file.last_commit_date %}<span class="pdf-date">Updated: {{ file.last_commit_date }}</span>{% endif %}
+            {% if config.display.show_version_badges %}
+                {% if file.is_old_version %}
+                    <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
+                {% else %}
+                    <span class="version-badge">{{ config.display.version_badge_text }}</span>
+                {% endif %}
+            {% endif %}
+            {% if config.display.show_file_sizes %}<span class="pdf-size">{{ file.size }}</span>{% endif %}
+            <a href="{{ file.github_history_url }}" class="pdf-history-link">History</a>
+        </div>
+    </li>
+{% endmacro %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -13,47 +30,18 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        {% macro pdf_list_items(files) %}
-            {% for file in files %}
-                <li class="pdf-item">
-                    <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
-                    <div class="pdf-info">
-                        {% if file.last_commit_date %}<span class="pdf-date">Updated: {{ file.last_commit_date }}</span>{% endif %}
-                        {% if config.display.show_version_badges %}
-                            {% if file.is_old_version %}
-                                <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
-                            {% else %}
-                                <span class="version-badge">{{ config.display.version_badge_text }}</span>
-                            {% endif %}
-                        {% endif %}
-                        {% if config.display.show_file_sizes %}<span class="pdf-size">{{ file.size }}</span>{% endif %}
-                        <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
-                    </div>
-                </li>
-            {% endfor %}
-        {% endmacro %}
-
         <h1>{{ config.site.title }}</h1>
         <p>Welcome to the PDF archive. Below you can find all available lecture materials organized by category.</p>
-        
-        <h2>General Physics</h2>
-        <p class="category-description">General Physics lecture materials for engineering students</p>
+        <h2>Boot Camp</h2>
+        <p class="category-description">Boot Camp sessions for university new comers in Science and Engineering</p>
         <ul class="pdf-list">
-            {{ pdf_list_items(list_pdf_data_in_directory("GeneralPhysics")) }}
+            {% for file in list_pdf_data_in_directory("../../GeneralPhysics") %}{{ pdf_item(file) }}{% endfor %}
         </ul>
-
         <h2>Policies</h2>
         <p class="category-description">Course policies and guidelines</p>
         <ul class="pdf-list">
-            {{ pdf_list_items(list_pdf_data_in_directory("Policies")) }}
+            {% for file in list_pdf_data_in_directory("../../Policies") %}{{ pdf_item(file) }}{% endfor %}
         </ul>
-
-        <h2>Other Resources</h2>
-        <p class="category-description">Additional materials and resources</p>
-        <ul class="pdf-list">
-            {{ pdf_list_items(list_pdf_data_in_directory(".")) }}
-        </ul>
-
         <div class="footer">
             <div>
                 <div>(C) 2024&#8211;2026</div>
@@ -61,7 +49,7 @@
                     <span>
                         <span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span>
                     </span>
-                    <span>iwamoto@g-mail.nsysu.edu.tw</span>
+                    <span><a href="mailto:iwamoto@g-mail.nsysu.edu.tw">iwamoto@g-mail.nsysu.edu.tw</a></span>
                 </address>
             </div>
             <div>
