@@ -1,233 +1,253 @@
-# GitHub Pages Template System
+# GitHub Pages for Lecture Materials
 
-This directory contains the template engine setup for generating the GitHub Pages index.
+This directory contains the configuration and templates for generating the GitHub Pages index that displays PDF lecture materials.
 
 ## Overview
 
-The GitHub Pages for this repository now uses a template-based system (Jinja2 with Python) instead of hardcoded shell scripts. This makes it much easier to customize the appearance, organization, and content of the PDF archive page.
+The GitHub Pages for this repository provides an organized, easy-to-navigate archive of all PDF lecture materials. The page is automatically generated and deployed whenever changes are pushed to the main branch.
 
-## Files
+## File Structure
 
-- **`page-config.yml`** - Main configuration file for customizing the page
-- **`templates/index.html.j2`** - Jinja2 template for the HTML page
+- **`page-config.yml`** - Configuration file for site metadata and display options
+- **`templates/index.html.j2`** - Jinja2 template for the HTML page structure
+- **`templates/style.css`** - CSS stylesheet for the page appearance
 - **`scripts/generate_index.py`** - Python script that generates the HTML from the template
+- **`versions.json`** - Configuration for archived PDF versions (see VERSIONING.md)
+- **`VERSIONING.md`** - Documentation for the PDF versioning system
+
+## How It Works
+
+1. **GitHub Actions Workflow** (`.github/workflows/deploy-pages.yml`):
+   - Triggers on push to main branch, new releases, or manual dispatch
+   - Copies all PDF files to the `docs/` directory
+   - Processes versioned PDFs from `.github/versions.json`
+   - Installs Python dependencies (PyYAML, Jinja2)
+   - Runs the generator script to create the HTML index
+   - Deploys the `docs/` directory to GitHub Pages
+
+2. **Generator Script** (`.github/scripts/generate_index.py`):
+   - Reads configuration from `page-config.yml`
+   - Uses the Jinja2 template to generate HTML
+   - For each category in the template, calls `list_pdf_data_in_directory()` to get PDF metadata
+   - Generates file information including size, last commit date, and version badges
+   - Writes the rendered HTML to `docs/index.html`
+
+3. **Template Rendering**:
+   - The Jinja2 template defines the page structure and categories
+   - Currently includes two fixed categories:
+     - **Boot Camp**: PDFs from the `GeneralPhysics` directory
+     - **Policies**: PDFs from the `Policies` directory
+   - Each PDF is displayed with metadata (update date, version badge, history link)
 
 ## Quick Start: Customizing Your Page
 
-### 1. Change Site Title and Messages
+### 1. Change Site Title and Description
 
 Edit `.github/page-config.yml`:
 
 ```yaml
 site:
   title: "My Custom Title"
-  welcome_message: "Your custom welcome message here"
+  description: "Your custom description here"
 ```
 
-### 2. Add or Modify Categories
-
-Edit the `categories` section in `.github/page-config.yml`:
-
-```yaml
-categories:
-  - name: "My New Category"
-    patterns:
-      - "^custom.*\\.pdf$"  # Matches files starting with "custom"
-    description: "Description of this category"
-```
-
-**Pattern Notes:**
-- Patterns are Python regular expressions
-- Use `^` for start of filename, `$` for end
-- Use `.*` to match any characters
-- Example patterns:
-  - `"^gp.*\\.pdf$"` - Matches gp*.pdf files
-  - `".*test.*\\.pdf$"` - Matches any PDF with "test" in the name
-  - `".*\\.pdf$"` - Matches all PDF files (catch-all)
-
-### 3. Customize Colors and Fonts
-
-Uncomment and edit the `style` section in `.github/page-config.yml`:
-
-```yaml
-style:
-  primary_color: "#0366d6"
-  background_color: "#f5f5f5"
-  card_background: "white"
-  font_family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto"
-```
-
-### 4. Toggle Features
+### 2. Toggle Display Options
 
 Edit the `display` section in `.github/page-config.yml`:
 
 ```yaml
 display:
-  show_file_sizes: true      # Show/hide file sizes
-  show_version_badges: true  # Show/hide version badges
+  show_file_sizes: true       # Show/hide file sizes
+  show_version_badges: true   # Show/hide version badges
   version_badge_text: "Latest"
   old_version_badge_text: "Old Version"
 ```
 
-## Advanced Customization
+### 3. Customize Colors
 
-### Editing the HTML Template
+Edit CSS variables in `.github/templates/style.css`:
 
-For deeper customization, edit `.github/templates/index.html.j2`. This is a Jinja2 template with full access to:
-
-- `config` - All settings from page-config.yml
-- `categories` - List of categories with their files
-
-Example Jinja2 syntax:
-```html
-{% for category in categories %}
-  <h2>{{ category.name }}</h2>
-  {% for file in category.files %}
-    <a href="{{ file.filename }}">{{ file.filename }}</a>
-  {% endfor %}
-{% endfor %}
+```css
+:root {
+    --primary-color: #0366d6;
+    --background-color: #f5f5f5;
+    --card-background: white;
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
+}
 ```
 
-### Modifying the Generator Script
+### 4. Add or Modify Categories
 
-The Python script at `.github/scripts/generate_index.py` handles:
-- Reading PDF files
-- Categorizing them based on patterns
-- Rendering the template
+To add a new category or change existing ones, edit `.github/templates/index.html.j2`:
 
-You can modify this script to add custom logic, filtering, or sorting.
+```html
+<h2>My New Category</h2>
+<p class="category-description">Description of this category</p>
+<ul class="pdf-list">
+    {% for file in list_pdf_data_in_directory("DirectoryName") %}{{ pdf_item(file) }}{% endfor %}
+</ul>
+```
+
+Replace `"DirectoryName"` with the path to your directory containing PDFs (e.g., `"GeneralPhysics"`, `"Policies"`).
 
 ## Testing Locally
 
 To test your changes before pushing:
 
 ```bash
-# Install dependencies
+# Install dependencies (requires Python 3.11+)
 pip install pyyaml jinja2
 
-# Copy PDFs to docs directory (simulating the workflow)
+# Create docs directory and copy PDFs
 mkdir -p docs
-find . -type f -name "*.pdf" ! -path "./docs/*" -exec cp {} docs/ \;
+find . -type f -name "*.pdf" ! -path "./docs/*" ! -path "./.git/*" -exec cp {} docs/ \;
 
 # Generate the index
 python .github/scripts/generate_index.py
+
+# Copy the stylesheet
+cp .github/templates/style.css docs/style.css
 
 # Open the generated file
 open docs/index.html  # macOS
 xdg-open docs/index.html  # Linux
 ```
 
-## How It Works
-
-1. **GitHub Actions Workflow** (`.github/workflows/deploy-pages.yml`):
-   - Copies all PDFs to `docs/` directory
-   - Processes versioned PDFs from `.github/versions.json`
-   - Installs Python dependencies (PyYAML, Jinja2)
-   - Runs the generator script
-   - Deploys to GitHub Pages
-
-2. **Generator Script**:
-   - Reads configuration from `page-config.yml`
-   - Scans PDF files in `docs/` directory
-   - Categorizes files using regex patterns
-   - Loads the Jinja2 template
-   - Renders HTML with categorized files
-   - Writes `docs/index.html`
-
-3. **Template Rendering**:
-   - Jinja2 processes the template with config and file data
-   - CSS variables allow easy color customization
-   - Categories are rendered in order
-   - Files within categories are sorted alphabetically
-
 ## Configuration Reference
 
-### Site Section
+### page-config.yml
+
 ```yaml
+# Site metadata
 site:
-  title: string              # Page title
-  welcome_message: string    # Welcome text below title
-  footer_text: string        # Footer message
-  license_text: string       # License info (can include HTML)
-```
+  title: string              # Page title shown in browser tab and header
+  description: string        # Meta description for search engines
 
-### Categories Section
-```yaml
-categories:
-  - name: string            # Category display name
-    patterns:               # List of regex patterns
-      - string
-    description: string     # Optional description
-```
-
-### Display Section
-```yaml
+# Display options
 display:
-  show_file_sizes: boolean       # Show file sizes
-  show_version_badges: boolean   # Show version badges
+  show_file_sizes: boolean       # Show file sizes next to PDFs
+  show_version_badges: boolean   # Show "Latest" or "Old Version" badges
   version_badge_text: string     # Text for latest version badge
   old_version_badge_text: string # Text for old version badge
-  sort_by: string                # Sorting method (currently only 'name')
+  sort_by: string                # Currently only "name" is supported
 ```
 
-### Style Section (Optional)
-```yaml
-style:
-  primary_color: string      # Hex color for links and accents
-  background_color: string   # Page background color
-  card_background: string    # Card/item background color
-  font_family: string        # CSS font-family value
-```
+## Adding Old Versions
+
+To archive older versions of PDFs, edit `.github/versions.json`. See `VERSIONING.md` for detailed instructions.
 
 ## Troubleshooting
 
 **Q: My changes aren't showing up on the live site**
-- Make sure you committed and pushed your changes
-- Check the Actions tab for workflow run status
-- Wait a few minutes for GitHub Pages to update
+- Commit and push your changes to the main branch
+- Check the Actions tab in GitHub for workflow run status
+- Wait a few minutes for GitHub Pages to update after deployment completes
 
 **Q: The page looks broken**
-- Check your YAML syntax in `page-config.yml`
+- Check your YAML syntax in `page-config.yml` using a YAML validator
 - Test locally first using the commands above
-- Check the workflow logs in GitHub Actions
+- Check the workflow logs in GitHub Actions for error messages
 
-**Q: Files aren't being categorized correctly**
-- Review your regex patterns in the categories section
-- Remember: files match the first pattern that succeeds
-- Test your regex at [regex101.com](https://regex101.com) (use Python flavor)
+**Q: A PDF isn't appearing on the page**
+- Ensure the PDF is in the repository (not in `.git` or `docs` directories)
+- Check that the directory path in the template matches your file location
+- Verify the workflow successfully copied the file (check Actions logs)
 
-**Q: I want to add custom HTML/CSS**
-- Edit `.github/templates/index.html.j2` directly
-- CSS can be added in the `<style>` section
-- Jinja2 template syntax: `{{ variable }}` and `{% for/if %}`
+**Q: I want to completely redesign the page**
+- Edit `.github/templates/index.html.j2` for structure and content
+- Edit `.github/templates/style.css` for styling
+- The template has access to `config` (from page-config.yml) and can call `list_pdf_data_in_directory(dir_path)` to get PDF metadata
+
+## Advanced Customization
+
+### Available Template Variables
+
+In `index.html.j2`, you have access to:
+
+- `config` - All settings from `page-config.yml`
+- `list_pdf_data_in_directory(path)` - Function that returns list of PDF metadata
+
+### PDF Metadata Structure
+
+Each item returned by `list_pdf_data_in_directory()` contains:
+
+```python
+{
+    "filename": str,              # PDF filename
+    "size": str,                  # Human-readable file size (e.g., "2.3MB")
+    "is_old_version": bool,       # True if filename contains -v followed by digit
+    "last_commit_date": str,      # Last commit date (YYYY-MM-DD) or empty string
+    "github_history_url": str     # URL to view commit history for this file
+}
+```
+
+### Jinja2 Template Examples
+
+**Display PDFs in a custom format:**
+
+```html
+{% for file in list_pdf_data_in_directory("MyDirectory") %}
+    <div>
+        <a href="{{ file.filename }}">{{ file.filename }}</a>
+        ({{ file.size }}, updated {{ file.last_commit_date }})
+    </div>
+{% endfor %}
+```
+
+**Conditionally show content:**
+
+```html
+{% if config.display.show_file_sizes %}
+    <span>{{ file.size }}</span>
+{% endif %}
+```
 
 ## Examples
 
-### Example 1: Add a new category for lecture notes
+### Example 1: Hide version badges
 
-```yaml
-categories:
-  - name: "Lecture Notes"
-    patterns:
-      - "^lecture.*\\.pdf$"
-      - "^notes.*\\.pdf$"
-    description: "Class lecture notes and handouts"
-```
-
-### Example 2: Change theme to dark mode
-
-```yaml
-style:
-  primary_color: "#58a6ff"
-  background_color: "#0d1117"
-  card_background: "#161b22"
-```
-
-Then update the template's color variables for text to be light colored.
-
-### Example 3: Hide version badges
+Edit `.github/page-config.yml`:
 
 ```yaml
 display:
   show_version_badges: false
 ```
+
+### Example 2: Change site title
+
+Edit `.github/page-config.yml`:
+
+```yaml
+site:
+  title: "Physics Lecture Archive"
+  description: "Complete archive of physics lecture materials"
+```
+
+### Example 3: Add a new category for homework
+
+Edit `.github/templates/index.html.j2`, adding before the footer:
+
+```html
+<h2>Homework Assignments</h2>
+<p class="category-description">Problem sets and assignments</p>
+<ul class="pdf-list">
+    {% for file in list_pdf_data_in_directory("Homework") %}{{ pdf_item(file) }}{% endfor %}
+</ul>
+```
+
+Then create a `Homework` directory in your repository and add PDF files to it.
+
+## Requirements
+
+- Python 3.11 or later (for the `list[dict]` type hint syntax)
+- PyYAML and Jinja2 libraries
+
+## Security Notes
+
+The `generate_index.py` script includes security measures:
+- Path validation to prevent directory traversal attacks
+- Subprocess timeout to prevent infinite execution
+- Safe YAML loading with `yaml.safe_load()`
+- Path resolution validation to ensure files are within the repository
+
+These protections ensure the build process is secure even if malicious input is provided.
