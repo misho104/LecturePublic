@@ -11,7 +11,6 @@ import os
 import re
 import sys
 import subprocess
-from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
@@ -144,58 +143,6 @@ def get_github_history_url(filename: str, github_repo: str, repo_root: Path) -> 
     file_path = str(original_path) if original_path else filename
     
     return f"https://github.com/{github_repo}/commits/main/{file_path}"
-
-
-def categorize_files(pdf_files: List[Path], categories_config: List[Dict], repo_root: Path, github_repo: str) -> List[Dict[str, Any]]:
-    """
-    Categorize PDF files based on configuration patterns.
-    
-    Returns a list of categories with their matched files.
-    Files are matched to the first category whose pattern matches.
-    """
-    categories = []
-    matched_files = set()
-    
-    for cat_config in categories_config:
-        category = {
-            'name': cat_config['name'],
-            'icon': cat_config.get('icon', ''),
-            'description': cat_config.get('description', ''),
-            'files': []
-        }
-        
-        patterns = cat_config.get('patterns', [])
-        
-        for pdf_file in pdf_files:
-            if pdf_file in matched_files:
-                continue
-                
-            filename = pdf_file.name
-            
-            # Check if filename matches any pattern in this category
-            for pattern in patterns:
-                try:
-                    # Match filename against pattern
-                    # For filenames (short strings), regex matching should be very fast
-                    if re.match(pattern, filename):
-                        category['files'].append({
-                            'filename': filename,
-                            'size': get_file_size(pdf_file),
-                            'is_old_version': is_old_version(filename),
-                            'last_commit_date': get_last_commit_date(filename, repo_root),
-                            'github_history_url': get_github_history_url(filename, github_repo, repo_root)
-                        })
-                        matched_files.add(pdf_file)
-                        break
-                except re.error as e:
-                    print(f"Warning: Invalid regex pattern '{pattern}': {e}")
-                    continue
-        
-        # Sort files by name
-        category['files'].sort(key=lambda x: x['filename'])
-        categories.append(category)
-    
-    return categories
 
 
 def main():
