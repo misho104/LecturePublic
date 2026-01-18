@@ -2,9 +2,9 @@
 """
 Generate HTML index page for GitHub Pages using Jinja2 templates.
 
-This script reads PDF files from the docs directory, categorizes them based on
-their original directory location in the repository, and generates an index.html
-file using the Jinja2 template.
+This script reads PDF files from the docs directory and generates an index.html
+file using the Jinja2 template. The template calls list_pdf_data_in_directory()
+to get file metadata for specific directories.
 """
 
 import re
@@ -15,30 +15,6 @@ from typing import Optional
 
 import yaml
 from jinja2 import Environment, FileSystemLoader
-
-# Default category metadata
-DEFAULT_CATEGORY_METADATA = {
-    "GeneralPhysics": {
-        "name": "General Physics",
-        "description": "General Physics lecture materials for engineering students",
-        "order": 1,
-    },
-    "Policies": {
-        "name": "Policies",
-        "description": "Course policies and guidelines",
-        "order": 2,
-    },
-}
-
-# Default metadata for uncategorized resources
-DEFAULT_OTHER_METADATA = {
-    "name": "Other Resources",
-    "description": "Additional materials and resources",
-    "order": 99,
-}
-
-# File size units for human-readable display
-FILE_SIZE_UNITS = ["B", "KB", "MB", "GB", "TB"]
 
 
 def sanitize_html(html: str) -> str:
@@ -59,11 +35,11 @@ def sanitize_html(html: str) -> str:
 def get_file_size(filepath: Path) -> str:
     """Get human-readable file size."""
     size_bytes = float(filepath.stat().st_size)
-    for unit in FILE_SIZE_UNITS[:-1]:  # All units except the last one
+    for unit in ["B", "KB", "MB", "GB"]:
         if size_bytes < 1024.0:
             return f"{size_bytes:.1f}{unit}"
         size_bytes /= 1024.0
-    return f"{size_bytes:.1f}{FILE_SIZE_UNITS[-1]}"
+    return f"{size_bytes:.1f}TB"
 
 
 def is_old_version(filename: str) -> bool:
@@ -92,89 +68,11 @@ def find_original_file_path(filename: str, repo_root: Path) -> Optional[Path]:
         return None
 
 
-def build_category_metadata(categories: dict[str, list]) -> dict[str, dict]:
+def get_last_commit_date(original_path: Optional[Path], repo_root: Path) -> Optional[str]:
     """
-    Build category metadata with display information.
-    
-    Args:
-        categories: Dictionary mapping directory names to file lists
-        
-    Returns:
-        Dictionary mapping directory names to metadata (name, description, order)
+    Get the last commit date for a file using git log.
+    Returns formatted date string or None if unavailable.
     """
-    category_metadata = DEFAULT_CATEGORY_METADATA.copy()
-    
-    # Add metadata for "figs" and "Other" directories (use copies to avoid mutation)
-    category_metadata["figs"] = DEFAULT_OTHER_METADATA.copy()
-    category_metadata["Other"] = DEFAULT_OTHER_METADATA.copy()
-    
-    # Add default metadata for any directories not in the predefined mapping
-    for directory in categories.keys():
-        if directory not in category_metadata:
-            category_metadata[directory] = {
-                "name": directory,
-                "description": f"{directory} materials",
-                "order": 50,  # Default order between main categories and "Other"
-            }
-    
-    return category_metadata
-
-
-def collect_pdf_metadata(
-    pdf_files: list[Path], github_repo: str, repo_root: Path
-) -> list[dict]:
-    """
-    Collect metadata for all PDF files.
-    
-    Caches the original file path lookup to avoid repeated searches.
-    
-    Args:
-        pdf_files: List of PDF file paths
-        github_repo: GitHub repository identifier (owner/repo)
-        repo_root: Root directory of the repository
-        
-    Returns:
-        List of dictionaries containing file metadata
-    """
-    all_files = []
-    
-    for pdf_file in pdf_files:
-        filename = pdf_file.name
-        
-        # Cache the original path to avoid multiple lookups
-        original_path = find_original_file_path(filename, repo_root)
-        
-        all_files.append(
-            {
-                "filename": filename,
-                "size": get_file_size(pdf_file),
-                "is_old_version": is_old_version(filename),
-                "last_commit_date": _get_last_commit_date_from_path(
-                    original_path, repo_root
-                ),
-                "github_history_url": _build_github_history_url(
-                    original_path, filename, github_repo
-                ),
-                "directory": _get_directory_from_path(original_path),
-            }
-        )
-    
-    return all_files
-
-
-def _get_directory_from_path(original_path: Optional[Path]) -> str:
-    """Extract directory category from original file path."""
-    if original_path:
-        parent_dir = original_path.parent
-        if str(parent_dir) != ".":
-            return str(parent_dir)
-    return "Other"
-
-
-def _get_last_commit_date_from_path(
-    original_path: Optional[Path], repo_root: Path
-) -> Optional[str]:
-    """Get the last commit date for a file from its path."""
     if not original_path:
         return None
     
@@ -200,129 +98,132 @@ def _get_last_commit_date_from_path(
             text=True,
             timeout=5,
         )
-        
+
         if result.returncode == 0 and result.stdout.strip():
             # Parse the date and format it (get just the date part: YYYY-MM-DD)
             date_str = result.stdout.strip().split()[0]
             return date_str
-        
+
         return None
     except Exception as e:
         print(f"Warning: Could not get commit date for {path_str}: {e}")
         return None
 
 
-def _build_github_history_url(
-    original_path: Optional[Path], filename: str, github_repo: str
-) -> str:
-    """Build GitHub history URL for a file."""
+def get_github_history_url(original_path: Optional[Path], filename: str, github_repo: str) -> str:
+    """
+    Build GitHub history URL for a file.
+    Format: https://github.com/owner/repo/commits/main/path/to/file.pdf
+    """
     file_path = str(original_path) if original_path else filename
     return f"https://github.com/{github_repo}/commits/main/{file_path}"
 
 
-def load_and_sanitize_config(config_file: Path) -> dict:
-    """Load configuration file and sanitize HTML content."""
-    with open(config_file, "r", encoding="utf-8") as f:
-        config = yaml.safe_load(f)
-    
-    # Sanitize HTML in site section
-    if "site" in config:
-        for key in ["welcome_message", "footer_text", "license_text"]:
-            if key in config["site"]:
-                config["site"][key] = sanitize_html(str(config["site"][key]))
-    
-    return config
-
-
-def categorize_files(all_files: list[dict]) -> dict[str, list]:
+def list_pdf_data_in_directory(
+    directory_path: str, docs_dir: Path, repo_root: Path, github_repo: str
+) -> list[dict]:
     """
-    Categorize files by directory.
+    List PDF files in a specific directory with their metadata.
     
     Args:
-        all_files: List of file metadata dictionaries
+        directory_path: Directory name (e.g., "GeneralPhysics") or "." for root
+        docs_dir: Path to the docs directory containing PDFs
+        repo_root: Path to repository root
+        github_repo: GitHub repository identifier (owner/repo)
         
     Returns:
-        Dictionary mapping directory names to lists of files
+        List of dictionaries containing file metadata for PDFs in the directory
     """
-    categories = {}
-    for file in all_files:
-        directory = file["directory"]
-        if directory not in categories:
-            categories[directory] = []
-        categories[directory].append(file)
+    result = []
     
-    return categories
+    # Get all PDF files from docs directory
+    all_pdfs = list(docs_dir.glob("*.pdf"))
+    
+    for pdf_file in all_pdfs:
+        filename = pdf_file.name
+        
+        # Find original location to determine directory
+        original_path = find_original_file_path(filename, repo_root)
+        
+        # Determine if this file belongs to the requested directory
+        if original_path:
+            file_dir = str(original_path.parent)
+            # Match files in the specified directory
+            if directory_path == ".":
+                # Root directory - files with parent "."
+                if file_dir != ".":
+                    continue
+            elif directory_path != file_dir:
+                # Not in the requested directory
+                continue
+        else:
+            # If we can't find original path, only include in "." (Other)
+            if directory_path != ".":
+                continue
+        
+        # Build metadata for this file
+        result.append(
+            {
+                "filename": filename,
+                "size": get_file_size(pdf_file),
+                "is_old_version": is_old_version(filename),
+                "last_commit_date": get_last_commit_date(original_path, repo_root),
+                "github_history_url": get_github_history_url(
+                    original_path, filename, github_repo
+                ),
+            }
+        )
+    
+    # Sort by filename
+    result.sort(key=lambda x: x["filename"])
+    
+    return result
 
 
 def main():
     """Main function to generate the index.html file."""
-    # Determine paths
     script_dir = Path(__file__).parent
-    repo_root = script_dir.parent.parent  # Assuming script is in .github/scripts/
+    repo_root = script_dir.parent.parent
     config_file = repo_root / ".github" / "page-config.yml"
     template_dir = repo_root / ".github" / "templates"
-    template_file = "index.html.j2"
     docs_dir = repo_root / "docs"
     output_file = docs_dir / "index.html"
 
-    # Validate required files exist
     if not config_file.exists():
         print(f"Error: Configuration file not found: {config_file}")
         sys.exit(1)
 
-    if not (template_dir / template_file).exists():
-        print(f"Error: Template file not found: {template_dir / template_file}")
+    if not (template_dir / "index.html.j2").exists():
+        print(f"Error: Template file not found: {template_dir / 'index.html.j2'}")
         sys.exit(1)
 
     if not docs_dir.exists():
         print(f"Error: Docs directory not found: {docs_dir}")
         sys.exit(1)
 
-    # Load and sanitize configuration
-    config = load_and_sanitize_config(config_file)
+    # Load configuration
+    with open(config_file, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
 
-    # Get all PDF files from docs directory
-    pdf_files = list(docs_dir.glob("*.pdf"))
-    if not pdf_files:
-        print("Warning: No PDF files found in docs directory")
-    print(f"Found {len(pdf_files)} PDF files")
+    # Sanitize HTML in config
+    if "site" in config:
+        for key in ["welcome_message", "footer_text", "license_text"]:
+            if key in config["site"]:
+                config["site"][key] = sanitize_html(str(config["site"][key]))
 
-    # Get GitHub repository information
     github_repo = config.get("site", {}).get("github_repo", "misho104/LecturePublic")
 
-    # Collect metadata for all files (with caching to avoid repeated lookups)
-    all_files = collect_pdf_metadata(pdf_files, github_repo, repo_root)
-
-    # Sort files by name
-    all_files.sort(key=lambda x: x["filename"])
-
-    # Categorize files by directory
-    categories = categorize_files(all_files)
-
-    # Build category metadata
-    category_metadata = build_category_metadata(categories)
-
-    # Sort categories by order
-    sorted_categories = sorted(
-        categories.items(), key=lambda x: category_metadata[x[0]]["order"]
-    )
-
-    # Print summary
-    print(f"Processed {len(all_files)} PDF files:")
-    for directory, files in sorted(categories.items()):
-        print(f"  - {directory}: {len(files)} files")
-
-    # Setup Jinja2 environment and render template
+    # Setup Jinja2 and make list_pdf_data_in_directory available to template
     env = Environment(loader=FileSystemLoader(template_dir))
-    template = env.get_template(template_file)
+    
+    def template_list_pdf_data(directory_path: str) -> list[dict]:
+        return list_pdf_data_in_directory(directory_path, docs_dir, repo_root, github_repo)
+    
+    env.globals["list_pdf_data_in_directory"] = template_list_pdf_data
+    
+    template = env.get_template("index.html.j2")
+    html_content = template.render(config=config)
 
-    html_content = template.render(
-        config=config,
-        sorted_categories=sorted_categories,
-        category_metadata=category_metadata,
-    )
-
-    # Write output
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(html_content)
 
