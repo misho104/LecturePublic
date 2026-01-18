@@ -24,6 +24,10 @@ The repository includes the following directories for respective lecture courses
 
 - |GeneralPhysics|_: `General Physics <https://www2.nsysu.edu.tw/iwamoto/gp1.html>`_ lectures for engineering students
 
+**Online Resources:**
+
+- `PDF Archive on GitHub Pages <https://misho104.github.io/LecturePublic/>`_ - Browse and download lecture materials
+
 .. |GeneralPhysics| replace:: ``GeneralPhysics``
 .. _GeneralPhysics: https://github.com/misho104/LecturePublic/blob/main/GeneralPhysics/
 
