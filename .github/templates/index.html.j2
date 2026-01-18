@@ -15,6 +15,29 @@
         </div>
     </li>
 {% endmacro %}
+{% macro lecture_item_sub(title, file) %}
+    <li class="pdf-item-block">
+        <a href="{{ file.filename }}">{{ title }}</a>
+    </li>
+{% endmacro %}
+{% macro lecture_item(head, year) %}
+    {% set data = get_lecture_files(head, year) %}
+    {% set type = data[0] %}
+    {% set files = data[1] %}
+    {% if type == 0 %}
+    {% elif type == 1 %}
+        <li class="lecture-block">
+            {{ year }}
+            <ul>
+                {{ lecture_item_sub("Guidance Document", files[2]) }}
+                {{ lecture_item_sub("Midterm Exam", files[0]) }}
+                {{ lecture_item_sub("Term Exam", files[0]) }}
+            </ul>
+        </li>
+    {% else %}
+        {% for file in files %}{{ lecture_item_sub(file.filename, file) }}{% endfor %}
+    {% endif %}
+{% endmacro %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -35,26 +58,50 @@
         <h2>Boot Camp</h2>
         <p class="category-description">Boot Camp sessions for university new comers in Science and Engineering</p>
         <ul class="pdf-list">
-            {% for file in list_pdf_data_in_directory("GeneralPhysics") %}{{ pdf_item(file) }}{% endfor %}
+            {% for file in list_pdf_data_in_directory("GeneralPhysics").values() %}{{ pdf_item(file) }}{% endfor %}
         </ul>
         <h2>Policies</h2>
         <p class="category-description">Course policies and guidelines</p>
         <ul class="pdf-list">
-            {% for file in list_pdf_data_in_directory("Policies") %}{{ pdf_item(file) }}{% endfor %}
+            {% for file in list_pdf_data_in_directory("Policies").values() %}{{ pdf_item(file) }}{% endfor %}
         </ul>
-        <div class="footer">
-            <div>
-                <div>(C) 2024&#8211;2026</div>
-                <address>
-                    <span>
-                        <span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span>
-                    </span>
-                    <span><a href="mailto:iwamoto@g-mail.nsysu.edu.tw">iwamoto@g-mail.nsysu.edu.tw</a></span>
-                </address>
-            </div>
-            <div>
-                <span>Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></span>
-            </div>
-        </div>
-    </body>
-</html>
+        <h2>Past Lecture Administrative Documents</h2>
+        <h3>General Physics 1</h3>
+        <p class="category-description">
+            Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp1.html">https://www2.nsysu.edu.tw/iwamoto/gp1.html</a>
+        </p>
+        <ul class="pdf-list">
+            <ul class="pdf-list">
+                {% for year in range(2023, 2028) %}{{ lecture_item('gp1', year) }}{% endfor %}
+            </ul>
+            <h3>General Physics 2</h3>
+            <p class="category-description">
+                Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp2.html">https://www2.nsysu.edu.tw/iwamoto/gp2.html</a>
+            </p>
+            <ul class="pdf-list">
+                {% for year in range(2022, 2028) %}{{ lecture_item('gp2', year) }}{% endfor %}
+            </ul>
+            <h3>Math and Coding 2</h3>
+            <p class="category-description">
+                Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/physmath2.html">https://www2.nsysu.edu.tw/iwamoto/physmath2.html</a>
+            </p>
+            <ul class="pdf-list">
+                <ul class="pdf-list">
+                    {% for year in range(2023, 2028) %}{{ lecture_item('pm2', year) }}{% endfor %}
+                </ul>
+                <div class="footer">
+                    <div>
+                        <div>(C) 2024&#8211;2026</div>
+                        <address>
+                            <span>
+                                <span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span>
+                            </span>
+                            <span><a href="mailto:iwamoto@g-mail.nsysu.edu.tw">iwamoto@g-mail.nsysu.edu.tw</a></span>
+                        </address>
+                    </div>
+                    <div>
+                        <span>Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></span>
+                    </div>
+                </div>
+            </body>
+        </html>

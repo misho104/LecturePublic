@@ -68,7 +68,7 @@ def get_last_commit_date(path: Path) -> str:
         return ""
 
 
-def list_pdf_data_in_directory(dir: str) -> list[dict]:
+def list_pdf_data_in_directory(dir: str) -> dict[str, dict]:
     """
     List PDF files in a specific directory with their metadata.
     Files that are not published in docs_dir are excluded.
@@ -77,25 +77,38 @@ def list_pdf_data_in_directory(dir: str) -> list[dict]:
         dir: Directory path
 
     Returns:
-        List of dictionaries containing file metadata for PDFs in the directory.
+        dict of dict containing file metadata for PDFs in the directory.
     """
-    result = []
+    result = {}
     for pdf_file in (REPO_ROOT / dir).glob("*.pdf"):
         filename = pdf_file.name
         if not (DOCS_DIR / filename).exists():
             continue
-        result.append(
-            {
-                "filename": filename,
-                "size": get_file_size(pdf_file),
-                "is_old_version": is_old_version(filename),
-                "last_commit_date": get_last_commit_date(pdf_file),
-                "github_history_url": f"{REPO_URL}/commits/main/{dir}/{filename}",
-            }
-        )
+        key = re.sub(r"\.pdf$", "", filename)
+        result[key] = {
+            "filename": filename,
+            "size": get_file_size(pdf_file),
+            "is_old_version": is_old_version(filename),
+            "last_commit_date": get_last_commit_date(pdf_file),
+            "github_history_url": f"{REPO_URL}/commits/main/{dir}/{filename}",
+        }
+    return dict(sorted(result.items()))
 
-    result.sort(key=lambda x: str(x["filename"]))
-    return result
+
+def get_lecture_files(head: str, year: int) -> tuple[int, list[dict]]:
+    tuples = []
+    for k, v in list_pdf_data_in_directory("PastLectureAdmin").items():
+        if match := re.search(rf"{head}_(.*){year}(.*)$", k):
+            key = re.sub("[^a-z0-9]", "", (match.group(1) + match.group(2)).lower())
+            tuples.append((key, v))
+    tuples.sort()
+    head_connected = "".join(k for k, v in tuples)
+    type = -1
+    if len(tuples) == 0:
+        type = 0
+    if head_connected == "exam1exam2supplemental":
+        type = 1
+    return (type, [v for k, v in sorted(tuples)])
 
 
 def main():
@@ -121,6 +134,7 @@ def main():
 
     # template function.
     env.globals["list_pdf_data_in_directory"] = list_pdf_data_in_directory
+    env.globals["get_lecture_files"] = get_lecture_files
 
     template = env.get_template("index.html.j2")
     html_content = template.render(config=config)
