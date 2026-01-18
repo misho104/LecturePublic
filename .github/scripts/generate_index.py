@@ -3,15 +3,16 @@
 Generate HTML index page for GitHub Pages using Jinja2 templates.
 
 This script reads PDF files from the docs directory, categorizes them based on
-the configuration in page-config.yml, and generates an index.html file using
-the Jinja2 template.
+their original directory location in the repository, and generates an index.html 
+file using the Jinja2 template.
 """
 
 import os
 import re
 import sys
+import subprocess
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 try:
     import yaml
@@ -72,54 +73,86 @@ def is_old_version(filename: str) -> bool:
     return bool(re.search(r'-v\d', filename))
 
 
-def categorize_files(pdf_files: List[Path], categories_config: List[Dict]) -> List[Dict[str, Any]]:
+def find_original_file_path(filename: str, repo_root: Path) -> Optional[Path]:
     """
-    Categorize PDF files based on configuration patterns.
-    
-    Returns a list of categories with their matched files.
-    Files are matched to the first category whose pattern matches.
+    Find the original file path in the repository (outside docs and .git directories).
+    Returns the relative path from repo root, or None if not found.
     """
-    categories = []
-    matched_files = set()
-    
-    for cat_config in categories_config:
-        category = {
-            'name': cat_config['name'],
-            'icon': cat_config.get('icon', ''),
-            'description': cat_config.get('description', ''),
-            'files': []
-        }
-        
-        patterns = cat_config.get('patterns', [])
-        
-        for pdf_file in pdf_files:
-            if pdf_file in matched_files:
+    try:
+        for pdf_path in repo_root.glob(f'**/{filename}'):
+            try:
+                relative = pdf_path.relative_to(repo_root)
+                if not str(relative).startswith('docs/') and not str(relative).startswith('.git/'):
+                    return relative
+            except ValueError:
                 continue
-                
-            filename = pdf_file.name
-            
-            # Check if filename matches any pattern in this category
-            for pattern in patterns:
-                try:
-                    # Match filename against pattern
-                    # For filenames (short strings), regex matching should be very fast
-                    if re.match(pattern, filename):
-                        category['files'].append({
-                            'filename': filename,
-                            'size': get_file_size(pdf_file),
-                            'is_old_version': is_old_version(filename)
-                        })
-                        matched_files.add(pdf_file)
-                        break
-                except re.error as e:
-                    print(f"Warning: Invalid regex pattern '{pattern}': {e}")
-                    continue
+        return None
+    except Exception as e:
+        print(f"Warning: Could not search for original location of {filename}: {e}")
+        return None
+
+
+def get_directory_category(filename: str, repo_root: Path) -> str:
+    """
+    Get the category based on the directory where the file is located.
+    Returns the parent directory name, or 'Other' if not found.
+    """
+    original_path = find_original_file_path(filename, repo_root)
+    if original_path:
+        # Get the parent directory name
+        parent_dir = original_path.parent
+        # Check if file is in a subdirectory (not at repo root)
+        if str(parent_dir) != '.':
+            return str(parent_dir)
+    return 'Other'
+
+
+def get_last_commit_date(filename: str, repo_root: Path) -> Optional[str]:
+    """
+    Get the last commit date for a file using git log.
+    Searches for the original file location in the repository.
+    Returns formatted date string or None if unavailable.
+    """
+    try:
+        original_path = find_original_file_path(filename, repo_root)
+        if not original_path:
+            return None
         
-        # Sort files by name
-        category['files'].sort(key=lambda x: x['filename'])
-        categories.append(category)
-    
-    return categories
+        # Validate path to prevent command injection
+        path_str = str(original_path)
+        if '..' in path_str or path_str.startswith('/'):
+            print(f"Warning: Invalid path detected for {filename}")
+            return None
+        
+        # Use git log to get the last commit date for this file
+        result = subprocess.run(
+            ['git', 'log', '-1', '--format=%ci', '--', path_str],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+        
+        if result.returncode == 0 and result.stdout.strip():
+            # Parse the date and format it
+            date_str = result.stdout.strip().split()[0]  # Get just the date part (YYYY-MM-DD)
+            return date_str
+        
+        return None
+    except Exception as e:
+        print(f"Warning: Could not get commit date for {filename}: {e}")
+        return None
+
+
+def get_github_history_url(filename: str, github_repo: str, repo_root: Path) -> str:
+    """
+    Build GitHub history URL for a file.
+    Searches for the original file location in the repository.
+    Format: https://github.com/owner/repo/commits/main/path/to/file.pdf
+    """
+    original_path = find_original_file_path(filename, repo_root)
+    file_path = str(original_path) if original_path else filename
+    return f"https://github.com/{github_repo}/commits/main/{file_path}"
 
 
 def main():
@@ -171,19 +204,89 @@ def main():
     
     print(f"Found {len(pdf_files)} PDF files")
     
-    # Categorize files
-    categories = categorize_files(pdf_files, config.get('categories', []))
+    # Get GitHub repository information
+    github_repo = config.get('site', {}).get('github_repo', 'misho104/LecturePublic')
+    
+    # Build file list with metadata including directory category
+    all_files = []
+    for pdf_file in pdf_files:
+        filename = pdf_file.name
+        all_files.append({
+            'filename': filename,
+            'size': get_file_size(pdf_file),
+            'is_old_version': is_old_version(filename),
+            'last_commit_date': get_last_commit_date(filename, repo_root),
+            'github_history_url': get_github_history_url(filename, github_repo, repo_root),
+            'directory': get_directory_category(filename, repo_root)
+        })
+    
+    # Sort files by name
+    all_files.sort(key=lambda x: x['filename'])
+    
+    # Categorize files by directory for better template performance
+    categories = {}
+    for file in all_files:
+        directory = file['directory']
+        if directory not in categories:
+            categories[directory] = []
+        categories[directory].append(file)
+    
+    # Define category metadata (icon, display name, description, order)
+    # This can be extended for future courses/types
+    
+    # Default metadata for "Other" resources
+    other_metadata = {
+        'icon': '📚',
+        'name': 'Other Resources',
+        'description': 'Additional materials and resources',
+        'order': 99
+    }
+    
+    category_metadata = {
+        'GeneralPhysics': {
+            'icon': '📐',
+            'name': 'General Physics',
+            'description': 'General Physics lecture materials for engineering students',
+            'order': 1
+        },
+        'Policies': {
+            'icon': '📋',
+            'name': 'Policies',
+            'description': 'Course policies and guidelines',
+            'order': 2
+        },
+        'figs': other_metadata,  # figs directory contains license and other resources
+        'Other': other_metadata
+    }
+    
+    # Add default metadata for any directories not in the mapping
+    for directory in categories.keys():
+        if directory not in category_metadata:
+            category_metadata[directory] = {
+                'icon': '📁',
+                'name': directory,
+                'description': f'{directory} materials',
+                'order': 50  # Default order between main categories and "Other"
+            }
+    
+    # Sort categories by order
+    sorted_categories = sorted(categories.items(), key=lambda x: category_metadata[x[0]]['order'])
     
     # Print summary
-    for category in categories:
-        print(f"Category '{category['name']}': {len(category['files'])} files")
+    print(f"Processed {len(all_files)} PDF files:")
+    for directory, files in sorted(categories.items()):
+        print(f"  - {directory}: {len(files)} files")
     
     # Setup Jinja2 environment
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template(template_file)
     
-    # Render template
-    html_content = template.render(config=config, categories=categories)
+    # Render template with categorized files
+    html_content = template.render(
+        config=config,
+        sorted_categories=sorted_categories,
+        category_metadata=category_metadata
+    )
     
     # Write output
     with open(output_file, 'w', encoding='utf-8') as f:
