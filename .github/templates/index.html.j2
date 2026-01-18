@@ -26,7 +26,7 @@
             padding-bottom: 10px;
         }
         
-        h2 {
+        h3 {
             color: #444;
             margin-top: 30px;
             border-bottom: 2px solid #ddd;
@@ -54,6 +54,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .pdf-item:hover {
@@ -65,16 +67,44 @@
             color: var(--primary-color);
             text-decoration: none;
             flex-grow: 1;
+            min-width: 200px;
         }
         
         .pdf-name:hover {
             text-decoration: underline;
         }
         
+        .pdf-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .pdf-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .pdf-history-link {
+            color: #666;
+            font-size: 0.85em;
+            text-decoration: none;
+            padding: 3px 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .pdf-history-link:hover {
+            background-color: #f0f0f0;
+            border-color: #999;
+            text-decoration: none;
+        }
+        
         .pdf-size {
             color: #666;
             font-size: 0.9em;
-            margin-left: 15px;
         }
         
         .version-badge {
@@ -113,6 +143,28 @@
             font-style: italic;
             padding: 10px;
         }
+        
+        /* Responsive design for smartphones */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .pdf-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .pdf-name {
+                min-width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .pdf-info {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
     </style>
 </head>
 <body>
@@ -121,7 +173,7 @@
     
     {% for category in categories %}
     <div class="category">
-        <h2>{% if category.icon %}{{ category.icon }} {% endif %}{{ category.name }}</h2>
+        <h3>{% if category.icon %}{{ category.icon }} {% endif %}{{ category.name }}</h3>
         {% if category.description %}
         <p class="category-description">{{ category.description }}</p>
         {% endif %}
@@ -131,16 +183,22 @@
             {% for file in category.files %}
             <li class="pdf-item">
                 <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
-                {% if config.display.show_version_badges %}
-                    {% if file.is_old_version %}
-                    <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
-                    {% else %}
-                    <span class="version-badge">{{ config.display.version_badge_text }}</span>
+                <div class="pdf-info">
+                    {% if file.last_commit_date %}
+                    <span class="pdf-date">Updated: {{ file.last_commit_date }}</span>
                     {% endif %}
-                {% endif %}
-                {% if config.display.show_file_sizes %}
-                <span class="pdf-size">{{ file.size }}</span>
-                {% endif %}
+                    {% if config.display.show_version_badges %}
+                        {% if file.is_old_version %}
+                        <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
+                        {% else %}
+                        <span class="version-badge">{{ config.display.version_badge_text }}</span>
+                        {% endif %}
+                    {% endif %}
+                    {% if config.display.show_file_sizes %}
+                    <span class="pdf-size">{{ file.size }}</span>
+                    {% endif %}
+                    <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
+                </div>
             </li>
             {% endfor %}
         </ul>

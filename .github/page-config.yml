@@ -7,6 +7,7 @@ site:
   welcome_message: "Welcome to the PDF archive. Below you can find all available lecture materials organized by category."
   footer_text: "Generated automatically by GitHub Actions"
   license_text: "Licensed under <a href=\"https://creativecommons.org/licenses/by-nc/4.0/\">CC BY-NC 4.0</a>"
+  github_repo: "misho104/LecturePublic"
 
 # Categories define how PDFs are organized on the page
 # Each category has:
@@ -35,7 +36,7 @@ categories:
 
 # Display options
 display:
-  show_file_sizes: true
+  show_file_sizes: false
   show_version_badges: true
   version_badge_text: "Latest"
   old_version_badge_text: "Old Version"

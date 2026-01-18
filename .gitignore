@@ -9,6 +9,9 @@ _minted-*
 *.xmpdata
 *.tmp
 
+## Generated docs directory (created by GitHub Actions)
+docs/
+
 ## Python
 __pycache__/
 *.py[cod]

@@ -10,8 +10,10 @@ the Jinja2 template.
 import os
 import re
 import sys
+import subprocess
+from datetime import datetime
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 try:
     import yaml
@@ -72,7 +74,79 @@ def is_old_version(filename: str) -> bool:
     return bool(re.search(r'-v\d', filename))
 
 
-def categorize_files(pdf_files: List[Path], categories_config: List[Dict]) -> List[Dict[str, Any]]:
+def get_last_commit_date(filename: str, repo_root: Path) -> Optional[str]:
+    """
+    Get the last commit date for a file using git log.
+    Searches for the original file location in the repository.
+    Returns formatted date string or None if unavailable.
+    """
+    try:
+        # Try to find the original file in the repository (outside docs directory)
+        original_path = None
+        
+        for pdf_path in repo_root.glob(f'**/{filename}'):
+            # Skip files in docs or .git directories
+            try:
+                relative = pdf_path.relative_to(repo_root)
+                if not str(relative).startswith('docs/') and not str(relative).startswith('.git/'):
+                    original_path = relative
+                    break
+            except ValueError:
+                continue
+        
+        if not original_path:
+            return None
+        
+        # Use git log to get the last commit date for this file
+        result = subprocess.run(
+            ['git', 'log', '-1', '--format=%ci', '--', str(original_path)],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+        
+        if result.returncode == 0 and result.stdout.strip():
+            # Parse the date and format it
+            date_str = result.stdout.strip().split()[0]  # Get just the date part (YYYY-MM-DD)
+            return date_str
+        
+        return None
+    except Exception as e:
+        print(f"Warning: Could not get commit date for {filename}: {e}")
+        return None
+
+
+def get_github_history_url(filename: str, github_repo: str, repo_root: Path) -> str:
+    """
+    Build GitHub history URL for a file.
+    Searches for the original file location in the repository.
+    Format: https://github.com/owner/repo/commits/main/path/to/file.pdf
+    """
+    # Try to find the original file in the repository (outside docs directory)
+    original_path = None
+    
+    try:
+        # Search for the file in the repository
+        for pdf_path in repo_root.glob(f'**/{filename}'):
+            # Skip files in docs or .git directories
+            try:
+                relative = pdf_path.relative_to(repo_root)
+                if not str(relative).startswith('docs/') and not str(relative).startswith('.git/'):
+                    original_path = relative
+                    break
+            except ValueError:
+                continue
+    except Exception as e:
+        print(f"Warning: Could not search for original location of {filename}: {e}")
+    
+    # If we found the original path, use it; otherwise just use the filename
+    file_path = str(original_path) if original_path else filename
+    
+    return f"https://github.com/{github_repo}/commits/main/{file_path}"
+
+
+def categorize_files(pdf_files: List[Path], categories_config: List[Dict], repo_root: Path, github_repo: str) -> List[Dict[str, Any]]:
     """
     Categorize PDF files based on configuration patterns.
     
@@ -107,7 +181,9 @@ def categorize_files(pdf_files: List[Path], categories_config: List[Dict]) -> Li
                         category['files'].append({
                             'filename': filename,
                             'size': get_file_size(pdf_file),
-                            'is_old_version': is_old_version(filename)
+                            'is_old_version': is_old_version(filename),
+                            'last_commit_date': get_last_commit_date(filename, repo_root),
+                            'github_history_url': get_github_history_url(filename, github_repo, repo_root)
                         })
                         matched_files.add(pdf_file)
                         break
@@ -171,8 +247,11 @@ def main():
     
     print(f"Found {len(pdf_files)} PDF files")
     
+    # Get GitHub repository information
+    github_repo = config.get('site', {}).get('github_repo', 'misho104/LecturePublic')
+    
     # Categorize files
-    categories = categorize_files(pdf_files, config.get('categories', []))
+    categories = categorize_files(pdf_files, config.get('categories', []), repo_root, github_repo)
     
     # Print summary
     for category in categories:
