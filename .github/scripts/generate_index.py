@@ -3,8 +3,8 @@
 Generate HTML index page for GitHub Pages using Jinja2 templates.
 
 This script reads PDF files from the docs directory, categorizes them based on
-the configuration in page-config.yml, and generates an index.html file using
-the Jinja2 template.
+their original directory location in the repository, and generates an index.html 
+file using the Jinja2 template.
 """
 
 import os
@@ -21,11 +21,6 @@ except ImportError:
     print("Error: Required packages not installed.")
     print("Install with: pip install pyyaml jinja2")
     sys.exit(1)
-
-
-# Category matching keywords
-GENERAL_PHYSICS_PREFIX = 'gp'
-POLICIES_KEYWORDS = ['grading', 'submission', 'generative', 'policy', 'guideline']
 
 
 def validate_css_value(value: str, allowed_chars: str = r'a-zA-Z0-9#\-,\.\s\'') -> str:
@@ -95,6 +90,20 @@ def find_original_file_path(filename: str, repo_root: Path) -> Optional[Path]:
     except Exception as e:
         print(f"Warning: Could not search for original location of {filename}: {e}")
         return None
+
+
+def get_directory_category(filename: str, repo_root: Path) -> str:
+    """
+    Get the category based on the directory where the file is located.
+    Returns the parent directory name, or 'Other' if not found.
+    """
+    original_path = find_original_file_path(filename, repo_root)
+    if original_path:
+        # Get the parent directory name
+        parent_dir = original_path.parent
+        if parent_dir != Path('.'):
+            return str(parent_dir)
+    return 'Other'
 
 
 def get_last_commit_date(filename: str, repo_root: Path) -> Optional[str]:
@@ -197,7 +206,7 @@ def main():
     # Get GitHub repository information
     github_repo = config.get('site', {}).get('github_repo', 'misho104/LecturePublic')
     
-    # Build file list with metadata
+    # Build file list with metadata including directory category
     all_files = []
     for pdf_file in pdf_files:
         filename = pdf_file.name
@@ -206,44 +215,77 @@ def main():
             'size': get_file_size(pdf_file),
             'is_old_version': is_old_version(filename),
             'last_commit_date': get_last_commit_date(filename, repo_root),
-            'github_history_url': get_github_history_url(filename, github_repo, repo_root)
+            'github_history_url': get_github_history_url(filename, github_repo, repo_root),
+            'directory': get_directory_category(filename, repo_root)
         })
     
     # Sort files by name
     all_files.sort(key=lambda x: x['filename'])
     
-    # Categorize files for better template performance
-    general_physics_files = []
-    policies_files = []
-    other_files = []
-    
+    # Categorize files by directory for better template performance
+    categories = {}
     for file in all_files:
-        filename = file['filename']
-        # General Physics: files starting with the defined prefix
-        if filename.startswith(GENERAL_PHYSICS_PREFIX):
-            general_physics_files.append(file)
-        # Policies: files containing policy-related keywords
-        elif any(keyword in filename for keyword in POLICIES_KEYWORDS):
-            policies_files.append(file)
-        # Other: everything else
-        else:
-            other_files.append(file)
+        directory = file['directory']
+        if directory not in categories:
+            categories[directory] = []
+        categories[directory].append(file)
     
+    # Define category metadata (icon, display name, description, order)
+    # This can be extended for future courses/types
+    category_metadata = {
+        'GeneralPhysics': {
+            'icon': '📐',
+            'name': 'General Physics',
+            'description': 'General Physics lecture materials for engineering students',
+            'order': 1
+        },
+        'Policies': {
+            'icon': '📋',
+            'name': 'Policies',
+            'description': 'Course policies and guidelines',
+            'order': 2
+        },
+        'figs': {
+            'icon': '📚',
+            'name': 'Other Resources',
+            'description': 'Additional materials and resources',
+            'order': 99
+        },
+        'Other': {
+            'icon': '📚',
+            'name': 'Other Resources',
+            'description': 'Additional materials and resources',
+            'order': 99
+        }
+    }
+    
+    # Add default metadata for any directories not in the mapping
+    for directory in categories.keys():
+        if directory not in category_metadata:
+            category_metadata[directory] = {
+                'icon': '📁',
+                'name': directory,
+                'description': f'{directory} materials',
+                'order': 50  # Default order between main categories and "Other"
+            }
+    
+    # Sort categories by order
+    sorted_categories = sorted(categories.items(), key=lambda x: category_metadata[x[0]]['order'])
+    
+    # Print summary
     print(f"Processed {len(all_files)} PDF files:")
-    print(f"  - General Physics: {len(general_physics_files)} files")
-    print(f"  - Policies: {len(policies_files)} files")
-    print(f"  - Other Resources: {len(other_files)} files")
+    for directory, files in sorted(categories.items()):
+        print(f"  - {directory}: {len(files)} files")
     
     # Setup Jinja2 environment
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template(template_file)
     
-    # Render template
+    # Render template with categorized files
     html_content = template.render(
         config=config,
-        general_physics_files=general_physics_files,
-        policies_files=policies_files,
-        other_files=other_files
+        sorted_categories=sorted_categories,
+        category_metadata=category_metadata
     )
     
     # Write output
