@@ -20,7 +20,7 @@ If you find any errors or have suggestions for improvements, please feel free to
 Contents
 --------
 
-The repository includes the follwing directories for respective lecture courses:
+The repository includes the following directories for respective lecture courses:
 
 - |GeneralPhysics|_: `General Physics <https://www2.nsysu.edu.tw/iwamoto/gp1.html>`_ lectures for engineering students
 
