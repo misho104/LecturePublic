@@ -3,10 +3,8 @@
 
 # Site metadata
 site:
-  title: "Lecture Materials - PDF Archive"
-  welcome_message: "Welcome to the PDF archive. Below you can find all available lecture materials organized by category."
-  footer_text: "Generated automatically by GitHub Actions"
-  license_text: "Licensed under <a href=\"https://creativecommons.org/licenses/by-nc/4.0/\">CC BY-NC 4.0</a>"
+  title: "Learning Resources and Previous Lecture Documents"
+  description: "Sho's lecture materials for university physics and mathematics courses, including learning resources and documents for past lectures."
   github_repo: "misho104/LecturePublic"
 
 # NOTE: Categories are now hard-coded in the HTML template (index.html.j2)
@@ -20,13 +18,13 @@ categories:
     patterns:
       - "^gp.*\\.pdf$"
     description: "General Physics lecture materials for engineering students"
-  
+
   - name: "Policies"
     icon: "📋"
     patterns:
       - ".*(grading|submission|generative|policy|guideline).*\\.pdf$"
     description: "Course policies and guidelines"
-  
+
   - name: "Other Resources"
     icon: "📚"
     patterns:
