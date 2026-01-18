@@ -42,11 +42,11 @@ jobs:
       - name: Process versioned PDFs
         run: |
           echo "Processing versions.json..."
-          if [ -f versions.json ]; then
+          if [ -f .github/versions.json ]; then
             # Check if versions array is not empty
-            version_count=$(jq '.versions | length' versions.json)
+            version_count=$(jq '.versions | length' .github/versions.json)
             if [ "$version_count" -gt 0 ]; then
-              jq -c '.versions[]' versions.json | while read -r version; do
+              jq -c '.versions[]' .github/versions.json | while read -r version; do
                 file=$(echo "$version" | jq -r '.file')
                 tag=$(echo "$version" | jq -r '.tag')
                 version_name=$(echo "$version" | jq -r '.version')
