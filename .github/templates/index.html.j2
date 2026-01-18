@@ -35,12 +35,12 @@
         <h2>Boot Camp</h2>
         <p class="category-description">Boot Camp sessions for university new comers in Science and Engineering</p>
         <ul class="pdf-list">
-            {% for file in list_pdf_data_in_directory("../../GeneralPhysics") %}{{ pdf_item(file) }}{% endfor %}
+            {% for file in list_pdf_data_in_directory("GeneralPhysics") %}{{ pdf_item(file) }}{% endfor %}
         </ul>
         <h2>Policies</h2>
         <p class="category-description">Course policies and guidelines</p>
         <ul class="pdf-list">
-            {% for file in list_pdf_data_in_directory("../../Policies") %}{{ pdf_item(file) }}{% endfor %}
+            {% for file in list_pdf_data_in_directory("Policies") %}{{ pdf_item(file) }}{% endfor %}
         </ul>
         <div class="footer">
             <div>
