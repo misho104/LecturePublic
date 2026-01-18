@@ -31,7 +31,6 @@ Edit the `categories` section in `.github/page-config.yml`:
 ```yaml
 categories:
   - name: "My New Category"
-    icon: "🎓"
     patterns:
       - "^custom.*\\.pdf$"  # Matches files starting with "custom"
     description: "Description of this category"
@@ -156,7 +155,6 @@ site:
 ```yaml
 categories:
   - name: string            # Category display name
-    icon: string            # Optional emoji or icon
     patterns:               # List of regex patterns
       - string
     description: string     # Optional description
@@ -210,7 +208,6 @@ style:
 ```yaml
 categories:
   - name: "Lecture Notes"
-    icon: "📝"
     patterns:
       - "^lecture.*\\.pdf$"
       - "^notes.*\\.pdf$"

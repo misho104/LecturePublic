@@ -17,13 +17,15 @@ h1 {
     color: #333;
     border-bottom: 3px solid var(--primary-color);
     padding-bottom: 10px;
+    font-size: 1.4em;
 }
 
-h3 {
+h2 {
     color: #444;
     margin-top: 30px;
     border-bottom: 2px solid #ddd;
     padding-bottom: 5px;
+    font-size: 1.2em;
 }
 
 .category-description {
@@ -137,6 +139,10 @@ h3 {
     padding: 10px;
 }
 
+div.footer > div { margin-top: 0.5em; }
+div.footer > div > * { display: inline; font-style: italic; }
+div.footer > div > * > span { margin: 0 0.1em 0 0.1em; }
+
 /* Responsive design for smartphones */
 @media (max-width: 768px) {
     body {
@@ -157,4 +163,8 @@ h3 {
         width: 100%;
         justify-content: flex-start;
     }
+    div.footer { text-align: left; }
+    div.footer > div > * > span { margin: 0 0 0 1.8em; }
+    div.footer > div > address > span { display: block; }
 }
+

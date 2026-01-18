@@ -16,8 +16,8 @@
         <h1>{{ config.site.title }}</h1>
         <p>Welcome to the PDF archive. Below you can find all available lecture materials organized by category.</p>
         {% for directory, files in sorted_categories %}
-            {% set metadata = category_metadata.get(directory, {'icon': '📁', 'name': directory, 'description': directory + ' materials'}) %}
-            <h3>{{ metadata.icon }} {{ metadata.name }}</h3>
+            {% set metadata = category_metadata.get(directory, {'name': directory, 'description': directory + ' materials'}) %}
+            <h2>{{ metadata.name }}</h2>
             <p class="category-description">{{ metadata.description }}</p>
             <ul class="pdf-list">
                 {% for file in files %}
@@ -40,13 +40,18 @@
             </ul>
         {% endfor %}
         <div class="footer">
-            <p>
-                <span>(C) 2024&#8211;2026</span>
-                <address><span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span> iwamoto@g-mail.nsysu.edu.tw</address>
-            </p>
-            <p>
-                Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>
-            </p>
+            <div>
+                <div>(C) 2024&#8211;2026</div>
+                <address>
+                    <span>
+                        <span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span>
+                    </span>
+                    <span>iwamoto@g-mail.nsysu.edu.tw</span>
+                </address>
+            </div>
+            <div>
+                <span>Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></span>
+            </div>
         </div>
     </body>
 </html>

@@ -14,19 +14,16 @@ site:
 # Categories define how PDFs are organized on the page (DEPRECATED - see note above)
 categories:
   - name: "General Physics"
-    icon: "📐"
     patterns:
       - "^gp.*\\.pdf$"
     description: "General Physics lecture materials for engineering students"
 
   - name: "Policies"
-    icon: "📋"
     patterns:
       - ".*(grading|submission|generative|policy|guideline).*\\.pdf$"
     description: "Course policies and guidelines"
 
   - name: "Other Resources"
-    icon: "📚"
     patterns:
       - ".*\\.pdf$"  # Catch-all pattern for remaining PDFs
     description: "Additional materials and resources"

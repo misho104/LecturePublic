@@ -215,12 +215,11 @@ def main():
             categories[directory] = []
         categories[directory].append(file)
 
-    # Define category metadata (icon, display name, description, order)
+    # Define category metadata (display name, description, order)
     # This can be extended for future courses/types
 
     # Default metadata for "Other" resources
     other_metadata = {
-        "icon": "📚",
         "name": "Other Resources",
         "description": "Additional materials and resources",
         "order": 99,
@@ -228,13 +227,11 @@ def main():
 
     category_metadata = {
         "GeneralPhysics": {
-            "icon": "📐",
             "name": "General Physics",
             "description": "General Physics lecture materials for engineering students",
             "order": 1,
         },
         "Policies": {
-            "icon": "📋",
             "name": "Policies",
             "description": "Course policies and guidelines",
             "order": 2,
@@ -247,7 +244,6 @@ def main():
     for directory in categories.keys():
         if directory not in category_metadata:
             category_metadata[directory] = {
-                "icon": "📁",
                 "name": directory,
                 "description": f"{directory} materials",
                 "order": 50,  # Default order between main categories and "Other"
