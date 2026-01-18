@@ -53,6 +53,8 @@ All PDFs are organized into categories on the index page:
 - **Policies**: Files matching policy-related keywords (grading, submission, generative, policy, guideline)
 - **Other Resources**: All remaining PDF files
 
+You can customize these categories, add new ones, or modify the appearance by editing `.github/page-config.yml`. See the [GitHub Pages customization guide](https://github.com/misho104/LecturePublic/blob/main/.github/README.md) for details.
+
 ## Workflow
 
 The GitHub Actions workflow automatically:
