@@ -9,6 +9,11 @@ _minted-*
 *.xmpdata
 *.tmp
 
+## Python
+__pycache__/
+*.py[cod]
+*$py.class
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

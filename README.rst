@@ -35,8 +35,12 @@ The deployment is triggered automatically on every push to the main branch or wh
 
 You can access the PDF archive at the GitHub Pages site once it's configured.
 
+**Customization**: The GitHub Pages site uses a template engine (Jinja2) for easy customization. You can modify the appearance, categories, messages, and styles by editing the configuration file at ``.github/page-config.yml``. For detailed instructions, see the |GITHUB_README|_.
+
 For information about managing PDF versions, see |VERSIONING|_.
 
+.. |GITHUB_README| replace:: GitHub Pages customization guide
+.. _GITHUB_README: https://github.com/misho104/LecturePublic/blob/main/.github/README.md
 .. |VERSIONING| replace:: ``VERSIONING.md``
 .. _VERSIONING: https://github.com/misho104/LecturePublic/blob/main/VERSIONING.md
 

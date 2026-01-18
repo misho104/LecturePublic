@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config.site.title }}</title>
+    <style>
+        :root {
+            --primary-color: {{ config.get('style', {}).get('primary_color', '#0366d6') }};
+            --background-color: {{ config.get('style', {}).get('background_color', '#f5f5f5') }};
+            --card-background: {{ config.get('style', {}).get('card_background', 'white') }};
+            --font-family: {{ config.get('style', {}).get('font_family', "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif") }};
+        }
+        
+        body {
+            font-family: var(--font-family);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--background-color);
+        }
+        
+        h1 {
+            color: #333;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #444;
+            margin-top: 30px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+        
+        .category-description {
+            color: #666;
+            font-style: italic;
+            margin-top: -15px;
+            margin-bottom: 15px;
+        }
+        
+        .pdf-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .pdf-item {
+            background: var(--card-background);
+            margin: 10px 0;
+            padding: 15px 20px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .pdf-item:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        
+        .pdf-name {
+            font-weight: 500;
+            color: var(--primary-color);
+            text-decoration: none;
+            flex-grow: 1;
+        }
+        
+        .pdf-name:hover {
+            text-decoration: underline;
+        }
+        
+        .pdf-size {
+            color: #666;
+            font-size: 0.9em;
+            margin-left: 15px;
+        }
+        
+        .version-badge {
+            background-color: #28a745;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        
+        .old-version-badge {
+            background-color: #6c757d;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .category {
+            margin-bottom: 30px;
+        }
+        
+        .empty-category {
+            color: #999;
+            font-style: italic;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ config.site.title }}</h1>
+    <p>{{ config.site.welcome_message }}</p>
+    
+    {% for category in categories %}
+    <div class="category">
+        <h2>{% if category.icon %}{{ category.icon }} {% endif %}{{ category.name }}</h2>
+        {% if category.description %}
+        <p class="category-description">{{ category.description }}</p>
+        {% endif %}
+        
+        {% if category.files %}
+        <ul class="pdf-list">
+            {% for file in category.files %}
+            <li class="pdf-item">
+                <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
+                {% if config.display.show_version_badges %}
+                    {% if file.is_old_version %}
+                    <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
+                    {% else %}
+                    <span class="version-badge">{{ config.display.version_badge_text }}</span>
+                    {% endif %}
+                {% endif %}
+                {% if config.display.show_file_sizes %}
+                <span class="pdf-size">{{ file.size }}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty-category">No files in this category</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    
+    <div class="footer">
+        <p>{{ config.site.footer_text }}</p>
+        <p>{{ config.site.license_text|safe }}</p>
+    </div>
+</body>
+</html>
