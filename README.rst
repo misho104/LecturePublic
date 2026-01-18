@@ -27,23 +27,6 @@ The repository includes the follwing directories for respective lecture courses:
 .. |GeneralPhysics| replace:: ``GeneralPhysics``
 .. _GeneralPhysics: https://github.com/misho104/LecturePublic/blob/main/GeneralPhysics/
 
-GitHub Pages
-------------
-
-All PDF files in this repository are automatically deployed to GitHub Pages for easy viewing and downloading.
-The deployment is triggered automatically on every push to the main branch or when a new release is published.
-
-You can access the PDF archive at the GitHub Pages site once it's configured.
-
-**Customization**: The GitHub Pages site uses a template engine (Jinja2) for easy customization. You can modify the appearance, categories, messages, and styles by editing the configuration file at ``.github/page-config.yml``. For detailed instructions, see the |GITHUB_README|_.
-
-For information about managing PDF versions, see |VERSIONING|_.
-
-.. |GITHUB_README| replace:: GitHub Pages customization guide
-.. _GITHUB_README: https://github.com/misho104/LecturePublic/blob/main/.github/README.md
-.. |VERSIONING| replace:: ``VERSIONING.md``
-.. _VERSIONING: https://github.com/misho104/LecturePublic/blob/main/.github/VERSIONING.md
-
 License
 -------
 
