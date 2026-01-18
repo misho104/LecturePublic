@@ -183,12 +183,10 @@ def _get_last_commit_date_from_path(
         resolved_path = original_path.resolve()
         resolved_repo_root = repo_root.resolve()
         
-        # Ensure the resolved path is within the repository
-        if not str(resolved_path).startswith(str(resolved_repo_root)):
-            print(f"Warning: Path outside repository: {original_path}")
-            return None
+        # Ensure the resolved path is within the repository (Python 3.9+)
+        resolved_path.relative_to(resolved_repo_root)
     except (ValueError, OSError) as e:
-        print(f"Warning: Could not resolve path {original_path}: {e}")
+        print(f"Warning: Path outside repository or invalid: {original_path} ({e})")
         return None
     
     path_str = str(original_path)
