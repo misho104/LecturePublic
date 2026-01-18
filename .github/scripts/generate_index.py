@@ -104,9 +104,9 @@ def build_category_metadata(categories: dict[str, list]) -> dict[str, dict]:
     """
     category_metadata = DEFAULT_CATEGORY_METADATA.copy()
     
-    # Add metadata for "figs" and "Other" directories
-    category_metadata["figs"] = DEFAULT_OTHER_METADATA
-    category_metadata["Other"] = DEFAULT_OTHER_METADATA
+    # Add metadata for "figs" and "Other" directories (use copies to avoid mutation)
+    category_metadata["figs"] = DEFAULT_OTHER_METADATA.copy()
+    category_metadata["Other"] = DEFAULT_OTHER_METADATA.copy()
     
     # Add default metadata for any directories not in the predefined mapping
     for directory in categories.keys():
@@ -178,11 +178,20 @@ def _get_last_commit_date_from_path(
     if not original_path:
         return None
     
-    # Validate path to prevent command injection
-    path_str = str(original_path)
-    if ".." in path_str or path_str.startswith("/"):
-        print(f"Warning: Invalid path detected: {path_str}")
+    # Validate path to prevent command injection and path traversal
+    try:
+        resolved_path = original_path.resolve()
+        resolved_repo_root = repo_root.resolve()
+        
+        # Ensure the resolved path is within the repository
+        if not str(resolved_path).startswith(str(resolved_repo_root)):
+            print(f"Warning: Path outside repository: {original_path}")
+            return None
+    except (ValueError, OSError) as e:
+        print(f"Warning: Could not resolve path {original_path}: {e}")
         return None
+    
+    path_str = str(original_path)
     
     try:
         # Use git log to get the last commit date for this file
