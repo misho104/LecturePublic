@@ -13,32 +13,47 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        {% macro pdf_list_items(files) %}
+            {% for file in files %}
+                <li class="pdf-item">
+                    <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
+                    <div class="pdf-info">
+                        {% if file.last_commit_date %}<span class="pdf-date">Updated: {{ file.last_commit_date }}</span>{% endif %}
+                        {% if config.display.show_version_badges %}
+                            {% if file.is_old_version %}
+                                <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
+                            {% else %}
+                                <span class="version-badge">{{ config.display.version_badge_text }}</span>
+                            {% endif %}
+                        {% endif %}
+                        {% if config.display.show_file_sizes %}<span class="pdf-size">{{ file.size }}</span>{% endif %}
+                        <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
+                    </div>
+                </li>
+            {% endfor %}
+        {% endmacro %}
+
         <h1>{{ config.site.title }}</h1>
         <p>Welcome to the PDF archive. Below you can find all available lecture materials organized by category.</p>
-        {% for directory, files in sorted_categories %}
-            {% set metadata = category_metadata.get(directory, {'name': directory, 'description': directory + ' materials'}) %}
-            <h2>{{ metadata.name }}</h2>
-            <p class="category-description">{{ metadata.description }}</p>
-            <ul class="pdf-list">
-                {% for file in files %}
-                    <li class="pdf-item">
-                        <a href="{{ file.filename }}" class="pdf-name" target="_blank">{{ file.filename }}</a>
-                        <div class="pdf-info">
-                            {% if file.last_commit_date %}<span class="pdf-date">Updated: {{ file.last_commit_date }}</span>{% endif %}
-                            {% if config.display.show_version_badges %}
-                                {% if file.is_old_version %}
-                                    <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
-                                {% else %}
-                                    <span class="version-badge">{{ config.display.version_badge_text }}</span>
-                                {% endif %}
-                            {% endif %}
-                            {% if config.display.show_file_sizes %}<span class="pdf-size">{{ file.size }}</span>{% endif %}
-                            <a href="{{ file.github_history_url }}" class="pdf-history-link" target="_blank">History</a>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endfor %}
+        
+        <h2>General Physics</h2>
+        <p class="category-description">General Physics lecture materials for engineering students</p>
+        <ul class="pdf-list">
+            {{ pdf_list_items(list_pdf_data_in_directory("GeneralPhysics")) }}
+        </ul>
+
+        <h2>Policies</h2>
+        <p class="category-description">Course policies and guidelines</p>
+        <ul class="pdf-list">
+            {{ pdf_list_items(list_pdf_data_in_directory("Policies")) }}
+        </ul>
+
+        <h2>Other Resources</h2>
+        <p class="category-description">Additional materials and resources</p>
+        <ul class="pdf-list">
+            {{ pdf_list_items(list_pdf_data_in_directory(".")) }}
+        </ul>
+
         <div class="footer">
             <div>
                 <div>(C) 2024&#8211;2026</div>
