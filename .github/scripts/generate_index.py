@@ -101,7 +101,8 @@ def get_directory_category(filename: str, repo_root: Path) -> str:
     if original_path:
         # Get the parent directory name
         parent_dir = original_path.parent
-        if parent_dir != Path('.'):
+        # Check if file is in a subdirectory (not at repo root)
+        if str(parent_dir) != '.':
             return str(parent_dir)
     return 'Other'
 
@@ -232,6 +233,15 @@ def main():
     
     # Define category metadata (icon, display name, description, order)
     # This can be extended for future courses/types
+    
+    # Default metadata for "Other" resources
+    other_metadata = {
+        'icon': '📚',
+        'name': 'Other Resources',
+        'description': 'Additional materials and resources',
+        'order': 99
+    }
+    
     category_metadata = {
         'GeneralPhysics': {
             'icon': '📐',
@@ -245,18 +255,8 @@ def main():
             'description': 'Course policies and guidelines',
             'order': 2
         },
-        'figs': {
-            'icon': '📚',
-            'name': 'Other Resources',
-            'description': 'Additional materials and resources',
-            'order': 99
-        },
-        'Other': {
-            'icon': '📚',
-            'name': 'Other Resources',
-            'description': 'Additional materials and resources',
-            'order': 99
-        }
+        'figs': other_metadata,  # figs directory contains license and other resources
+        'Other': other_metadata
     }
     
     # Add default metadata for any directories not in the mapping
