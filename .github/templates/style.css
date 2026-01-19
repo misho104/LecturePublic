@@ -7,32 +7,50 @@
 
 body {
     font-family: var(--font-family);
+    font-size: 16px;
+    line-height: 1.6;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: var(--background-color);
+    color: #333;
 }
 
 h1 {
-    color: #333;
+    color: #222;
     border-bottom: 3px solid var(--primary-color);
     padding-bottom: 10px;
-    font-size: 1.4em;
+    font-size: 1.8em;
+    font-weight: 600;
+    margin-top: 0.5em;
+    margin-bottom: 0.8em;
 }
 
 h2 {
-    color: #444;
-    margin-top: 30px;
+    color: #333;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
     border-bottom: 2px solid #ddd;
-    padding-bottom: 5px;
-    font-size: 1.2em;
+    padding-bottom: 0.4em;
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+h3 {
+    color: #444;
+    margin-top: 1.8em;
+    margin-bottom: 0.5em;
+    font-size: 1.15em;
+    font-weight: 600;
+    padding-left: 0;
 }
 
 .category-description {
     color: #666;
     font-style: italic;
-    margin-top: -15px;
-    margin-bottom: 15px;
+    margin-top: -0.3em;
+    margin-bottom: 1em;
+    font-size: 0.95em;
 }
 
 .pdf-list {
@@ -51,11 +69,40 @@ h2 {
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
+    transition: box-shadow 0.2s ease;
 }
 
-.lecture-block > ul { display: flex; flex-grow: 1;  align-items: flex-start; flex-wrap: wrap; gap: 20px; padding-left: 0; list-style: none; margin-left: 10px;}
-.lecture-block > ul > li > a { text-decoration: none; color: var(--primary-color);}
-.lecture-block > ul > li > a:hover { text-decoration: underline }
+.lecture-block {
+    font-weight: 500;
+    color: #555;
+}
+
+.lecture-block > ul { 
+    display: flex; 
+    flex-grow: 1;  
+    align-items: flex-start; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+    padding-left: 0; 
+    list-style: none; 
+    margin-left: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.lecture-block > ul > li > a { 
+    text-decoration: none; 
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.lecture-block > ul > li > a:hover { 
+    text-decoration: underline;
+}
+
+.lecture-block:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
 
 .pdf-item:hover {
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
@@ -67,6 +114,7 @@ h2 {
     text-decoration: none;
     flex-grow: 1;
     min-width: 200px;
+    font-size: 1em;
 }
 
 .pdf-name:hover {
