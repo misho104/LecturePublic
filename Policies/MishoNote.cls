@@ -1,4 +1,4 @@
-% Time-Stamp: <2025-07-06 00:00:00>
+% Time-Stamp: <2026-01-08 12:30:51>
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{MishoNote}[2022/11/23 Sho Iwamoto]
 
@@ -457,7 +457,7 @@ end
 \newlength\BaseShift\setlength\BaseShift{15mm}
 \newlength\BaseTab  \setlength\BaseTab  {2.5em}
 
-\newcommand\TAB[1][1]{\hspace*{#1\BaseTab}}
+\newcommand\TAB[1][1]{\hspace*{#1\BaseTab}\ignorespaces}
 
 \newdimen\NoteBoxWidthA
 \NoteBoxWidthA\textwidth
