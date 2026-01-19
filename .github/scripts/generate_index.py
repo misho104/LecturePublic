@@ -15,7 +15,7 @@ from pathlib import Path
 import yaml
 from jinja2 import Environment, FileSystemLoader
 
-REPO_URL = "https://github.com/misho104/LecturePublic/"
+REPO_URL = "https://github.com/misho104/LecturePublic"
 REPO_ROOT = Path(__file__).parent.parent.parent
 DOCS_DIR = REPO_ROOT / "docs"
 
