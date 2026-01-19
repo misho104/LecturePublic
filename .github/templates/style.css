@@ -79,7 +79,7 @@ h3 {
 
 .lecture-block > ul { 
     display: flex; 
-    flex-grow: 1;  
+    flex-grow: 1;
     align-items: flex-start; 
     flex-wrap: wrap; 
     gap: 20px; 
