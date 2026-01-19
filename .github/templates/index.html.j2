@@ -1,5 +1,5 @@
-{% macro pdf_item(file) %}
-    <li class="pdf-item">
+{% macro pdf_item(file, tag) %}
+    <{{tag or "li"}} class="pdf-item">
         {#--#}<a href="{{ file.filename }}" class="pdf-name">{{ file.filename }}</a>
         <div class="pdf-info">
             {% if file.last_commit_date -%}
@@ -15,7 +15,7 @@
             {%- if config.display.show_file_sizes %}<span class="pdf-size">{{ file.size }}</span>{%- endif -%}
             <a href="{{ file.github_history_url }}" class="pdf-history-link">History</a>
         </div>
-    </li>
+    </{{tag or "li"}}>
 {%- endmacro -%}
 {%- macro lecture_item_sub(title, file) -%}
     <li class="pdf-item-block">
@@ -59,29 +59,40 @@
 <body>
 {##}
 <h1>{{ config.site.title }}</h1>
-<p>Welcome to the PDF archive. Below you can find all available lecture materials organized by category.</p>
+<p>This page contains documents and materials used in Sho's lectures. Feel free to use the materials under the <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a> license! You can share and adapt them as long as you give appropriate credit, indicate if any changes were made, and don't use them for commercial purposes.</p>
+<p>For source codes, or if you find any errors or have suggestions, please visit <a href="https://github.com/misho104/LecturePublic">the GitHub repository</a>.</p>
 {##}
-<h2>Boot Camp</h2>
-<p class="category-description">Boot Camp sessions for university new comers in Science and Engineering</p>
-<ul class="pdf-list">
-    {%- for file in list_pdf_data_in_directory("GeneralPhysics").values() -%}{{- pdf_item(file) -}}{%- endfor %}
-</ul>
+<h2>Boot Camp &ldquo;<span lang="zh-tw">数理新訓</span>&rdquo;</h2>
+{% set data = list_pdf_data_in_directory("GeneralPhysics") -%}
+<p>Completion of Derivative and Vector Boot Camps are mandatory in Sho's General Physics lectures.</p>
+<dl>
+<dt>1. Derivative Boot Camp</dt>
+<dd class="pdf-list">{{- pdf_item(data["gp1_boot1_deriv_true"], "div") -}}</dd>
+<dd class="pdf-list">{{- pdf_item(data["gp1_boot1_deriv_true_extra"], "div") -}}</dd>
+<dt>2. Vector Boot Camp</dt>   <dd class="pdf-list">{{- pdf_item(data["gp1_boot2_vector"], "div") -}}</dd>
+<dt>3. Integral Boot Camp</dt> <dd class="pdf-list">{{- pdf_item(data["gp1_boot3_integ"], "div") -}}</dd>
+</dl>
+{##}
 <h2>Policies</h2>
-<p class="category-description">Course policies and guidelines</p>
-<ul class="pdf-list">
-    {%- for file in list_pdf_data_in_directory("Policies").values() -%}{{- pdf_item(file) -}}{%- endfor %}
-</ul>
+<p class="category-description">Administrative guidelines and policies on Sho's courses.</p>
+{% set data = list_pdf_data_in_directory("Policies") -%}
+<dl>
+<dt>Grading Policies and Sho's Grading Style</dt> <dd class="pdf-list">{{- pdf_item(data["grading"], "div") -}}</dd>
+<dt>Suggestions on Homeworks and Reports</dt>     <dd class="pdf-list">{{- pdf_item(data["submission_guideline"], "div") -}}</dd>
+<dt>Generative AI Guidelines and Regulations</dt> <dd class="pdf-list">{{- pdf_item(data["generative_ai"], "div") -}}</dd>
+</dl>
 {##}
-<h2>Past Lecture Administrative Documents</h2>
-<h3>General Physics 1</h3>
-<p class="category-description">Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp1.html">https://www2.nsysu.edu.tw/iwamoto/gp1.html</a></p>
+<h2>Administrative Documents for Past Lectures</h2>
+<p>See <a href="https://www2.nsysu.edu.tw/iwamoto/">Sho's website on NSYSU</a> for further or latest information.</p>
+<h3 id="gp1">General Physics 1</h3>
 <ul class="pdf-list">{% for year in range(2023, 2028) %}{{ lecture_item('gp1', year) }}{% endfor %}</ul>
-<h3>General Physics 2</h3>
-<p class="category-description">Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp2.html">https://www2.nsysu.edu.tw/iwamoto/gp2.html</a></p>
+<p class="category-description">→ <a href="https://www2.nsysu.edu.tw/iwamoto/gp1_old.html">the webpage</a></p>
+<h3 id="gp2">General Physics 2</h3>
 <ul class="pdf-list">{%- for year in range(2022, 2028) -%}{{- lecture_item('gp2', year) -}}{%- endfor %}</ul>
-<h3>Math and Coding 2</h3>
-<p class="category-description">Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/physmath2.html">https://www2.nsysu.edu.tw/iwamoto/physmath2.html</a></p>
+<p class="category-description">→ <a href="https://www2.nsysu.edu.tw/iwamoto/gp2_old.html">the webpage</a></p>
+<h3 id="physmath2">Math and Coding 2</h3>
 <ul class="pdf-list">{%- for year in range(2023, 2028) -%}{{- lecture_item('pm2', year) -}}{%- endfor %}</ul>
+<p class="category-description">→ <a href="https://www2.nsysu.edu.tw/iwamoto/physmath2_old.html">the webpage</a></p>
 {##}
 <div class="footer">
     <div>

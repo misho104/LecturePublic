@@ -56,7 +56,11 @@ h3 {
 .pdf-list {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
+
+dt { font-weight: 500; }
+dd + dt { padding-top: 10px; }
 
 .pdf-item, .lecture-block {
     background: var(--card-background);
