@@ -1,8 +1,10 @@
-{%- macro pdf_item(file) -%}
+{% macro pdf_item(file) %}
     <li class="pdf-item">
-        <a href="{{ file.filename }}" class="pdf-name">{{ file.filename }}</a>
+        {#--#}<a href="{{ file.filename }}" class="pdf-name">{{ file.filename }}</a>
         <div class="pdf-info">
-            {%- if file.last_commit_date %}<span class="pdf-date">Updated: {{ file.last_commit_date }}</span>{% endif -%}
+            {% if file.last_commit_date -%}
+                <span class="pdf-date">Updated: {{ file.last_commit_date }}</span>
+            {% endif -%}
             {%- if config.display.show_version_badges -%}
                 {%- if file.is_old_version -%}
                     <span class="old-version-badge">{{ config.display.old_version_badge_text }}</span>
@@ -10,14 +12,14 @@
                     <span class="version-badge">{{ config.display.version_badge_text }}</span>
                 {%- endif -%}
             {%- endif -%}
-            {%- if config.display.show_file_sizes %}<span class="pdf-size">{{ file.size }}</span>{% endif -%}
+            {%- if config.display.show_file_sizes %}<span class="pdf-size">{{ file.size }}</span>{%- endif -%}
             <a href="{{ file.github_history_url }}" class="pdf-history-link">History</a>
         </div>
     </li>
 {%- endmacro -%}
 {%- macro lecture_item_sub(title, file) -%}
     <li class="pdf-item-block">
-        <a href="{{ file.filename }}">{{ title }}</a>
+        {#--#}<a href="{{ file.filename }}">{{ title }}</a>{#--#}
     </li>
 {%- endmacro -%}
 {%- macro lecture_item(head, year) -%}
@@ -27,89 +29,70 @@
     {%- if type == 0 -%}
     {%- elif type == 1 -%}
         <li class="lecture-block">
-            {{ year }}
+            <span>{{- year -}}</span>
             <ul>
-                {{- lecture_item_sub("Guidance Document", files[2]) -}}
+                {{ lecture_item_sub("Guidance", files[2]) -}}
                 {{- lecture_item_sub("Midterm Exam", files[0]) -}}
-                {{- lecture_item_sub("Term Exam", files[0]) -}}
+                {{- lecture_item_sub("Term Exam", files[0]) }}
             </ul>
         </li>
     {%- else -%}
-        {%- for file in files -%}{{- lecture_item_sub(file.filename, file) -}}{%- endfor -%}
+        {%- for file in files -%}
+            {{- lecture_item_sub(file.filename, file) -}}
+        {%- endfor -%}
     {%- endif -%}
 {%- endmacro -%}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="robots" content="ALL">
-        <meta name="keywords" content="Sho Iwamoto, Lectures">
-        <link rel="author" title="Sho Iwamoto" href="mailto:iwamoto&#64;g-mail.nsysu.edu.tw">
-        <meta lang="en" name="author" content="Sho Iwamoto">
-        <meta name="description" content="{{ config.site.description }}">
-        <title>{{ config.site.title }}</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <h1>{{ config.site.title }}</h1>
-        <p>Welcome to the PDF archive. Below you can find all available lecture materials organized by category.</p>
-        <h2>Boot Camp</h2>
-        <p class="category-description">Boot Camp sessions for university new comers in Science and Engineering</p>
-        <ul class="pdf-list">
-            {%- for file in list_pdf_data_in_directory("GeneralPhysics").values() -%}
-                {{- pdf_item(file) -}}
-            {%- endfor %}
-        </ul>
-        <h2>Policies</h2>
-        <p class="category-description">Course policies and guidelines</p>
-        <ul class="pdf-list">
-            {%- for file in list_pdf_data_in_directory("Policies").values() -%}
-                {{- pdf_item(file) -}}
-            {%- endfor %}
-        </ul>
-        <h2>Past Lecture Administrative Documents</h2>
-        <h3>General Physics 1</h3>
-        <p class="category-description">
-            Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp1.html">https://www2.nsysu.edu.tw/iwamoto/gp1.html</a>
-        </p>
-        <ul class="pdf-list">
-            {%- for year in range(2023, 2028) -%}
-                {{- lecture_item('gp1', year) -}}
-            {%- endfor %}
-        </ul>
-        <h3>General Physics 2</h3>
-        <p class="category-description">
-            Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp2.html">https://www2.nsysu.edu.tw/iwamoto/gp2.html</a>
-        </p>
-        <ul class="pdf-list">
-            {%- for year in range(2022, 2028) -%}
-                {{- lecture_item('gp2', year) -}}
-            {%- endfor %}
-        </ul>
-        <h3>Math and Coding 2</h3>
-        <p class="category-description">
-            Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/physmath2.html">https://www2.nsysu.edu.tw/iwamoto/physmath2.html</a>
-        </p>
-        <ul class="pdf-list">
-            {%- for year in range(2023, 2028) -%}
-                {{- lecture_item('pm2', year) -}}
-            {%- endfor %}
-        </ul>
-        <div class="footer">
-            <div>
-                <div>(C) 2024&#8211;2026</div>
-                <address>
-                    <span>
-                        <span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span>
-                    </span>
-                    <span><a href="mailto:iwamoto@g-mail.nsysu.edu.tw">iwamoto@g-mail.nsysu.edu.tw</a></span>
-                </address>
-            </div>
-            <div>
-                <span>Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></span>
-            </div>
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="ALL">
+    <meta name="keywords" content="Sho Iwamoto, Lectures">
+    <link rel="author" title="Sho Iwamoto" href="mailto:iwamoto&#64;g-mail.nsysu.edu.tw">
+    <meta lang="en" name="author" content="Sho Iwamoto">
+    <meta name="description" content="{{ config.site.description }}">
+    <title>{{ config.site.title }}</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+{##}
+<h1>{{ config.site.title }}</h1>
+<p>Welcome to the PDF archive. Below you can find all available lecture materials organized by category.</p>
+{##}
+<h2>Boot Camp</h2>
+<p class="category-description">Boot Camp sessions for university new comers in Science and Engineering</p>
+<ul class="pdf-list">
+    {%- for file in list_pdf_data_in_directory("GeneralPhysics").values() -%}{{- pdf_item(file) -}}{%- endfor %}
+</ul>
+<h2>Policies</h2>
+<p class="category-description">Course policies and guidelines</p>
+<ul class="pdf-list">
+    {%- for file in list_pdf_data_in_directory("Policies").values() -%}{{- pdf_item(file) -}}{%- endfor %}
+</ul>
+{##}
+<h2>Past Lecture Administrative Documents</h2>
+<h3>General Physics 1</h3>
+<p class="category-description">Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp1.html">https://www2.nsysu.edu.tw/iwamoto/gp1.html</a></p>
+<ul class="pdf-list">{% for year in range(2023, 2028) %}{{ lecture_item('gp1', year) }}{% endfor %}</ul>
+<h3>General Physics 2</h3>
+<p class="category-description">Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp2.html">https://www2.nsysu.edu.tw/iwamoto/gp2.html</a></p>
+<ul class="pdf-list">{%- for year in range(2022, 2028) -%}{{- lecture_item('gp2', year) -}}{%- endfor %}</ul>
+<h3>Math and Coding 2</h3>
+<p class="category-description">Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/physmath2.html">https://www2.nsysu.edu.tw/iwamoto/physmath2.html</a></p>
+<ul class="pdf-list">{%- for year in range(2023, 2028) -%}{{- lecture_item('pm2', year) -}}{%- endfor %}</ul>
+{##}
+<div class="footer">
+    <div>
+        <div>(C) 2024&#8211;2026</div>
+        <address>
+            <span><span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span></span>
+            <span><a href="mailto:iwamoto@g-mail.nsysu.edu.tw">iwamoto@g-mail.nsysu.edu.tw</a></span>
+        </address>
+    </div>
+    <div><span>Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></span></div>
+</div>
+{##}
+</body>
 </html>

@@ -75,6 +75,8 @@ h3 {
 .lecture-block {
     font-weight: 500;
     color: #555;
+    margin: 5px 0;
+    padding: 10px 20px;
 }
 
 .lecture-block > ul { 
@@ -95,6 +97,12 @@ h3 {
     color: var(--primary-color);
     font-weight: 500;
 }
+
+.lecture-block > ul > li { 
+    padding-left: 0;
+    margin-left: 0;
+}
+
 
 .lecture-block > ul > li > a:hover { 
     text-decoration: underline;
