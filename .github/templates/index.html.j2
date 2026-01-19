@@ -71,37 +71,35 @@
             Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp1.html">https://www2.nsysu.edu.tw/iwamoto/gp1.html</a>
         </p>
         <ul class="pdf-list">
-            <ul class="pdf-list">
-                {% for year in range(2023, 2028) %}{{ lecture_item('gp1', year) }}{% endfor %}
-            </ul>
-            <h3>General Physics 2</h3>
-            <p class="category-description">
-                Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp2.html">https://www2.nsysu.edu.tw/iwamoto/gp2.html</a>
-            </p>
-            <ul class="pdf-list">
-                {% for year in range(2022, 2028) %}{{ lecture_item('gp2', year) }}{% endfor %}
-            </ul>
-            <h3>Math and Coding 2</h3>
-            <p class="category-description">
-                Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/physmath2.html">https://www2.nsysu.edu.tw/iwamoto/physmath2.html</a>
-            </p>
-            <ul class="pdf-list">
-                <ul class="pdf-list">
-                    {% for year in range(2023, 2028) %}{{ lecture_item('pm2', year) }}{% endfor %}
-                </ul>
-                <div class="footer">
-                    <div>
-                        <div>(C) 2024&#8211;2026</div>
-                        <address>
-                            <span>
-                                <span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span>
-                            </span>
-                            <span><a href="mailto:iwamoto@g-mail.nsysu.edu.tw">iwamoto@g-mail.nsysu.edu.tw</a></span>
-                        </address>
-                    </div>
-                    <div>
-                        <span>Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></span>
-                    </div>
-                </div>
-            </body>
-        </html>
+            {% for year in range(2023, 2028) %}{{ lecture_item('gp1', year) }}{% endfor %}
+        </ul>
+        <h3>General Physics 2</h3>
+        <p class="category-description">
+            Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/gp2.html">https://www2.nsysu.edu.tw/iwamoto/gp2.html</a>
+        </p>
+        <ul class="pdf-list">
+            {% for year in range(2022, 2028) %}{{ lecture_item('gp2', year) }}{% endfor %}
+        </ul>
+        <h3>Math and Coding 2</h3>
+        <p class="category-description">
+            Official webpage: <a href="https://www2.nsysu.edu.tw/iwamoto/physmath2.html">https://www2.nsysu.edu.tw/iwamoto/physmath2.html</a>
+        </p>
+        <ul class="pdf-list">
+            {% for year in range(2023, 2028) %}{{ lecture_item('pm2', year) }}{% endfor %}
+        </ul>
+        <div class="footer">
+            <div>
+                <div>(C) 2024&#8211;2026</div>
+                <address>
+                    <span>
+                        <span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span>
+                    </span>
+                    <span><a href="mailto:iwamoto@g-mail.nsysu.edu.tw">iwamoto@g-mail.nsysu.edu.tw</a></span>
+                </address>
+            </div>
+            <div>
+                <span>Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></span>
+            </div>
+        </div>
+    </body>
+</html>
