@@ -85,12 +85,23 @@ def list_pdf_data_in_directory(dir: str) -> dict[str, dict]:
         if not (DOCS_DIR / filename).exists():
             continue
         key = re.sub(r"\.pdf$", "", filename)
+
+        history_url = f"{REPO_URL}/commits/main/{dir}/{filename}"
+        tex_path = REPO_ROOT / dir / (key + ".tex")
+
+        # special handling
+        if tex_path.stem == "gp1_boot1_deriv_true":
+            tex_path = tex_path.parent / "gp1_boot1_deriv.tex"
+
+        if tex_path.exists():
+            history_url = f"{REPO_URL}/commits/main/{dir}/{tex_path.name}"
+
         result[key] = {
             "filename": filename,
             "size": get_file_size(pdf_file),
             "is_old_version": is_old_version(filename),
             "last_commit_date": get_last_commit_date(pdf_file),
-            "github_history_url": f"{REPO_URL}/commits/main/{dir}/{filename}",
+            "github_history_url": history_url,
         }
     return dict(sorted(result.items()))
 
