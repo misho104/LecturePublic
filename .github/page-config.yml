@@ -1,10 +1,5 @@
 # GitHub Pages Configuration
 
-# Site metadata
-site:
-  title: "Learning Resources and Previous Lecture Documents"
-  description: "Sho's lecture materials for university physics and mathematics courses, including learning resources and documents for past lectures."
-
 # Display options
 display:
   show_file_sizes: false

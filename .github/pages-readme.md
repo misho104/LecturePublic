@@ -41,17 +41,7 @@ The GitHub Pages for this repository provides an organized, easy-to-navigate arc
 
 ## Quick Start: Customizing Your Page
 
-### 1. Change Site Title and Description
-
-Edit `.github/page-config.yml`:
-
-```yaml
-site:
-  title: "My Custom Title"
-  description: "Your custom description here"
-```
-
-### 2. Toggle Display Options
+### 1. Toggle Display Options
 
 Edit the `display` section in `.github/page-config.yml`:
 
@@ -63,7 +53,7 @@ display:
   old_version_badge_text: "Old Version"
 ```
 
-### 3. Customize Colors
+### 2. Customize Colors
 
 Edit CSS variables in `.github/templates/style.css`:
 
@@ -76,7 +66,7 @@ Edit CSS variables in `.github/templates/style.css`:
 }
 ```
 
-### 4. Add or Modify Categories
+### 3. Add or Modify Categories
 
 To add a new category or change existing ones, edit `.github/templates/index.html.j2`:
 
@@ -118,11 +108,6 @@ xdg-open docs/index.html  # Linux
 ### page-config.yml
 
 ```yaml
-# Site metadata
-site:
-  title: string              # Page title shown in browser tab and header
-  description: string        # Meta description for search engines
-
 # Display options
 display:
   show_file_sizes: boolean       # Show file sizes next to PDFs

@@ -52,17 +52,17 @@
     <meta name="keywords" content="Sho Iwamoto, Lectures">
     <link rel="author" title="Sho Iwamoto" href="mailto:iwamoto&#64;g-mail.nsysu.edu.tw">
     <meta lang="en" name="author" content="Sho Iwamoto">
-    <meta name="description" content="{{ config.site.description }}">
-    <title>{{ config.site.title }}</title>
+    <meta name="description" content="Sho's lecture materials for university physics and mathematics courses, including learning resources and documents for past lectures.">
+    <title>Sho's Resources for Physics Learners — Sho Iwamoto</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 {##}
-<h1>{{ config.site.title }}</h1>
+<h1>Sho's Resources for Physics Learners</h1>
 <p>This page contains documents and materials used in Sho's lectures. Feel free to use the materials under the <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a> license! You can share and adapt them as long as you give appropriate credit, indicate if any changes were made, and don't use them for commercial purposes.</p>
 <p>For source codes, or if you find any errors or have suggestions, please visit <a href="https://github.com/misho104/LecturePublic">the GitHub repository</a>.</p>
 {##}
-<h2>Boot Camp &ldquo;<span lang="zh-Hant">數理新訓</span>&rdquo;</h2>
+<h2>Boot Camp &ldquo;<span lang="zh-Hant">數物新訓</span>&rdquo;</h2>
 {% set data = list_pdf_data_in_directory("GeneralPhysics") -%}
 <p>Completion of Derivative and Vector Boot Camps are mandatory in Sho's General Physics lectures.</p>
 <dl>
@@ -82,23 +82,25 @@
 <dt>Generative AI Guidelines and Regulations</dt> <dd class="pdf-list">{{- pdf_item(data["generative_ai"], "div") -}}</dd>
 </dl>
 {##}
-<h2>Administrative Documents for Past Lectures</h2>
-<p>See <a href="https://www2.nsysu.edu.tw/iwamoto/">Sho's website on NSYSU</a> for further or latest information.</p>
+<h2>Documents in Sho's Past Lectures</h2>
+<p>Past exam problems and documents of <em>previous</em> lectures are provided here.</p>
+<p>For information on the <em>current</em> lectures, or for the description of these lectures, visit <a href="https://www2.nsysu.edu.tw/iwamoto/">Sho's website on NSYSU</a>.</p>
 <h3 id="gp1">General Physics 1</h3>
 <ul class="pdf-list">{% for year in range(2023, 2028) %}{{ lecture_item('gp1', year) }}{% endfor %}</ul>
-<p class="category-description">→ <a href="https://www2.nsysu.edu.tw/iwamoto/gp1_old.html">the webpage</a></p>
+<p class="category-description">→ <a href="https://www2.nsysu.edu.tw/iwamoto/gp1_old.html">lecture webpage</a></p>
 <h3 id="gp2">General Physics 2</h3>
 <ul class="pdf-list">{%- for year in range(2022, 2028) -%}{{- lecture_item('gp2', year) -}}{%- endfor %}</ul>
-<p class="category-description">→ <a href="https://www2.nsysu.edu.tw/iwamoto/gp2_old.html">the webpage</a></p>
+<p class="category-description">→ <a href="https://www2.nsysu.edu.tw/iwamoto/gp2_old.html">lecture webpage</a></p>
 <h3 id="physmath2">Math and Coding 2</h3>
 <ul class="pdf-list">{%- for year in range(2023, 2028) -%}{{- lecture_item('pm2', year) -}}{%- endfor %}</ul>
-<p class="category-description">→ <a href="https://www2.nsysu.edu.tw/iwamoto/physmath2_old.html">the webpage</a></p>
+<p class="category-description">→ <a href="https://www2.nsysu.edu.tw/iwamoto/physmath2_old.html">lecture webpage</a></p>
 {##}
 <div class="footer">
     <div>
         <div>(C) 2024&#8211;2026</div>
         <address>
             <span><span lang="en">Sho Iwamoto</span> / <span lang="ja">岩本 祥</span></span>
+            <span>Physics dept., National Sun Yat-sen University</span>
             <span><a href="mailto:iwamoto@g-mail.nsysu.edu.tw">iwamoto@g-mail.nsysu.edu.tw</a></span>
         </address>
     </div>
