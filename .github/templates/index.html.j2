@@ -17,6 +17,14 @@
         </div>
     </{{tag or "li"}}>
 {%- endmacro -%}
+{% macro url_item(url, name, tag) %}
+    <{{tag or "li"}} class="pdf-item">
+        {#--#}<a href="{{ url }}" class="pdf-name">{{ name }}</a>
+        <div class="pdf-info">
+            <span class="pdf-size"><a href="{{ url }}">{{ url }}</a></span>
+        </div>
+    </{{tag or "li"}}>
+{%- endmacro -%}
 {%- macro lecture_item_sub(title, file) -%}
     <li class="pdf-item-block">
         {#--#}<a href="{{ file.filename }}">{{ title }}</a>{#--#}
@@ -64,6 +72,7 @@
 {##}
 <h2>Boot Camp &ldquo;<span lang="zh-Hant">數物新訓</span>&rdquo;</h2>
 {% set data = list_pdf_data_in_directory("GeneralPhysics") -%}
+<p>For first-year students in physics and engineering.</p>
 <p>Completion of Derivative and Vector Boot Camps are mandatory in Sho's General Physics lectures.</p>
 <dl>
 <dt>1. Derivative Boot Camp</dt>
@@ -72,6 +81,14 @@
 <dt>2. Vector Boot Camp</dt>   <dd class="pdf-list">{{- pdf_item(data["gp1_boot2_vector"], "div") -}}</dd>
 <dt>3. Integral Boot Camp</dt> <dd class="pdf-list">{{- pdf_item(data["gp1_boot3_integ"], "div") -}}</dd>
 </dl>
+{##}
+<h2>Python Starters</h2>
+<p>A self-study material on <em>git</em>, <a href="https://docs.astral.sh/uv/"><em>uv</em></a>, and <em>basic Python</em>. For first- or second-year students who are interested in modern programming and numerical analysis.</p>
+<ul class="pdf-list">
+{{- url_item("https://github.com/nsysu-iwamoto/python-starter-1", "Python Starter 1") -}}
+{{- url_item("https://github.com/nsysu-iwamoto/python-starter-2", "Python Starter 2") -}}
+</ul>
+<p>If you are attending on Sho's <em>Math and Coding</em> lecture, you will receive an invitation link to these assignments on <a href="https://classroom.github.com/">GitHub Classroom</a>, so you can set up the repository easily. Ask Sho for the invitation.</p>
 {##}
 <h2>Policies</h2>
 <p class="category-description">Administrative guidelines and policies on Sho's courses.</p>
