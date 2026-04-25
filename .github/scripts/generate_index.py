@@ -113,13 +113,18 @@ def get_lecture_files(head: str, year: int) -> tuple[int, list[dict]]:
             key = re.sub("[^a-z0-9]", "", (match.group(1) + match.group(2)).lower())
             tuples.append((key, v))
     tuples.sort()
-    head_connected = "".join(k for k, v in tuples)
+    head_connected = "".join(k for k, _ in tuples)
     type = -1
     if len(tuples) == 0:
         type = 0
-    if head_connected == "exam1exam2supplemental":
+    if head_connected in [
+        "supplemental",
+        "exam1supplemental",
+        "exam1exam2supplemental",
+    ]:
         type = 1
-    return (type, [v for k, v in sorted(tuples)])
+        tuples.insert(0, tuples.pop())  # move supp to the first
+    return (type, [v for k, v in tuples])
 
 
 def main():

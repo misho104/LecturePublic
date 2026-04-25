@@ -39,9 +39,9 @@
         <li class="lecture-block">
             <span>{{- year -}}</span>
             <ul>
-                {{ lecture_item_sub("Guidance", files[2]) -}}
-                {{- lecture_item_sub("Midterm Exam", files[0]) -}}
-                {{- lecture_item_sub("Term Exam", files[0]) }}
+                {{ lecture_item_sub("Guidance", files[0]) -}}
+                {%- if files|length > 1 %} {{- lecture_item_sub("Midterm Exam", files[1]) -}}{%-endif-%}
+                {%- if files|length > 2 %} {{- lecture_item_sub("Term Exam", files[2]) -}}{%-endif-%}
             </ul>
         </li>
     {%- else -%}
