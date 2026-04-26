@@ -1,0 +1,19 @@
+AWH:
+  type: book
+  author:
+    - George B. Arfken
+    - Hans J. Weber
+    - Frank E. Harris
+  title: "Mathematical Methods for Physicists: A Comprehensive Guide"
+  edition: 7
+  year: 2013
+  publisher: Academic Press
+
+Boas:
+  type: book
+  author: Mary L. Boas
+  title: Mathematical Methods in the Physical Sciences
+  edition: 3
+  year: 2006
+  publisher: Wiley
+
