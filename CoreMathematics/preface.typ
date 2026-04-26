@@ -1,4 +1,4 @@
-#import "misho-text.typ": _page-style, c-blue, c-dim-gray, c-gray, c-light-gray, default-metadata, text-sf, text-tt
+#import "misho-text.typ": c-blue, c-dim-gray, c-gray, c-light-gray, default-metadata, set-page-style, text-sf, text-tt
 
 #let preface(message: "", custom-metadata) = {
   let metadata = default-metadata + custom-metadata
@@ -16,8 +16,6 @@
     metadata.date.display("[month repr:long] [day], [year]")
   }
 
-
-  _page-style.update("title")
   // vertical bar
   place(top + left, dx: -25mm, dy: -30mm, rect(width: 12mm, height: 297mm, fill: c-blue.lighten(20%), stroke: none))
   // top spacer
@@ -64,7 +62,7 @@
     })
   }
   // Restore normal page style on the next page
-  _page-style.update("normal")
+  set-page-style("normal")
   pagebreak()
 
   [

@@ -65,18 +65,33 @@
 
 // ── Page-style state ──────────────────────────────────────────
 // The gray box visually covers the header rule on non-normal pages.
-//   "title"   — document title page
-//   "chapter" — chapter opening page
-//   "normal"  — all other pages
-#let _page-style = state("page-style", "title")
-
-// ── Header styles ─────────────────────────────────────────────
 #let head-title-style(body) = text-sf(fill: c-light-gray, size: 9pt, body)
 #let head-date-style(body) = text-tt(fill: c-dim-gray, size: 9pt, body)
 #let head-pagenum-style(body) = text-sf(weight: "bold", size: 12pt, body)
 
+#let _page-style-default = (
+  // left, right, page-num
+  "title": none,
+  "chapter": (
+    none,
+    ("@date", it => text-tt(fill: c-dim-gray, size: 9pt, it)),
+    ("@pagenum/@total", it => text-sf(weight: "bold", size: 12pt, it)),
+  ),
+  "normal": (
+    ("@chapter-name", it => text-sf(fill: c-light-gray, size: 9pt, it)),
+    ("@date", it => text-tt(fill: c-dim-gray, size: 9pt, it)),
+    ("@pagenum/@total", it => text-sf(weight: "bold", size: 12pt, it)),
+  ),
+)
+#let _page-style = state("page-style", none)
+#let set-page-style(option) = {
+  if option in _page-style-default {
+    _page-style.update(_page-style-default.at(option))
+  }
+}
+
 // ── Gray title/chapter box ────────────────────────────────────
-#let _draw-chapter-box(title) = {
+#let _draw-chapter-box(number, title) = {
   place(top + left, dx: 0mm, dy: -4.5mm, rect(width: 160mm, height: 32mm, fill: c-dim-gray, stroke: none))
   place(top + left, dx: 2mm, dy: -2.5mm, rect(width: 156mm, height: 10mm, fill: none, stroke: 0.4pt + black))
   place(
@@ -84,7 +99,7 @@
     dx: 6.3mm,
     dy: -2mm,
     box(fill: c-dim-gray, outset: 1mm, inset: (right: 1mm), text(size: 16pt, "Chapter "))
-      + box(fill: c-dim-gray, outset: 1mm, text(size: 40pt, context (counter(heading).at(here()).at(0)))),
+      + box(fill: c-dim-gray, outset: 1mm, text(size: 40pt, number)),
   )
   place(
     top + left,
@@ -99,12 +114,30 @@
 // Inserts a chapter-opening page with a gray box.
 // State is updated BEFORE pagebreak so the new page's header sees it.
 // The hidden level-1 heading registers the chapter in #outline().
+#let to-string(it) = {
+  if type(it) == str {
+    it
+  } else if type(it) != content {
+    str(it)
+  } else if it.has("text") {
+    it.text
+  } else if it.has("children") {
+    it.children.map(to-string).join()
+  } else if it.has("body") {
+    to-string(it.body)
+  } else if it == [ ] {
+    " "
+  }
+}
+#let current-chapter = state("current-chapter", (0, "", ""))
 #let chapter(title) = {
-  _page-style.update("chapter")
+  set-page-style("chapter")
   pagebreak()
   heading(level: 1, title)
-  _draw-chapter-box(title)
-  _page-style.update("normal")
+  let number = context (counter(heading).at(here()).at(0))
+  _draw-chapter-box(number, title)
+  current-chapter.update((number, title, [Chapter #number: #title]))
+  set-page-style("normal")
 }
 
 // ── Template ──────────────────────────────────────────────────
@@ -128,8 +161,6 @@
   let metadata = default-metadata + custom-metadata
   // ── PDF metadata ─────────────────────────────────────────
   set document(title: metadata.title, author: metadata.author, description: metadata.description, date: metadata.date)
-
-  let display-date = metadata.date.display("[day]-[month repr:short]-[year] [hour]:[minute]:[second]")
 
   // ── Text & element styles ─────────────────────────────────
   set text(font: _font-serif, size: 11pt)
@@ -159,24 +190,34 @@
     margin: (left: 25mm, right: 25mm, top: 30mm, bottom: 30mm),
     header-ascent: 4mm,
     header: context {
-      if _page-style.at(here()) == "title" { return none }
-
-      let page-num = counter(page).get().first()
-      let total = counter(page).final().first()
-
-      let right-content = {
-        if _page-style.at(here()) != "title" {
-          head-date-style(display-date)
-          h(6mm)
-        }
-        head-pagenum-style[#page-num/#total]
-        h(2mm)
-      }
-      let left-content = if _page-style.at(here()) == "normal" { h(2mm) + head-title-style(metadata.title) }
-      // Rule always drawn; gray box covers it on title/chapter pages.
+      if _page-style.at(here()) == none { return }
+      let header-dictionary = (
+        "pagenum": str(counter(page).get().first()),
+        "total": str(counter(page).final().first()),
+        "date": metadata.date.display("[day]-[month repr:short]-[year] [hour]:[minute]:[second]"),
+      )
+      let header-content = _page-style
+        .at(here())
+        .map(
+          it => {
+            if it == none {} else {
+              let value = it.at(0)
+              let output = if value == "@chapter-name" {
+                current-chapter.at(here()).at(2)
+              } else {
+                value.replace(regex("@(date|pagenum|total)"), it => header-dictionary.at(it.captures.at(0)))
+              }
+              it.at(1)(output)
+            }
+          },
+        )
+      let left-content = header-content
       grid(
-        columns: (1fr, auto),
-        align(bottom, left-content), align(bottom, right-content),
+        columns: (2mm, 1fr, auto, 2mm),
+        none,
+        align(bottom, header-content.at(0)),
+        align(bottom, header-content.at(1) + h(6mm) + header-content.at(2)),
+        none,
       )
       v(-3.3mm)
       line(length: 100%, stroke: 0.7mm + c-light-gray)
