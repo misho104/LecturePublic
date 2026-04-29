@@ -151,7 +151,7 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
 ]
 
 == Greek symbols
-#let NU(body) = table.cell(fill: luma(90%), text(fill: luma(50%), body))
+#let NU(body) = table.cell(fill: luma(90%), text(fill: luma(50%), body)) // cspell:disable-line
 #let CA(body) = table.cell(fill: c.alt-b, body)
 #block(height: 12em)[
   #columns(4, gutter: 0em)[

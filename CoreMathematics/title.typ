@@ -10,10 +10,10 @@
     text-sf(
       size: 14pt,
       fill: c.gray,
-      metadata.revision + h(2mm) + sym.dash + h(2mm) + metadata.date.display("[month repr:long] [day], [year]"),
+      metadata.revision + h(2mm) + sym.dash + h(2mm) + metadata.date.display("[month repr:long] [day], [year]"), // cspell: disable-line
     )
   } else {
-    metadata.date.display("[month repr:long] [day], [year]")
+    metadata.date.display("[month repr:long] [day], [year]") // cspell: disable-line
   }
 
   // vertical bar

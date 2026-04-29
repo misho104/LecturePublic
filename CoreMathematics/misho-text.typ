@@ -1,5 +1,5 @@
 // ============================================================
-// misho-note.typ — Typst document class (port of MishoNote.cls)
+// misho-note.typ — port of MishoNote.cls
 //
 // Usage:
 //   #import "misho-note.typ": *
@@ -18,22 +18,22 @@
 }
 
 // ── Fonts ─────────────────────────────────────────────────────
-#let _font-serif = "STIX Two Text"  // main body font
-#let _font-sans = "Roboto"         // sans-serif (scaled ×0.91)
-#let _font-mono = "Roboto Mono"    // monospace  (scaled ×0.85)
+#let _font-serif = "STIX Two Text"  // main body font             cspell: disable-line
+#let _font-sans = "Roboto"          // sans-serif (scaled ×0.91)  cspell: disable-line
+#let _font-mono = "Roboto Mono"     // monospace  (scaled ×0.85)  cspell: disable-line
 
 // Scaled font helpers.
 // Without arguments, size is read from the surrounding context and scaled.
 // `size:` sets an explicit base size (still scaled). `true-size:` sets absolute (no scaling).
 #let text-sf(true-size: none, size: none, ..args) = context text(
-  ..args,
   font: _font-sans,
   size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.91 },
+  ..args,
 )
 #let text-tt(true-size: none, size: none, ..args) = context text(
-  ..args,
   font: _font-mono,
   size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.85 },
+  ..args,
 )
 
 /* original idea was
@@ -48,9 +48,11 @@
   label-width: 2.0em,
   label-sep: 0.5em,
   left-margin: 2.5em,
+  indent: 17pt,
 )
 
 // ── Colors ────────────────────────────────────────────────────
+// cspell:disable
 #let c = (
   "gray": luma(50%), // \gray
   "light-gray": luma(80%), // \lightgray
@@ -64,6 +66,18 @@
   "alt-a": rgb(100%, 20%, 0%), // AltDefA — red-orange (\RED, \C)
   "alt-b": rgb(15%, 50%, 70%), // AltDefB — steel blue (\C*), use sparingly
 )
+// cspell:enable
+
+#let ornament-skip = [#parbreak()#block(spacing: 24pt, grid(
+    columns: (1fr, 12.5em, 16pt, 12.5em, 1fr),
+    align: (right, right, center, left, left).map(c => horizon + c),
+    text(10pt)[☙],
+    line(start: (0em, 0em), end: (12em, 0em), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
+    text(14pt)[✢],
+    line(start: (0em, 0em), end: (12em, 0em), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
+    text(10pt)[❧],
+  ))#parbreak()]
+
 
 #let _enum-horizontal(
   cols: 1,
@@ -72,13 +86,15 @@
   label-style: (pf, cnt) => align(right, pf + text-sf[*\(#{ cnt("1") }\)*]),
   label-start: 0,
   prefixes: (),
+  label-align: top,
   v-sep: 1em,
   h-sep: 0mm,
+  inset: (:),
   ..items,
 ) = {
   let label_item = n => {
     if type(label-start) == counter {
-      e => context (label-start.step()) + context (label-start.display(e))
+      e => context (label-start.step(level: 2)) + context (label-start.display(e))
     } else if type(label-start) == int {
       e => context (counter("tmp").update(n + 1)) + context (counter("tmp").display(e))
     } else {
@@ -94,11 +110,20 @@
     columns: range(cols).map(it => (label-width, label-sep, 1fr)).flatten(),
     column-gutter: h-sep,
     row-gutter: v-sep,
+    align: (label-align, label-align, horizon),
+    inset: (inset, 0em, 0em),
     ..numbered.flatten()
   )
 }
 #let h-enum(..args, cols: 4, body) = {
-  show enum: it => _enum-horizontal(..args, cols: cols, ..it.children.map(it => it.body))
+  show enum: it => _enum-horizontal(
+    label-align: horizon,
+    cols: cols,
+    ..args,
+    ..it.children.map(it => {
+      it.body
+    }),
+  )
   body
 }
 
@@ -106,7 +131,7 @@
 // The gray box visually covers the header rule on non-normal pages.
 #let head-title-style(body) = text-sf(fill: c.light-gray, size: 9pt, body)
 #let head-date-style(body) = text-tt(fill: c.dim-gray, size: 9pt, body)
-#let head-pagenum-style(body) = text-sf(weight: "bold", size: 12pt, body)
+#let head-number-style(body) = text-sf(weight: "bold", size: 12pt, body)
 
 #let _page-style-default = (
   // left, right, page-num
@@ -114,12 +139,12 @@
   "chapter": (
     none,
     ("@date", it => text-tt(fill: c.dim-gray, size: 9pt, it)),
-    ("@pagenum/@total", it => text-sf(weight: "bold", size: 12pt, it)),
+    ("@number/@total", it => text-sf(weight: "bold", size: 12pt, it)),
   ),
   "normal": (
     ("@chapter-name", it => text-sf(fill: c.light-gray, size: 9pt, it)),
     ("@date", it => text-tt(fill: c.dim-gray, size: 9pt, it)),
-    ("@pagenum/@total", it => text-sf(weight: "bold", size: 12pt, it)),
+    ("@number/@total", it => text-sf(weight: "bold", size: 12pt, it)),
   ),
 )
 #let _page-style = state("page-style", none)
@@ -177,6 +202,8 @@
   _draw-chapter-box(number, title)
   current-chapter.update((number, title, [Chapter #number: #title]))
   set-page-style("normal")
+  counter("problem").step()
+  counter("quiz").step()
 }
 
 // Text-level styles
@@ -188,11 +215,11 @@
 
 #let EMPH(body) = text-sf(strong(body))
 #let ZH = text.with(lang: "zh", script: "hant", region: "tw", font: "思源宋體")
-#let JA = text.with(lang: "ja", script: "jpan", region: "jp", font: "Harano Aji Mincho")
+#let JA = text.with(lang: "ja", script: "jpan", region: "jp", font: "Harano Aji Mincho") // cspell: disable-line
 
 
 
-
+#let make-indent = h(dim.indent)
 
 
 
@@ -236,53 +263,64 @@
 }
 #let _header-only-box(label: "Box", text-style: (:), ..args) = {
   block(
-    ..args,
     width: 100%,
     sticky: true,
     inset: (x: 0pt, top: 3mm, bottom: 1.5mm),
     below: 0mm,
     text(..text-style, h(4mm) + label),
+    ..args,
   )
 }
 
 // Plain frame box  (problems / quizzes)
 #let _plain-box(..args, body) = [
   #block(
-    ..args,
-    inset: (x: 1mm, top: 1.2em, bottom: 1em),
+    width: 100%,
+    inset: (x: 4mm, top: 1.2em, bottom: 1em),
     breakable: true,
     radius: 0pt,
     below: 0mm,
-    stroke: (..args.at("stroke"), bottom: 0mm),
+    stroke: (..args.at("stroke", default: (:)), bottom: 0mm),
+    ..args,
     body,
   )
   #block(
-    ..args,
     width: 100%,
     height: 0.2em,
-    stroke: (..args.at("stroke"), top: 0mm),
+    ..args,
+    stroke: (..args.at("stroke", default: (:)), top: 0mm),
   )
 ]
 
-// Shared item entry  (problem or quiz)
-#let _item(label: "Item", color: black, ctr: _prob-ctr, first: state("_", true), body) = {
-  ctr.step()
-  _part-ctr.update(0)
-  context if not first.get() {
-    v(6pt)
-    line(length: 100%, stroke: 0.4pt + color.lighten(55%))
-    v(6pt)
-  }
-  first.update(false)
-  block(width: 100%, spacing: 0pt)[
-    #block(below: 4pt)[
-      #context text(weight: "bold", fill: color.darken(10%), size: 10pt)[
-        #label #ctr.display().
-      ]
-    ]
-    #block(inset: (left: 1em))[#body]
-  ]
+#let remark(..args, body) = {
+  let accent = rgb(128, 128, 128)
+  pad(left: dim.shift, _plain-box(
+    fill: accent.lighten(80%),
+    stroke: (left: 2mm + accent),
+    ..args,
+    [ #text-sf(weight: "bold", true-size: 11pt, "Remark: ") #body],
+  ))
 }
+#let fail-safe(..args, body) = {
+  let accent = rgb(128, 128, 128)
+  pad(left: dim.shift, _plain-box(
+    fill: accent.lighten(80%),
+    inset: (x: 4mm, y: 2mm),
+    ..args,
+    [ #text-sf(weight: "bold", true-size: 9pt, "Fail safe note: ") #text(size: 9pt)[#body] ],
+  ))
+}
+
+#let advanced-note(..args, body) = {
+  let accent = c.light-purple
+  pad(left: dim.shift, _plain-box(
+    fill: accent.lighten(80%),
+    inset: (x: 4mm, y: 2mm),
+    ..args,
+    [ #text-sf(weight: "bold", true-size: 9pt, "Advanced note: ") #text(size: 9pt)[#body] ],
+  ))
+}
+
 
 // ── State flags (one per container type) ────────────────────
 #let _enum-depth = state("_enum-depth", 0)
@@ -316,21 +354,6 @@
   body
 }
 
-/// Box holding one or more #quiz entries  (thick top + dashed sides)
-#let quizzes(body) = {
-  _quiz-first.update(true)
-  _plain-box(
-    accent: clr-quiz,
-    stroke: (
-      top: 3pt + clr-quiz,
-      left: (paint: clr-quiz.lighten(40%), thickness: 0.7pt, dash: "dashed"),
-      right: (paint: clr-quiz.lighten(40%), thickness: 0.7pt, dash: "dashed"),
-      bottom: (paint: clr-quiz.lighten(40%), thickness: 0.7pt, dash: "dashed"),
-    ),
-    body,
-  )
-}
-
 /// Example box  (green, titled header)
 #let example(title: none, body) = _header-box(
   icon: "📘",
@@ -361,11 +384,12 @@
   "3": "***",
   "2": "**",
   "1": "*",
+  "9": box(height: 6pt, move(dy: -5pt, "💪")), //
 )
 
 #let label-styles = (
-  "problem": (pf, cn) => align(right, pf + text-sf[*#counter("headings").display("1").#cn("1").*]),
-  "quiz": (pf, cn) => align(right, pf + text-sf[*#cn("1").*]),
+  "problem": (pf, cn) => align(right, pf + text-sf[*#cn("1.1").*]),
+  "quiz": (pf, cn) => align(right, pf + text-sf[*#cn(((..n) => str(n.pos().at(1)))).*]),
   "(1)": (pf, cn) => align(right, pf + text-sf[*(#cn("1"))*]),
 )
 
@@ -404,20 +428,22 @@
         if depth == 0 {
           let c = _extract-levels(it.children)
           _enum-horizontal(
-            ..args,
             label-start: counter(counter-name),
-            label-width: 3em,
+            label-width: dim.label-width + 3mm,
+            label-sep: dim.label-sep,
             v-sep: 2em,
             label-style: label-styles.at(counter-name),
             prefixes: c.at(0),
+            inset: (left: -20mm),
+            ..args,
             ..c.at(1),
           )
         } else if depth > 0 {
           _enum-horizontal(
-            ..args,
             label-width: 1.5em,
             label-start: 0,
             label-style: label-styles.at("(1)"),
+            ..args,
             ..it.children.map(it => it.body),
           )
         }
@@ -429,19 +455,19 @@
 }
 
 #let quizzes(..args, body) = _problem-box(
-  ..args,
   label: "Quiz",
   accent: c.light-orange,
   indent: true,
   counter-name: "quiz",
+  ..args,
   body,
 )
 #let problems(..args, body) = _problem-box(
-  ..args,
   label: "Problems",
   accent: c.light-orange,
   indent: false,
   counter-name: "problem",
+  ..args,
   body,
 )
 
@@ -469,8 +495,9 @@
 
   // ── Text & element styles ─────────────────────────────────
   set text(font: _font-serif, size: 11pt)
+  show math.equation: set text(font: "STIX Two Math") // cspell:disable-line
 
-  // Typst hardcodes ×0.8 scaling for raw blocks; pre-multiply to get net ×0.85.
+  // hardcodes ×0.8 scaling for raw blocks; pre-multiply to get net ×0.85.
   show raw: it => text-tt(size: 1em / 0.8, it)
   show heading: it => text(font: _font-sans, it)
   show link: it => {
@@ -500,6 +527,11 @@
     set par(first-line-indent: 1em, hanging-indent: 1em)
     it
   }
+
+  set footnote(numbering: it => text-sf([\##it]))
+  show footnote: set super(size: 8pt)
+  show footnote.entry: set super(size: 8pt)
+
   // Level-1 headings are reserved for #chapter: invisible in body, visible in TOC.
   show heading.where(level: 1): it => none
   show heading.where(level: 2): set block(above: 30em / 18, below: 13em / 18)
@@ -511,7 +543,7 @@
   set heading(offset: 1) // = → section (depth 2), == → subsection (depth 3), …
   set par(
     justify: true,
-    first-line-indent: 17pt,
+    first-line-indent: dim.indent,
     leading: 0.65em, // default
     justification-limits: (
       spacing: (min: 100% * 2 / 3, max: 150%), // default
@@ -527,9 +559,9 @@
     header: context {
       if _page-style.at(here()) == none { return }
       let header-dictionary = (
-        "pagenum": str(counter(page).get().first()),
+        "number": str(counter(page).get().first()),
         "total": str(counter(page).final().first()),
-        "date": metadata.date.display("[day]-[month repr:short]-[year] [hour]:[minute]:[second]"),
+        "date": metadata.date.display("[day]-[month repr:short]-[year] [hour]:[minute]:[second]"), // cspell: disable-line
       )
       let header-content = _page-style
         .at(here())
@@ -540,7 +572,7 @@
               let output = if value == "@chapter-name" {
                 current-chapter.at(here()).at(2)
               } else {
-                value.replace(regex("@(date|pagenum|total)"), it => header-dictionary.at(it.captures.at(0)))
+                value.replace(regex("@(date|number|total)"), it => header-dictionary.at(it.captures.at(0)))
               }
               it.at(1)(output)
             }
