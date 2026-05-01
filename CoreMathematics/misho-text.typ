@@ -298,7 +298,16 @@
     fill: accent.lighten(80%),
     stroke: (left: 2mm + accent),
     ..args,
-    [ #text-sf(weight: "bold", true-size: 11pt, "Remark: ") #body],
+    [ #text-sf(weight: "bold", size: 11pt, "Remark: ") #body],
+  ))
+}
+#let be-careful(..args, body) = {
+  let accent = c.alt-a.desaturate(50%)
+  pad(left: dim.shift, _plain-box(
+    fill: accent.lighten(80%),
+    stroke: (left: 2mm + accent),
+    ..args,
+    [ #text-sf(weight: "bold", size: 11pt, "Be careful: ") #body],
   ))
 }
 #let fail-safe(..args, body) = {
@@ -307,7 +316,7 @@
     fill: accent.lighten(80%),
     inset: (x: 4mm, y: 2mm),
     ..args,
-    [ #text-sf(weight: "bold", true-size: 9pt, "Fail safe note: ") #text(size: 9pt)[#body] ],
+    [ #text-sf(weight: "bold", size: 9pt, "Fail safe note: ") #text(size: 9pt)[#body] ],
   ))
 }
 

@@ -11,9 +11,9 @@
 
 #import "title.typ": title
 #title(metadata, [
-  This document is a set of lecture notes for first-year university students in physics or physical science.
-  The notes cover the mathematical tools most immediately needed: calculus, logic, complex numbers, vectors, and include introductions to vector calculus, differential equations, and statistical analysis.
-  Exercises are central to this document. "Drill" the topics until you can use the tools fast and precisely!
+  These are lecture notes for first-year university students in physics or physical science.
+  They cover the mathematical tools you need most: calculus, logic, complex numbers, and vectors, with introductions to vector calculus, differential equations, and statistical analysis.
+  Exercises are central to these notes. Practice each topic repeatedly until you can work through problems quickly and accurately.
 ])
 
 #include "preface.typ"
@@ -27,15 +27,15 @@
 = Introduction
 
 #remark[
-  This document is designed for first-year students in their _second semester_, who *already learned derivatives* in their first semester _"calculus"_ lecture.
-  If you are not confident in derivatives, you are advised to study
+  This document is designed for first-year students in their _second semester_, who *have already studied derivatives* in their first-semester _"calculus"_ course.
+  If you are not yet confident with derivatives, please study
   #link("https://misho104.github.io/LecturePublic/", "the Derivative Boot Camp") first#footnote[Visit https://misho104.github.io/LecturePublic and find `gp1_boot1_deriv_true.pdf`.],
-  where you should solve (only) the #ja-star -marked problems there.
+  and solve only the #ja-star -marked problems there.
 ]
 
 Birds sing, fish swim, flowers bloom, stars twinkle, and university students calculate derivatives.
-So, let's begin with basic derivatives.
-Do the next quiz! _How many minutes does it take?_
+Let us begin with basic derivatives.
+Try the next quiz---and note how long it takes.
 
 #quizzes[
   #show math.equation.where(block: false): it => math.display(it)
@@ -52,24 +52,24 @@ Do the next quiz! _How many minutes does it take?_
     ]
 ]
 
-If you finished it within two minutes... Wonderful! Most students should take 3--4 minutes. If you took more than four minutes, don't worry.
-At least you could calculate them, so just a bit more practice will make you perfect.
+If you finished within two minutes---Wonderful! Most students take 3--4 minutes.
+If you took more than four minutes, do not worry: you can do the calculations, and a little more practice will help.
 Try some problems in
 #link("https://misho104.github.io/LecturePublic/", "the Derivative Boot Camp")
 
-...Oh, you couldn't get the correct answer because of calculation mistakes? That's not a very good sign, as bad as you've forgot how to calculate them.
-Since you are going to do such calculations more than 100 times in this semester, you should be able to do them fast and precisely.
+Did you make calculation mistakes and get wrong answers? That is a serious issue---just as serious as forgetting how to do the calculations at all.
+You will perform similar calculations more than 100 times in university, so you need to be both fast and accurate.
 
 
 #ornament-skip
 
-In university, basic calculations are often overlooked, but their speed and accuracy are important.
-Since simple calculations appear frequently in physics, speed and accuracy strongly affect your understanding of lectures, your efficiency in self-study, and ultimately your grade.
-Speed and accuracy can be improved through practice.
+At university, students often underestimate the importance of basic calculations.
+In physics, simple calculations appear constantly, so your speed and accuracy directly affect how well you follow lectures, how efficiently you study, and ultimately your grade.
+Both can be improved with practice.
 
 
-This lecture course aims to help you improve such basic calculations, some of which you have already learned in high school, while also introducing new topics that are essential for physics.
-You are asked to solve many problems and drills, much like children practicing basketball free throws hundreds of times.
+This course will help you strengthen these basic calculations---some of which you already know from high school---while also introducing new topics that are essential for physics.
+You will solve many problems and drills, just as a beginner athlete repeats the same move hundreds of times to master it.
 
 
 = Typical Pitfalls
@@ -78,43 +78,37 @@ You are asked to solve many problems and drills, much like children practicing b
 
 #let qeq = $quad = quad$
 
-Consider a function $f(x)$. The derivative of $f(x)$ is written by $f'(x)$.
-For example, if $f(x)=3x^2$, then $f'(x)=6x$.
-We may express it in several ways:
-$ f'(x) qeq dv(f, x)(x) qeq dv(f(x), x) qeq dv(x)f(x). $
-They all mean the same thing. Don't be confused!
+There are several equivalent ways to write the derivative of $f(x)$:
+$ f'(x) qeq dv(f, x)(x) qeq dv(f(x), x) qeq dv(x)f(x) wide "[All means the same thing]." $
+Similarly, the value of $f'(x)$ at a specific point $x=3$ can be written as
+$ f'(3) qeq eval(f'(x))_(x=3) qeq eval(dv(f, x))_(x=3) qeq dv(f, x)(3) qeq dv(x)f(3), $
+and they are all equivalent. For example, if $f(x)=3x^2$, then $f'(x)=6x$ and $f'(3) = 18$.
 
-We may consider $f'(x)$ at a specific point, say $x=3$.
-If $f(x)=3x^2$, then
-$f'(3)=18$.
-Typically, we use the following forms to express it:
-$ f'(3) qeq eval(f'(x))_(x=3) qeq eval(dv(f, x)(x))_(x=3) qeq eval(dv(f(x), x))_(x=3) qeq eval(dv(f, x)(x))_(x=3) $
-but also some authors may write it as $quad display(dv(f, x)(3))quad$ or $quad display(dv(x)f(3)).$
-
-Students are often confused when we have a #EMPH[constant] $a$. If a symbol $a$ is _declared as a constant_, then we may have functions such as $g(x)=a x^2+2a-6$, for which
+The real pitfalls come next. Students often get confused when a #EMPH[constant] $a$ appears. If $a$ is _declared as a constant_, we can define a function such as $g(x)=a x^2+2a-6$, for which
 $ g'(x) = 2 a x. $ <d1>
-Now we can consider the value of $g'(x)$ at $x=a$. It is of course $g'(a)=2a^2$, and we write it as
+We can evaluate $g'(x)$ at $x=a$. The result is $g'(a)=2a^2$, written as
 $ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(x)g(a) quad = quad 2a^2. $
-Again, don't be confused! The notation $display(dv(x)g(a))$ does *not* mean $display(dv(x)lr([g(a)], size: #150%)) = display(dv(x)(a^3+2a-6))=0$.
 
+#be-careful[
+  the notation $display(dv(x)g(a))$ does *not* mean $display(dv(x)lr([g(a)], size: #150%)) = display(dv(x)(a^3+2a-6))=0$.
+]
 
 #fail-safe[
-  If you are puzzled with @d1, imagine $a=3$. Then $g(x)$ is equal to $f(x)$, and $g'(x)$ should be equal to $f'(x)$.
+  If @d1 is confusing, try setting $a=3$. Then, $g(x)=f(x)$, and $g'(x)$ should equal $f'(x)$.
 ]
 
 #make-indent
-But here is a further bad news. Usually _physicists are so lazy_ that we often omit the $(x)$ parts. For example, if we have $f(x)=3x^2$ and $F(t)=t^2+a t+1$, and $a$ is _declared as a constant_,
+There is more bad news. _Physicists are often lazy_, and we frequently omit the argument $(x)$. For example, if $f(x)=3x^2$ and $F(t)=t^2+a t+1$, and if $a$ is _declared as a constant_,
 $
   & f' qeq dv(x)f qeq 6x, wide   && f'(a) qeq dv(x)f(a) qeq 6a, \
   & F' qeq dv(t)F qeq 2t+a, wide && F'(a) qeq dv(t)F(a) qeq 3a.
 $
-So, if you see a function $f$, you need to find out the variable of it, guessing the author's intention.
-
-Furthermore, we may "rename" the variables. For example, if $x$ and $t$ are #EMPH[variables], we will consider $3x^2$ and $3t^2$ are the same functions. As $3x^2$ is equal to $f(x)$, the second one $3t^2$ can be expressed by $f(t)$, and its derivative is expressed by $display(dv(f, t)=6t)$.
+So when you see a function written as $f$, you must identify its variable by reading the context.
+For example, we sometimes replace the variables. Assume $f(x)=3x^2$. If $t$ is another #EMPH[variable] (= not a constant), we can understand $3t^2$ is the same function $f(t)$. So we may write $f(t)=3t^2$, whose derivative is $f'(t)=dv(f, t, style: "horizontal")=6t$.
 
 #advanced-note[
-  We usually write "Let $a$ be a constant." to declare $a$ as a constant.
-  Therefore, you also have to do so when you write proofs or exam answers.
+  To declare that $a$ is a constant, write "Let $a$ be a constant."
+  You must do the same when writing proofs or exam answers.
 ]
 
 #quizzes[
