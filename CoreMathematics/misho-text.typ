@@ -42,31 +42,61 @@
   but improved according to Github copilot.
 */
 
+#let dim = (
+  tab: 2.5em, // default "tab-shift" \BaseTab
+  label-width: 2.0em,
+  label-sep: 0.5em,
+  left-margin: 2.5em,
+)
+
 // ── Colors ────────────────────────────────────────────────────
-#let c-gray = luma(50%)   // \gray
-#let c-light-gray = luma(80%)   // \lightgray
-#let c-dim-gray = luma(90%)   // \dimgray
+#let c = (
+  "gray": luma(50%), // \gray
+  "light-gray": luma(80%), // \lightgray
+  "dim-gray": luma(90%), // \dimgray
+  "blue": rgb("#0e51c9"), // pBlue
+  "pink": rgb("#ff45a0"), // pPink
+  "green": rgb("#348d1b"), // pGreen
+  "light-orange": rgb("#ffd69d"), // pLightOrange
+  "light-purple": rgb("#aa78d6"), // pLightPurple
+  "light-green": rgb("#00ffd0"), // pLightGreen
+  "alt-a": rgb(100%, 20%, 0%), // AltDefA — red-orange (\RED, \C)
+  "alt-b": rgb(15%, 50%, 70%), // AltDefB — steel blue (\C*), use sparingly
+)
 
-#let c-blue = rgb("#0e51c9")  // pBlue
-#let c-pink = rgb("#ff45a0")  // pPink
-#let c-green = rgb("#348d1b")  // pGreen
-#let c-light-orange = rgb("#ffd69d")  // pLightOrange
-#let c-light-purple = rgb("#aa78d6")  // pLightPurple
-#let c-light-green = rgb("#00ffd0")  // pLightGreen
-#let c-alt-a = rgb(100%, 20%, 0%)  // AltDefA — red-orange (\RED, \C)
-#let c-alt-b = rgb(15%, 50%, 70%)  // AltDefB — steel blue (\C*), use sparingly
 
-// Color-emphasis commands (mirrors \GRAY, \BLUE, \PINK, \GREEN, \RED)
-#let GRAY(body) = text(fill: c-gray, body)
-#let BLUE(body) = text(fill: c-blue, body)
-#let PINK(body) = text(fill: c-pink, body)
-#let GREEN(body) = text(fill: c-green, body)
-#let RED(body) = text(fill: c-alt-a, body)
+#let _enum-horizontal(
+  cols: 2,
+  label-width: dim.label-width,
+  label-sep: dim.label-sep,
+  v-sep: 1em,
+  h-sep: 0mm,
+  ..items,
+) = {
+  let numbered = items
+    .pos()
+    .enumerate()
+    .map(((i, body)) => [#box(
+        width: label-width + label-sep,
+        inset: (right: label-sep),
+        align(right, [#text-sf[*\(#(i + 1)\)*]]),
+      )#body])
+  grid(
+    columns: range(cols).map(it => 1fr),
+    column-gutter: h-sep,
+    row-gutter: v-sep,
+    ..numbered
+  )
+}
+#let h-enum(..args, body) = {
+  show enum: it => _enum-horizontal(..args, ..it.children.map(it => it.body))
+  body
+}
 
 // ── Page-style state ──────────────────────────────────────────
 // The gray box visually covers the header rule on non-normal pages.
-#let head-title-style(body) = text-sf(fill: c-light-gray, size: 9pt, body)
-#let head-date-style(body) = text-tt(fill: c-dim-gray, size: 9pt, body)
+#let head-title-style(body) = text-sf(fill: c.light-gray, size: 9pt, body)
+#let head-date-style(body) = text-tt(fill: c.dim-gray, size: 9pt, body)
 #let head-pagenum-style(body) = text-sf(weight: "bold", size: 12pt, body)
 
 #let _page-style-default = (
@@ -74,12 +104,12 @@
   "title": none,
   "chapter": (
     none,
-    ("@date", it => text-tt(fill: c-dim-gray, size: 9pt, it)),
+    ("@date", it => text-tt(fill: c.dim-gray, size: 9pt, it)),
     ("@pagenum/@total", it => text-sf(weight: "bold", size: 12pt, it)),
   ),
   "normal": (
-    ("@chapter-name", it => text-sf(fill: c-light-gray, size: 9pt, it)),
-    ("@date", it => text-tt(fill: c-dim-gray, size: 9pt, it)),
+    ("@chapter-name", it => text-sf(fill: c.light-gray, size: 9pt, it)),
+    ("@date", it => text-tt(fill: c.dim-gray, size: 9pt, it)),
     ("@pagenum/@total", it => text-sf(weight: "bold", size: 12pt, it)),
   ),
 )
@@ -92,14 +122,14 @@
 
 // ── Gray title/chapter box ────────────────────────────────────
 #let _draw-chapter-box(number, title) = {
-  place(top + left, dx: 0mm, dy: -4.5mm, rect(width: 160mm, height: 32mm, fill: c-dim-gray, stroke: none))
+  place(top + left, dx: 0mm, dy: -4.5mm, rect(width: 160mm, height: 32mm, fill: c.dim-gray, stroke: none))
   place(top + left, dx: 2mm, dy: -2.5mm, rect(width: 156mm, height: 10mm, fill: none, stroke: 0.4pt + black))
   place(
     top + left,
     dx: 6.3mm,
     dy: -2mm,
-    box(fill: c-dim-gray, outset: 1mm, inset: (right: 1mm), text(size: 16pt, "Chapter "))
-      + box(fill: c-dim-gray, outset: 1mm, text(size: 40pt, number)),
+    box(fill: c.dim-gray, outset: 1mm, inset: (right: 1mm), text(size: 16pt, "Chapter "))
+      + box(fill: c.dim-gray, outset: 1mm, text(size: 40pt, number)),
   )
   place(
     top + left,
@@ -140,6 +170,17 @@
   set-page-style("normal")
 }
 
+// Text-level styles
+#let GRAY(body) = text(fill: c.gray, body)
+#let BLUE(body) = text(fill: c.blue, body)
+#let PINK(body) = text(fill: c.pink, body)
+#let GREEN(body) = text(fill: c.green, body)
+#let RED(body) = text(fill: c.alt-a, body)
+
+#let EMPH(body) = text-sf(strong(body))
+#let ZH = text.with(lang: "zh", script: "hant", region: "tw", font: "思源宋體")
+#let JA = text.with(lang: "ja", script: "jpan", region: "jp", font: "Harano Aji Mincho")
+a
 // ── Template ──────────────────────────────────────────────────
 // Parameters:
 //   title           — document title (string)
@@ -165,24 +206,51 @@
   // ── Text & element styles ─────────────────────────────────
   set text(font: _font-serif, size: 11pt)
 
-
   // Typst hardcodes ×0.8 scaling for raw blocks; pre-multiply to get net ×0.85.
   show raw: it => text-tt(size: 1em / 0.8, it)
-  show heading: it => text-sf(it)
+  show heading: it => text(font: _font-sans, it)
   show link: it => {
     let is-bare-url = (it.body.has("text") and (it.body.text.starts-with("http") or it.body.text.starts-with("mailto")))
-    if is-bare-url { text-tt(fill: c-blue, it) } else { text(fill: c-blue, it) }
+    if is-bare-url { text-tt(fill: c.blue, it) } else { text(fill: c.blue, it) }
+  }
+  show math.equation.where(block: true): pad.with(left: 1cm)
+  show math.equation.where(block: true): set align(left)
+  set enum(
+    indent: dim.left-margin - dim.label-sep - dim.label-width,
+    body-indent: dim.label-sep,
+    numbering: n => box(width: dim.label-width, align(right, text([#n.]))),
+  )
+  set list(
+    indent: dim.left-margin - dim.label-sep - dim.label-width,
+    body-indent: dim.label-sep,
+    marker: ([•], [‣], [–]).map(n => box(width: dim.label-width, align(
+      right,
+      text([#n]),
+    ))),
+  )
+  show list: it => {
+    set par(first-line-indent: 1em, hanging-indent: 1em)
+    it
   }
 
   // Level-1 headings are reserved for #chapter: invisible in body, visible in TOC.
   show heading.where(level: 1): it => none
-  show heading.where(level: 2): set block(above: 1.29em, below: 0.54em)
-  show heading.where(level: 3): set block(above: 1.2em, below: 0.63em)
-  show heading.where(level: 4): set block(above: 1.44em, below: 0.75em)
-  show heading.where(level: 2): set text(size: 15.4pt)
-  show heading.where(level: 3): set text(size: 13.2pt)
+  show heading.where(level: 2): set block(above: 30em / 18, below: 13em / 18)
+  show heading.where(level: 3): set block(above: 20em / 14, below: 13em / 14)
+  show heading.where(level: 4): set block(above: 20em / 11, below: 13em / 11)
+  show heading.where(level: 2): set text(size: 18pt)
+  show heading.where(level: 3): set text(size: 14pt)
   show heading.where(level: 4): set text(size: 11pt)
   set heading(offset: 1) // = → section (depth 2), == → subsection (depth 3), …
+  set par(
+    justify: true,
+    first-line-indent: 17pt,
+    leading: 0.65em, // default
+    justification-limits: (
+      spacing: (min: 100% * 2 / 3, max: 150%), // default
+      tracking: (min: -0.01em, max: 0.02em),
+    ),
+  )
 
   // ── Page layout ──────────────────────────────────────────
   set page(
@@ -220,7 +288,7 @@
         none,
       )
       v(-3.3mm)
-      line(length: 100%, stroke: 0.7mm + c-light-gray)
+      line(length: 100%, stroke: 0.7mm + c.light-gray)
     },
   )
   body

@@ -1,15 +1,21 @@
 #import "misho-text.typ": *
 #let metadata = (
   title: "Core Mathematics",
-  description: "Derivative Boot Camp as an introduction to the university. A part of General Physics lecture.",
+  description: "A Lecture note for \"Mathematics for Fundamental Physics\".",
   copyright-years: [2024–2025],
-  subtitle: "A practical guide on mathematics for physics learners",
+  subtitle: "A Practical Guide on Mathematics for Physics Learners",
   revision: "v0.0.1",
 )
 #show: misho-text.with(metadata)
 
-#import "preface.typ": preface
-#preface(metadata, message: "hogehoge")
+#import "title.typ": title
+#title(metadata, [
+  This document is a set of lecture notes for first-year university students in physics or physical science.
+  The notes cover the mathematical tools most immediately needed: calculus, logic, complex numbers, vectors, and include introductions to vector calculus, differential equations, and statistical analysis.
+  Exercises are central to this document. "Drill" the topics until you can use the tools fast and precisely!
+])
+
+#include "preface.typ"
 
 #set heading(numbering: "1.1.1")
 #chapter[Chapter 1: Mechanics]
