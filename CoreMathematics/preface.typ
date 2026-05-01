@@ -1,4 +1,4 @@
-#import "misho-text.typ": EMPH, JA, RED, ZH, c, h-enum, text-sf
+#import "misho-text.typ": EMPH, JA, RED, ZH, c, h-enum, problems, quizzes, text-sf
 
 
 #place(bottom + left, dx: 1.3mm, dy: 2.3mm, float: true, text-sf(size: 9pt, fill: c.gray)[
@@ -129,7 +129,28 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
   ])
 ]
 */
-=== Greek symbols
+
+== Mathematical Notations
+
+#block(height: 14em)[
+  #columns(2, gutter: 0em)[
+    #table(
+      columns: (auto, 1fr),
+      rows: 2em,
+      align: horizon,
+      stroke: (x: none, y: .5pt),
+      table.cell(colspan: 2)[*Chapter 1*],
+      [$NN$], [natural numbers],
+      [$NN_0$], [natural numbers (0, 1, 2, ...)],
+      [$NN^+$], [natural numbers (1, 2, ...)],
+      [$RR$], [real numbers],
+      [$QQ$], [rational numbers],
+      [$CC$], [complex numbers],
+    )
+  ]
+]
+
+== Greek symbols
 #let NU(body) = table.cell(fill: luma(90%), text(fill: luma(50%), body))
 #let CA(body) = table.cell(fill: c.alt-b, body)
 #block(height: 12em)[
@@ -167,23 +188,46 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
     )
   ]
 ]
-Gray-outed ones are almost never used.
+Gray-outed ones are almost never used, but others are almost always used.
+You need to write them so that *others can distinguish each from others*, but Sho thinks Japanese- or Chinese-speakers are OK with it, as we everyday read and write #ZH[日] vs #ZH[曰] vs #ZH[白] or #ZH[土] vs #ZH[士] vs #ZH[工] properly!
 
-#h-enum(cols: 4)[
-  + $a$, $α$
-  + $b$, $β$
-  + $c$, $C$
-  + $e$, $E$, $ε$
-  + $ζ$, $ξ$
-  + $Θ$, $θ$, $Q$, $σ$, $6$
-  + $g$, $q$, $9$
-  + $i$, $l$, $1$ , $I$
-  + $k$, $K$, $κ$
-  + $m$, $μ$
-  + $p$, $ρ$
-  + $s$, $S$
-  + $t$, $τ$, $T$
-  + $u$, $v$, $ν$
-  + $w$, $W$, $ω$
-  + $x$, $X$, $χ$
+
+#quizzes[
+  + `4` Read out the following words.
+    #h-enum(cols: 3)[
+      + $α$-particle
+      + $β$-decay
+      + $Γ$-function
+      + $ε$-$δ$ definition
+      + angle $θ$ and $φ$
+      + $μ$- and $τ$-leptons
+      + $ψ(x)$ and $φ(x)$
+      + $ζ$ and $ξ$
+      + metric $η_(μ ν)$
+      + X-ray and $γ$-ray
+      + $Ω$-baryon
+      + $ε_(μ ν ρ σ)$-tensor
+    ]
+]
+
+#problems[
+  + `4` Write the following letters so that people can distinguish each from others.
+    #h-enum(cols: 4)[
+      + $a$, $α$
+      + $b$, $β$
+      + $c$, $C$
+      + $e$, $E$, $ε$
+      + $ζ$, $ξ$
+      + $Θ$, $θ$, $Q$, $σ$, $6$
+      + $g$, $q$, $9$
+      + $i$, $l$, $1$, $I$
+      + $k$, $K$, $κ$
+      + $m$, $μ$
+      + $p$, $ρ$
+      + $s$, $S$
+      + $t$, $τ$, $T$
+      + $u$, $v$, $ν$
+      + $w$, $W$, $ω$
+      + $x$, $X$, $χ$
+    ]
 ]

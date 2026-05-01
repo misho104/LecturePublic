@@ -26,14 +26,14 @@
 // Without arguments, size is read from the surrounding context and scaled.
 // `size:` sets an explicit base size (still scaled). `true-size:` sets absolute (no scaling).
 #let text-sf(true-size: none, size: none, ..args) = context text(
+  ..args,
   font: _font-sans,
   size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.91 },
-  ..args,
 )
 #let text-tt(true-size: none, size: none, ..args) = context text(
+  ..args,
   font: _font-mono,
   size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.85 },
-  ..args,
 )
 
 /* original idea was
@@ -44,6 +44,7 @@
 
 #let dim = (
   tab: 2.5em, // default "tab-shift" \BaseTab
+  shift: 15mm,
   label-width: 2.0em,
   label-sep: 0.5em,
   left-margin: 2.5em,
@@ -64,32 +65,40 @@
   "alt-b": rgb(15%, 50%, 70%), // AltDefB — steel blue (\C*), use sparingly
 )
 
-
 #let _enum-horizontal(
-  cols: 2,
+  cols: 1,
   label-width: dim.label-width,
   label-sep: dim.label-sep,
+  label-style: (pf, cnt) => align(right, pf + text-sf[*\(#{ cnt("1") }\)*]),
+  label-start: 0,
+  prefixes: (),
   v-sep: 1em,
   h-sep: 0mm,
   ..items,
 ) = {
+  let label_item = n => {
+    if type(label-start) == counter {
+      e => context (label-start.step()) + context (label-start.display(e))
+    } else if type(label-start) == int {
+      e => context (counter("tmp").update(n + 1)) + context (counter("tmp").display(e))
+    } else {
+      assert(False, "invalid type for enum-counter")
+    }
+  }
   let numbered = items
     .pos()
     .enumerate()
-    .map(((i, body)) => [#box(
-        width: label-width + label-sep,
-        inset: (right: label-sep),
-        align(right, [#text-sf[*\(#(i + 1)\)*]]),
-      )#body])
+    .map(((i, body)) => (label-style(prefixes.at(i, default: ""), label_item(i)), "", body))
+  set par(first-line-indent: 0em, hanging-indent: 0em)
   grid(
-    columns: range(cols).map(it => 1fr),
+    columns: range(cols).map(it => (label-width, label-sep, 1fr)).flatten(),
     column-gutter: h-sep,
     row-gutter: v-sep,
-    ..numbered
+    ..numbered.flatten()
   )
 }
-#let h-enum(..args, body) = {
-  show enum: it => _enum-horizontal(..args, ..it.children.map(it => it.body))
+#let h-enum(..args, cols: 4, body) = {
+  show enum: it => _enum-horizontal(..args, cols: cols, ..it.children.map(it => it.body))
   body
 }
 
@@ -180,7 +189,262 @@
 #let EMPH(body) = text-sf(strong(body))
 #let ZH = text.with(lang: "zh", script: "hant", region: "tw", font: "思源宋體")
 #let JA = text.with(lang: "ja", script: "jpan", region: "jp", font: "Harano Aji Mincho")
-a
+
+
+
+
+
+
+
+
+
+
+
+
+#let clr-example = rgb("#1a6b3c")   // forest green
+#let clr-problem = rgb("#8b4513")   // saddle brown
+#let clr-quiz = rgb("#1a62a8")   // medium blue
+#let clr-theorem = rgb("#6b1a6b")   // royal purple
+
+// ── Counters ────────────────────────────────────────────────
+#let _env-ctr = counter("env")
+#let _prob-ctr = counter("problem")
+#let _quiz-ctr = counter("quiz")
+#let _part-ctr = counter("part")
+
+// ── Helpers ─────────────────────────────────────────────────
+
+// Titled header box  (example / theorem)
+#let _header-box(icon: "●", label: "Box", accent: black, body) = {
+  _env-ctr.step()
+  block(
+    width: 100%,
+    breakable: true,
+    radius: 0pt,
+    inset: 0pt,
+    stroke: (top: 3pt + accent, rest: 0.7pt + accent.lighten(45%)),
+    fill: accent.lighten(94%),
+  )[
+    #block(width: 100%, fill: accent.lighten(80%), inset: (x: 10pt, y: 6pt))[
+      #text(fill: accent.darken(15%), weight: "bold", size: 10pt)[
+        #icon #h(4pt) #label #h(3pt) #context _env-ctr.display()
+      ]
+    ]
+    #line(length: 100%, stroke: 0.4pt + accent.lighten(45%))
+    #block(inset: (x: 12pt, y: 10pt))[#body]
+  ]
+}
+#let _header-only-box(label: "Box", text-style: (:), ..args) = {
+  block(
+    ..args,
+    width: 100%,
+    sticky: true,
+    inset: (x: 0pt, top: 3mm, bottom: 1.5mm),
+    below: 0mm,
+    text(..text-style, h(4mm) + label),
+  )
+}
+
+// Plain frame box  (problems / quizzes)
+#let _plain-box(..args, body) = [
+  #block(
+    ..args,
+    inset: (x: 1mm, top: 1.2em, bottom: 1em),
+    breakable: true,
+    radius: 0pt,
+    below: 0mm,
+    stroke: (..args.at("stroke"), bottom: 0mm),
+    body,
+  )
+  #block(
+    ..args,
+    width: 100%,
+    height: 0.2em,
+    stroke: (..args.at("stroke"), top: 0mm),
+  )
+]
+
+// Shared item entry  (problem or quiz)
+#let _item(label: "Item", color: black, ctr: _prob-ctr, first: state("_", true), body) = {
+  ctr.step()
+  _part-ctr.update(0)
+  context if not first.get() {
+    v(6pt)
+    line(length: 100%, stroke: 0.4pt + color.lighten(55%))
+    v(6pt)
+  }
+  first.update(false)
+  block(width: 100%, spacing: 0pt)[
+    #block(below: 4pt)[
+      #context text(weight: "bold", fill: color.darken(10%), size: 10pt)[
+        #label #ctr.display().
+      ]
+    ]
+    #block(inset: (left: 1em))[#body]
+  ]
+}
+
+// ── State flags (one per container type) ────────────────────
+#let _enum-depth = state("_enum-depth", 0)
+
+// ── Public API ───────────────────────────────────────────────
+
+
+
+/// (a)(b)(c) sub-parts — use inside #problem or #quiz
+#let subproblem(body) = {
+  _part-ctr.step()
+  grid(
+    columns: (1.4em, 1fr),
+    align: (top, top),
+    context text(weight: "bold")[(#numbering("a", _part-ctr.get().first()))], body,
+  )
+  v(0.3em)
+}
+
+/// Solution section inside #example — ruled divider + label
+#let solution(body) = {
+  v(4pt)
+  grid(
+    columns: (auto, 1fr),
+    align: horizon,
+    column-gutter: 8pt,
+    text(weight: "bold", style: "italic", size: 9.5pt, fill: clr-example.darken(5%))[Solution.],
+    line(stroke: 0.6pt + clr-example.lighten(50%)),
+  )
+  v(6pt)
+  body
+}
+
+/// Box holding one or more #quiz entries  (thick top + dashed sides)
+#let quizzes(body) = {
+  _quiz-first.update(true)
+  _plain-box(
+    accent: clr-quiz,
+    stroke: (
+      top: 3pt + clr-quiz,
+      left: (paint: clr-quiz.lighten(40%), thickness: 0.7pt, dash: "dashed"),
+      right: (paint: clr-quiz.lighten(40%), thickness: 0.7pt, dash: "dashed"),
+      bottom: (paint: clr-quiz.lighten(40%), thickness: 0.7pt, dash: "dashed"),
+    ),
+    body,
+  )
+}
+
+/// Example box  (green, titled header)
+#let example(title: none, body) = _header-box(
+  icon: "📘",
+  accent: clr-example,
+  label: if title != none { "Example – " + title } else { "Example" },
+  body,
+)
+
+/// Theorem box  (purple, titled header, italic body)
+#let theorem(title: none, body) = _header-box(
+  icon: "📐",
+  accent: clr-theorem,
+  label: if title != none { "Theorem – " + title } else { "Theorem" },
+)[#emph(body)]
+
+/// Proof  (slim grey left-bar, □ mark, no counter)
+#let proof(body) = block(
+  width: 100%,
+  radius: 0pt,
+  stroke: (left: 3pt + luma(170)),
+  inset: (left: 10pt, y: 6pt),
+)[
+  #text(style: "italic")[#body] #h(1fr) #text(size: 12pt)[□]
+]
+
+#let level-symbols = (
+  "4": JA(size: 9pt, "★"),
+  "3": "***",
+  "2": "**",
+  "1": "*",
+)
+
+#let label-styles = (
+  "problem": (pf, cn) => align(right, pf + text-sf[*#counter("headings").display("1").#cn("1").*]),
+  "quiz": (pf, cn) => align(right, pf + text-sf[*#cn("1").*]),
+  "(1)": (pf, cn) => align(right, pf + text-sf[*(#cn("1"))*]),
+)
+
+
+#let _extract-levels(items) = array.zip(..items.map(it => if it.body.has("children")
+  and it.body.children.first().func() == raw
+  and (it.body.children.first().text.contains(regex("^\d+$"))) {
+  (level-symbols.at(it.body.children.first().text, default: "?"), it.body.children.slice(1).join())
+} else {
+  ("", it.body)
+}))
+
+#let _problem-box(..args, label: "Problems", accent: red, indent: false, counter-name: "problem", body) = {
+  pad(left: if indent { dim.shift } else { 0mm })[
+    #_header-only-box(
+      stroke: if indent { (left: 2mm + accent, bottom: 1pt + accent) } else {
+        (bottom: 1pt + accent, rest: .5mm + accent)
+      },
+      fill: accent.lighten(80%),
+      label: label,
+      text-style: (
+        fill: accent.saturate(50%),
+        weight: "black",
+        size: 16pt,
+        tracking: 3pt,
+        font: _font-sans,
+      ),
+    )
+    #_plain-box(
+      fill: accent.lighten(80%),
+      stroke: if indent { (left: 2mm + accent) } else { (top: 0pt, rest: 0.5mm + accent) },
+    )[
+      #show enum: it => {
+        _enum-depth.update(d => d + 1)
+        let depth = _enum-depth.get()
+        if depth == 0 {
+          let c = _extract-levels(it.children)
+          _enum-horizontal(
+            ..args,
+            label-start: counter(counter-name),
+            label-width: 3em,
+            v-sep: 2em,
+            label-style: label-styles.at(counter-name),
+            prefixes: c.at(0),
+            ..c.at(1),
+          )
+        } else if depth > 0 {
+          _enum-horizontal(
+            ..args,
+            label-width: 1.5em,
+            label-start: 0,
+            label-style: label-styles.at("(1)"),
+            ..it.children.map(it => it.body),
+          )
+        }
+        _enum-depth.update(d => d - 1)
+      }
+      #body
+    ]
+  ]
+}
+
+#let quizzes(..args, body) = _problem-box(
+  ..args,
+  label: "Quiz",
+  accent: c.light-orange,
+  indent: true,
+  counter-name: "quiz",
+  body,
+)
+#let problems(..args, body) = _problem-box(
+  ..args,
+  label: "Problems",
+  accent: c.light-orange,
+  indent: false,
+  counter-name: "problem",
+  body,
+)
+
 // ── Template ──────────────────────────────────────────────────
 // Parameters:
 //   title           — document title (string)
@@ -232,7 +496,10 @@ a
     set par(first-line-indent: 1em, hanging-indent: 1em)
     it
   }
-
+  show enum: it => {
+    set par(first-line-indent: 1em, hanging-indent: 1em)
+    it
+  }
   // Level-1 headings are reserved for #chapter: invisible in body, visible in TOC.
   show heading.where(level: 1): it => none
   show heading.where(level: 2): set block(above: 30em / 18, below: 13em / 18)
