@@ -1,5 +1,5 @@
 #import "misho-text.typ": EMPH, JA, RED, ZH, c, h-enum, problems, quizzes, text-sf
-
+#import "@preview/in-dexter:0.7.2": first-letter-up, make-index
 
 #place(bottom + left, dx: 1.3mm, dy: 2.3mm, float: true, text-sf(size: 9pt, fill: c.gray)[
   #grid(
@@ -181,7 +181,7 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
       [$Σ$], [$σ$], [sigma],
       NU[$Τ$], [$τ$], [tau],
       NU[$Υ$], NU[$υ$], NU[upsilon],
-      [$Φ$], [$φ$], [phi],
+      [$Φ$], [$phi$], move(dx: -3mm, [$(phi.alt)quad$phi]),
       NU[$Χ$], [$χ$], [chi],
       [$Ψ$], [$ψ$], [psi],
       [$Ω$], [$ω$], [omega],
@@ -230,4 +230,19 @@ You need to write them so that *others can distinguish each from others*, but Sh
       + $w$, $W$, $ω$
       + $x$, $X$, $χ$
     ]
+]
+
+== Index
+#columns(3)[
+  #make-index(
+    section-title: (l, c) => v(3mm),
+    entry-casing: e => {
+      if type(e) == str and e.len() > 0 {
+        let c = e.trim().clusters()
+        let chop = c.len() >= 3 and c.last() == "s" and c.at(-2) != "s"
+        // upper(c.first()) + c.slice(1, if chop { -1 }).join()
+        c.slice(0, if chop { -1 }).join()
+      } else { e }
+    },
+  )
 ]
