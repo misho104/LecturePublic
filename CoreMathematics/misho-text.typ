@@ -221,174 +221,146 @@
 
 #let make-indent = h(dim.indent)
 
-
-
-
-
-
-
-
-#let clr-example = rgb("#1a6b3c")   // forest green
-#let clr-problem = rgb("#8b4513")   // saddle brown
-#let clr-quiz = rgb("#1a62a8")   // medium blue
-#let clr-theorem = rgb("#6b1a6b")   // royal purple
-
-// ── Counters ────────────────────────────────────────────────
-#let _env-ctr = counter("env")
-#let _prob-ctr = counter("problem")
-#let _quiz-ctr = counter("quiz")
-#let _part-ctr = counter("part")
+#let no-num(content) = { math.equation(block: true, numbering: none, content) }
 
 // ── Helpers ─────────────────────────────────────────────────
 
-// Titled header box  (example / theorem)
-#let _header-box(icon: "●", label: "Box", accent: black, body) = {
-  _env-ctr.step()
-  block(
-    width: 100%,
-    breakable: true,
-    radius: 0pt,
-    inset: 0pt,
-    stroke: (top: 3pt + accent, rest: 0.7pt + accent.lighten(45%)),
-    fill: accent.lighten(94%),
-  )[
-    #block(width: 100%, fill: accent.lighten(80%), inset: (x: 10pt, y: 6pt))[
-      #text(fill: accent.darken(15%), weight: "bold", size: 10pt)[
-        #icon #h(4pt) #label #h(3pt) #context _env-ctr.display()
-      ]
-    ]
-    #line(length: 100%, stroke: 0.4pt + accent.lighten(45%))
-    #block(inset: (x: 12pt, y: 10pt))[#body]
+#let _box(
+  indent: false,
+  accent: white,
+  above: auto,
+  below: auto,
+  stroke: (:), // left, right, top, bottom, middle
+  inset: (:),
+  call-out: true, // to change edge "bounds" and par accordingly
+  head-box: (:), // cannot have stroke and inset
+  main-box: (:), // cannot have stroke and inset
+  icon: none,
+  label: "Box",
+  body,
+) = {
+  let fill = if accent == none { none } else { accent.lighten(80%) }
+  let _s(key) = stroke.at(key, default: none)
+  let inset = (left: 4mm, right: 4mm, top: 0.6em, bottom: 0.6em, middle-above: 1mm, middle-below: 2mm) + inset
+  let _i(key) = inset.at(key, default: 0mm)
+  set text(top-edge: "bounds", bottom-edge: "bounds") if call-out
+  set par(leading: 0.43em) if call-out
+  (it => if indent { pad(left: dim.shift, it) } else { it })[
+    #if head-box != none {
+      block(
+        fill: fill,
+        width: 100%,
+        sticky: true,
+        breakable: false,
+        above: above,
+        below: 0mm,
+        inset: (left: _i("left"), right: _i("right"), top: _i("top"), bottom: _i("middle-above")),
+        stroke: (left: _s("left"), right: _s("right"), top: _s("top")),
+        // if icon box[#icon]
+        ..head-box,
+      )[ #if icon == none {
+        label
+      } else {
+        box(width: 4em, icon) + label
+      }]
+    }
+    #block(
+      fill: fill,
+      width: 100%,
+      sticky: true,
+      breakable: true,
+      below: 0mm,
+      inset: (
+        left: _i("left"),
+        right: _i("right"),
+        top: _i(if head-box == none { "top" } else { "middle-below" }),
+        bottom: _i("bottom"),
+      ),
+      stroke: (left: _s("left"), right: _s("right"), top: { _s(if head-box == none { "top" } else { "middle" }) }),
+      ..main-box,
+      body,
+    )
+    #block(
+      fill: blue,
+      width: 100%,
+      below: below,
+      breakable: false,
+      stroke: (bottom: _s("bottom")),
+    )[]
   ]
 }
-#let _header-only-box(label: "Box", text-style: (:), ..args) = {
-  block(
-    width: 100%,
-    sticky: true,
-    inset: (x: 0pt, top: 3mm, bottom: 1.5mm),
-    below: 0mm,
-    text(..text-style, h(4mm) + label),
-    ..args,
-  )
-}
-
-// Plain frame box  (problems / quizzes)
-#let _plain-box(..args, body) = [
-  #block(
-    width: 100%,
-    inset: (x: 4mm, top: 1.2em, bottom: 1em),
-    breakable: true,
-    radius: 0pt,
-    below: 0mm,
-    stroke: (..args.at("stroke", default: (:)), bottom: 0mm),
-    ..args,
-    body,
-  )
-  #block(
-    width: 100%,
-    height: 0.2em,
-    ..args,
-    stroke: (..args.at("stroke", default: (:)), top: 0mm),
-  )
-]
 
 #let remark(..args, body) = {
-  let accent = rgb(128, 128, 128)
-  pad(left: dim.shift, _plain-box(
-    fill: accent.lighten(80%),
-    stroke: (left: 2mm + accent),
-    ..args,
-    [ #text-sf(weight: "bold", size: 11pt, "Remark: ") #body],
-  ))
+  _box(indent: true, accent: c.gray, head-box: none)[
+    #text-sf(weight: "bold", size: 11pt, "Remark: ") #body
+  ]
 }
 #let be-careful(..args, body) = {
-  let accent = c.alt-a.desaturate(50%)
-  pad(left: dim.shift, _plain-box(
-    fill: accent.lighten(80%),
-    stroke: (left: 2mm + accent),
-    ..args,
-    [ #text-sf(weight: "bold", size: 11pt, "Be careful: ") #body],
-  ))
+  _box(indent: true, accent: c.alt-a.desaturate(50%), head-box: none, stroke: (left: 2mm + c.alt-a))[
+    #text-sf(weight: "bold", size: 11pt, "Be careful: ") #body
+  ]
 }
 #let fail-safe(..args, body) = {
-  let accent = rgb(128, 128, 128)
-  pad(left: dim.shift, _plain-box(
-    fill: accent.lighten(80%),
-    inset: (x: 4mm, y: 2mm),
-    ..args,
-    [ #text-sf(weight: "bold", size: 9pt, "Fail safe note: ") #text(size: 9pt)[#body] ],
-  ))
+  _box(indent: true, accent: c.gray, head-box: none)[
+    #text(size: 9pt)[#text-sf(weight: "bold", "Fail safe note: ") #body]
+  ]
 }
 
 #let advanced-note(..args, body) = {
-  let accent = c.light-purple
-  pad(left: dim.shift, _plain-box(
-    fill: accent.lighten(80%),
-    inset: (x: 4mm, y: 2mm),
-    ..args,
-    [ #text-sf(weight: "bold", true-size: 9pt, "Advanced note: ") #text(size: 9pt)[#body] ],
-  ))
+  _box(indent: true, accent: c.light-purple, head-box: none)[
+    #text-sf(weight: "bold", true-size: 9pt, "Advanced note: ") #text(size: 9pt)[#body]
+  ]
 }
+
+#let theorem(title: none, body) = [
+  #let border = 1pt + c.blue
+  #counter("env").step()
+  #_box(
+    accent: c.blue.lighten(40%),
+    call-out: false,
+    stroke: (top: border, bottom: border),
+    inset: (top: 0.4em, middle-above: 0.4em, middle-below: 1em),
+    head-box: (fill: c.blue),
+    label: text-sf(fill: white, size: 11pt, weight: "bold")[
+      #h(-.5em)
+      Theorem #context [#current-chapter.get().at(0).#counter("env").display()]
+      #if title != none [ #h(1em) (#title) ]
+    ],
+  )[#body]
+]
+
+#let example(title: none, body) = [
+  #let border = 1pt + c.green
+  #counter("env").step()
+  #_box(
+    call-out: false,
+    stroke: (top: border, bottom: border, left: border, right: border),
+    inset: (top: 0.4em, middle-above: 0.4em, middle-below: 1em),
+    label: text-sf(fill: c.green, size: 11pt, weight: "bold")[
+      Example #context [#current-chapter.get().at(0).#counter("env").display()]
+      #if title != none [ #h(1em) (#title) ]
+    ],
+  )[#body]
+]
+#let solution(title: none, body) = [
+  #let border = 1pt + c.green
+  #_box(
+    call-out: false,
+    stroke: (top: border, bottom: border, left: border, right: border),
+    inset: (top: 0.4em, middle-above: 0.4em, middle-below: 1em),
+    above: 0mm,
+    label: text-sf(fill: c.green, size: 11pt, weight: "bold")[
+      Solution
+      #if title != none [ #h(1em) (#title) ]
+    ],
+  )[#body]
+]
 
 
 // ── State flags (one per container type) ────────────────────
 #let _enum-depth = state("_enum-depth", 0)
 
-// ── Public API ───────────────────────────────────────────────
-
-
-
-/// (a)(b)(c) sub-parts — use inside #problem or #quiz
-#let subproblem(body) = {
-  _part-ctr.step()
-  grid(
-    columns: (1.4em, 1fr),
-    align: (top, top),
-    context text(weight: "bold")[(#numbering("a", _part-ctr.get().first()))], body,
-  )
-  v(0.3em)
-}
-
-/// Solution section inside #example — ruled divider + label
-#let solution(body) = {
-  v(4pt)
-  grid(
-    columns: (auto, 1fr),
-    align: horizon,
-    column-gutter: 8pt,
-    text(weight: "bold", style: "italic", size: 9.5pt, fill: clr-example.darken(5%))[Solution.],
-    line(stroke: 0.6pt + clr-example.lighten(50%)),
-  )
-  v(6pt)
-  body
-}
-
-/// Example box  (green, titled header)
-#let example(title: none, body) = _header-box(
-  icon: "📘",
-  accent: clr-example,
-  label: if title != none { "Example – " + title } else { "Example" },
-  body,
-)
-
-/// Theorem box  (purple, titled header, italic body)
-#let theorem(title: none, body) = _header-box(
-  icon: "📐",
-  accent: clr-theorem,
-  label: if title != none { "Theorem – " + title } else { "Theorem" },
-)[#emph(body)]
-
-/// Proof  (slim grey left-bar, □ mark, no counter)
-#let proof(body) = block(
-  width: 100%,
-  radius: 0pt,
-  stroke: (left: 3pt + luma(170)),
-  inset: (left: 10pt, y: 6pt),
-)[
-  #text(style: "italic")[#body] #h(1fr) #text(size: 12pt)[□]
-]
-
-#let level-symbols = (
+#let levels = (
   "4": JA(size: 9pt, "★"),
   "3": "***",
   "2": "**",
@@ -396,89 +368,99 @@
   "9": box(height: 6pt, move(dy: -5pt, "💪")), //
 )
 
-#let label-styles = (
+#let num-a = n => text-sf(strong([(#n)]))
+#let num-b = n => text-sf(strong([#n]))
+#let num-c = n => text-sf(strong([#n]))
+
+)
+#let _label-styles = (
   "problem": (pf, cn) => align(right, pf + text-sf[*#cn("1.1").*]),
   "quiz": (pf, cn) => align(right, pf + text-sf[*#cn(((..n) => str(n.pos().at(1)))).*]),
   "(1)": (pf, cn) => align(right, pf + text-sf[*(#cn("1"))*]),
 )
 
-
 #let _extract-levels(items) = array.zip(..items.map(it => if it.body.has("children")
   and it.body.children.first().func() == raw
   and (it.body.children.first().text.contains(regex("^\d+$"))) {
-  (level-symbols.at(it.body.children.first().text, default: "?"), it.body.children.slice(1).join())
+  (levels.at(it.body.children.first().text, default: "?"), it.body.children.slice(1).join())
 } else {
   ("", it.body)
 }))
 
-#let _problem-box(..args, label: "Problems", accent: red, indent: false, counter-name: "problem", body) = {
-  pad(left: if indent { dim.shift } else { 0mm })[
-    #_header-only-box(
-      stroke: if indent { (left: 2mm + accent, bottom: 1pt + accent) } else {
-        (bottom: 1pt + accent, rest: .5mm + accent)
-      },
-      fill: accent.lighten(80%),
-      label: label,
-      text-style: (
-        fill: accent.saturate(50%),
-        weight: "black",
-        size: 16pt,
-        tracking: 3pt,
-        font: _font-sans,
-      ),
-    )
-    #_plain-box(
-      fill: accent.lighten(80%),
-      stroke: if indent { (left: 2mm + accent) } else { (top: 0pt, rest: 0.5mm + accent) },
-    )[
-      #show enum: it => {
-        _enum-depth.update(d => d + 1)
-        let depth = _enum-depth.get()
-        if depth == 0 {
-          let c = _extract-levels(it.children)
-          _enum-horizontal(
-            label-start: counter(counter-name),
-            label-width: dim.label-width + 3mm,
-            label-sep: dim.label-sep,
-            v-sep: 2em,
-            label-style: label-styles.at(counter-name),
-            prefixes: c.at(0),
-            inset: (left: -20mm),
-            ..args,
-            ..c.at(1),
-          )
-        } else if depth > 0 {
-          _enum-horizontal(
-            label-width: 1.5em,
-            label-start: 0,
-            label-style: label-styles.at("(1)"),
-            ..args,
-            ..it.children.map(it => it.body),
-          )
-        }
-        _enum-depth.update(d => d - 1)
+#let _problem-box(t, body) = {
+  let accent = c.light-orange
+  _box(
+    indent: t.indent,
+    accent: accent,
+    call-out: false,
+    stroke: t.stroke,
+    inset: (top: 2mm, middle-above: 1mm, middle-below: 3mm, bottom: 4mm),
+    label: text-sf(
+      fill: accent.saturate(50%),
+      weight: "black",
+      size: 17pt,
+      tracking: 3pt,
+      t.label,
+    ),
+  )[
+    #show enum: it => {
+      _enum-depth.update(d => d + 1)
+      let depth = _enum-depth.get()
+      if depth == 0 {
+        let c = _extract-levels(it.children)
+        _enum-horizontal(
+          label-start: counter(t.counter-name),
+          label-width: dim.label-width + 3mm,
+          label-sep: dim.label-sep,
+          v-sep: 2em,
+          label-style: _label-styles.at(t.counter-name),
+          prefixes: c.at(0),
+          inset: (left: -20mm),
+          ..c.at(1),
+        )
+      } else if depth > 0 {
+        _enum-horizontal(
+          label-width: 1.5em,
+          label-start: 0,
+          label-style: _label-styles.at("(1)"),
+          ..it.children.map(it => it.body),
+        )
       }
-      #body
-    ]
+      _enum-depth.update(d => d - 1)
+    }
+    #body
   ]
 }
 
 #let quizzes(..args, body) = _problem-box(
-  label: "Quiz",
-  accent: c.light-orange,
-  indent: true,
-  counter-name: "quiz",
-  ..args,
+  (
+    stroke: (left: 2mm + c.light-orange, middle: .5pt + c.light-orange),
+    label: "Quiz",
+    indent: true,
+    counter-name: "quiz",
+  ),
   body,
 )
 #let problems(..args, body) = _problem-box(
-  label: "Problems",
-  accent: c.light-orange,
-  indent: false,
-  counter-name: "problem",
-  ..args,
+  (
+    stroke: (
+      left: 2pt + c.light-orange,
+      right: 2pt + c.light-orange,
+      top: 2pt + c.light-orange,
+      bottom: 2pt + c.light-orange,
+      middle: 0.5pt + c.light-orange,
+    ),
+    label: "Problems",
+    indent: false,
+    counter-name: "problem",
+  ),
   body,
 )
+
+
+#import "@preview/in-dexter:0.7.2": index
+#let keyword(..args, key: none, content) = [
+  #index(..args, if key == none { content } else { key }) #EMPH(content)]
 
 // ── Template ──────────────────────────────────────────────────
 // Parameters:
@@ -509,6 +491,7 @@
   // hardcodes ×0.8 scaling for raw blocks; pre-multiply to get net ×0.85.
   show raw: it => text-tt(size: 1em / 0.8, it)
   show heading: it => text(font: _font-sans, it)
+  show link: it => underline(offset: .25em, it)
   show link: it => {
     let is-bare-url = (it.body.has("text") and (it.body.text.starts-with("http") or it.body.text.starts-with("mailto")))
     if is-bare-url { text-tt(fill: c.blue, it) } else { text(fill: c.blue, it) }
@@ -529,11 +512,11 @@
     ))),
   )
   show list: it => {
-    set par(first-line-indent: 1em, hanging-indent: 1em)
+    set par(first-line-indent: 1em, hanging-indent: 0em)
     it
   }
   show enum: it => {
-    set par(first-line-indent: 1em, hanging-indent: 1em)
+    set par(first-line-indent: 1em, hanging-indent: 0em)
     it
   }
 
@@ -543,11 +526,11 @@
 
   // Level-1 headings are reserved for #chapter: invisible in body, visible in TOC.
   show heading.where(level: 1): it => none
-  show heading.where(level: 2): set block(above: 30em / 18, below: 13em / 18)
-  show heading.where(level: 3): set block(above: 20em / 14, below: 13em / 14)
+  show heading.where(level: 2): set block(above: 30em / 16, below: 13em / 16)
+  show heading.where(level: 3): set block(above: 20em / 13, below: 13em / 13)
   show heading.where(level: 4): set block(above: 20em / 11, below: 13em / 11)
-  show heading.where(level: 2): set text(size: 18pt)
-  show heading.where(level: 3): set text(size: 14pt)
+  show heading.where(level: 2): set text(size: 16pt)
+  show heading.where(level: 3): set text(size: 13pt)
   show heading.where(level: 4): set text(size: 11pt)
   set heading(offset: 1) // = → section (depth 2), == → subsection (depth 3), …
   set par(
