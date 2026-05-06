@@ -217,11 +217,16 @@
 #let ZH = text.with(lang: "zh", script: "hant", region: "tw", font: "思源宋體")
 #let JA = text.with(lang: "ja", script: "jpan", region: "jp", font: "Harano Aji Mincho") // cspell: disable-line
 
-
+#let blank(pad: 1em, ..args) = box(outset: (y: .25em), stroke: 0.5pt, height: .6em, ..args.named(), align(
+  center,
+  h(pad) + [#args.pos().at(0, default: "")] + h(pad),
+))
+#let TODO(..args) = text(fill: c.alt-a, text-tt("♣TODO♣") + args.pos().join())
 
 #let make-indent = h(dim.indent)
-
 #let no-num(content) = { math.equation(block: true, numbering: none, content) }
+
+#let tab(shift: dim.tab, ..args, body) = block(inset: (left: shift), ..args, body)
 
 // ── Helpers ─────────────────────────────────────────────────
 
@@ -255,7 +260,7 @@
         above: above,
         below: 0mm,
         inset: (left: _i("left"), right: _i("right"), top: _i("top"), bottom: _i("middle-above")),
-        stroke: (left: _s("left"), right: _s("right"), top: _s("top")),
+        stroke: (left: _s("left"), right: _s("right"), top: _s("top"), bottom: _s("middle")),
         // if icon box[#icon]
         ..head-box,
       )[ #if icon == none {
@@ -267,7 +272,6 @@
     #block(
       fill: fill,
       width: 100%,
-      sticky: true,
       breakable: true,
       below: 0mm,
       inset: (
@@ -276,7 +280,7 @@
         top: _i(if head-box == none { "top" } else { "middle-below" }),
         bottom: _i("bottom"),
       ),
-      stroke: (left: _s("left"), right: _s("right"), top: { _s(if head-box == none { "top" } else { "middle" }) }),
+      stroke: (left: _s("left"), right: _s("right"), top: { _s(if head-box == none { "top" } else { "" }) }),
       ..main-box,
       body,
     )
@@ -360,8 +364,9 @@
 // ── State flags (one per container type) ────────────────────
 #let _enum-depth = state("_enum-depth", 0)
 
+#let ja-star = JA(size: 9pt, "★")
 #let levels = (
-  "4": JA(size: 9pt, "★"),
+  "4": ja-star,
   "3": "***",
   "2": "**",
   "1": "*",
@@ -519,6 +524,7 @@
     set par(first-line-indent: 1em, hanging-indent: 0em)
     it
   }
+  set math.equation(supplement: "Eq.", numbering: it => { numbering("(1.1)", counter(heading).at(here()).at(0), it) })
 
   set footnote(numbering: it => text-sf([\##it]))
   show footnote: set super(size: 8pt)
