@@ -19,6 +19,7 @@
 #include "0-preface.typ"
 
 #set heading(numbering: "1.1.1")
+#show heading.where(level: 4): set heading(numbering: none)
 
 #chapter[Derivative (Review)]
 #include "1-derivative.typ"

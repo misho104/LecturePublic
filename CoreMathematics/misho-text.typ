@@ -202,6 +202,7 @@
   _draw-chapter-box(number, title)
   current-chapter.update((number, title, [Chapter #number: #title]))
   set-page-style("normal")
+  counter(math.equation).update(0)
   counter("problem").step()
   counter("quiz").step()
 }
@@ -464,8 +465,7 @@
 
 
 #import "@preview/in-dexter:0.7.2": index
-#let keyword(..args, key: none, content) = [
-  #index(..args, if key == none { content } else { key }) #EMPH(content)]
+#let keyword(..args, key: none, content) = [#index(..args, if key == none { content } else { key })#EMPH(content)]
 
 // ── Template ──────────────────────────────────────────────────
 // Parameters:
@@ -503,6 +503,7 @@
   }
   show math.equation.where(block: true): pad.with(left: 1cm)
   show math.equation.where(block: true): set align(left)
+
   set enum(
     indent: dim.left-margin - dim.label-sep - dim.label-width,
     body-indent: dim.label-sep,
@@ -516,19 +517,16 @@
       text([#n]),
     ))),
   )
-  show list: it => {
-    set par(first-line-indent: 1em, hanging-indent: 0em)
-    it
-  }
-  show enum: it => {
-    set par(first-line-indent: 1em, hanging-indent: 0em)
-    it
-  }
+  show list: set par(first-line-indent: 1em, hanging-indent: 0em)
+  show enum: set par(first-line-indent: 1em, hanging-indent: 0em)
+
   set math.equation(supplement: "Eq.", numbering: it => { numbering("(1.1)", counter(heading).at(here()).at(0), it) })
 
   set footnote(numbering: it => text-sf([\##it]))
   show footnote: set super(size: 8pt)
   show footnote.entry: set super(size: 8pt)
+
+  show figure.where(kind: table): set figure.caption(position: top)
 
   // Level-1 headings are reserved for #chapter: invisible in body, visible in TOC.
   show heading.where(level: 1): it => none
@@ -539,6 +537,7 @@
   show heading.where(level: 3): set text(size: 13pt)
   show heading.where(level: 4): set text(size: 11pt)
   set heading(offset: 1) // = → section (depth 2), == → subsection (depth 3), …
+
   set par(
     justify: true,
     first-line-indent: dim.indent,
@@ -553,6 +552,7 @@
   set page(
     paper: "a4",
     margin: (left: 25mm, right: 25mm, top: 30mm, bottom: 30mm),
+    numbering: "1",
     header-ascent: 4mm,
     header: context {
       if _page-style.at(here()) == none { return }
@@ -587,6 +587,7 @@
       v(-3.3mm)
       line(length: 100%, stroke: 0.7mm + c.light-gray)
     },
+    footer: none,
   )
   body
 }
