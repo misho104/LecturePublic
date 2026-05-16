@@ -1,5 +1,7 @@
-#import "misho-text.typ": EMPH, JA, RED, ZH, c, h-enum, problems, quizzes, text-sf
+#import "misho-text.typ": EMPH, JA, RED, ZH, c, h-enum, keyword, problems, quizzes, tab, text-sf
 #import "@preview/in-dexter:0.7.2": first-letter-up, make-index
+
+#let ds(body) = $sans(upright(body))$
 
 #place(bottom + left, dx: 1.3mm, dy: 2.3mm, float: true, text-sf(size: 9pt, fill: c.gray)[
   #grid(
@@ -19,8 +21,8 @@
 = Preface
 
 Physics is an activity to describe the world, but how? At present, mathematics (+_ broken_ English) is the only language we can use. So, unfortunately, we need to learn mathematics! (and #box("English" + sym.dots + "🥺"))
-But, in some sense, you are fortunate, since you have a language.
-Math and physics have developed together, so you will understand physics better if you study mathematics well!
+But, in some sense, we are fortunate because we have a language to describe the world.
+In fact, math and physics have developed together. We understand physics better if we study mathematics well!
 
 When you do DIY, you need to use the tools properly, smoothly, and accurately.
 It is the same here; when we use math as a tool, it must be *logical*, *quick*, and *accurate*.
@@ -28,44 +30,68 @@ To be logical, you must think each problem carefully; otherwise your discussion 
 To be quick and accurate, you must _"drill"_ repeatedly, as if top NBA players do shooting practice almost everyday.
 You should reach the point where basic calculations feel automatic.
 
-#EMPH[This is not] a math textbook, so theorem proofs are mostly omitted.
-#EMPH[This is rather] an exercise book. Problems and drills are the core of this book.
+#EMPH[This is not] a math textbook. #EMPH[This is rather] a math "drill" book. Rigorous proofs are mostly omitted, but drill problems are the core of this document, through which students are expected to achieve better conceptual understanding.
+
 
 === Target of this document
 
-This document is primarily for first-year undergraduate students in their second semester, who are majoring in physics or physical science.
+This document is primarily for first-year undergraduate students in their second semester, who
 
-=== How to use this book
+- completed basic calculus (differentiation and integration),
 
-First, buy a A4-sized paper notebook.
-You are expected to solve problems, and when you solve "problems", you are strongly recommended to write down your solution process on the notebook, preferably with full descriptions in English.
-Meanwhile, "drills" are for you to practice calculations, so you can just write down the final answer, or just do it in your brain.
+- are going to major in physics or physical science, and
 
-Prepare the textbook [Boas] (see "References" below) and use it as a reference.
-When you want to understand the details of a topic, or when you want to solve more problems, consult [Boas].
+- do not hesitate to do repetitive practice to achieve better conceptual understanding.
+
+=== How to use this document
+
+#[
+  #show enum: set par(first-line-indent: 1em, hanging-indent: 1em)
+
+  + Buy a *A4-sized paper notebook*.
+
+    Digital notebooks on tablets are not suitable (or less effective) for this document.
+
+  + Read the text with solving Quizzes.
+
+    You can solve "Quizzes" without writing down the solution process.
+
+  + Solve Drill Problems to nourish fluency.
+
+    Mind the fluency ($!=$ speed) and accuracy. Write down the solution process clearly.
+
+  + Solve other problems to have better conceptual understanding (& writing skills).
+
+    Think carefully and write down the solution process clearly as an *English text*, taking care of logical completeness.
+
+  + Optionally, you are encouraged to prepare a reference book, so that you can consult it when you want to know more.  (Sho supposes [Boas] listed below is the best option.)
+]
+
 
 #pagebreak()
 
 = References
 
-
 This document is written under the influence of the following references.
 
 - #link("https://haltasaki.github.io/books/math/")[The Math Book by Hal Tasaki] (#JA[数学：物理を学び楽しむために], in Japanese)
 
-  A free book with full description, but unfortunately in Japanese.
-  Topic selections and the depth of descriptions are based on this reference.
+  #tab[A free book with full description, but unfortunately in Japanese.  Topic selections and the depth of descriptions are based on this reference.]
 
 - #link("https://lecture.ecc.u-tokyo.ac.jp/gocho/")[First-Year Math Practice] (in Japanese)
 
-  This document is grounded in a "learn steadily" approach ("#JA[じっくり]" in Japanese), which originates from Prof. Gocho and Prof. Kiyono, who were instructors of Sho in his freshman.
-  Problems and rigorous math descriptions are taken from their works.
+  #tab[This document is grounded in a "learn steadily" approach ("#JA[じっくり]" in Japanese), which originates from Prof. Gocho and Prof. Kiyono, who were instructors of Sho in his freshman.
+    Problems and rigorous math descriptions are taken from their works.]
 
-- Mary L. Boas, _Mathematical Methods in the Physical Sciences_, 3rd ed., Wiley, 2006.
-- Arfken, Weber, and Harris, _Mathematical Methods for Physicists_, 7th ed., Academic Press, 2023.
+- #text-sf[*[Boas]*] Mary L. Boas, _Mathematical Methods in the Physical Sciences_, 3rd ed., Wiley, 2006.
+- #text-sf[*[AWH]*] George B. Arfken, Hans J. Weber, and Frank E. Harris,\ #h(4em) _Mathematical Methods for Physicists_, 7th ed., Academic Press, 2023.
 
-  These two books are widely used in physics departments around the world and referred to in this document many times as [Boas] and [AWH]. [Boas] seems more friendly to beginners, while [AWH] seems more detailed and complete.
-  Sho recommends you to study [Boas] _in parallel with_ this document, using it as a reference, and to consult [AWH] when you want more details or more exercises.
+  #tab[
+    These two books are widely used in physics departments around the world.
+    [Boas] seems more friendly to beginners, while [AWH] seems more detailed and complete.
+    Sho recommends you to study [Boas] _in parallel with_ this document, using it as a reference, and to consult [AWH] when you want more details or more exercises.
+  ]
+
 
 = Lecture Plan
 
@@ -211,7 +237,7 @@ You need to write them so that *others can distinguish each from others*, but Sh
 ]
 
 #problems[
-  + `4` Write the following letters so that people can distinguish each from others.
+  + `9` Write the following letters so that people can distinguish each from others.
     #h-enum(cols: 4)[
       + $a$, $α$
       + $b$, $β$
@@ -232,6 +258,30 @@ You need to write them so that *others can distinguish each from others*, but Sh
     ]
 ]
 
+== SI Units
+
+Historically, different civilizations used different units.
+Today, science and engineering worldwide use the #keyword[SI units] (Système International d'Unités)---the single international standard.
+It is built from seven #keyword[SI base units]:
+
+#figure(
+  caption: [SI base units and their symbols for dimension @si. Recall that units are case-sensitive.],
+  table(
+    columns: (auto, auto, auto, auto),
+    align: (left, center, left, center),
+    stroke: none,
+    table.header([*quantity*], table.cell(colspan: 2, align: center)[*symbol and name*], [*symbol for dimension*]),
+    table.hline(),
+    [time], [s], [ (second)], $ds(T)$,
+    [length], [m], [(meter)], $ds(L)$,
+    [mass], [kg], [(kilogram)], $ds(M)$,
+    [electric current], [A], [(ampere)], $ds(I)$,
+    [temperature], [K], [(kelvin)], $ds(Θ)$,
+    [amount of substance], [mol], [(mole)], $ds(N)$,
+    [luminous intensity], [cd], [(candela)], $ds(J)$,
+  ),
+)<SI-units>
+
 == Index
 #columns(3)[
   #make-index(
@@ -246,3 +296,5 @@ You need to write them so that *others can distinguish each from others*, but Sh
     },
   )
 ]
+
+#bibliography("refs.yml")

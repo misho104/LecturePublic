@@ -17,3 +17,14 @@ Boas:
   year: 2006
   publisher: Wiley
 
+si:
+  type: report
+  title: "The International System of Units (SI)"
+  author:
+    - "Bureau International des Poids et Mesures"
+  edition: "9"
+  note: "Version 3.02, updated August 2025"
+  year: 2025
+  doi: "10.59161/AUEZ1291"
+  url: "https://doi.org/10.59161/AUEZ1291"
+  publisher: "BIPM"
