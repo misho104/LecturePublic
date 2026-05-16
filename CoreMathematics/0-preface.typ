@@ -1,4 +1,4 @@
-#import "misho-text.typ": EMPH, JA, RED, ZH, c, h-enum, keyword, problems, quizzes, tab, text-sf
+#import "misho-text.typ": EMPH, JA, RED, TODO, ZH, c, h-enum, keyword, problems, quizzes, tab, text-sf
 #import "@preview/in-dexter:0.7.2": first-letter-up, make-index
 
 #let ds(body) = $sans(upright(body))$
@@ -112,6 +112,7 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
 + Probability and error analysis
 + Probability and error analysis
 
+#TODO[a bit on (abstract) vector space to prep for QM?]
 
 #pagebreak()
 

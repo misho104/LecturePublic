@@ -1,0 +1,370 @@
+#import "misho-text.typ": *
+#import "physica.typ": *
+
+#let unit(body) = {
+  show math.frac: it => [#it.num #sym.slash #it.denom]
+  show sym.ast: sym.dot.op
+  $thin upright(#body)$
+}
+#let bare(body) = {
+  show math.frac: it => [#it.num #sym.slash #it.denom]
+  show sym.ast: sym.dot.op
+  $upright(#body)$
+}
+#let meter = unit("m")
+#let cm = unit("cm")
+#let mm = unit("mm")
+#let kg = unit("kg")
+#let ampere = unit("A")
+#let coulomb = unit("C")
+#let ds(body) = $sans(upright(body))$
+#let DIM = math.op("dim")
+#let ee = math.upright("e")
+#let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
+
+#let writings(shift: dim.tab, columns: none, box: (true,), align: (left, right), ..body) = {
+  tab(shift: shift - 0.6em, grid(
+    columns: if columns == none { box.len() } else { columns },
+    inset: 0.6em,
+    stroke: box.map(it => if it { (thickness: 0.5pt, dash: "dashed") } else { none }),
+    align: align,
+    ..body
+  ))
+}
+
+
+A #keyword[physical quantity] is usually made of a number, a unit, and an #keyword[uncertainty] (#keyword[error]). For example,
+#align(center, table(
+  columns: (auto, auto, auto, auto, auto),
+  align: (left, center, center, center, center),
+  stroke: none,
+  table.header([], keyword[unit], keyword[central value], keyword[absolute uncertainty], keyword[relative uncertainty]),
+  table.hline(),
+  [$10meter ± 1cm$], [m (meter)], $10meter$, $1cm = 0.01meter$, [0.001 (or 0.1%)],
+  [$1.6 ampere ± 0.04 ampere$], [A (ampere)], $1.6 ampere$, $0.04ampere$, [0.025 (or 2.5%)],
+  [$(5±1)#EE(-3) coulomb$], [C (coulomb)], $0.005 coulomb$, $0.001 coulomb$, [0.2 (or 20%)],
+  [$(50±1)unit("m/s")$], [m/s], $50 unit("m/s")$, $1 unit("m/s")$, [0.02 (or 2%)],
+))
+#index("uncertainty", "absolute")
+#index("uncertainty", "relative")
+
+Measurements are always with uncertainty. Proper Handling of the uncertainty is a fundamental skill. Uncertainty can often be more important than the central value.
+
+#remark[
+  Upper- and lowercase letters are distinguished. "M" *does not* mean "meter". The unit "A" is "ampere", not "Ampere". The unit "coulomb" is "C", not "c".
+]
+#quizzes[
+  + `4` For each of the following values, find its unit, central value, absolute uncertainty, and relative uncertainty.
+    #h-enum(cols: 2)[
+      + $50kg ± 500 unit(g)$
+      + $(0.05 ± 0.001) unit(A)$
+      + $(1.6 ± 0.001)EE(-19) coulomb$
+      + $72unit("km/h") ± 1 unit("m/s")$
+    ]
+
+  + `4` The next passage has six (6) errors in the use of uppercase and lowercase letters. Find them out.
+
+
+  #tab(shift: 2 * dim.tab)[
+    In the SI system, temperature is expressed in k (kelvin), a unit named after Lord Kelvin.
+    The unit of force is N (newton), named after the british scientist Isaac newton. The units A (Ampere) and c (coulomb) are named after French scientists.
+    In contrast, Kg (kilogram) is not named after a person, but comes from Greek.
+  ]
+]
+
+
+#make-indent
+As an undergraduate student, you need to follow the following rules:
+
+#align(center, block(inset: 1em, stroke: 0.5pt, radius: 4pt, align(left)[
+  + Numbers are always with units, even in calculations.
+  + Include units in a symbol.
+  + For physical quantities, use decimals (e.g., $1.6ampere)$. Do not use fractions like $(8\/5)ampere$.
+  + Use significant figures to express the measurement precision.
+]))
+
+Significant figures are a simple way to express the uncertainty. We discuss it in this chapter, while Chapter #TODO[chapter] has further discussion on uncertainty and error analysis.
+
+#pagebreak()
+
+= Units
+When we educate kids, we write "my height is #blank()#cm", or "my height is $h$#cm", where $h=172$ is just a number.
+This is inconvenient, because we want to convert the units freely and write equations such as
+$1.72#meter = 172#cm = 0.00172#unit[km]$.
+So,
+#writings(box: (false, true), [*we always include units in symbols*:], $h=172 cm$)
+and then
+#writings(box: (false, true), [we can write:], $h=172#cm=1.72#meter=0.00172 unit("km")=1.82EE(-16) unit("light-year").$)
+
+Similarly, if $m=110 unit(g)$ and $g=9.8 unit(m\/s^2)$,
+#writings(
+  box: (false, true),
+  align: (right, left),
+
+  [we may write:],
+  $w = m g = 110 unit(g) times 9.8 unit(m\/s^2) = 1.1 unit("kg"*m/s^2)$,
+  [but not:],
+  $#RED[$w = m g = 0.11 times 9.8 = 1.1 unit("kg"*m/s^2)$]\;$,
+)
+the second equation is incorrect because $m$ is not equal to $0.11$. It is equal to $0.11kg$ or $110 unit(g)$.
+
+#remark[
+  Usually physicists use upright fonts for units and #text(style: "italic")[italic fonts] for quantities. For example, $m$, $T$, and $C$ are quantity symbols (describing mass, temperature, etc.), while m, T, and C are units (meter, tesla, and coulomb, respectively).
+]
+
+#make-indent
+Every physical concept has its own unit. For example, speed has $bare(m/s)$, acceleration has $bare(m/s^2)$, and energy has $bare("kg"*m/s^2)=bare(N*m)=bare(J)$.
+The table below lists the quantities you have learned.
+Notice that angle (rad) has no dimension. It is called a #keyword[dimensionless] quantity.
+
+#align(center, table(
+  columns: (auto, auto, auto, auto),
+  align: (left, center, center, left),
+  stroke: none,
+  table.header([*concept*], [*dimension*], [*typical unit*]),
+  table.hline(),
+  [speed], $ds(L thin T^(-1))$, $bare(m/s)$, [],
+  [acceleration], $ds(L thin T)^(-2)$, $bare(m/s^2)$, [],
+  [linear momentum], $ds(M thin L thin T^(-1))$, $bare("kg"*m/s)$, [],
+  [force], $ds(M thin L thin T^(-2))$, $bare("kg"*m/s^2)$, $(= upright("N"))$,
+  [energy / work], $ds(M thin L^2 thin T^(-2))$, $bare("kg"*m^2/s^2)$, $(= bare(J))$,
+  [frequency], $ds(T)^(-1)$, $bare(1/s)$, $(=bare("Hz"))$,
+  [angle], [$1$ (dimensionless)], $bare("rad")$, [],
+))
+
+
+#advanced-note[
+  To understand why angle has no dimension, you may consider the definition of the radian: it is defined as the ratio of the arc length to the radius, so the units cancel ($"meter" \/ "meter" = 1$).
+]
+
+Here,
+#writings(
+  box: (false, true),
+  [please do not write:],
+  [#RED[the force is $bare("kg"*m^2/s^2)$, which is also called newton (N).]],
+)
+because _we cannot mix units and concepts_. A correct (and easy) way is to use English words:
+#writings(
+  box: (true, false, true),
+  [the unit of the force is $bare("kg"*m/s^2)$],
+  [or],
+  [the force has the unit $bare("kg"*m/s^2)$.],
+)
+Similarly, the following statement is incorrect because it mixes concepts and units:
+#writings[#RED[Since $m=bare("kg")$ and $g=bare(m/s^2)$, $m g = bare("kg"*m/s^2) = bare(N)$.]]
+Instead, you need to write
+#writings[Since $m$ has a unit of $bare("kg")$ and $g$ has a unit of $bare(m/s^2)$, $m g$ has a unit of $bare("kg"*m/s^2)=bare(N)$.]
+
+Notice the last equation: units can be equal to other units, so we may write
+#writings[
+  $bare(N) = bare(J/m) = bare("kg"*m/s^2), wide bare(m)=bare(J/N), wide bare(s)=sqrt(bare("kg"*m/N)).$
+]
+These are scientifically correct equations.
+#remark[
+  We sometimes use informal notations, such as $quad [F]=bare(N) quad$ or $quad F arrow.r.dashed bare(N)quad$ to express "the unit of $F$ is $bare(N)$ (newton)". Still, using an equal symbol (=) is *not allowed*. Namely, #RED($F=bare(N)$) is always incorrect.
+]
+#advanced-note[
+  In very formal situations, we use #keyword[symbols for dimensions] (see @SI-units on #ref(<SI-units>, form: "page")):
+  #tab[Since $DIM(m)= ds(M)$ and $DIM(g) = ds(L med T^(-2))$, $DIM (m g) = ds(M med L med T^(-2))$,]
+  with the operator "dim" @si. However, it seems too complicated for educational purpose.
+]
+
+
+#quizzes[
+  + `4` Using English, explain what unit the following quantities have.
+    #h-enum(cols: 5)[
+      + speed
+      + velocity
+      + force
+      + energy
+      + power
+    ]
+  + `4` Express the following units only with SI base units, e.g., $bare(N) = bare("kg"*m/s^2)$.
+    #h-enum(cols: 4)[
+      + W (watt)
+      + Pa (pascal)
+      + J (joule)
+      + C (coulomb)
+    ]
+  + `2` Use "dim" notation to express the dimensions of the following quantities. For example, if $v$ is speed, then $DIM(v) = ds(L thin T^(-1))$.
+    #h-enum(cols: 2)[
+      + speed $v$
+      + force $F$
+      + angular momentum $L$
+      + electric charge $Q$
+      + resistance $R$
+      + specific heat capacity $c$
+      + Planck constant $h$
+      + fine-structure constant $alpha$
+    ]
+  + `2` Find a few more examples of dimensionless quantities in physics.
+]
+
+#pagebreak()
+
+= Significant figures <sig-figs>
+
+In researches, we need to treat uncertainties in the method given in #TODO[chap].
+However, most of lectures use #keyword[significant figures] to express the accuracy of a value, so that students becomes familiar with the concept of uncertainties.
+For example,
+
+#let sig(tail: 1, e: none, x) = {
+  (
+    x.slice(0, -tail)
+      + text-sf(style: "oblique", weight: "bold", fill: c.blue, x.slice(-tail))
+      + (if e != none { EE(e) } else { "" })
+  )
+}
+
+#writings(
+  box: (true, false),
+  align: (left, left),
+  [3.14],
+  [means the last digit "4" is uncertain. It can be #sig("3.16"), #sig("3.15"), #sig("3.11"), #sig("3.10"), ....],
+  [3.141],
+  [means "3.14" is for sure but it can be #sig("3.143"), #sig("3.142"), #sig("3.140"), #sig(tail: 2, "3.139"), ....],
+  [3.1415],
+  [might be #sig("3.1416"), #sig("3.14153"), etc., but the author is sure it *cannot* be 3.145 or 3.135.],
+)
+You have seen trailing zeros in your textbook. They are important because
+#writings(
+  box: (true, false),
+  align: (left, left),
+  [#sig("1.0000")],
+  [means the last digit "0" is uncertain so it may be 1.0002, 1.0001, 0.9998, ....],
+  [#sig("1.00")],
+  [can be 1.03 or 0.99, but the author is sure it *cannot* be 1.2 or 0.8.],
+)
+This notation is often combined with #keyword[scientific notation]:
+#writings(
+  box: (true, false, true, false),
+  align: (left, left),
+  [#sig("0.000123")],
+  [is OK but we prefer],
+  [#sig("1.23", e: -4).],
+  [Both mean the value can be #sig("1.22", e: -4) etc.],
+  [#sig("0.00100")],
+  [is OK but we prefer],
+  [#sig("1.00", e: -3).],
+  [],
+  [#sig("29979")],
+  [is OK but we prefer ],
+  [#sig("2.9979", e: 4).],
+)
+We need to _avoid ambiguous notations_. Namely,
+#writings(
+  box: (true, false),
+  align: (right, left),
+  RED[2040],
+  [is ambiguous and not nice. We are not sure the author means $2.04EE(3)$ or $2.040EE(3)$.],
+  RED[120],
+  [is not nice. We are not sure the author means It may mean $1.20EE(2)$ or $1.2EE(2)$.],
+  RED[42000],
+  [is not nice because it has four ways to interpret the author's intention.],
+)
+#quizzes[
+  + `4` What are the four interpretations of 42000?  Write them in scientific notation.
+  + `4` #num-a(1) Some of the following numbers are ambiguous. Point them out.\ #num-a(2) Write the other (not ambiguous) numbers in scientific notation.
+    #grid(columns: 10, column-gutter: 1em)[152][340][1000][9999][43210][0.0300][0.00213][31.0][31.00][31]
+
+  + `4` The expressions 0.123, 1.23, and 123 are numbers with _*three* significant figures_. Similarly, 1234 and $1.234EE(-3)$ are numbers with _*four* significant figures_. How about the following expressions?
+    #h-enum(cols: 4)[
+      + $3.14$
+      + $0.11$
+      + $1.1EE(-2)$
+      + $1.1EE(1)$
+      + $1.0008$
+      + $1.0020$
+      + $1.0000$
+      + $4.00EE(-10)$
+      + 0.0008
+      + 0.00080
+      + 12345
+      + 67890
+    ]
+]
+#remark[
+  On computers, we often use `2.99e8` (or `2.99E8`) to mean $2.99EE(8)$, or `1.610e-12` (or `1.610E-12`) to mean $1.610EE(-12)$. However, we *should not* use them in hand-writing.
+]
+#make-indent
+We use #keyword[rounding]-to-the-nearest (#ZH[四捨五入]) when necessary. For example, if you need to convert to three significant figures, it will be
+#no-num(
+  $
+    1.234 → 1.23, quad 1.235 → 1.24, quad 31.98 → 32.0, quad 1234 → 1.23EE(3), quad "and so on."
+  $,
+)
+#quizzes[
+  + `4` Round the following numbers to three significant figures.
+    #h-enum(cols: 4)[
+      + $41.11$
+      + $98.76$
+      + $100.12$
+      + $15.449$
+      + $2.2360$
+      + $0.0123456$
+      + $9876$
+      + $9.999EE(4)$
+    ]
+]
+
+
+
+= Calculation with Significant figures
+
+Now we are to calculate these numbers with significant figures, such as $1.23+4.56$ or $1.23\/4.56$, but how?
+The professional methods are given in #TODO[chap].
+Here we discuss a simple method for
+
+- addition ($x+y$) and subtraction ($x - y$)
+
+- multiplication ($x times y$) and division ($x div y$ or $x\/y$)
+
+Treatments for $sqrt(x)$, $ee^(x)$ or $sin(x)$ need the professional method given in #TODO[chap].
+
+=== Multiplication and Division
+
+If $x$ has $m$ significant figures and $y$ has $n$ significant figures, then $x times m$ or $x div y$ should be rounded to have $min(m, n)$ significant figures.
+
+#example()[ Calculate the following expressions, using calculators.
+  #h-enum(cols: 4)[
+    + $8.912 times 2.4$
+    + $5.0 div 3.14$
+    + $2.01 times 49.8$
+    + $1.210^3$
+  ]
+]
+#solution[
+  Here we use a shorthand notation "3-SF" to mean "three significant figures".
+  #enum(numbering: cn => box(width: 2em, align(right, text-sf[*(#cn)*])), tight: false)[
+    Since 8.912 has 4-SF and 2.4 has 2-SF, we round the result to (the smaller) 2-SF:
+    #no-num($8.912 times 2.4 = 21.3888 → underline(21).$)][
+    Since 5.0 has 2-SF and 3.14 has 3-SF, we round the result to 2-SF:
+    #no-num($5.0 div 3.14 = 1.592dots → underline(1.6).$)][
+    Both 2.01 and 49.8 have 3-SF, so we keep 3-SF, but don't forget to avoid ambiguity!
+    #no-num($2.01 times 49.8 = 100.098 → 100 → underline(1.00EE(2)).$)][
+
+    $1.210^3=1.210 times 1.210 times 1.210$, so we round the result to 4-SF:
+    #no-num($1.210^3 = 1.771561 → underline(1.772).$)]
+]
+
+
+This treatment is justified if you recall You may understand this
+
+The significant-figure rules for multiplication and division are a consequence of the relative-uncertainty rule. The relative uncertainty of a product or quotient is dominated by the factor with the largest relative uncertainty, which is the least precise factor. Therefore, we round the result to have the same number of significant figures as the least precise factor.
+The significant-figure rules for calculations are a consequence of uncertainty propagation.
+After computing a result, round it so that it does not claim more precision than the data support.
+
+- *Multiplication and division:* keep the same number of significant figures as the least precise factor.
+  (This reflects the relative-uncertainty rule: the least precise factor dominates the relative uncertainty of the result.)
+- *Addition and subtraction:* round to the least number of _decimal places_ among all terms.
+  (This reflects the absolute-uncertainty rule: the term with the largest absolute uncertainty dominates.)
+
+For example:
+$ 3.3 × 1.11 = 3.663 → 3.7 quad "(two s.f.)", $
+$ 22.2 + 3.51 = 25.71 → 25.7 quad "(one decimal place)". $
+
+#remark[
+  These are the beginner rules.
+  Professional scientists and engineers use more nuanced conventions that depend on their field.
+  You will learn those from your supervisors in the future.
+]

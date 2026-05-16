@@ -1,7 +1,7 @@
 #import "misho-text.typ": *
 #import "physica.typ": *
 
-= Introduction
+= The first step
 
 #remark[
   This document is designed for first-year students in their _second semester_, who *have already studied derivatives* in their first-semester _"calculus"_ course.

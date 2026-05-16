@@ -24,3 +24,6 @@
 #chapter[Derivative (Review)]
 #include "1-derivative.typ"
 
+#chapter[Units and Significant figures]
+#include "2-units.typ"
+
