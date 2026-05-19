@@ -89,7 +89,7 @@ Significant figures are a simple way to express the uncertainty. We discuss it i
 
 = Units
 When we educate kids, we write "my height is #blank()#cm", or "my height is $h$#cm", where $h=172$ is just a number.
-This is inconvenient, because we want to convert the units freely and write equations such as
+But this is not nice! We want to convert the units freely and write equations such as
 $1.72#meter = 172#cm = 0.00172#unit[km]$.
 So,
 #writings(box: (false, true), [*we always include units in symbols*:], $h=172 cm$)
@@ -104,12 +104,12 @@ Similarly, if $m=110 unit(g)$ and $g=9.8 unit(m\/s^2)$,
   [we may write:],
   $w = m g = 110 unit(g) times 9.8 unit(m\/s^2) = 1.1 unit("kg"*m/s^2)$,
   [but not:],
-  $#RED[$w = m g = 0.11 times 9.8 = 1.1 unit("kg"*m/s^2)$]\;$,
+  $#RED[$w = m g = 0.11 times 9.8 = 1.1 unit("kg"*m/s^2)$]$,
 )
-the second equation is incorrect because $m$ is not equal to $0.11$. It is equal to $0.11kg$ or $110 unit(g)$.
+This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equal to $0.11kg$ or $110 unit(g)$.
 
 #remark[
-  Usually physicists use upright fonts for units and #text(style: "italic")[italic fonts] for quantities. For example, $m$, $T$, and $C$ are quantity symbols (describing mass, temperature, etc.), while m, T, and C are units (meter, tesla, and coulomb, respectively).
+  Usually, physicists use upright fonts for units and #text(style: "italic")[italic fonts] for quantities. For example, $m$, $T$, and $C$ are quantity symbols (describing mass, temperature, etc.), while m, T, and C are units (meter, tesla, and coulomb, respectively).
 ]
 
 #make-indent
@@ -163,12 +163,6 @@ These are scientifically correct equations.
 #remark[
   We sometimes use informal notations, such as $quad [F]=bare(N) quad$ or $quad F arrow.r.dashed bare(N)quad$ to express "the unit of $F$ is $bare(N)$ (newton)". Still, using an equal symbol (=) is *not allowed*. Namely, #RED($F=bare(N)$) is always incorrect.
 ]
-#advanced-note[
-  In very formal situations, we use #keyword[symbols for dimensions] (see @SI-units on #ref(<SI-units>, form: "page")):
-  #tab[Since $DIM(m)= ds(M)$ and $DIM(g) = ds(L med T^(-2))$, $DIM (m g) = ds(M med L med T^(-2))$,]
-  with the operator "dim" @si. However, it seems too complicated for educational purpose.
-]
-
 
 #quizzes[
   + `4` Using English, explain what unit the following quantities have.
@@ -179,13 +173,22 @@ These are scientifically correct equations.
       + energy
       + power
     ]
-  + `4` Express the following units only with SI base units, e.g., $bare(N) = bare("kg"*m/s^2)$.
-    #h-enum(cols: 4)[
-      + W (watt)
-      + Pa (pascal)
-      + J (joule)
-      + C (coulomb)
-    ]
+]
+
+#advanced-note[
+  In very formal situations, we use #keyword[symbols for dimensions] (see @SI-units on #ref(<SI-units>, form: "page")):
+  #tab[Since $DIM(m)= ds(M)$ and $DIM(g) = ds(L med T^(-2))$, $DIM (m g) = ds(M med L med T^(-2))$,]
+  with the operator "dim" @si. However, it seems too complicated for most situations.
+]
+
+#problems[
+  + `3` Express the following units only with SI base units, e.g., $bare(N) = bare("kg"*m/s^2)$.
+  #h-enum(cols: 4)[
+    + W (watt)
+    + Pa (pascal)
+    + J (joule)
+    + C (coulomb)
+  ]
   + `2` Use "dim" notation to express the dimensions of the following quantities. For example, if $v$ is speed, then $DIM(v) = ds(L thin T^(-1))$.
     #h-enum(cols: 2)[
       + speed $v$
@@ -208,11 +211,10 @@ In researches, we need to treat uncertainties in the method given in #TODO[chap]
 However, most of lectures use #keyword[significant figures] to express the accuracy of a value, so that students becomes familiar with the concept of uncertainties.
 For example,
 
+#let unc(x) = text-sf(style: "oblique", weight: "bold", fill: c.blue, x)
 #let sig(tail: 1, e: none, x) = {
   (
-    x.slice(0, -tail)
-      + text-sf(style: "oblique", weight: "bold", fill: c.blue, x.slice(-tail))
-      + (if e != none { EE(e) } else { "" })
+    x.slice(0, -tail) + unc(x.slice(-tail)) + (if e != none { EE(e) } else { "" })
   )
 }
 
@@ -348,23 +350,140 @@ If $x$ has $m$ significant figures and $y$ has $n$ significant figures, then $x 
 ]
 
 
-This treatment is justified if you recall You may understand this
+This treatment is justified if you carry out the long multiplication by your hand.
 
-The significant-figure rules for multiplication and division are a consequence of the relative-uncertainty rule. The relative uncertainty of a product or quotient is dominated by the factor with the largest relative uncertainty, which is the least precise factor. Therefore, we round the result to have the same number of significant figures as the least precise factor.
-The significant-figure rules for calculations are a consequence of uncertainty propagation.
-After computing a result, round it so that it does not claim more precision than the data support.
+#let v-calc(columns, text) = table(
+  columns: columns,
+  align: center,
+  stroke: none,
+  column-gutter: 0em,
+  inset: (x: 0.3em, y: 0.2em),
+  ..(
+    text
+      .replace("x", sym.times)
+      .replace("-", sym.minus)
+      .split("/")
+      .map(it => if (it == "L") { table.hline(stroke: 0.5pt) } else if it.len() > 0 and it.at(0) == "!" {
+        unc(it.slice(1))
+      } else {
+        it
+      })
+  )
+)
+#grid(
+  align: center,
+  columns: (1fr, 1fr, 1fr),
+  v-calc(5, "//1./2/!0/x//1./3/!1/L///!1/!2/!0//3/6/!0//1/2/!0///L/1/5/!7/!2/!0"),
+  v-calc(6, "//8./9/1/!2/x////2./!4/L//!3/!5/!6/!4/!8/1/7/8/2/!4//L/2/!1/!3/!8/!8/!8"),
+  v-calc(6, "///2./0/!1/x///4/9./!8/L///!1/!6/!0/!8//1/8/0/!9///8/0/!4///L/1/0/!0./!0/!9/!8"),
+)
+Observe which digits are uncertain, and how they "pollute" the results in each step.
+In $#sig("1.20") times #sig("1.31")$, the last #sig("1") pollutes the part of $#sig("1")+6$ and we get an uncertain number #sig("7").
+So, the result is #sig("1.57").
 
-- *Multiplication and division:* keep the same number of significant figures as the least precise factor.
-  (This reflects the relative-uncertainty rule: the least precise factor dominates the relative uncertainty of the result.)
-- *Addition and subtraction:* round to the least number of _decimal places_ among all terms.
-  (This reflects the absolute-uncertainty rule: the term with the largest absolute uncertainty dominates.)
+=== Addition and subtraction
 
-For example:
-$ 3.3 × 1.11 = 3.663 → 3.7 quad "(two s.f.)", $
-$ 22.2 + 3.51 = 25.71 → 25.7 quad "(one decimal place)". $
+Different rules are applied for addition and subtraction, where we do long addition and observe which digits are polluted.
+
+#example[
+  Calculate the following expressions.
+  #h-enum(cols: (1fr, 1fr, 1fr, 1.5fr))[
+    + $12.3 + 4.56$
+    + $123 + 4.56$
+    + $0.50 - 0.032$
+    + $1.20EE(3) - 27$
+  ]
+]
+#solution[
+  #grid(
+    align: center,
+    columns: (1fr, 1fr, 1fr, 1fr),
+    v-calc(5, "/1/2./!3//+//4./5/!6/L//1/6./!8/!6"),
+    v-calc(6, "/1/2/!3///+///4./5/!6/L//1/2/!7./!5/!6"),
+    v-calc(5, "/0./5/!0//-/0./0/3/!2/L//0./4/!6/!8"),
+    v-calc(5, "/1/2/!0/!0/-///2/!7/L//1/1/!7/!3"),
+  )
+  and we round the results. So, the answers are #sig("16.9"), #sig("128"), #sig("0.47"), and #sig("1.17", e: 3).
+]
 
 #remark[
   These are the beginner rules.
   Professional scientists and engineers use more nuanced conventions that depend on their field.
   You will learn those from your supervisors in the future.
 ]
+
+#problems[
+  + `9` Calculate the following, taking care of significant figures. You may use calculators.
+    #h-enum(cols: (1fr, 1fr, 1fr, 1.5fr))[
+      + $1.23 times 4.5$
+      + $1.50 times 2.0$
+      + $2.00 times 5.00$
+      + $4.0 times 2.5$
+      + $1.23 + 4.5$
+      + $1.50 + 2.0$
+      + $2.00 + 8.00$
+      + $100.0 + 0.123$
+      + $1.23 div 4.5$
+      + $6.0 div 3.00$
+      + $9.00 div 4.5$
+      + $1.50 div 3.0$
+      + $1.23-4.5$
+      + $3.10-0.10$
+      + $3.10 - 0.1$
+      + $3.10 - 3.0$
+      + $131 + 69$
+      + $131 + 6.9$
+      + $131 + 0.69$
+      + $1.3EE(2) + 69$
+    ]
+    #h-enum(cols: (2fr, 2fr), offset: 20)[
+      + $\(1.2EE(5)\) times 9.4$
+      + $1.2 div \(5.2EE(5)\)$
+      + $\(3.33EE(5)\) times \(6.3EE(4)\)$
+      + $\(3.33EE(5)\) times \(6.3EE(-4)\)$
+      + $\(3.33EE(5)\) div \(6.3EE(4)\)$
+      + $\(3.33EE(5)\) div \(6.3EE(-4)\)$
+      + $1.00EE(4) + 2.5EE(3)$
+      + $3.00EE(3) - 4.50EE(2)$
+      + $2.99EE(2) + 0.814$
+      + $1.23EE(-4) + 4.5EE(-6)$
+    ]
+  + `3` Calculate the following, taking care of significant figures. You may use calculators.
+    #h-enum(cols: (2fr, 2fr, 1fr, 1fr))[
+      + $1.50 times 2.000 times 3.50$
+      + $8.00 div 4.00 div 0.25$
+      + $5.0^3$
+      + $2.10^3$
+      + $1.0+2.0+3.0 times 4.0$
+      + $17 - 8.0 - 3.0$
+      + $3.0^3 + 1.2$
+      + $5.0^3 - 5$
+    ]
+    #h-enum(cols: 3, offset: 8)[
+      + $(1.2 + 3.45) times 2.1$
+      + $(8.0 - 1.25) div 2.0$
+      + $1.2 times 3.4 + 5.6$
+      + $18.0 - 2.5 times 1.2$
+      + $(5.0EE(2) + 3.4) times 1.2$
+      + $1.20 times 3.40 + 5.60$
+    ]
+  + `9` Calculate the following with calculators, taking care of significant figures and units.
+    #h-enum(cols: 2)[
+      + $3.1 unit("m/s") times 1.0 unit("hour")$
+      + $3.1meter div 25cm$
+      + $1.5 unit("kg") times 9.8 unit(m/s^2)$
+      + $1.50 unit("km") + 195 meter$
+      + $(5.2 unit("kg/"m^3)) times (4.0 unit(mu m))^3$
+      + $(5.2 unit("kg/"m^3)) times (4.0 unit(mu m)^3)$
+      + $1.2unit(mu m) div 2.00 unit("nm")$
+      + $(1.7EE(-27)unit("kg")) times (3.00EE(8) unit("m/s"))^2$
+      + $2.000 unit("kg") times (3.0 unit(m/s^2))$
+      + $2.000 unit("kg") times (3.0 unit(m/s))^2$
+      + $(1.60EE(-19)coulomb) div 2.0 unit(mu s)$
+      + $(1.60EE(-19) coulomb) times 5.0unit("kV")$
+      + $(6.63EE(-34) unit(J dot s)) times (3.0EE(12) unit("Hz"))$
+      + $1.50 unit("MJ") div 20.0 meter$
+    ]
+]
+
+

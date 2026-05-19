@@ -89,6 +89,7 @@
   label-align: top,
   v-sep: 1em,
   h-sep: 0mm,
+  offset: 0,
   inset: (:),
   ..items,
 ) = {
@@ -104,10 +105,11 @@
   let numbered = items
     .pos()
     .enumerate()
-    .map(((i, body)) => (label-style(prefixes.at(i, default: ""), label_item(i)), "", body))
+    .map(((i, body)) => (label-style(prefixes.at(i, default: ""), label_item(i + offset)), "", body))
   set par(first-line-indent: 0em, hanging-indent: 0em)
+  let columns = if type(cols) == int { range(cols).map(it => 1fr) }else {cols}
   grid(
-    columns: range(cols).map(it => (label-width, label-sep, 1fr)).flatten(),
+    columns: columns.map(it => (label-width, label-sep, it)).flatten(),
     column-gutter: h-sep,
     row-gutter: v-sep,
     align: (label-align, label-align, horizon),

@@ -63,6 +63,9 @@ For each file given:
   block if the marker is immediately before or inside one
 - Choose problem levels based on the instruction; default: one `4` + one `3`
 - Focus on confusion points named in the instruction
+- For `9` drill items, follow the **Drill design** rules in the `typst-exercises` skill:
+  group problems by the specific trap or sub-skill being practiced; never generate
+  a random list of similar calculations
 
 ### `quiz`
 - Follow the same rules as the `typst-exercises` skill but use `#quizzes[...]`
