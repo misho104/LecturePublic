@@ -107,14 +107,16 @@
     .enumerate()
     .map(((i, body)) => (label-style(prefixes.at(i, default: ""), label_item(i + offset)), "", body))
   set par(first-line-indent: 0em, hanging-indent: 0em)
-  let columns = if type(cols) == int { range(cols).map(it => 1fr) }else {cols}
   grid(
-    columns: columns.map(it => (label-width, label-sep, it)).flatten(),
+    columns: if type(cols) == int { range(cols).map(it => 1fr) } else { cols },
     column-gutter: h-sep,
     row-gutter: v-sep,
-    align: (label-align, label-align, horizon),
-    inset: (inset, 0em, 0em),
-    ..numbered.flatten()
+    ..numbered.map(it => grid(
+      columns: (label-width, label-sep, auto),
+      align: (label-align, label-align, horizon),
+      inset: (inset, 0em, 0em),
+      ..it
+    ))
   )
 }
 #let h-enum(..args, cols: 4, body) = {

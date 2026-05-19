@@ -435,8 +435,8 @@ Different rules are applied for addition and subtraction, where we do long addit
       + $131 + 6.9$
       + $131 + 0.69$
       + $1.3EE(2) + 69$
-    ]
-    #h-enum(cols: (2fr, 2fr), offset: 20)[
+    ]#v(-.2em)
+    #h-enum(cols: (2fr, 2.5fr), offset: 20)[
       + $\(1.2EE(5)\) times 9.4$
       + $1.2 div \(5.2EE(5)\)$
       + $\(3.33EE(5)\) times \(6.3EE(4)\)$
@@ -449,7 +449,7 @@ Different rules are applied for addition and subtraction, where we do long addit
       + $1.23EE(-4) + 4.5EE(-6)$
     ]
   + `3` Calculate the following, taking care of significant figures. You may use calculators.
-    #h-enum(cols: (2fr, 2fr, 1fr, 1fr))[
+    #h-enum(cols: (1.7fr, 1.7fr, 1fr, 1fr))[
       + $1.50 times 2.000 times 3.50$
       + $8.00 div 4.00 div 0.25$
       + $5.0^3$
@@ -458,14 +458,14 @@ Different rules are applied for addition and subtraction, where we do long addit
       + $17 - 8.0 - 3.0$
       + $3.0^3 + 1.2$
       + $5.0^3 - 5$
-    ]
-    #h-enum(cols: 3, offset: 8)[
+    ]#v(-.2em)
+    #h-enum(cols: (1.7fr, 1.7fr, 2fr), offset: 8)[
       + $(1.2 + 3.45) times 2.1$
       + $(8.0 - 1.25) div 2.0$
       + $1.2 times 3.4 + 5.6$
       + $18.0 - 2.5 times 1.2$
-      + $(5.0EE(2) + 3.4) times 1.2$
       + $1.20 times 3.40 + 5.60$
+      + $(5.0EE(2) + 3.4) times 1.2$
     ]
   + `9` Calculate the following with calculators, taking care of significant figures and units.
     #h-enum(cols: 2)[
