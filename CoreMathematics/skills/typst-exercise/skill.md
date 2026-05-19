@@ -35,6 +35,18 @@ description: Improve existing exercises or add new ones to Typst
 - `1` challenge — only for really important topics
 - `9` drill — Hanon-style repetitive calculation, maximize variety of patterns
 
+## Design principles for exercises
+
+### Focus on student confusion points
+Before writing, ask: *where do students typically go wrong with this topic?*
+Prioritize problems that target:
+- Common sign errors or algebraic slips
+- Notation ambiguity (e.g., $f'(a)$ vs. $\frac{d}{dx}f(a)$, constant vs. variable)
+- Subtle case distinctions that look similar but differ (e.g., $\sin(x^2)$ vs. $\sin^2(x)$)
+- Steps students tend to skip and regret
+
+Avoid problems that are merely "more of the same" — each problem should test something distinct.
+
 ## When adding new exercises
 1. Read the whole file first to check coverage and notation
 2. Focus on levels 4 and 3. Add levels 2 and 1 only for really important topics.
