@@ -95,3 +95,7 @@ For each file given:
 1. Read every file that contains `// !AI` markers (specified by the user or found by searching)
 2. Process one file at a time; do not mix edits across files in a single write
 3. Do **not** open other files (other chapters, `misho-text.typ`, `physica.typ`, etc.) unless the marker instruction explicitly references them. Reading the target file is sufficient; opening extra files bloats the context window unnecessarily.
+
+## After editing
+
+Do **not** run `make` or any build command after processing markers. The user will build manually when needed.

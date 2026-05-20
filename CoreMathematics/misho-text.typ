@@ -207,6 +207,7 @@
   current-chapter.update((number, title, [Chapter #number: #title]))
   set-page-style("normal")
   counter(math.equation).update(0)
+  counter("env").update(0)
   counter("problem").step()
   counter("quiz").step()
 }

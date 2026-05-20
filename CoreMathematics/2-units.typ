@@ -109,7 +109,7 @@ Similarly, if $m=110 unit(g)$ and $g=9.8 mpss$,
 This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equal to $0.11kg$ or $110 unit(g)$.
 
 #let quiz-for-logic = quizzes[
-  + `9`
+  + `4`
     + If $m r omega^2 = 10.0 unit("kg"*m/s^2)$, $m=5.0kg$, and $r=1.0 meter$, what is $omega$?
     + If $v_0t + 1/2a t^2=5.0meter$, where $a=-4.0mpss$ and $v_0=7.0 mps$, what is  $t$?
     + At time $t=0$, a particle is at $(x,y)=(2.0meter,0)$. It moves with a constant velocity $(v_x,v_y)=(3.0,4.0) mps$. What is its position at $t=1.0 second$?

@@ -22,7 +22,7 @@ The answers are obviously
 but *what are the correct meaning of these commas or the symbol "±" ?*
 
 #quizzes[
-  + `9` Which are the correct meaning? Guess it.
+  + `4` Which are the correct meaning? Guess it.
 
     - [$omega$ is both $+1.4 unit(s^(-1))$ and $-1.4 unit(s^(-1))$] v.s. [$omega$ is either $+1.4 unit(s^(-1))$ or $-1.4 unit(s^(-1))$].
 
@@ -33,74 +33,75 @@ but *what are the correct meaning of these commas or the symbol "±" ?*
 
 In elementary educations, these differences are often ignored because kids do not know *logical thinking*; now, you need to do it, as you are a grown-up university student.
 
-= Logic
+= Basic Logics
 
-== Statements and truth values
-
-A #keyword[statement] is a sentence that is either true or false---not both, not neither.
-We call this its #keyword[truth value]: *true* (T) or *false* (F).
-
-For example:
-- "$2 + 2 = 4$" is a statement. Its truth value is T.
-- "$3 > 5$" is a statement. Its truth value is F.
-- "$sin(pi) = 0$" is a statement. Its truth value is T.
-
-We use capital letters $P$, $Q$, $R$, ... as short names for statements.
-
-#remark[
-  "Please close the door" and "Is it raining?" are not statements, because they are neither true nor false.
+You have written many equalities and inequalities, such as
+$
+  3+5=8, quad 6 + 2 = 10, quad 1+3 > -3, quad 1+3 != 0,
+  quad 3^3 = 9,quad 1>2, quad "and" quad sin(pi)!=0.
+$
+An equality or inequality can be #keyword[true] (T) or #keyword[false] (F).
+#quizzes[
+  + `4` For each of the above statements, state whether it is true or false.
 ]
+Usually, *we only write true things*. When you write something, you need to confirm that it is true.
 
-== Logical connectives: AND, OR, NOT
-
-Given statements $P$ and $Q$, we form new statements with #keyword[logical connectives].
-
-#keyword[Conjunction] ($P and Q$, read "$P$ AND $Q$") is true *only when both* $P$ and $Q$ are true.
-
-#keyword[Disjunction] ($P or Q$, read "$P$ OR $Q$") is true *when at least one* of $P$ and $Q$ is true.
-
-#keyword[Negation] ($not P$, read "NOT $P$") is true when $P$ is false, and false when $P$ is true.
-
-The #keyword[truth table] below summarises all cases:
+We can combine those statements (with a fixed true/false value) with "AND", "OR", and "NOT".
 
 #align(center, table(
-  columns: (auto, auto, auto, auto, auto),
-  stroke: none,
-  table.header([$P$], [$Q$], [$P and Q$], [$P or Q$], [$not P$]),
-  table.hline(),
-  [T], [T], [T], [T], [F],
-  [T], [F], [F], [T], [F],
-  [F], [T], [F], [T], [T],
-  [F], [F], [F], [F], [T],
+  columns: 3,
+  align: (center, center, left),
+  inset: (x: 1mm),
+  stroke: (x: 0pt, y: 0.5pt),
+  keyword[and], [(conjunction)], ["$A$ AND $B$" ($A and B$) is true if both $A$ and $B$ are true, and false otherwise.],
+  keyword[or],
+  [(disjunction)],
+  ["$A$ OR $B$" ($A or B$) is true if either $A$ or $B$ is true; false if both $A$ and $B$ are false.],
+
+  keyword[not], [(negation)], ["NOT $A$" ($not A$) is true if $A$ is false, and false if $A$ is true.],
 ))
-
 #be-careful[
-  In everyday English, "or" often means *exclusive or* (one or the other, but not both). In mathematics and physics, "or" always means *inclusive or*: $P or Q$ is true even when both $P$ and $Q$ are true.
+  The word usage of "or" is a bit different from everyday English. In daily conversation, _"Sho will eat ramen or sushi tonight"_ usually means "but not both". However, in mathematics, if Sho eats both ramen and sushi for a dinner, the statement _"Sho had sushi or ramen tonight"_ is true.
 ]
-
 #quizzes[
-  + `4` Let $P$ be "$6$ is even" (T) and $Q$ be "$6$ is divisible by $4$" (F). Find the truth values of $P and Q$, $P or Q$, $not P$, and $not Q$.
+  + `4` State whether it is true or false for the following statements.
+    #h-enum(cols: 2)[
+      + $1 + 2 = 3$ and $3 + 4 < 5$.
+      + $10 div 3 > 0$ or $10 div 2 > 0$.
+      + not ($3 > 5$).
+      + $6 + 3 > 0$ and not $(5 - 2 > 0)$.
+    ]
+]
+We can discuss the following statements: are they true or false?
+
+#example({
+  let f(w: 40mm, x, y) = list.item[#box(width: w, x) #sym.dots #y]
+  (
+    list(
+      tight: false,
+      f[If $x > 5$, then $x > 1$.][This is true.],
+      f[If $x < 9$, then $x < 2$.][This is false, because we have a #keyword[counterexample] $x = 5$.],
+      f[If $x^2 < 1$, then $x<1$.][This is true.],
+      f[If $x^2 = 1$, then $x=-1$.][This is false, because we have a counterexample $x=1$.],
+    )
+      + [We often write $P=>Q$ to mean "If $P$, then $Q$". So,]
+      + list(
+        tight: false,
+        f(w: 50mm, [$x > 5 => x > 1$], [This is the first example above, and true.]),
+        f(w: 50mm, [$(x^2=4 and x<0) => (x = -2)$.], [This is true. Recall "$and$" means "and".]),
+      )
+  )
+})
+To claim a statement is _false_, you need to find one counterexample. In the second example above, $x=5$ satisfies $x < 9$ but does not satisfy $x < 2$, so it is one counterexample.
+Meanwhile, it is more difficult to claim a statement is _true_; you need to write a #keyword[proof].
+
+#advanced-note[
+  In formal logic, we need to write, e.g.,
+  $forall x in RR, (x > 5) => (x > 1),$
+  to be more precise that we are thinking of all real numbers (but not complex numbers).
+  Physicists usually omit the $forall$-part, but it may help your understanding if you keep it in mind.
 ]
 
-== Open sentences
-
-An expression such as "$x^2 = 4$" or "$x > 3$" contains a variable $x$.
-Its truth value depends on the value of $x$---it is not T or F by itself.
-We call such an expression an #keyword[open sentence].
-
-Once we fix a value of $x$, an open sentence becomes a statement with a definite truth value:
-- "$x^2 = 4$" is T when $x = 2$ or $x = -2$, and F for any other real $x$.
-- "$x > 3$" is T when $x = 5$, and F when $x = 1$.
-
-Open sentences also combine with AND, OR, and NOT---but only after we fix the value of the variable (or specify the set of values we care about).
-
-#remark[
-  In high school, you wrote equations with the silent assumption that each line is true.
-  For instance, solving $x^2 - 5x + 6 = 0$, you wrote
-  $ x^2 - 5x + 6 = 0 quad => quad (x-2)(x-3) = 0 quad => quad x = 2 quad "or" quad x = 3. $
-  Each line is an open sentence, and "$=>$" says: any $x$ that makes the left side true also makes the right side true.
-  You were doing logical reasoning---just without saying so.
-]
 
 #make-indent
 Now we can answer the quiz from the previous page.
@@ -192,11 +193,14 @@ A large source of confusion in university physics is mixing up three types of st
   stroke: none,
   align: (left, left),
   table.hline(),
-  [*Assumption* (#keyword[hypothesis])], [A statement we *declare to be true* for the purpose of an argument. Example: "Let $m = 2.0 thin unit("kg")$." We do not prove it; we simply accept it.],
+  [*Assumption* (#keyword[hypothesis])],
+  [A statement we *declare to be true* for the purpose of an argument. Example: "Let $m = 2.0 thin unit("kg")$." We do not prove it; we simply accept it.],
   table.hline(stroke: 0.3pt),
-  [*Definition*], [A statement that *gives meaning* to a symbol or concept. Example: "Let $v := dv(x,t)$." A definition is true by construction; it cannot be wrong.],
+  [*Definition*],
+  [A statement that *gives meaning* to a symbol or concept. Example: "Let $v := dv(x, t)$." A definition is true by construction; it cannot be wrong.],
   table.hline(stroke: 0.3pt),
-  [*Conclusion* (#keyword[deduction])], [A statement that is *derived* from assumptions and definitions by logical steps. Example: "Therefore $v = 3.0 thin unit(m/s)$." Its truth depends on the truth of the assumptions.],
+  [*Conclusion* (#keyword[deduction])],
+  [A statement that is *derived* from assumptions and definitions by logical steps. Example: "Therefore $v = 3.0 thin unit(m/s)$." Its truth depends on the truth of the assumptions.],
   table.hline(),
 ))
 
@@ -328,10 +332,10 @@ From $P => Q$ we define three related statements:
   align: (right, left),
   table.header([*Name*], [*Statement*]),
   table.hline(),
-  [implication],        [$P => Q$],
-  [converse],           [$Q => P$],
-  [contrapositive],     [$not Q => not P$],
-  [inverse],            [$not P => not Q$],
+  [implication], [$P => Q$],
+  [converse], [$Q => P$],
+  [contrapositive], [$not Q => not P$],
+  [inverse], [$not P => not Q$],
 ))
 
 The implication and its contrapositive are *logically equivalent*: $P => Q$ is true exactly when $not Q => not P$ is true. The converse and inverse are also equivalent to each other, but they are *not* equivalent to the original implication.
@@ -361,8 +365,8 @@ There are two kinds of step, and they are not the same:
 
 For example:
 $
-  x = 3 &quad => quad x^2 = 9  &&quad "(squaring: one-way)" \
-  x^2 = 9 &quad => quad x = 3 quad "or" quad x = -3 &&quad "(taking square root)"
+    x = 3 & quad => quad x^2 = 9                     && quad "(squaring: one-way)" \
+  x^2 = 9 & quad => quad x = 3 quad "or" quad x = -3 && quad "(taking square root)"
 $
 The first step is only $=>$, not $<=>$: squaring loses the sign of $x$.
 A chain of $<=>$ steps is ideal because it means your solution set is exactly correct.
@@ -373,10 +377,10 @@ A chain containing even one $=>$ step means you may have introduced #keyword[ext
 ]
 #solution[
   $
-    sqrt(x+2) = x &quad => quad x + 2 = x^2 quad "(squaring: only =>)" \
-                  &quad <=> quad x^2 - x - 2 = 0 \
-                  &quad <=> quad (x-2)(x+1) = 0 \
-                  &quad <=> quad x = 2 quad "or" quad x = -1.
+    sqrt(x+2) = x & quad => quad x + 2 = x^2 quad "(squaring: only =>)" \
+                  & quad <=> quad x^2 - x - 2 = 0 \
+                  & quad <=> quad (x-2)(x+1) = 0 \
+                  & quad <=> quad x = 2 quad "or" quad x = -1.
   $
   Because we used $=>$ in the first step, we must check both candidates.
   - $x = 2$: $sqrt(4) = 2$. ✓
@@ -441,8 +445,8 @@ The #keyword[existential quantifier] $exists$ means "there exists" (or "for some
 
 The #keyword[negation] of quantified statements follows De Morgan's rules:
 $
-  not (forall x, P(x)) quad &<=> quad exists x, not P(x), \
-  not (exists x, P(x)) quad &<=> quad forall x, not P(x).
+  not (forall x, P(x)) quad & <=> quad exists x, not P(x), \
+  not (exists x, P(x)) quad & <=> quad forall x, not P(x).
 $
 In words: to disprove a "for all" statement, you only need *one counterexample*. To disprove a "there exists" statement, you must show the property fails for *every* object.
 
@@ -477,3 +481,30 @@ In words: to disprove a "for all" statement, you only need *one counterexample*.
   + `2` Let $P$, $Q$, $R$ be propositions. Using truth tables or logical rules, show that
     $ (P => Q) and (P => R) quad <=> quad P => (Q and R). $
 ]
+
+#problems[
+  + `4` The statements 1--6 and the expressions A--F each describe the same logical meaning. Match each numbered statement with the lettered expression that means the same thing.
+
+    #grid(
+      columns: (1fr, 1fr),
+      gutter: 1em,
+      align(left)[
+        + $A and (not B)$
+        + $not A and not B$
+        + $not (A and B)$
+        + $not (A or B)$
+        + $(not A) or (not B)$
+        + $A or (not B)$
+      ],
+      align(left)[
+        #set enum(numbering: "A.")
+        + $not (not A or B)$
+        + $not A and not B$
+        + $not B or not A$
+        + $not (A and B)$
+        + $(not A) or (not B)$
+        + $not (not A and B)$
+      ],
+    )
+]
+
