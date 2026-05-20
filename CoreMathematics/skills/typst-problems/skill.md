@@ -1,5 +1,5 @@
 ---
-name: typst-exercises
+name: typst-problems
 description: Improve existing exercises or add new ones to Typst
   math lecture notes. Use when asked to fix, rewrite, or generate
   exercise problems.

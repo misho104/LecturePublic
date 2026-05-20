@@ -13,11 +13,11 @@ as the corresponding dedicated skill.
 ## Marker syntax
 
 ```typst
-// !AI description: <instruction>
-// !AI exercise: <instruction>
-// !AI example: <instruction>
-// !AI quiz: <instruction>
-// !AI theorem: <instruction>
+// !AI d: <instruction>
+// !AI e: <instruction>
+// !AI p: <instruction>
+// !AI q: <instruction>
+// !AI t: <instruction>
 ```
 
 The marker must be on its own line (leading whitespace allowed).
@@ -51,14 +51,14 @@ For each file given:
 
 ## Generation rules by marker type
 
-### `description`
+### `d` for description
 - Follow the same rules as the `typst-description` skill
 - Rewrite or insert prose that explains the concept named in the instruction
 - Do NOT add new equations; may reference existing labelled equations with `@label`
 - Keep paragraph structure consistent with surrounding text
 
-### `exercise`
-- Follow the same rules as the `typst-exercises` skill
+### `p` for problems
+- Follow the same rules as the `typst-problems` skill
 - Wrap content in `#problems[...]` or append to the nearest existing `#problems[...]`
   block if the marker is immediately before or inside one
 - Choose problem levels based on the instruction; default: one `4` + one `3`
@@ -67,16 +67,16 @@ For each file given:
   group problems by the specific trap or sub-skill being practiced; never generate
   a random list of similar calculations
 
-### `quiz`
+### `q` for quizzes
 - Follow the same rules as the `typst-exercises` skill but use `#quizzes[...]`
 - Short inline check questions; prefer level `4`
 
-### `example`
+### `e` for examples
 - Follow the same rules as the `typst-examples` skill
 - Generate a `#example()[...]` immediately followed by `#solution[...]`
 - Show all intermediate steps in the solution
 
-### `theorem`
+### `t` for theorems
 - Follow the same rules as the `typst-math` skill
 - Generate a `#theorem(title: "...")[...]` block
 - Define all symbols used; add a `#be-careful` or `#advanced-note` if warranted

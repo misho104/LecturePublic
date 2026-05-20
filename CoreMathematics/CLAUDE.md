@@ -61,11 +61,11 @@ deferred content request. Run the `typst-ai-process` skill to process all marker
 in batch.
 
 ```typst
-// !AI description: explain the chain rule, mention the common mistake
-// !AI example: worked example for product rule with a pitfall
-// !AI exercise: level-4 and level-3 problems for integration by parts
-// !AI quiz: quick check on radian vs degree
-// !AI theorem: state the mean value theorem
+// !AI d: (d for description) explain the chain rule, mention the common mistake
+// !AI e: (e for example)     worked example for product rule with a pitfall
+// !AI p: (p for problem)     level-4 and level-3 problems for integration by parts
+// !AI q: (q for quiz)        quick check on radian vs degree
+// !AI t: (t for theorem)     state the mean value theorem
 ```
 
 The skill finds every marker, generates the content, replaces the marker in-place,
