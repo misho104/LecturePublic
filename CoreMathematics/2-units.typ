@@ -1,20 +1,20 @@
 #import "misho-text.typ": *
 #import "physica.typ": *
 
-#let unit(body) = {
-  show math.frac: it => [#it.num #sym.slash #it.denom]
-  show sym.ast: sym.dot.op
-  $thin upright(#body)$
-}
 #let bare(body) = {
   show math.frac: it => [#it.num #sym.slash #it.denom]
-  show sym.ast: sym.dot.op
+  show sym.ast: h(0.05em) + sym.dot.op + h(.05em)
   $upright(#body)$
 }
+#let unit(body) = $thin bare(body)$
+
 #let meter = unit("m")
 #let cm = unit("cm")
+#let second = unit("s")
 #let mm = unit("mm")
 #let kg = unit("kg")
+#let mps = unit($m/s$)
+#let mpss = unit($m/s^2$)
 #let ampere = unit("A")
 #let coulomb = unit("C")
 #let ds(body) = $sans(upright(body))$
@@ -43,7 +43,7 @@ A #keyword[physical quantity] is usually made of a number, a unit, and an #keywo
   [$10meter ± 1cm$], [m (meter)], $10meter$, $1cm = 0.01meter$, [0.001 (or 0.1%)],
   [$1.6 ampere ± 0.04 ampere$], [A (ampere)], $1.6 ampere$, $0.04ampere$, [0.025 (or 2.5%)],
   [$(5±1)#EE(-3) coulomb$], [C (coulomb)], $0.005 coulomb$, $0.001 coulomb$, [0.2 (or 20%)],
-  [$(50±1)unit("m/s")$], [m/s], $50 unit("m/s")$, $1 unit("m/s")$, [0.02 (or 2%)],
+  [$(50±1)mps$], [m/s], $50 mps$, $1 mps$, [0.02 (or 2%)],
 ))
 #index("uncertainty", "absolute")
 #index("uncertainty", "relative")
@@ -57,9 +57,9 @@ Measurements are always with uncertainty. Proper Handling of the uncertainty is 
   + `4` For each of the following values, find its unit, central value, absolute uncertainty, and relative uncertainty.
     #h-enum(cols: 2)[
       + $50kg ± 500 unit(g)$
-      + $(0.05 ± 0.001) unit(A)$
+      + $(0.05 ± 0.001) ampere$
       + $(1.6 ± 0.001)EE(-19) coulomb$
-      + $72unit("km/h") ± 1 unit("m/s")$
+      + $72unit("km/h") ± 1 mps$
     ]
 
   + `4` The next passage has six (6) errors in the use of uppercase and lowercase letters. Find them out.
@@ -90,23 +90,32 @@ Significant figures are a simple way to express the uncertainty. We discuss it i
 = Units
 When we educate kids, we write "my height is #blank()#cm", or "my height is $h$#cm", where $h=172$ is just a number.
 But this is not nice! We want to convert the units freely and write equations such as
-$1.72#meter = 172#cm = 0.00172#unit[km]$.
+$1.72#meter = 172#cm = 0.00172unit("km")$.
 So,
 #writings(box: (false, true), [*we always include units in symbols*:], $h=172 cm$)
 and then
 #writings(box: (false, true), [we can write:], $h=172#cm=1.72#meter=0.00172 unit("km")=1.82EE(-16) unit("light-year").$)
 
-Similarly, if $m=110 unit(g)$ and $g=9.8 unit(m\/s^2)$,
+Similarly, if $m=110 unit(g)$ and $g=9.8 mpss$,
 #writings(
   box: (false, true),
   align: (right, left),
 
   [we may write:],
-  $w = m g = 110 unit(g) times 9.8 unit(m\/s^2) = 1.1 unit("kg"*m/s^2)$,
+  $w = m g = 110 unit(g) times 9.8 mpss = 1.1 unit("kg"*m/s^2)$,
   [but not:],
   $#RED[$w = m g = 0.11 times 9.8 = 1.1 unit("kg"*m/s^2)$]$,
 )
 This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equal to $0.11kg$ or $110 unit(g)$.
+
+#let quiz-for-logic = quizzes[
+  + `9`
+    + If $m r omega^2 = 10.0 unit("kg"*m/s^2)$, $m=5.0kg$, and $r=1.0 meter$, what is $omega$?
+    + If $v_0t + 1/2a t^2=5.0meter$, where $a=-4.0mpss$ and $v_0=7.0 mps$, what is  $t$?
+    + At time $t=0$, a particle is at $(x,y)=(2.0meter,0)$. It moves with a constant velocity $(v_x,v_y)=(3.0,4.0) mps$. What is its position at $t=1.0 second$?
+]
+#quiz-for-logic
+<quiz-for-logic>
 
 #remark[
   Usually, physicists use upright fonts for units and #text(style: "italic")[italic fonts] for quantities. For example, $m$, $T$, and $C$ are quantity symbols (describing mass, temperature, etc.), while m, T, and C are units (meter, tesla, and coulomb, respectively).
@@ -469,14 +478,14 @@ Different rules are applied for addition and subtraction, where we do long addit
     ]
   + `9` Calculate the following with calculators, taking care of significant figures and units.
     #h-enum(cols: 2)[
-      + $3.1 unit("m/s") times 1.0 unit("hour")$
+      + $3.1 mps times 1.0 unit("hour")$
       + $3.1meter div 25cm$
       + $1.5 unit("kg") times 9.8 unit(m/s^2)$
       + $1.50 unit("km") + 195 meter$
       + $(5.2 unit("kg/"m^3)) times (4.0 unit(mu m))^3$
       + $(5.2 unit("kg/"m^3)) times (4.0 unit(mu m)^3)$
       + $1.2unit(mu m) div 2.00 unit("nm")$
-      + $(1.7EE(-27)unit("kg")) times (3.00EE(8) unit("m/s"))^2$
+      + $(1.7EE(-27)unit("kg")) times (3.00EE(8) mps)^2$
       + $2.000 unit("kg") times (3.0 unit(m/s^2))$
       + $2.000 unit("kg") times (3.0 unit(m/s))^2$
       + $(1.60EE(-19)coulomb) div 2.0 unit(mu s)$

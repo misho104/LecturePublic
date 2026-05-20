@@ -27,3 +27,5 @@
 #chapter[Units and Significant figures]
 #include "2-units.typ"
 
+#chapter[Logic]
+#include "3-logic.typ"
