@@ -9,7 +9,7 @@
 //   = Section heading
 // ============================================================
 
-// ── Compile-time datetime ─────────────────────────────────────
+// ==== Compile-time datetime ==========================================================================================
 // Pass `--input time=HH:MM:SS` for a time component; otherwise 00:00:00.
 #let now = {
   let t = datetime.today()
@@ -17,14 +17,18 @@
   datetime(year: t.year(), month: t.month(), day: t.day(), hour: h, minute: m, second: s)
 }
 
-// ── Fonts ─────────────────────────────────────────────────────
+// ==== Fonts ==========================================================================================================
 #let _font-serif = "STIX Two Text"  // main body font             cspell: disable-line
 #let _font-sans = "Roboto"          // sans-serif (scaled ×0.91)  cspell: disable-line
 #let _font-mono = "Roboto Mono"     // monospace  (scaled ×0.85)  cspell: disable-line
 
+#let ZH = text.with(lang: "zh", script: "hant", region: "tw", font: "思源宋體")
+#let JA = text.with(lang: "ja", script: "jpan", region: "jp", font: "Harano Aji Mincho") // cspell: disable-line
+
 // Scaled font helpers.
 // Without arguments, size is read from the surrounding context and scaled.
 // `size:` sets an explicit base size (still scaled). `true-size:` sets absolute (no scaling).
+// Applying them twice makes it too small: text-tt(text-tt("foo")) is 0.85 * 0.85
 #let text-sf(true-size: none, size: none, ..args) = context text(
   font: _font-sans,
   size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.91 },
@@ -36,12 +40,7 @@
   ..args,
 )
 
-/* original idea was
-#let text-tt(true-size: none, size: 1em, ..args) = text(
-  font: _font-mono, size: if true-size != none { true-size } else { size * 0.85 }, .   .args)
-  but improved according to Github copilot.
-*/
-
+// ==== Layout =========================================================================================================
 #let dim = (
   tab: 2.5em, // default "tab-shift" \BaseTab
   shift: 15mm,
@@ -49,9 +48,10 @@
   label-sep: 0.5em,
   left-margin: 2.5em,
   indent: 17pt,
+  problem-label-width: 1.5em,
 )
 
-// ── Colors ────────────────────────────────────────────────────
+// ==== Decorations ====================================================================================================
 // cspell:disable
 #let c = (
   "gray": luma(50%), // \gray
@@ -78,60 +78,38 @@
     text(10pt)[❧],
   ))#parbreak()]
 
+// ==== Text level styles ==============================================================================================
+#let GRAY(body) = text(fill: c.gray, body)
+#let BLUE(body) = text(fill: c.blue, body)
+#let PINK(body) = text(fill: c.pink, body)
+#let GREEN(body) = text(fill: c.green, body)
+#let RED(body) = text(fill: c.alt-a, body)
 
-#let _enum-horizontal(
-  cols: 1,
-  label-width: dim.label-width,
-  label-sep: dim.label-sep,
-  label-style: (pf, cnt) => align(right, pf + text-sf[*\(#{ cnt("1") }\)*]),
-  label-start: 0,
-  prefixes: (),
-  label-align: top,
-  v-sep: 1em,
-  h-sep: 0mm,
-  offset: 0,
-  inset: (:),
-  ..items,
-) = {
-  let label_item = n => {
-    if type(label-start) == counter {
-      e => context (label-start.step(level: 2)) + context (label-start.display(e))
-    } else if type(label-start) == int {
-      e => context (counter("tmp").update(n + 1)) + context (counter("tmp").display(e))
-    } else {
-      assert(False, "invalid type for enum-counter")
-    }
-  }
-  let numbered = items
-    .pos()
-    .enumerate()
-    .map(((i, body)) => (label-style(prefixes.at(i, default: ""), label_item(i + offset)), "", body))
-  set par(first-line-indent: 0em, hanging-indent: 0em)
-  grid(
-    columns: if type(cols) == int { range(cols).map(it => 1fr) } else { cols },
-    column-gutter: h-sep,
-    row-gutter: v-sep,
-    ..numbered.map(it => grid(
-      columns: (label-width, label-sep, auto),
-      align: (label-align, label-align, horizon),
-      inset: (inset, 0em, 0em),
-      ..it
-    ))
-  )
-}
-#let h-enum(..args, cols: 4, body) = {
-  show enum: it => _enum-horizontal(
-    label-align: horizon,
-    cols: cols,
-    ..args,
-    ..it.children.map(it => {
-      it.body
-    }),
-  )
-  body
+#let EMPH(body) = text-sf(strong(body))
+
+#let blank(pad: 1em, ..args) = box(outset: (y: .25em), stroke: 0.5pt, height: .6em, ..args.named(), align(
+  center,
+  h(pad) + [#args.pos().at(0, default: "")] + h(pad),
+))
+#let TODO(..args) = text(fill: c.alt-a, text-tt("♣TODO♣") + args.pos().join())
+
+// ==== Mathematics ====================================================================================================
+#let unit(body) = {
+  show math.frac: it => [#it.num #sym.slash #it.denom]
+  show sym.ast: h(0.05em) + sym.dot.op + h(.05em)
+  $#h(0.1667em)upright(body)$
 }
 
-// ── Page-style state ──────────────────────────────────────────
+#let ee = math.upright("e")
+#let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
+
+// ==== Block level styles =============================================================================================
+#let make-indent = h(dim.indent)
+#let no-num(content) = { math.equation(block: true, numbering: none, content) }
+
+#let tab(shift: dim.tab, ..args, body) = block(inset: (left: shift), ..args, body)
+
+// ==== Page level styles ==============================================================================================
 // The gray box visually covers the header rule on non-normal pages.
 #let head-title-style(body) = text-sf(fill: c.light-gray, size: 9pt, body)
 #let head-date-style(body) = text-tt(fill: c.dim-gray, size: 9pt, body)
@@ -158,7 +136,101 @@
   }
 }
 
-// ── Gray title/chapter box ────────────────────────────────────
+// ==== Labels and Enumerations ========================================================================================
+#let ja-star = JA(size: 9pt, "★")
+#let levels = (
+  "4": ja-star,
+  "3": "***",
+  "2": "**",
+  "1": "*",
+  "9": box(height: 6pt, move(dy: -5pt, "💪")), //
+)
+
+
+// accepting counter, not int
+#let _label-styles = (
+  "problem": cn => text-sf(strong(cn("1.1"))),
+  "quiz": cn => text-sf(strong(cn((..n) => [#n.pos().at(1).]))),
+  "(1)": cn => text-sf(strong(cn("(1)"))),
+  "(a)": cn => text-sf(strong(cn("(a)"))),
+)
+
+// accepting int
+#let _labels = (
+  "(1)": n => text-sf(strong[(#n)]),
+  "(A)": n => text-sf(strong("(" + str.from-unicode(64 + n) + ")")),
+  "(a)": n => text-sf(strong("(" + str.from-unicode(96 + n) + ")")),
+  "1": n => text-sf(strong[#n]),
+  "A": n => text-sf(strong(str.from-unicode(64 + n))),
+  "a": n => text-sf(strong(str.from-unicode(96 + n))),
+  "1.": n => [#n.],
+)
+#let enum-style(width: dim.label-width, style) = n => box(width: width, align(right, _labels.at(style)(n)))
+
+#let num-a = _labels.at("(1)")
+#let num-b = _labels.at("1")
+#let num-c = _labels.at("a")
+
+// for list
+#let list-markers = ([•], [‣], [–])
+#let _list-markers-aligned(width) = list-markers.map(n => box(width: width, align(right, n)))
+
+#let _enum-horizontal(
+  cols: 1,
+  label-width: dim.label-width,
+  label-sep: dim.label-sep,
+  label-style: _label-styles.at("(1)"),
+  label-start: 0,
+  prefixes: (),
+  label-align: top,
+  v-sep: 1em,
+  h-sep: 0mm,
+  inset: (:),
+  ..items,
+) = {
+  let style = if type(label-style) == str { _label-styles.at(label-style) } else { label-style }
+  let label = n => {
+    if type(label-start) == counter {
+      e => context (label-start.step(level: 2)) + context (label-start.display(e))
+    } else if type(label-start) == int {
+      e => context (counter("tmp").update(label-start + n + 1)) + context (counter("tmp").display(e))
+    } else {
+      assert(False, "invalid type for enum-counter")
+    }
+  }
+  let numbered = items
+    .pos()
+    .enumerate()
+    .map(((i, body)) => (align(right, prefixes.at(i, default: "") + style(label(i))), "", body))
+  set par(first-line-indent: 0em, hanging-indent: 0em)
+  grid(
+    columns: if type(cols) == int { range(cols).map(it => 1fr) } else { cols },
+    column-gutter: h-sep,
+    row-gutter: v-sep,
+    ..numbered.map(it => grid(
+      columns: (label-width, label-sep, auto),
+      align: (label-align, label-align, horizon),
+      inset: (inset, 0em, 0em),
+      ..it
+    ))
+  )
+}
+#let h-enum(..args, cols: 4, body) = {
+  show enum: it => _enum-horizontal(
+    label-align: horizon,
+    cols: cols,
+    ..args,
+    ..it.children.map(it => {
+      it.body
+    }),
+  )
+  body
+}
+
+
+// ==== Gray title/chapter box =========================================================================================
+// State is updated BEFORE pagebreak so the new page's header sees it.
+// The hidden level-1 heading registers the chapter in #outline().
 #let _draw-chapter-box(number, title) = {
   place(top + left, dx: 0mm, dy: -4.5mm, rect(width: 160mm, height: 32mm, fill: c.dim-gray, stroke: none))
   place(top + left, dx: 2mm, dy: -2.5mm, rect(width: 156mm, height: 10mm, fill: none, stroke: 0.4pt + black))
@@ -178,10 +250,6 @@
   v(32mm)
 }
 
-// ── Chapter command ───────────────────────────────────────────
-// Inserts a chapter-opening page with a gray box.
-// State is updated BEFORE pagebreak so the new page's header sees it.
-// The hidden level-1 heading registers the chapter in #outline().
 #let to-string(it) = {
   if type(it) == str {
     it
@@ -212,30 +280,7 @@
   counter("quiz").step()
 }
 
-// Text-level styles
-#let GRAY(body) = text(fill: c.gray, body)
-#let BLUE(body) = text(fill: c.blue, body)
-#let PINK(body) = text(fill: c.pink, body)
-#let GREEN(body) = text(fill: c.green, body)
-#let RED(body) = text(fill: c.alt-a, body)
-
-#let EMPH(body) = text-sf(strong(body))
-#let ZH = text.with(lang: "zh", script: "hant", region: "tw", font: "思源宋體")
-#let JA = text.with(lang: "ja", script: "jpan", region: "jp", font: "Harano Aji Mincho") // cspell: disable-line
-
-#let blank(pad: 1em, ..args) = box(outset: (y: .25em), stroke: 0.5pt, height: .6em, ..args.named(), align(
-  center,
-  h(pad) + [#args.pos().at(0, default: "")] + h(pad),
-))
-#let TODO(..args) = text(fill: c.alt-a, text-tt("♣TODO♣") + args.pos().join())
-
-#let make-indent = h(dim.indent)
-#let no-num(content) = { math.equation(block: true, numbering: none, content) }
-
-#let tab(shift: dim.tab, ..args, body) = block(inset: (left: shift), ..args, body)
-
-// ── Helpers ─────────────────────────────────────────────────
-
+// ==== Fenced containers ==============================================================================================
 #let _box(
   indent: false,
   accent: white,
@@ -322,7 +367,7 @@
   ]
 }
 
-#let theorem(title: none, body) = [
+#let theorem(type: "Theorem", title: none, body) = [
   #let border = 1pt + c.blue
   #counter("env").step()
   #_box(
@@ -333,7 +378,7 @@
     head-box: (fill: c.blue),
     label: text-sf(fill: white, size: 11pt, weight: "bold")[
       #h(-.5em)
-      Theorem #context [#current-chapter.get().at(0).#counter("env").display()]
+      #type #context [#current-chapter.get().at(0).#counter("env").display()]
       #if title != none [ #h(1em) (#title) ]
     ],
   )[#body]
@@ -345,7 +390,7 @@
   #_box(
     call-out: false,
     stroke: (top: border, bottom: border, left: border, right: border),
-    inset: (top: 0.4em, middle-above: 0.4em, middle-below: 1em),
+    inset: (top: 0.4em, middle-above: 0.5em, middle-below: .3em),
     label: text-sf(fill: c.green, size: 11pt, weight: "bold")[
       Example #context [#current-chapter.get().at(0).#counter("env").display()]
       #if title != none [ #h(1em) (#title) ]
@@ -357,7 +402,7 @@
   #_box(
     call-out: false,
     stroke: (top: border, bottom: border, left: border, right: border),
-    inset: (top: 0.4em, middle-above: 0.4em, middle-below: 1em),
+    inset: (top: 0.4em, middle-above: 0.5em, middle-below: .3em),
     above: 0mm,
     label: text-sf(fill: c.green, size: 11pt, weight: "bold")[
       Solution
@@ -366,29 +411,8 @@
   )[#body]
 ]
 
-
-// ── State flags (one per container type) ────────────────────
-#let _enum-depth = state("_enum-depth", 0)
-
-#let ja-star = JA(size: 9pt, "★")
-#let levels = (
-  "4": ja-star,
-  "3": "***",
-  "2": "**",
-  "1": "*",
-  "9": box(height: 6pt, move(dy: -5pt, "💪")), //
-)
-
-#let num-a = n => text-sf(strong([(#n)]))
-#let num-b = n => text-sf(strong([#n]))
-#let num-c = n => text-sf(strong([#n]))
-
-)
-#let _label-styles = (
-  "problem": (pf, cn) => align(right, pf + text-sf[*#cn("1.1").*]),
-  "quiz": (pf, cn) => align(right, pf + text-sf[*#cn(((..n) => str(n.pos().at(1)))).*]),
-  "(1)": (pf, cn) => align(right, pf + text-sf[*(#cn("1"))*]),
-)
+// ==== Problems and Quizzes ===========================================================================================
+#let _exercise-enum-depth = state("_exercise-enum-depth", 0)
 
 #let _extract-levels(items) = array.zip(..items.map(it => if it.body.has("children")
   and it.body.children.first().func() == raw
@@ -415,9 +439,10 @@
     ),
   )[
     #show enum: it => {
-      _enum-depth.update(d => d + 1)
-      let depth = _enum-depth.get()
+      _exercise-enum-depth.update(d => d + 1)
+      let depth = _exercise-enum-depth.get()
       if depth == 0 {
+        set list(marker: _list-markers-aligned(dim.problem-label-width))
         let c = _extract-levels(it.children)
         _enum-horizontal(
           label-start: counter(t.counter-name),
@@ -431,13 +456,13 @@
         )
       } else if depth > 0 {
         _enum-horizontal(
-          label-width: 1.5em,
+          label-width: dim.problem-label-width,
           label-start: 0,
           label-style: _label-styles.at("(1)"),
           ..it.children.map(it => it.body),
         )
       }
-      _enum-depth.update(d => d - 1)
+      _exercise-enum-depth.update(d => d - 1)
     }
     #body
   ]
@@ -468,11 +493,12 @@
   body,
 )
 
+// ==== Template =======================================================================================================
 
 #import "@preview/in-dexter:0.7.2": index
 #let keyword(..args, key: none, content) = [#index(..args, if key == none { content } else { key })#EMPH(content)]
 
-// ── Template ──────────────────────────────────────────────────
+// ==== Template =======================================================================================================
 // Parameters:
 //   title           — document title (string)
 //   author          — author name (string)
@@ -491,10 +517,8 @@
 
 #let misho-text(custom-metadata, body) = {
   let metadata = default-metadata + custom-metadata
-  // ── PDF metadata ─────────────────────────────────────────
   set document(title: metadata.title, author: metadata.author, description: metadata.description, date: metadata.date)
 
-  // ── Text & element styles ─────────────────────────────────
   set text(font: _font-serif, size: 11pt)
   show math.equation: set text(font: "STIX Two Math") // cspell:disable-line
 
@@ -512,20 +536,17 @@
   set enum(
     indent: dim.left-margin - dim.label-sep - dim.label-width,
     body-indent: dim.label-sep,
-    numbering: n => box(width: dim.label-width, align(right, text([#n.]))),
+    numbering: enum-style("1."),
   )
   set list(
     indent: dim.left-margin - dim.label-sep - dim.label-width,
     body-indent: dim.label-sep,
-    marker: ([•], [‣], [–]).map(n => box(width: dim.label-width, align(
-      right,
-      text([#n]),
-    ))),
+    marker: _list-markers-aligned(dim.label-width),
   )
   show list: set par(first-line-indent: 1em, hanging-indent: 0em)
   show enum: set par(first-line-indent: 1em, hanging-indent: 0em)
 
-  set math.equation(supplement: "Eq.", numbering: it => { numbering("(1.1)", counter(heading).at(here()).at(0), it) })
+  set math.equation(supplement: "Eq.", numbering: it => { numbering("(1.1)", counter(heading).get().at(0), it) })
 
   set footnote(numbering: it => text-sf([\##it]))
   show footnote: set super(size: 8pt)
@@ -553,7 +574,7 @@
     ),
   )
 
-  // ── Page layout ──────────────────────────────────────────
+  // ==== Page layout ====================================================================================
   set page(
     paper: "a4",
     margin: (left: 25mm, right: 25mm, top: 30mm, bottom: 30mm),

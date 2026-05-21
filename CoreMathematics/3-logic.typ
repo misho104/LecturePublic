@@ -1,34 +1,24 @@
 #import "misho-text.typ": *
 #import "physica.typ": *
-#import "2-units.typ": quiz-for-logic, writings
+#import "2-units.typ": bare, quiz-for-logic, writings
 
 Solve the quiz on #ref(<quiz-for-logic>, form: "page") again.
 
-#let bare(body) = {
-  show math.frac: it => [#it.num #sym.slash #it.denom]
-  show sym.ast: h(0.05em) + sym.dot.op + h(.05em)
-  $upright(#body)$
-}
-#let unit(body) = $thin bare(body)$
 #quiz-for-logic
 
-The answers are obviously
-
-#writings(box: (true, false, true, false, true))[
-  $omega = ±1.4 unit(s^(-1))$ ][][
-  $t=1.0 unit(s), 2.5 unit(s)$][][
-  $x=5.0 unit(m), y=4.0 unit(m)$]
-
-but *what are the correct meaning of these commas or the symbol "±" ?*
+The answers are
+~$omega = ±1.4 unit(s^(-1))$,~
+~$t=1.0 unit(s), 2.5 unit(s)$,~
+~~and~~$x=5.0 unit(m), y=4.0 unit(m)$, but *what do they mean?*
 
 #quizzes[
-  + `4` Which are the correct meaning? Guess it.
-
-    - [$omega$ is both $+1.4 unit(s^(-1))$ and $-1.4 unit(s^(-1))$] v.s. [$omega$ is either $+1.4 unit(s^(-1))$ or $-1.4 unit(s^(-1))$].
-
-    - [$t$ is both $1.0 unit(s)$ and $2.5 unit(s)$] v.s. [$t$ is either $1.0 unit(s)$ or $2.5 unit(s)$].
-
-    - [$x$ is $5.0 unit(m)$ and $y$ is $4.0 unit(m)$] v.s. [Either $x$ is $5.0 unit(m)$, or $y$ is $4.0 unit(m)$].
+  + `4` Guess the correct meaning of each of above expressions.
+    + #box(width: 1fr)[$omega$ is both $+1.4 unit(s^(-1))$ and $-1.4 unit(s^(-1))$]  v.s.~~~~
+      #box(width: 1fr)[$omega$ is either $+1.4 unit(s^(-1))$ or $-1.4 unit(s^(-1))$]
+    + #box(width: 1fr)[$t$ is both $1.0 unit(s)$ and $2.5 unit(s)$]  v.s.~~~~
+      #box(width: 1fr)[$t$ is either $1.0 unit(s)$ or $2.5 unit(s)$]
+    + #box(width: 1fr)[$x$ is $5.0 unit(m)$ and $y$ is $4.0 unit(m)$]  v.s.~~~~
+      #box(width: 1fr)[Either $x$ is $5.0 unit(m)$, or $y$ is $4.0 unit(m)$].
 ]
 
 In elementary educations, these differences are often ignored because kids do not know *logical thinking*; now, you need to do it, as you are a grown-up university student.
@@ -44,7 +34,7 @@ An equality or inequality can be #keyword[true] (T) or #keyword[false] (F).
 #quizzes[
   + `4` For each of the above statements, state whether it is true or false.
 ]
-Usually, *we only write true things*. When you write something, you need to confirm that it is true.
+Usually, *we only write true things*. When you write something, you need to confirm that it is true.<write-true-things>
 
 We can combine those statements (with a fixed true/false value) with "AND", "OR", and "NOT".
 
@@ -56,12 +46,16 @@ We can combine those statements (with a fixed true/false value) with "AND", "OR"
   keyword[and], [(conjunction)], ["$A$ AND $B$" ($A and B$) is true if both $A$ and $B$ are true, and false otherwise.],
   keyword[or],
   [(disjunction)],
-  ["$A$ OR $B$" ($A or B$) is true if either $A$ or $B$ is true; false if both $A$ and $B$ are false.],
+  ["$A$ OR $B$" ($A or B$) is true if at least one of $A$ and $B$ is true. False if both are false.],
 
   keyword[not], [(negation)], ["NOT $A$" ($not A$) is true if $A$ is false, and false if $A$ is true.],
 ))
-#be-careful[
-  The word usage of "or" is a bit different from everyday English. In daily conversation, _"Sho will eat ramen or sushi tonight"_ usually means "but not both". However, in mathematics, if Sho eats both ramen and sushi for a dinner, the statement _"Sho had sushi or ramen tonight"_ is true.
+
+Note that "$1+2=3 "OR" 3+4=7$" is true.
+
+
+#remark[
+  This example shows the word "or" is a bit different from everyday English. In daily conversation, _"Sho will eat ramen or sushi tonight"_ usually means "but not both". However, in mathematics, if Sho eats both ramen and sushi for a dinner, the statement _"Sho had sushi or ramen tonight"_ is true.
 ]
 #quizzes[
   + `4` State whether it is true or false for the following statements.
@@ -78,21 +72,21 @@ We can discuss the following statements: are they true or false?
   let f(w: 40mm, x, y) = list.item[#box(width: w, x) #sym.dots #y]
   (
     list(
-      tight: false,
+      //      tight: false,
       f[If $x > 5$, then $x > 1$.][This is true.],
-      f[If $x < 9$, then $x < 2$.][This is false, because we have a #keyword[counterexample] $x = 5$.],
+      f[If $x < 9$, then $x < 2$.][This is false, because we have a counterexample $x = 5$.],
       f[If $x^2 < 1$, then $x<1$.][This is true.],
       f[If $x^2 = 1$, then $x=-1$.][This is false, because we have a counterexample $x=1$.],
     )
       + [We often write $P=>Q$ to mean "If $P$, then $Q$". So,]
       + list(
-        tight: false,
+        //       tight: false,
         f(w: 50mm, [$x > 5 => x > 1$], [This is the first example above, and true.]),
         f(w: 50mm, [$(x^2=4 and x<0) => (x = -2)$.], [This is true. Recall "$and$" means "and".]),
       )
   )
 })
-To claim a statement is _false_, you need to find one counterexample. In the second example above, $x=5$ satisfies $x < 9$ but does not satisfy $x < 2$, so it is one counterexample.
+To claim a statement is _false_, you need to find one #keyword[counterexample]. In the second example above, $x=5$ satisfies $x < 9$ but does not satisfy $x < 2$, so it is one counterexample.
 Meanwhile, it is more difficult to claim a statement is _true_; you need to write a #keyword[proof].
 
 #advanced-note[
@@ -102,89 +96,213 @@ Meanwhile, it is more difficult to claim a statement is _true_; you need to writ
   Physicists usually omit the $forall$-part, but it may help your understanding if you keep it in mind.
 ]
 
+= Equivalent Statements---What does "solve" mean?
 
-#make-indent
-Now we can answer the quiz from the previous page.
-
-- $omega = plus.minus 1.4 thin unit(s^(-1))$ means $(omega = +1.4 thin unit(s^(-1)))$ OR $(omega = -1.4 thin unit(s^(-1)))$. Both values satisfy the original equation, but $omega$ has one specific value---either one.
-
-- $t = 1.0 thin unit(s),\, 2.5 thin unit(s)$ means $(t = 1.0 thin unit(s))$ OR $(t = 2.5 thin unit(s))$.
-
-- $(x, y) = (5.0 thin unit(m),\, 4.0 thin unit(m))$ means $(x = 5.0 thin unit(m))$ AND $(y = 4.0 thin unit(m))$ simultaneously.
-
-The comma between separate values means OR; the comma inside a coordinate tuple means AND.
+You have solved many equations. But what does "solving an equation" mean?
 
 #quizzes[
-  + `4` State the truth value of each open sentence for the given value of $x$.
-    #h-enum(cols: 2)[
-      + $x^2 = 4$ when $x = -2$
-      + $x^2 = 4$ when $x = 3$
-      + $x > 0$ when $x = -1$
-      + $x^2 > x$ when $x = 2$
+  +
+    + Choose the true statements.
+
+      #h-enum(cols: 2, label-style: "(a)")[
+        + $2x - 1 = 0 quad => quad x=1\/2$.
+        + $x^2 = 4 quad => quad x=-2$.
+        + $2x - 1 = 0 quad => quad x > -10.$
+        + $x^2 = 4 quad => quad x = 0$.
+        //      + $(x+y=2) and (x-y=0) quad => quad (x=1) and (y=1)$.
+      ]
+    + Do you think these statements can be considered as "solving an equation"?
+]
+Among the statements, (a) and (c) are correct, and (a) looks "solving an equation", but (c) is not.
+So, the symbol "$=>$" is not enough to characterize "solving the equation".
+#quizzes[
+  + Choose the true statements.
+
+    #h-enum(cols: 1, label-style: "(a)")[
+      + $(2x - 1 = 0 quad => quad x=1\/2)$~~~~and~~~~$(2x - 1 = 0 quad arrow.l.double quad x=1\/2)$
+      + $(x^2 = 4 quad => quad x=-2)$~~~~and~~~~$(x^2 = 4 quad arrow.l.double quad x=-2)$.
+      + $(2x - 1 = 0 quad => quad x > -10)$~~~~and~~~~$(2x - 1 = 0 quad arrow.l.double quad x > -10)$.
+      + $(x^2 = 4 quad => quad x = 0)$~~~~and~~~~$(x^2 = 4 quad arrow.l.double quad x = 0)$.
+      //      + $(x+y=2) and (x-y=0) quad => quad (x=1) and (y=1)$.
     ]
-  + `4` Let $P(n)$ be "$n$ is even" and $Q(n)$ be "$n$ is divisible by 4". Find the truth values of $P(n) and Q(n)$, $P(n) or Q(n)$, and $not P(n)$ when (i) $n = 6$ and (ii) $n = 8$.
 ]
+Here, only (a) is true. In (b), the second half (#sym.arrow.l.double) is true but the first half (#sym.arrow.r.double) is false.
+In (c), the first half (#sym.arrow.r.double) is true as we saw above, but the second half is false. [Quiz: find one counterexample.]
 
-== What does "solve" mean?
+We use the symbol $<=>$ to express both $=>$ and $arrow.l.double$ at the same time.
 
-You have solved many equations. But what does it mean exactly?
-
-#align(center, block(inset: 1em, stroke: 0.5pt, radius: 4pt)[
-  To *solve* an equation for $x$ means: find *all* values of $x$ that make the equation true---no more, no less.
-])
-
-"No more, no less" has two parts:
-- *No less* (#keyword[exhaustiveness]): do not miss any solution.
-- *No more* (#keyword[no extraneous solutions]): do not include values that do not satisfy the equation.
-
-Both errors are common. Let us look at each.
-
-#example(title: "Missing a solution")[
-  Solve $x^2 = 4$.
+#theorem(type: "Definition", title: "Equivalent")[
+  If both $A => B$ and $A arrow.l.double B$ are true, we call "$A$ and $B$ are #keyword[equivalent]", and write $A <=> B$.
 ]
-#solution[
-  The equation $x^2 = 4$ is true when $x = 2$ and also when $x = -2$, and false for every other real $x$.
-  So the complete answer is: $x = 2$ OR $x = -2$, often written $x = plus.minus 2$.
-
-  Writing only $x = 2$ is *incomplete*: it misses $x = -2$. #sym.square
-]
-
-#be-careful[
-  Taking a square root does not simply give $x = sqrt(4) = 2$.
-  It gives $|x| = 2$, which means $x = 2$ OR $x = -2$.
-  Forgetting the negative root is one of the most common errors in high-school and university physics.
-]
-
-#make-indent
-The set of all solutions is called the #keyword[solution set].
-A correct solution is one whose solution set matches exactly.
-
-#example(title: "Extraneous solution")[
-  Solve $sqrt(x + 2) = x$.
-]
-#solution[
-  Squaring both sides: $x + 2 = x^2$, so $x^2 - x - 2 = 0$, giving $(x-2)(x+1) = 0$,
-  i.e., $x = 2$ or $x = -1$.
-
-  But squaring can introduce false solutions, so we must check:
-  - $x = 2$: $sqrt(4) = 2$. ✓
-  - $x = -1$: $sqrt(1) = 1 != -1$. ✗
-
-  The solution set is $\{2\}$ only. #sym.square
-]
-
 #remark[
-  Why did $x = -1$ appear? Squaring $sqrt(x+2) = x$ gives the same equation as squaring $sqrt(x+2) = -x$.
-  So we solved a slightly different (broader) equation by accident, and picked up an extra solution.
-  Checking is not optional---it is part of the solution.
+  We can discuss if $A<=>B$ is true or not.
+  For example, "$x^2=4 <=> x=2$" is false and "$x^2=4 <=> (x=2 or x=-2)$" is true. However, *we usually write true things only* (see #ref(<write-true-things>, form: "page")). So, if you write $A<=>B$, you are claiming $A$ and $B$ are equivalent.
 ]
+If the statement "$A=>B$" is true, then
+
+- $B$ is called a #keyword[necessary condition] for $A$, because $B$ is necessary for $A$; if not $B$, then not $A$.
+
+- $A$ is called a #keyword[sufficient condition] for $B$, because if $A$ is true, $B$ is "sufficiently" true.
+
+So, if $A$ and $B$ are equivalent, $B$ (resp. $A$) is called _necessary-and-sufficient condition_ for $A$ (resp. $B$).
+
+#ornament-skip
+
+We may understand that "solving an equation" means "finding an equivalent equation".
+So, when you solve an equation, you have to check that the solution is *necessary and sufficient*.
+
+- If you don't check necessity, you may have an "incomplete solution".
+
+- If you don't check sufficiency, you may have an "extraneous solution".
 
 #quizzes[
-  + `4` A student solves $x^2 - 3x = 0$ by dividing both sides by $x$ and gets $x = 3$. What is wrong? Find the complete solution set.
-  + `4` Solve $|x - 1| = 3$. Verify both answers.
+  + `4`
+    + Solve $sqrt(x + 2) = x$. You might find an "extraneous solution", which you need to _exclude_ it.
+    + Solve $sqrt(x^2)=4$. You might find an "incomplete solution", where you need to find more solutions.
+  #fail-safe[
+    Recall that $sqrt(x^2)=x$ is incorrect. (What should it be?)
+  ]
 ]
 
-== Assumptions, definitions, and conclusions
+
+#problems[
+  + `9` State whether each compound statement is true (T) or false (F). ($3>1$ is T; $2>5$ is F; $1=1$ is T; $0>1$ is F.)
+
+    *AND / OR / NOT*
+    #h-enum(cols: 3)[
+      + $(3>1) and (2<5)$
+      + $(3>1) and (2>5)$
+      + $(3>1) or (2>5)$
+      + $(3<1) or (2>5)$
+      + $not(3>1)$
+      + $not(2>5)$
+      + $not(3>1) and (2<5)$
+      + $(3>1) and not(2>5)$
+      + $not((3>1) and (2<5))$
+      + $not((3>1) or (2>5))$
+      + $(3>1) or not(2<5)$
+      + $not(3>1) or not(2<5)$
+    ]
+
+    *Implication $=>$* (state T or F; if F, give a counterexample)
+    #h-enum(cols: 2)[
+      + $x = 2 => x^2 = 4$
+      + $x^2 = 4 => x = 2$
+      + $x = 0 => x^2 = 0$
+      + $x^2 = 0 => x = 0$
+      + $x > 2 => x > 0$
+      + $x > 0 => x > 2$
+      + $x = 3 => |x| = 3$
+      + $|x| = 3 => x = 3$
+      + $(x=1) or (x=-1) => x^2 = 1$
+      + $x^2 = 1 => (x=1) or (x=-1)$
+      + $(x>0) and (y>0) => x y > 0$
+      + $x y > 0 => (x>0) and (y>0)$
+    ]
+
+    *Equivalence $<=>$* (state T or F)
+    #h-enum(cols: 2)[
+      + $x = 2 <=> x^2 = 4$
+      + $x^2 = 4 <=> (x=2 or x=-2)$
+      + $x = 0 <=> x^2 = 0$
+      + $x > 0 <=> x^2 > 0$
+      + $|x| = 2 <=> (x=2 or x=-2)$
+      + $x(x-1) = 0 <=> (x=0 or x=1)$
+      + $x^2 = x <=> (x=0 or x=1)$
+      + $x + 1 = 0 <=> x = -1$
+    ]
+
+  + `9` Solve each equation. State the complete solution set, including all real solutions. If there is no real solution, say so.
+
+    #h-enum(cols: 3)[
+      + $sqrt(x) = 3$
+      + $sqrt(x - 1) = 2$
+      + $sqrt(x + 3) = x - 1$
+      + $sqrt(2x + 1) = x$
+      + $|x| = 5$
+      + $|x - 2| = 3$
+      + $|2x + 1| = 7$
+      + $|x + 4| = 0$
+      + $x^2 + 1 = 0$
+      + $x^2 + 4 = 0$
+    ]
+
+  + `4` Each of the following "solutions" contains a logical error. Identify the error and find the correct solution set.
+
+    + A student solves $x^2 - 3x = 0$ by dividing both sides by $x$, obtaining $x - 3 = 0$, so $x = 3$. What is wrong? Find the complete solution set.
+    + A student solves $x^2 = 9$ and writes $x = 3$. What is wrong? Find the complete solution set.
+    + A student solves $(x-1)(x+2) = 0$ by dividing both sides by $(x+2)$, obtaining $x - 1 = 0$, so $x = 1$. What is wrong?
+    + A student solves $x = sqrt(x^2)$ and concludes this holds for all real $x$. Is this correct?
+
+  + `3` For each pair of statements $A$ and $B$, determine the relationship: $A => B$ only, $B => A$ only, $A <=> B$, or neither.
+
+    + $A$: $x^2 - 5x + 6 = 0$. ~~~ $B$: $x = 2$ or $x = 3$.
+    + $A$: $x > 0$ and $y > 0$. ~~~ $B$: $x + y > 0$.
+    + $A$: $|x - 1| < 1$. ~~~ $B$: $0 < x < 2$.
+    + $A$: $x^2 = y^2$. ~~~ $B$: $x = y$.
+    + $A$: $sin(theta) = 0$. ~~~ $B$: $theta = 0$.
+
+  + `3` De Morgan's laws state:
+    $ not(A and B) <=> (not A) or (not B), wide not(A or B) <=> (not A) and (not B). $
+    Verify each law using a truth table (list all four combinations of T/F for $A$ and $B$).
+
+  + `3` For each statement, write its negation in a natural form (do not just write "it is not the case that..."). Then state whether the original or its negation is true.
+
+    + $x^2 >= 0$ for all real $x$.
+    + There exists a real $x$ such that $x^2 = -1$.
+    + $x > 0 => x^2 > 0$ for all real $x$.
+    + $|x| = x$ for all real $x$.
+
+  + `2` Each step below is labelled with either $=>$ or $<=>$. Find all incorrectly labelled steps and explain why.
+    $
+      x^2 - x = 0 & quad arrow.r.double.long quad x(x-1) = 0                   && "(factor)" \
+                  & quad arrow.l.r.double.long quad x = 0 quad "or" quad x = 1 && "(zero product)" \
+    $
+    $
+      sqrt(x+1) + 1 = x & quad arrow.r.double.long quad sqrt(x+1) = x - 1            && "(rearrange)" \
+                        & quad arrow.r.double.long quad x + 1 = (x-1)^2              && "(square both sides)" \
+                        & quad arrow.l.r.double.long quad x + 1 = x^2 - 2x + 1       && "(expand)" \
+                        & quad arrow.l.r.double.long quad x^2 - 3x = 0               && "(rearrange)" \
+                        & quad arrow.l.r.double.long quad x = 0 quad "or" quad x = 3 && "(factor)" \
+    $
+]
+
+#pagebreak()
+
+= A few more about logic
+The statement $A => B$ is read by _"if $A$, then $B$"_, but also by _"$B$ if $A$"_. Similarly, we may read $A <=> B$ by _"$B$ if and only if $A$"_. We abbreviate it as "$B$ #keyword[iff] $A$".
+
+In general, $A => B$ and $B => A$ are different. However, if $A=>B$, then $not B => not A$ ($"not" A => "not" B$) is always correct.
+It is called the #keyword[contrapositive] of $A => B$.
+Let's see an example.
+
+#example[
+  If $0 < x < 2$, then $x^2$ is always less than 4.  We can write it by $(0<x<2) => (x^2 < 4)$.
+  Let $A$ be the statement "$0 < x < 2$" and $B$ be the statement "$x^2 < 4$".
+  "Not $A$" is "$x <= 0$ or $x >= 2$. Meanwhile, "not $B$" is "$x^2 >= 4$".
+
+  - Its #keyword[conversion] ($A arrow.l.double B$) is $(x^2 < 4) => (0 < x < 2)$, which is false (counterexample: -1).
+
+  - Its #keyword[inversion] ($"not" A => "not" B$) is $(x <= 0 "or" x >= 2) => (x^2 >= 4)$, which is false.
+
+  - Its contrapositive ($"not" A arrow.l.double "not" B$) is $(x^2 >= 4) => (x <= 0 "or" x >= 2)$, which is true.
+]
+Because the contrapositive of a true statement is always true, we can prove a statement by proving its contrapositive. This method is called _proof by contrapositive_.
+#quizzes[
+  + `4` For each of the following statements, write its conversion, inversion, and contrapositive. Then state whether each of them is true or false.
+
+    #h-enum(cols: 2)[
+      + If $x > 3$, then $x > 0$.
+      + If $x = 2$, then $x^2 = 4$.
+      + If $|x| = 0$, then $x = 0$.
+      + If $x^2 = 4$, then $x = 2$ or $x = -2$.
+    ]
+]
+
+// !AI d: not(or) とか not(and) の，ド・モアブル？ド・モルガン？もやrないといけないんだった。。。。
+
+#pagebreak()
+= Assumptions, definitions, and conclusions
 
 A large source of confusion in university physics is mixing up three types of statements:
 
@@ -296,106 +414,7 @@ This is the essence of logical thinking in problem-solving:
     What assumption is missing? What happens if that assumption is violated? Write a complete solution that covers all cases.
 
   + `3` Solve $x^2 = k$ for $x$, carefully stating all assumptions and covering all cases (consider $k > 0$, $k = 0$, $k < 0$).
-]
 
-== Implication
-
-A #keyword[conditional statement] (also called an #keyword[implication]) has the form:
-
-#align(center)[*If $P$, then $Q$.* #h(2em) (written $P => Q$)]
-
-Here $P$ is the #keyword[hypothesis] (or condition) and $Q$ is the #keyword[conclusion].
-
-The implication $P => Q$ is false only when $P$ is true and $Q$ is false---you cannot have a true hypothesis lead to a false conclusion.
-
-#align(center, table(
-  columns: (auto, auto, auto),
-  stroke: none,
-  table.header([$P$], [$Q$], [$P => Q$]),
-  table.hline(),
-  [T], [T], [T],
-  [T], [F], [F],
-  [F], [T], [T],
-  [F], [F], [T],
-))
-
-#remark[
-  When $P$ is false, $P => Q$ is considered true regardless of $Q$. This may feel strange. Think of the promise: "If it rains, I will bring an umbrella." If it does not rain, you have not broken the promise---no matter what you do.
-]
-
-#make-indent
-From $P => Q$ we define three related statements:
-
-#align(center, table(
-  columns: (auto, auto),
-  stroke: none,
-  align: (right, left),
-  table.header([*Name*], [*Statement*]),
-  table.hline(),
-  [implication], [$P => Q$],
-  [converse], [$Q => P$],
-  [contrapositive], [$not Q => not P$],
-  [inverse], [$not P => not Q$],
-))
-
-The implication and its contrapositive are *logically equivalent*: $P => Q$ is true exactly when $not Q => not P$ is true. The converse and inverse are also equivalent to each other, but they are *not* equivalent to the original implication.
-
-#example(title: "Contrapositive")[
-  Let $P$ be "$n$ is divisible by 4" and $Q$ be "$n$ is even".
-
-  - Implication: "If $n$ is divisible by 4, then $n$ is even." (True.)
-  - Contrapositive: "If $n$ is not even, then $n$ is not divisible by 4." (True---and equivalent to the implication.)
-  - Converse: "If $n$ is even, then $n$ is divisible by 4." (False: $n = 6$ is a counterexample.)
-]
-#solution[
-  We verify only the implication. If $4 | n$, then $n = 4k$ for some integer $k$, so $n = 2(2k)$---hence $n$ is even. #sym.square
-]
-
-#be-careful[
-  The converse $Q => P$ is *not* generally equivalent to $P => Q$. Assuming the converse is true is a very common mistake in physics reasoning.
-]
-
-#make-indent
-Implication connects naturally to equation solving.
-When you transform an equation step by step, you are writing a chain of implications.
-There are two kinds of step, and they are not the same:
-
-- A step is #keyword[$=>$] (one-way) if the new equation follows from the old one, but not necessarily vice versa.
-- A step is #keyword[$<=>$] (two-way, #keyword[equivalent]) if the two equations are true for exactly the same values of $x$.
-
-For example:
-$
-    x = 3 & quad => quad x^2 = 9                     && quad "(squaring: one-way)" \
-  x^2 = 9 & quad => quad x = 3 quad "or" quad x = -3 && quad "(taking square root)"
-$
-The first step is only $=>$, not $<=>$: squaring loses the sign of $x$.
-A chain of $<=>$ steps is ideal because it means your solution set is exactly correct.
-A chain containing even one $=>$ step means you may have introduced #keyword[extraneous solutions] and must check each answer.
-
-#example(title: "Extraneous solutions")[
-  Solve $sqrt(x+2) = x$.
-]
-#solution[
-  $
-    sqrt(x+2) = x & quad => quad x + 2 = x^2 quad "(squaring: only =>)" \
-                  & quad <=> quad x^2 - x - 2 = 0 \
-                  & quad <=> quad (x-2)(x+1) = 0 \
-                  & quad <=> quad x = 2 quad "or" quad x = -1.
-  $
-  Because we used $=>$ in the first step, we must check both candidates.
-  - $x = 2$: $sqrt(4) = 2$. ✓
-  - $x = -1$: $sqrt(1) = 1 != -1$. ✗ (extraneous)
-
-  The only solution is $x = 2$. #sym.square
-]
-
-#be-careful[
-  When a step is only $=>$, you do not lose solutions---you may *gain* false ones.
-  When a step is only $arrow.l$ (the reverse direction fails), you may *lose* solutions.
-  Multiplying both sides by an expression that could be zero is a common source of $arrow.l$-only steps.
-]
-
-#quizzes[
   + `4` In each transformation below, state whether the step is $<=>$, $=>$ only, or $arrow.l$ only (for real $x$). Justify briefly.
     #h-enum(cols: 1)[
       + $x - 1 = 0 quad ? quad x = 1$.
@@ -403,68 +422,11 @@ A chain containing even one $=>$ step means you may have introduced #keyword[ext
       + $x(x-1) = 0 quad ? quad x - 1 = 0$.
       + $(x-2)^2 = 0 quad ? quad x = 2$.
     ]
-]
-
-== Necessary and sufficient conditions
-
-When $P => Q$, we say:
-- $P$ is a #keyword[sufficient condition] for $Q$: knowing $P$ is enough to conclude $Q$.
-- $Q$ is a #keyword[necessary condition] for $P$: if $Q$ is false, $P$ cannot be true.
-
-When $P => Q$ *and* $Q => P$ both hold, we write $P <=> Q$ ("$P$ if and only if $Q$", abbreviated #keyword[iff]).
-In this case, $P$ and $Q$ are *logically equivalent*, and $P$ is both necessary and sufficient for $Q$.
-
-#example(title: "Necessary vs sufficient")[
-  Let $n$ be an integer.
-
-  - "$n$ is divisible by 4" $=>$ "$n$ is even": divisibility by 4 is *sufficient* for $n$ to be even.
-  - "$n$ is even" is *necessary* for "$n$ is divisible by 4": an odd number can never be divisible by 4.
-  - But the converse fails (as seen above), so they are not equivalent.
-]
-#solution[
-  Already discussed. The key point: sufficient $!=$ necessary. #sym.square
-]
-
-#quizzes[
   + `4` For each pair, decide whether the first condition is sufficient, necessary, both (iff), or neither for the second.
     #h-enum(cols: 1)[
       + "$x = 3$" and "$x^2 = 9$".
       + "$x > 0$ and $y > 0$" and "$x y > 0$".
     ]
-]
-
-== Quantifiers
-
-Many mathematical statements involve #keyword[quantifiers], which tell us *how many* objects satisfy a condition.
-
-The #keyword[universal quantifier] $forall$ means "for all" (or "for every"):
-#align(center)[$forall x, P(x)$ #h(1em) means #h(1em) "$P(x)$ is true for every $x$".]
-
-The #keyword[existential quantifier] $exists$ means "there exists" (or "for some"):
-#align(center)[$exists x, P(x)$ #h(1em) means #h(1em) "there is at least one $x$ for which $P(x)$ is true".]
-
-The #keyword[negation] of quantified statements follows De Morgan's rules:
-$
-  not (forall x, P(x)) quad & <=> quad exists x, not P(x), \
-  not (exists x, P(x)) quad & <=> quad forall x, not P(x).
-$
-In words: to disprove a "for all" statement, you only need *one counterexample*. To disprove a "there exists" statement, you must show the property fails for *every* object.
-
-#example(title: "Negating a quantified statement")[
-  Consider the statement "Every real number has a positive square root."
-
-  Formally: $forall x in RR, exists y in RR, y > 0 and y^2 = x$.
-
-  This is false. Its negation is: $exists x in RR, forall y in RR, y <= 0 or y^2 != x$.
-  One counterexample: $x = -1$ has no real square root.
-]
-#solution[
-  We only need to exhibit one $x$ for which no such $y$ exists.
-  Take $x = -1$. For any real $y$, $y^2 >= 0 > -1$, so $y^2 != x$. #sym.square
-]
-
-#be-careful[
-  The order of quantifiers matters. $forall x, exists y, P(x,y)$ is *not* the same as $exists y, forall x, P(x,y)$. The first says "for each $x$, we can find a (possibly different) $y$"; the second says "there is one fixed $y$ that works for all $x$".
 ]
 
 #problems[
@@ -507,4 +469,7 @@ In words: to disprove a "for all" statement, you only need *one counterexample*.
       ],
     )
 ]
+
+
+#advanced-note[In this lecture, we do not discuss #keyword[quantifiers], such as $forall$ and $exists$.]
 

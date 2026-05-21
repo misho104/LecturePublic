@@ -6,7 +6,7 @@
   show sym.ast: h(0.05em) + sym.dot.op + h(.05em)
   $upright(#body)$
 }
-#let unit(body) = $thin bare(body)$
+#let bare(body) = $#h(-0.1667em)unit(body)$
 
 #let meter = unit("m")
 #let cm = unit("cm")
@@ -19,18 +19,30 @@
 #let coulomb = unit("C")
 #let ds(body) = $sans(upright(body))$
 #let DIM = math.op("dim")
-#let ee = math.upright("e")
-#let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
 
 #let writings(shift: dim.tab, columns: none, box: (true,), align: (left, right), ..body) = {
-  tab(shift: shift - 0.6em, grid(
+  tab(shift: shift - 0.55em, grid(
     columns: if columns == none { box.len() } else { columns },
-    inset: 0.6em,
+    inset: 0.55em,
     stroke: box.map(it => if it { (thickness: 0.5pt, dash: "dashed") } else { none }),
     align: align,
     ..body
   ))
 }
+#let writing(body) = {
+  (
+    h(0.6em)
+      + box(
+        inset: (x: 0.6em, y: 0.55em),
+        baseline: 0.6em,
+        height: 1.8em,
+        stroke: (thickness: 0.5pt, dash: "dashed"),
+        body,
+      )
+      + h(0.6em)
+  )
+}
+
 
 
 A #keyword[physical quantity] is usually made of a number, a unit, and an #keyword[uncertainty] (#keyword[error]). For example,
@@ -48,7 +60,7 @@ A #keyword[physical quantity] is usually made of a number, a unit, and an #keywo
 #index("uncertainty", "absolute")
 #index("uncertainty", "relative")
 
-Measurements are always with uncertainty. Proper Handling of the uncertainty is a fundamental skill. Uncertainty can often be more important than the central value.
+Measurements are always with uncertainty. Uncertainty handling is a fundamental skill of physicists because, in physics, uncertainty is often more important than the central value.
 
 #remark[
   Upper- and lowercase letters are distinguished. "M" *does not* mean "meter". The unit "A" is "ampere", not "Ampere". The unit "coulomb" is "C", not "c".
@@ -65,23 +77,22 @@ Measurements are always with uncertainty. Proper Handling of the uncertainty is 
   + `4` The next passage has six (6) errors in the use of uppercase and lowercase letters. Find them out.
 
 
-  #tab(shift: 2 * dim.tab)[
     In the SI system, temperature is expressed in k (kelvin), a unit named after Lord Kelvin.
     The unit of force is N (newton), named after the british scientist Isaac newton. The units A (Ampere) and c (coulomb) are named after French scientists.
-    In contrast, Kg (kilogram) is not named after a person, but comes from Greek.
-  ]
+    In contrast, Kg (kilogram) is not named after a person.
+    , but comes from Greek.
 ]
 
 
 #make-indent
 As an undergraduate student, you need to follow the following rules:
 
-#align(center, block(inset: 1em, stroke: 0.5pt, radius: 4pt, align(left)[
+#theorem(type: "Statement", title: "Rules for Physical Quantities")[
   + Numbers are always with units, even in calculations.
   + Include units in a symbol.
   + For physical quantities, use decimals (e.g., $1.6ampere)$. Do not use fractions like $(8\/5)ampere$.
   + Use significant figures to express the measurement precision.
-]))
+]
 
 Significant figures are a simple way to express the uncertainty. We discuss it in this chapter, while Chapter #TODO[chapter] has further discussion on uncertainty and error analysis.
 
@@ -92,9 +103,12 @@ When we educate kids, we write "my height is #blank()#cm", or "my height is $h$#
 But this is not nice! We want to convert the units freely and write equations such as
 $1.72#meter = 172#cm = 0.00172unit("km")$.
 So,
-#writings(box: (false, true), [*we always include units in symbols*:], $h=172 cm$)
-and then
-#writings(box: (false, true), [we can write:], $h=172#cm=1.72#meter=0.00172 unit("km")=1.82EE(-16) unit("light-year").$)
+*we always include units in symbols* #writing($h=172 cm$). Then
+#writings(
+  box: (false, true),
+  [we can write:],
+  $h=172#cm=1.72#meter=0.00172 unit("km")=1.82EE(-16) unit("light-year").$,
+)
 
 Similarly, if $m=110 unit(g)$ and $g=9.8 mpss$,
 #writings(
@@ -146,12 +160,7 @@ Notice that angle (rad) has no dimension. It is called a #keyword[dimensionless]
   To understand why angle has no dimension, you may consider the definition of the radian: it is defined as the ratio of the arc length to the radius, so the units cancel ($"meter" \/ "meter" = 1$).
 ]
 
-Here,
-#writings(
-  box: (false, true),
-  [please do not write:],
-  [#RED[the force is $bare("kg"*m^2/s^2)$, which is also called newton (N).]],
-)
+Here, please do not write: #writing[#RED[The force is $bare("kg"*m^2/s^2)$. This is also called newton (N).]],
 because _we cannot mix units and concepts_. A correct (and easy) way is to use English words:
 #writings(
   box: (true, false, true),
@@ -165,12 +174,12 @@ Instead, you need to write
 #writings[Since $m$ has a unit of $bare("kg")$ and $g$ has a unit of $bare(m/s^2)$, $m g$ has a unit of $bare("kg"*m/s^2)=bare(N)$.]
 
 Notice the last equation: units can be equal to other units, so we may write
-#writings[
-  $bare(N) = bare(J/m) = bare("kg"*m/s^2), wide bare(m)=bare(J/N), wide bare(s)=sqrt(bare("kg"*m/N)).$
-]
+#writing($bare(N) = bare(J/m) = bare("kg"*m/s^2)$)
+#writing($bare(m)=bare(J/N)$)
+#writing($bare(s)=sqrt(bare("kg"*m/N))$).
 These are scientifically correct equations.
 #remark[
-  We sometimes use informal notations, such as $quad [F]=bare(N) quad$ or $quad F arrow.r.dashed bare(N)quad$ to express "the unit of $F$ is $bare(N)$ (newton)". Still, using an equal symbol (=) is *not allowed*. Namely, #RED($F=bare(N)$) is always incorrect.
+  We sometimes use informal notations, such as #writing[$[F]=bare(N)$] or #writing($F arrow.r.dashed bare(N)$) to express "the unit of $F$ is $bare(N)$ (newton)". Still, using an equal symbol (=) is *not allowed*. Namely, #writing[#RED($F=bare(N)$)] is always incorrect.
 ]
 
 #quizzes[
@@ -190,14 +199,16 @@ These are scientifically correct equations.
   with the operator "dim" @si. However, it seems too complicated for most situations.
 ]
 
+#pagebreak()
+
 #problems[
   + `3` Express the following units only with SI base units, e.g., $bare(N) = bare("kg"*m/s^2)$.
-  #h-enum(cols: 4)[
-    + W (watt)
-    + Pa (pascal)
-    + J (joule)
-    + C (coulomb)
-  ]
+    #h-enum(cols: 4)[
+      + W (watt)
+      + Pa (pascal)
+      + J (joule)
+      + C (coulomb)
+    ]
   + `2` Use "dim" notation to express the dimensions of the following quantities. For example, if $v$ is speed, then $DIM(v) = ds(L thin T^(-1))$.
     #h-enum(cols: 2)[
       + speed $v$
@@ -235,18 +246,18 @@ For example,
   [3.141],
   [means "3.14" is for sure but it can be #sig("3.143"), #sig("3.142"), #sig("3.140"), #sig(tail: 2, "3.139"), ....],
   [3.1415],
-  [might be #sig("3.1416"), #sig("3.14153"), etc., but the author is sure it *cannot* be 3.145 or 3.135.],
+  [might be #sig("3.1416"), #sig("3.14153"), etc., but the writer is sure _it is not_ 3.145 or 3.135.],
 )
-You have seen trailing zeros in your textbook. They are important because
+We write the "uncertain digit" in #unc[a different style] for clarity. You should notice the difference between:
 #writings(
   box: (true, false),
   align: (left, left),
   [#sig("1.0000")],
-  [means the last digit "0" is uncertain so it may be 1.0002, 1.0001, 0.9998, ....],
+  [meaning the last digit "0" is uncertain so it may be 1.0002, 1.0001, 0.9998, ....],
   [#sig("1.00")],
-  [can be 1.03 or 0.99, but the author is sure it *cannot* be 1.2 or 0.8.],
+  [meaning it can be 1.03 or 0.99, but the writer is sure _it is not_ 1.2 or 0.8.],
 )
-This notation is often combined with #keyword[scientific notation]:
+It is usually convenient to use #keyword[scientific notation]:
 #writings(
   box: (true, false, true, false),
   align: (left, left),
@@ -262,6 +273,7 @@ This notation is often combined with #keyword[scientific notation]:
   [is OK but we prefer ],
   [#sig("2.9979", e: 4).],
 )
+#fail-safe[$10^3=1000$ and $10^(-3)=1\/10^3=1 div 1000$. Go to #TODO[chap] for details!]
 We need to _avoid ambiguous notations_. Namely,
 #writings(
   box: (true, false),
@@ -275,7 +287,7 @@ We need to _avoid ambiguous notations_. Namely,
 )
 #quizzes[
   + `4` What are the four interpretations of 42000?  Write them in scientific notation.
-  + `4` #num-a(1) Some of the following numbers are ambiguous. Point them out.\ #num-a(2) Write the other (not ambiguous) numbers in scientific notation.
+  + `4` Write the following numbers in scientific notation. However, some of them are ambiguous, so answer "ambiguous" if so.
     #grid(columns: 10, column-gutter: 1em)[152][340][1000][9999][43210][0.0300][0.00213][31.0][31.00][31]
 
   + `4` The expressions 0.123, 1.23, and 123 are numbers with _*three* significant figures_. Similarly, 1234 and $1.234EE(-3)$ are numbers with _*four* significant figures_. How about the following expressions?
@@ -293,9 +305,6 @@ We need to _avoid ambiguous notations_. Namely,
       + 12345
       + 67890
     ]
-]
-#remark[
-  On computers, we often use `2.99e8` (or `2.99E8`) to mean $2.99EE(8)$, or `1.610e-12` (or `1.610E-12`) to mean $1.610EE(-12)$. However, we *should not* use them in hand-writing.
 ]
 #make-indent
 We use #keyword[rounding]-to-the-nearest (#ZH[四捨五入]) when necessary. For example, if you need to convert to three significant figures, it will be
@@ -316,6 +325,9 @@ We use #keyword[rounding]-to-the-nearest (#ZH[四捨五入]) when necessary. For
       + $9876$
       + $9.999EE(4)$
     ]
+]
+#remark[
+  Programmers use `2.99e8` (or `2.99E8`) to mean $2.99EE(8)$, or `1.6e-12` (or `1.6E-12`) to mean $1.6EE(-12)$. However, we *should not* use them in handwriting.
 ]
 
 
@@ -346,18 +358,16 @@ If $x$ has $m$ significant figures and $y$ has $n$ significant figures, then $x 
 ]
 #solution[
   Here we use a shorthand notation "3-SF" to mean "three significant figures".
-  #enum(numbering: cn => box(width: 2em, align(right, text-sf[*(#cn)*])), tight: false)[
+  #enum(numbering: enum-style("(1)"), tight: true)[
     Since 8.912 has 4-SF and 2.4 has 2-SF, we round the result to (the smaller) 2-SF:
     #no-num($8.912 times 2.4 = 21.3888 → underline(21).$)][
     Since 5.0 has 2-SF and 3.14 has 3-SF, we round the result to 2-SF:
     #no-num($5.0 div 3.14 = 1.592dots → underline(1.6).$)][
     Both 2.01 and 49.8 have 3-SF, so we keep 3-SF, but don't forget to avoid ambiguity!
     #no-num($2.01 times 49.8 = 100.098 → 100 → underline(1.00EE(2)).$)][
-
     $1.210^3=1.210 times 1.210 times 1.210$, so we round the result to 4-SF:
     #no-num($1.210^3 = 1.771561 → underline(1.772).$)]
 ]
-
 
 This treatment is justified if you carry out the long multiplication by your hand.
 
@@ -414,12 +424,8 @@ Different rules are applied for addition and subtraction, where we do long addit
   )
   and we round the results. So, the answers are #sig("16.9"), #sig("128"), #sig("0.47"), and #sig("1.17", e: 3).
 ]
+Probably it is easier to understand the rules through examples, so now it's time to "drill"!
 
-#remark[
-  These are the beginner rules.
-  Professional scientists and engineers use more nuanced conventions that depend on their field.
-  You will learn those from your supervisors in the future.
-]
 
 #problems[
   + `9` Calculate the following, taking care of significant figures. You may use calculators.
@@ -445,7 +451,7 @@ Different rules are applied for addition and subtraction, where we do long addit
       + $131 + 0.69$
       + $1.3EE(2) + 69$
     ]#v(-.2em)
-    #h-enum(cols: (2fr, 2.5fr), offset: 20)[
+    #h-enum(cols: (2fr, 2.5fr), label-start: 20)[
       + $\(1.2EE(5)\) times 9.4$
       + $1.2 div \(5.2EE(5)\)$
       + $\(3.33EE(5)\) times \(6.3EE(4)\)$
@@ -468,7 +474,7 @@ Different rules are applied for addition and subtraction, where we do long addit
       + $3.0^3 + 1.2$
       + $5.0^3 - 5$
     ]#v(-.2em)
-    #h-enum(cols: (1.7fr, 1.7fr, 2fr), offset: 8)[
+    #h-enum(cols: (1.7fr, 1.7fr, 2fr), label-start: 8)[
       + $(1.2 + 3.45) times 2.1$
       + $(8.0 - 1.25) div 2.0$
       + $1.2 times 3.4 + 5.6$
