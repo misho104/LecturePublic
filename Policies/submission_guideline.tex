@@ -1,7 +1,7 @@
 %!TEX program=lualatex
 %!TEX options=-synctex=1 -interaction=nonstopmode -halt-on-error "%DOC%.tex"
 \documentclass[11pt,pdfa,lastpage,minititle]{MishoNote}
-\title{Tips for Writing and Submitting Assignments}
+\title{Rules and Suggestions for Assignments}
 \author{Sho Iwamoto}
 \hypersetup{
   pdflang={en-US},
@@ -10,105 +10,162 @@
   pdfcontactemail={iwamoto@g-mail.nsysu.edu.tw},
   pdfcontacturl={https://www2.nsysu.edu.tw/iwamoto/},
   pdfcaptionwriter={Sho Iwamoto},
-  pdfcopyright={2025 Sho Iwamoto},
+  pdfcopyright={2025–2026 Sho Iwamoto},
   pdflicenseurl={https://www2.nsysu.edu.tw/iwamoto/},
 }
-\renewcommand\thesubsection{\arabic{subsection}.}
+\renewcommand\thesubsection{Suggestion \arabic{subsection}:}
+\tcbset{myitembox/.style={%
+  reset,breakable,sharp corners,enhanced,
+  fonttitle=\sffamily\bfseries\upshape,
+  colframe=pBlue,colback=pBlue!10,%colbacktitle=pBlue,
+  boxsep=1.5mm,boxrule=0mm,left*=6mm,right*=6mm,
+  borderline north={.7mm}{-.7mm}{pBlue},
+  borderline south={.7mm}{-.7mm}{pBlue},
+}}
+\newenvironment{items}{%
+  
+}{\end{tcolorbox}}
+
+\makeatletter
+\def\RL#1{\Emph*{[#1]~~}}
+\def\SUG#1{\textsf{[Suggestion~#1]}}
+\def\RUL#1{\textsf{[Rule~#1]}}
+\def\SAMPLE#1{``\textit{#1}''}
+\renewcommand\theenumi{\@arabic\c@enumi}
+\renewcommand\labelenumi{{\Emph*{\theenumi.}}}
+\makeatother
 \begin{document}
 \maketitle
 
-In university, homework is not just about getting the right answers.
-You must think for yourself, explain your ideas, and take responsibility for your work.
-Keep the following suggestions in mind, especially when submitting assignments to Sho.
-You are also expected to think for yourself and explain your ideas in your own words.
+University homework is not just about getting the right answers.
+You are expected to think for yourself, show your reasoning, and take full responsibility for what you submit.
+Keep the following rules and principles in mind for all assignments in Sho's courses.
 
-\Remark{Some suggestions may not apply to other instructors, particularly about the usage of Generative AI, or if the lecture is not in physical science. If unsure, ask your instructor and follow their rules.}
+\Remark{Some items may not apply to other lecture courses, particularly if the courses are not in physical science. If unsure, ask your instructor and follow their rules.}
 
+\section*{Rules and Principles}
+As the minimum requirement, you \Emph{need to} follow the following rules:
+\begin{tcolorbox}[myitembox]
+\begin{enumerate}[leftmargin=3em,label=\Emph*{Rule \arabic*.}]
+  \item \RL{Authorship} Your submission must be based on your own thinking and writing.
+  \\In the following cases, you must clearly state the situation in your submission:
+\begin{itemize}[leftmargin=1em]
+  \item if you use Generative AI tools,
+  \item if your work is based on discussions with others,
+  \item if you use any external sources (books, webpages, solution manuals, etc.), or
+  \item if you copy answers from other students.
+  \end{itemize}
+  For practical guidance, see \SUG{1} and \SUG{2} below.
+  \item \RL{Self-correction} If official answers are provided, you must check your own work against them and correct your mistakes before submission. (cf.~\SUG{4})
+  \item \RL{Understanding} You must be able to explain everything written in your submission. Sho may occasionally conduct an oral check; if you cannot explain your work, you may be penalized.
+\end{enumerate}
+\end{tcolorbox}
+Violations may result in \Emph{reduced, zero, or negative points}.
+Serious cases will be referred to the \href{https://oaa.nsysu.edu.tw/var/file/3/1003/img/1296/acade_rule_27.pdf}{\em NSYSU Guidelines for Students' Academic Ethics and Handling of Violations}.
 
-\section*{General Guidelines for Assignments}
-\subsection{Submit your own work.}
+\bigskip
 
-You are free to use any methods to solve problems, but the final answers \Emph*{need to} be \emph{from you}: based on your thoughts and written in your own words.
+\noindent
+The rules above, and the suggestions that follow, are grounded in the principles below.
+Keeping them in mind will help you get the most out of your assignments.
+
+\begin{enumerate}[label=\Emph*{\arabic*.}]
+  \item \RL{Authorship} Academic work must reflect your own thinking and writing.
+  \item \RL{Integrity} Be responsible for everything written under your name. Do not write what you do not understand.
+  \item \RL{Reasoning} Show your thinking. Reasoning processes are more important than final answers.
+  \item \RL{Clarity} Write clearly and professionally, so that others can read and verify your work.
+  \item \RL{Independence} Do not rely on Sho or other lecturers. Behave as an independent adult.
+  \item \RL{Collaboration} Work together with your colleagues. It helps deepen your understanding.
+\end{enumerate}
+To help achieve the above rules and principles, and eventually to maximize your learning experience, Sho provides several suggestions below. Try to follow them as much as possible.
+\newpage
+\section*{General Suggestions for All Students}
+\subsection{Handle authorship properly. Be responsible for your work.}
+As stated in \RUL{1}, do not \emph{steal} others' work.
+Here is how to handle common situations:
 \begin{itemize}
-  \item Discuss with colleagues, and it's encouraged! But then, you \Emph*{need to} write the names of the people you discussed with: \emph{``I discussed this problem with [Name].''}
-  \item \Emph*{Do not} copy answers from others. Looking at someone else's work is not recommended. But if you do, first understand the solution and keep it in your head. Then write the answer out from your own thinking, in your own words.
-  \item Using books or websites are encouraged, but then you \Emph*{need to} write down the sources you used. Write the URLs or book titles.
-  \item Proper use of AI tools (like ChatGPT) is a very difficult issue in modern university education. See \hrefFN{https://github.com/misho104/LectureCommon/blob/main/Notes/generative_ai.pdf}{Sho's Guidelines for Using Generative AI}.
-  If you just copy-and-paste AI output, Sho may consider your work lacks originality, or violates academic ethic, and give you a penalty or a lower grade.
-  \item Most importantly, write your final answers based on your own understanding.
+  \item If you use external resources (books, webpages, solution manuals, etc.), \emph{cite} them:\\\SAMPLE{References: [website URL], [book title and pages], \dots}
+  \item If you discuss with others and your work is based on the discussion, state so:\\\SAMPLE{I discussed this problem with [name].}
+  \item If you take answers from other students, state so clearly:\\\SAMPLE{This result is copy-and-pasted from [name]'s work.}
 \end{itemize}
+When you use external resources, you may find explanations or formulas that you do not fully understand. This is perfectly normal, but you need to be \emph{responsible} for everything you submit under your own name.
+So, you should clearly distinguish what you understand from what you do not:
+\begin{itemize}
+  \item If you use a result you do not fully understand, state so clearly:\\\SAMPLE{This formula is from [book title] / [AI tool], but I do not fully understand it.}
+\end{itemize}
+
+\subsection{Use Generative AIs wisely.}
+The ability to use Generative AIs (GAIs) effectively has become an essential skill.
+Learning how to use them appropriately is an important part of your university education.
+However, rules and common practices are still evolving.
+To help you develop good habits during this transition period, Sho requires you to be transparent on GAI use:
+\begin{itemize}
+  \item If you use GAI tools, clearly state so:\\\SAMPLE{I used ChatGPT to solve this problem.}, or put the mark {\color{pBlue}\fbox{\sffamily AI used}} on your submission.
+\end{itemize}
+For further guidance on the proper use of GAIs, see \hrefFN{https://misho104.github.io/LecturePublic/generative_ai.pdf}{Sho's Guidelines for Using Generative AI}.
+
 \OutputNote
 
-\subsection{Show your thinking process.}
-Your answer is important, but your process toward the answer is more important than the answer.
-Show your steps, formulae, and explanations.
-Learn how to explain your thought in English.
+\subsection{Show your thinking process, not just the final answer.}
+Your answer is important, but your reasoning process is more important than the answer itself.
+Show your steps, formulae, and explanations \emph{in English}.
+It will develop your English-writing skills, which are essential for communication in the modern world.
 
-\subsection{Try to write like a professional.}
-As an advanced suggestion, pay attention to the way of writing.
-Professional writing means that others can read, understand, and check your work without confusion and difficulty. In particular,
+\subsection{Check your answers before submission.}
+In physics and mathematics, exercise-type assignments ask you to reach the single correct answer.
+They are sometimes boring but important for building fundamental skills.
+
+There, solving problems is not enough—almost useless.
+To learn physics, you need to review the problems you got wrong and understand how to solve them.
+Check your own work before submission as much as you can, especially if official answers are provided.
+
+\section*{Suggestions for Motivated Students}
+\subsection{Write clearly. Write like a professional.}
+Pay attention to the way of writing.
+Professional writing means others can read, understand, and check your work without confusion.
+In particular,
 \begin{miniitemize}
-  \item Clarity is the best important. Do not confuse readers.
-  \item Use consistent notation throughout your work.
-  \item Try to be concise as much as possible, but do not lose clarity.
-  \item Clear handwriting is essential.
+  \item Clarity is the most important. Do not confuse readers.\vspace{-.3em}
+  \item Use consistent notation throughout your work.\vspace{-.3em}
+  \item Be as concise as possible, but do not sacrifice clarity.\vspace{-.3em}
+  \item Clear handwriting is essential.\vspace{-.5em}
 \end{miniitemize}
 
-\section*{Suggestions for Exercise-Type Assignments}
-\subsection{Correct your answers before submission.}
-In physics and mathematics courses, exercise-type assignments are given as homework and you will solve the problems to reach the \emph{single correct answer}.
-They are sometimes boring but important to cultivate fundamental skills for your further steps.
+\subsection{Do not expect correct solutions from authority. Try not to be taught.}
+Textbooks have many exercises, but they usually do not provide complete solutions.
+Similarly, Sho never provides solutions for mini tests, exams, or homework. But why?\addnote{See a Reddit thread: \url{https://www.reddit.com/r/learnmath/comments/7yvo0r/}}
 
-There, solving problems is not enough---almost useless.
-To learn physics, you need to correct the problems you got wrong and learn how to solve them.
-Check your work by yourselves before submission.
-If you do not check your work before submission, Sho will not give a good evaluation.
 
-\subsection{Do not expect the correct solutions from authority.}
-You need to check your answer before submission, but you do not have the ``correct solutions.''
-Sho never gives you solutions, and textbooks usually do not have complete solutions.
-
-This is because you are an adult, who is expected to be an independent thinker.
-Ideally, you need to be confident by yourself, and should not rely on other authorities.
-Nobody can tell you the truth\addnote{It is reasonable to assume that anyone offering ``the truth'' is trying to deceive or manipulate you.}, and you need to find it by yourself.
-
-In other words, try to \emph{not be taught}, but please \emph{learn by yourselves}.
-If you are not sure, it means you do not fully understand the problem and the topic.\addnote{Taken from a Reddit thread: \url{https://www.reddit.com/r/learnmath/comments/7yvo0r/}}
+This is because you are an adult, expected to be an independent thinker.
+You need to be confident in your own reasoning, without relying on external authority.
+Nobody can tell you the truth\addnote{It is reasonable to assume that anyone offering ``the truth'' is trying to deceive or manipulate you.}, and you need to find it yourself.
+If you cannot be confident, it means you do not fully understand the problem and the topic.
 
 \OutputNote
 
-\subsection{Work together.}
-But then, how can you reach the correct solutions?
-The best way is to learn by yoursel\Emph{ves}, namely, work together with your colleagues.
+\subsection{Work together. Learn by yourselves. }
+But then, how can you reach the correct solutions? Think about why you entered a university and go to the classroom every day.
 
-Since exercises usually have a single correct answer, working with others will help everyone.
-Discussing problems, comparing approaches, and explaining your reasoning to others help you understand the material more deeply.
+The best way is to learn by yoursel\Emph*{ves}---work together with your colleagues.
+Discussing problems, comparing approaches, and explaining your reasoning to others deepens your understanding.
+However, do not forget \RUL{1}: your final submission must be your own.
 
-You can also assume that Sho and the TA as colleagues.
-You are encouraged to ask them questions and seek their guidance when needed, particularly during their office hours.
+You can also treat Sho and the TA as colleagues.
+You are encouraged to ask them questions and seek their guidance when needed, particularly during office hours.
 
 
-\section*{Suggestions for Open-ended Assignments}
+
+\section*{Suggestions for Open-ended Assignments such as Theses and Presentations}
 \subsection{Write clearly. Never confuse readers.}
-Some assignments, such as critical essay and lab reports, are called \Emph{open-ended assignments}, which do not have a single correct answer but requires your own reasoning, ideas, or researches.
-You are often asked to write and submit multiple-page reports.
+If the assignment is \emph{open-ended} without a definitive correct answer, clarity is even more important, because no one can read your mind.
+Make sure to define each term or symbol, use consistent notation, provide captions and explanations for figures and tables, and explain your findings step by step.
+``Long but clear'' is far better than ``concise but confusing.''
 
-Clarity is the most important factor in such assignments, because nobody can read your mind.
-You need to write clearly, so that others can understand it easily.
-In particular, make sure to define each term or symbol in your math, use consistent notation, provide captions and explanations for figures and tables, and explain your findings and thoughts step by step. ``Long but clear'' writings are far better than ``concise but confusing.''
-
-\subsection{Emphasize originality. Clearly separate your work and others.}
-Another important aspect is originality and creativity.
-You are asked to develop your own ideas with creativity, but it is not sufficient. You also need to \Emph{emphasize} your originality in your writing.
-
-Recall that nobody can read your mind; nobody can find which part is your original and which part is from literature.
-Therefore, you need to clearly indicate your original contributions and ideas in your writing.
-For example, you may use explicit phrases such as \emph{``This is my original idea''} to emphasize your originality.
-Meanwhile, if you take ideas or discussions from literature, you need to cite it. For citation, please consult the Internet to find appropriate formats and guidelines.
-
-
-% other remaks
-% なお，問題の番外編として，今までの講義内容・講義形態についての感想，不満，文句，このように改善すべきとの意見などもできるだけ書いてください.お願いします。
-
+\subsection{Emphasize originality. Clearly separate your work from others.}
+In open-ended assignments, you are expected to develop your own ideas and write about it, but it is not sufficient! You also need to \Emph{emphasize your originality} in your writing.
+Nobody can tell which part is your original contribution and which part is from literature.
+Therefore, clearly indicate your original contributions: for example, use explicit phrases such as \emph{``This is my original idea''}.
+Meanwhile, if you take ideas or passages from literature, you need to cite them.
+For citation formats and guidelines, please consult the Internet.
 
 \end{document}
