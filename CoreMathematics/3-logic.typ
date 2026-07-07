@@ -146,7 +146,7 @@ If the statement "$A=>B$" is true, then
 
 So, if $A$ and $B$ are equivalent, $B$ (resp. $A$) is called _necessary-and-sufficient condition_ for $A$ (resp. $B$).
 
-#ornament-skip
+#divider()
 
 We may understand that "solving an equation" means "finding an equivalent equation".
 So, when you solve an equation, you have to check that the solution is *necessary and sufficient*.

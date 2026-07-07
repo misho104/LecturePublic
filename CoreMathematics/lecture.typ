@@ -3,7 +3,7 @@
 #let metadata = (
   title: "Core Mathematics",
   description: "A Lecture note for \"Mathematics for Fundamental Physics\".",
-  copyright-years: [2024–2025],
+  copyright-years: [2024–2026],
   subtitle: "A Practical Guide on Mathematics for Physics Learners",
   revision: "v0.0.1",
 )
@@ -11,8 +11,7 @@
 
 #import "0-title.typ": title
 #title(metadata, [
-  These are lecture notes for first-year university students in physics or physical science.
-  They cover the mathematical tools you need most: calculus, logic, complex numbers, and vectors, with introductions to vector calculus, differential equations, and statistical analysis.
+  Lecture notes for first-year university students in physics or physical science, covering mathematical tools you the students need most. Calculus, logic, complex numbers, and vectors, with introductions to vector calculus, differential equations, and statistical analysis.
   Exercises are central to these notes. Practice each topic repeatedly until you can work through problems quickly and accurately.
 ])
 

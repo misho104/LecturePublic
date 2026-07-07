@@ -68,15 +68,6 @@
 )
 // cspell:enable
 
-#let ornament-skip = [#parbreak()#block(spacing: 24pt, grid(
-    columns: (1fr, 12.5em, 16pt, 12.5em, 1fr),
-    align: (right, right, center, left, left).map(c => horizon + c),
-    text(10pt)[☙],
-    line(start: (0em, 0em), end: (12em, 0em), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
-    text(14pt)[✢],
-    line(start: (0em, 0em), end: (12em, 0em), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
-    text(10pt)[❧],
-  ))#parbreak()]
 
 // ==== Text level styles ==============================================================================================
 #let GRAY(body) = text(fill: c.gray, body)
@@ -573,6 +564,16 @@
       tracking: (min: -0.01em, max: 0.02em),
     ),
   )
+
+  show divider: it => block(spacing: 24pt, grid(
+    columns: (1fr, 12.5em, 16pt, 12.5em, 1fr),
+    align: (right, right, center, left, left).map(c => horizon + c),
+    text(10pt)[☙],
+    line(start: (0em, 0em), end: (12em, 0em), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
+    text(14pt)[✢],
+    line(start: (0em, 0em), end: (12em, 0em), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
+    text(10pt)[❧],
+  ))
 
   // ==== Page layout ====================================================================================
   set page(

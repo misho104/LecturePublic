@@ -4,7 +4,7 @@
 = The first step
 
 #remark[
-  This document is designed for first-year students in their _second semester_, who *have already studied derivatives* in their first-semester _"calculus"_ course.
+  This document is designed for first-year students in their *second* semester, who *have already studied derivatives* in their first-semester calculus course.
   If you are not yet confident with derivatives, please study
   #link("https://misho104.github.io/LecturePublic/", "the Derivative Boot Camp") first#footnote[Visit https://misho104.github.io/LecturePublic and find `gp1_boot1_deriv_true.pdf`.].
 ]
@@ -37,7 +37,7 @@ Did you make calculation mistakes and get wrong answers? That is a serious issue
 You will perform similar calculations more than 100 times in university, so you need to be both fast and accurate.
 
 
-#ornament-skip
+#divider()
 
 At university, students often underestimate the importance of basic calculations.
 In physics, simple calculations appear constantly, so your speed and accuracy directly affect how well you follow lectures, how efficiently you study, and ultimately your grade.

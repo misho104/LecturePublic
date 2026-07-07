@@ -20,9 +20,9 @@
 
 = Preface
 
-Physics is an activity to describe the world, but how? At present, mathematics (+_ broken_ English) is the only language we can use. So, unfortunately, we need to learn mathematics! (and #box("English" + sym.dots + "🥺"))
-But, in some sense, we are fortunate because we have a language to describe the world.
-In fact, math and physics have developed together. We understand physics better if we study mathematics well!
+Physics is an activity to describe the world, but how? At present, mathematics (+ _broken_ English) is the only language we can use. So, _unfortunately_, we need to learn mathematics! (and #box("English" + sym.dots + "🥺"))
+But it means we are _fortunate_: we have a language to describe the world.
+In fact, physics have developed together with mathematics. We understand physics better if we study mathematics well!
 
 When you do DIY, you need to use the tools properly, smoothly, and accurately.
 It is the same here; when we use math as a tool, it must be *logical*, *quick*, and *accurate*.
@@ -50,21 +50,23 @@ This document is primarily for first-year undergraduate students in their second
 
   + Buy a *A4-sized paper notebook*.
 
-    Digital notebooks on tablets are not suitable (or less effective) for this document.
+    Digital notebooks on tablets are not suitable (less effective).
 
-  + Read the text with solving Quizzes.
+  + Read the text and solve #EMPH[Quizzes].
 
-    You can solve "Quizzes" without writing down the solution process.
+    The texts are kept short, so please read all the text carefully. Quizzes should be solved while reading, but you don't have to write down the solution process for Quizzes.
 
-  + Solve Drill Problems to nourish fluency.
+  + Solve #EMPH[Drill Problems].
 
-    Mind the fluency ($!=$ speed) and accuracy. Write down the solution process clearly.
+    This is to improve your fluency ($!=$ speed) and accuracy. Write down solution process clearly.
 
-  + Solve other problems to have better conceptual understanding (& writing skills).
+  + Solve other #EMPH[Problems].
 
-    Think carefully and write down the solution process clearly as an *English text*, taking care of logical completeness.
+    This is to have better conceptual understanding, but also to develop your writing skills.
+    Write down the solution process clearly _as an English text_, taking care of _logical completeness_.
 
-  + Optionally, you are encouraged to prepare a reference book, so that you can consult it when you want to know more.  (Sho supposes [Boas] listed below is the best option.)
+  Optionally, you you are encouraged to prepare a reference book, so that you can consult it when you want to know more.
+  Sho supposes [Boas] listed below is the best option.
 ]
 
 

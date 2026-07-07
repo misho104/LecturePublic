@@ -44,7 +44,6 @@ make o        # open PDF
 - `#no-num($...$)` — display math without equation number
 - `#tab[...]` — indented block
 - `#make-indent` — manual paragraph indent
-- `#ornament-skip` — decorative section break
 - `#keyword[word]` — emphasised term + index entry
 - `#blank` — blank fill-in box
 
