@@ -18,12 +18,11 @@
 }
 
 // ==== Fonts ==========================================================================================================
-#let _font-serif = "STIX Two Text"  // main body font             cspell: disable-line
-#let _font-sans = "Roboto"          // sans-serif (scaled ×0.91)  cspell: disable-line
-#let _font-mono = "Roboto Mono"     // monospace  (scaled ×0.85)  cspell: disable-line
-
-#let ZH = text.with(lang: "zh", script: "hant", region: "tw", font: "思源宋體")
-#let JA = text.with(lang: "ja", script: "jpan", region: "jp", font: "Harano Aji Mincho") // cspell: disable-line
+#let _font-serif = "STIX Two Text"    // main body font  cspell: disable-line
+#let _font-sans = "Source Sans 3"     // sans-serif      cspell: disable-line
+#let _font-mono = "Source Code Pro"   // monospace       cspell: disable-line
+#let _font-serif-ja = "Noto Serif JP" // Japanese serif  cspell: disable-line
+#let _font-serif-zh = "Noto Serif TC" // Chinese serif   cspell: disable-line
 
 // Scaled font helpers.
 // Without arguments, size is read from the surrounding context and scaled.
@@ -31,15 +30,30 @@
 // Applying them twice makes it too small: text-tt(text-tt("foo")) is 0.85 * 0.85
 #let text-sf(true-size: none, size: none, ..args) = context text(
   font: _font-sans,
-  size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.91 },
+  size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.97 },
   ..args,
 )
 #let text-tt(true-size: none, size: none, ..args) = context text(
   font: _font-mono,
-  size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.85 },
+  size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.91 },
   ..args,
 )
-
+#let JA(true-size: none, size: none, ..args) = context text(
+  lang: "ja",
+  script: "jpan",
+  region: "jp",
+  font: _font-serif-ja,
+  size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.95 },
+  ..args,
+)
+#let ZH(true-size: none, size: none, ..args) = context text(
+  lang: "zh",
+  script: "hant",
+  region: "tw",
+  font: _font-serif-zh,
+  size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.95 },
+  ..args,
+)
 // ==== Layout =========================================================================================================
 #let dim = (
   tab: 2.5em, // default "tab-shift" \BaseTab
@@ -76,7 +90,7 @@
 #let GREEN(body) = text(fill: c.green, body)
 #let RED(body) = text(fill: c.alt-a, body)
 
-#let EMPH(body) = text-sf(strong(body))
+#let EMPH(body) = text-sf(weight: 700, body)
 
 #let blank(pad: 1em, ..args) = box(outset: (y: .25em), stroke: 0.5pt, height: .6em, ..args.named(), align(
   center,
@@ -134,16 +148,16 @@
   "3": "***",
   "2": "**",
   "1": "*",
-  "9": box(height: 6pt, move(dy: -5pt, "💪")), //
+  "9": text(font: "Noto Color Emoji", "🦾"), // cspell: disable-line
 )
 
 
 // accepting counter, not int
 #let _label-styles = (
-  "problem": cn => text-sf(strong(cn("1.1"))),
-  "quiz": cn => text-sf(strong(cn((..n) => [#n.pos().at(1).]))),
-  "(1)": cn => text-sf(strong(cn("(1)"))),
-  "(a)": cn => text-sf(strong(cn("(a)"))),
+  "problem": cn => text-sf(weight: 600, cn("1.1")),
+  "quiz": cn => text-sf(weight: 600, cn((..n) => [#n.pos().at(1).])),
+  "(1)": cn => text-sf(weight: 600, cn("(1)")),
+  "(a)": cn => text-sf(weight: 600, cn("(a)")),
 )
 
 // accepting int
@@ -513,6 +527,9 @@
   set text(font: _font-serif, size: 11pt)
   show math.equation: set text(font: "STIX Two Math") // cspell:disable-line
 
+  // japanese kana
+  show regex("[ぁ-んァ-ヶ]+"): it => text(features: ("palt",))[#it]
+
   // hardcodes ×0.8 scaling for raw blocks; pre-multiply to get net ×0.85.
   show raw: it => text-tt(size: 1em / 0.8, it)
   show heading: it => text(font: _font-sans, it)
@@ -566,12 +583,12 @@
   )
 
   show divider: it => block(spacing: 24pt, grid(
-    columns: (1fr, 12.5em, 16pt, 12.5em, 1fr),
+    columns: (1fr, 12.2em, 16pt, 12.2em, 1fr),
     align: (right, right, center, left, left).map(c => horizon + c),
     text(10pt)[☙],
-    line(start: (0em, 0em), end: (12em, 0em), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
-    text(14pt)[✢],
-    line(start: (0em, 0em), end: (12em, 0em), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
+    line(start: (0em, .8mm), end: (12em, .8mm), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
+    text(18pt)[✢],
+    line(start: (0em, .8mm), end: (12em, .8mm), stroke: (cap: "round", paint: gradient.linear(white, black, white))),
     text(10pt)[❧],
   ))
 

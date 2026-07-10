@@ -1,7 +1,7 @@
 #import "misho-text.typ": EMPH, JA, RED, TODO, ZH, c, h-enum, keyword, problems, quizzes, tab, text-sf
 #import "@preview/in-dexter:0.7.2": first-letter-up, make-index
 
-#let ds(body) = $sans(upright(body))$
+#let ds(body) = text-sf(body)
 
 #place(bottom + left, dx: 1.3mm, dy: 2.3mm, float: true, text-sf(size: 9pt, fill: c.gray)[
   #grid(
@@ -48,7 +48,7 @@ This document is primarily for first-year undergraduate students in their second
 #[
   #show enum: set par(first-line-indent: 1em, hanging-indent: 1em)
 
-  + Buy a *A4-sized paper notebook*.
+  + *Buy a A4-sized paper notebook*.
 
     Digital notebooks on tablets are not suitable (less effective).
 
@@ -275,13 +275,13 @@ It is built from seven #keyword[SI base units]:
     stroke: none,
     table.header([*quantity*], table.cell(colspan: 2, align: center)[*symbol and name*], [*symbol for dimension*]),
     table.hline(),
-    [time], [s], [ (second)], $ds(T)$,
-    [length], [m], [(meter)], $ds(L)$,
-    [mass], [kg], [(kilogram)], $ds(M)$,
-    [electric current], [A], [(ampere)], $ds(I)$,
-    [temperature], [K], [(kelvin)], $ds(Θ)$,
-    [amount of substance], [mol], [(mole)], $ds(N)$,
-    [luminous intensity], [cd], [(candela)], $ds(J)$,
+    [time], [s], [ (second)], ds("T"),
+    [length], [m], [(meter)], ds("L"),
+    [mass], [kg], [(kilogram)], ds("M"),
+    [electric current], [A], [(ampere)], ds("I"),
+    [temperature], [K], [(kelvin)], ds("Θ"),
+    [amount of substance], [mol], [(mole)], ds("N"),
+    [luminous intensity], [cd], [(candela)], ds("J"),
   ),
 )<SI-units>
 

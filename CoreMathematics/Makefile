@@ -1,6 +1,6 @@
 # cspell: disable
 TYPST = typst
-TYPSTFLAGS = --font-path=/users/misho/Library/Fonts --input "time=$(shell date '+%H:%M:%S')"
+TYPSTFLAGS = --input "time=$(shell date '+%H:%M:%S')" --ignore-system-fonts --font-path=./fonts
 
 TARGETS = lecture
 MAIN = lecture
