@@ -108,6 +108,8 @@
 #let ee = math.upright("e")
 #let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
 
+#let root(n, x) = math.root(move(math.script(n), dy: -0.3em), x)
+
 // ==== Block level styles =============================================================================================
 #let make-indent = h(dim.indent)
 #let no-num(content) = { math.equation(block: true, numbering: none, content) }
@@ -155,19 +157,19 @@
 // accepting counter, not int
 #let _label-styles = (
   "problem": cn => text-sf(weight: 600, cn("1.1")),
-  "quiz": cn => text-sf(weight: 600, cn((..n) => [#n.pos().at(1).])),
+  "quiz": cn => text-sf(weight: 600, cn((..n) => [Q#n.pos().at(1).])),
   "(1)": cn => text-sf(weight: 600, cn("(1)")),
   "(a)": cn => text-sf(weight: 600, cn("(a)")),
 )
 
 // accepting int
 #let _labels = (
-  "(1)": n => text-sf(strong[(#n)]),
-  "(A)": n => text-sf(strong("(" + str.from-unicode(64 + n) + ")")),
-  "(a)": n => text-sf(strong("(" + str.from-unicode(96 + n) + ")")),
-  "1": n => text-sf(strong[#n]),
-  "A": n => text-sf(strong(str.from-unicode(64 + n))),
-  "a": n => text-sf(strong(str.from-unicode(96 + n))),
+  "(1)": n => text-sf(weight: 600, [(#n)]),
+  "(A)": n => text-sf(weight: 600, "(" + str.from-unicode(64 + n) + ")"),
+  "(a)": n => text-sf(weight: 600, "(" + str.from-unicode(96 + n) + ")"),
+  "1": n => text-sf(weight: 600, [#n]),
+  "A": n => text-sf(weight: 600, str.from-unicode(64 + n)),
+  "a": n => text-sf(weight: 600, str.from-unicode(96 + n)),
   "1.": n => [#n.],
 )
 #let enum-style(width: dim.label-width, style) = n => box(width: width, align(right, _labels.at(style)(n)))
@@ -346,7 +348,8 @@
       below: below,
       breakable: false,
       stroke: (bottom: _s("bottom")),
-    )[]
+      none,
+    )
   ]
 }
 
@@ -413,8 +416,9 @@
       Solution
       #if title != none [ #h(1em) (#title) ]
     ],
-  )[#body]
-]
+    body,
+  )
+}
 
 // ==== Problems and Quizzes ===========================================================================================
 #let _exercise-enum-depth = state("_exercise-enum-depth", 0)
@@ -429,6 +433,7 @@
 
 #let _problem-box(t, body) = {
   let accent = c.light-orange
+  show math.frac: math.display // to force bigger fraction in problem/quiz boxes
   _box(
     indent: t.indent,
     accent: accent,
@@ -500,8 +505,9 @@
 
 // ==== Template =======================================================================================================
 
-#import "@preview/in-dexter:0.7.2": index
+#import "in-dexter.typ": index
 #let keyword(..args, key: none, content) = [#index(..args, if key == none { content } else { key })#EMPH(content)]
+#let index-see(keyword, redirect-to) = index(render: it => [→ see #emph(redirect-to)], keyword)
 
 // ==== Template =======================================================================================================
 // Parameters:

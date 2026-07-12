@@ -3,19 +3,12 @@
 
 = The first step
 
-#remark[
-  This document is designed for first-year students in their *second* semester, who *have already studied derivatives* in their first-semester calculus course.
-  If you are not yet confident with derivatives, please study
-  #link("https://misho104.github.io/LecturePublic/", "the Derivative Boot Camp") first#footnote[Visit https://misho104.github.io/LecturePublic and find `gp1_boot1_deriv_true.pdf`.].
-]
-
 Birds sing, fish swim, flowers bloom, stars twinkle, and university students calculate derivatives.
 Let us begin with basic #keyword[derivatives].
 Try the next quiz---and note how long it takes.
 
 #quizzes[
-  #show math.equation.where(block: false): it => math.display(it)
-  + `4` Calculate the first derivatives of the following functions.
+  + Calculate the first derivatives of the following functions, *measuring how many minutes it takes.*
     #h-enum(cols: 4, v-sep: 1.5em)[
       + $(x+1)^3$
       + $tan x$
@@ -28,13 +21,17 @@ Try the next quiz---and note how long it takes.
     ]
 ]
 
-If you finished within two minutes---Wonderful! Most students take 3--4 minutes.
-If you took more than four minutes, do not worry: you can do the calculations, and a little more practice will help.
-Try some problems in
-#link("https://misho104.github.io/LecturePublic/", "the Derivative Boot Camp")
+- Less than two minutes? Amazing! It is as fast as Sho!
 
-Did you make calculation mistakes and get wrong answers? That is a serious issue---just as serious as forgetting how to do the calculations at all.
-You will perform similar calculations more than 100 times in university, so you need to be both fast and accurate.
+- Less than four minutes? Great, it is exactly as Sho anticipates. Please continue your effort!
+
+- Even if you took more than four minutes, do not worry.
+  At least you don't make any mistakes.
+  A little more practice will help you.
+  Try more problems in #link("https://misho104.github.io/LecturePublic/", "the Derivative Boot Camp").#footnote[Visit https://misho104.github.io/LecturePublic and find `gp1_boot1_deriv_true.pdf`.]
+
+- If you make any mistakes in these eight calculations, then it is a serious issue---just as serious as forgetting how to do the calculations at all.
+  In university, you will perform similar calculations more than 100 times. You need to be both fast and accurate.
 
 
 #divider()
@@ -45,43 +42,81 @@ Both can be improved with practice.
 
 
 This course will help you strengthen these basic calculations---some of which you already know from high school---while also introducing new topics that are essential for physics.
-You will solve many problems and drills, just as a beginner athlete repeats the same move hundreds of times to master it.
+You will solve many problems and drills, just as an athlete repeats the same move hundreds of times to master it.
 
+#v(1fr)
+
+#_box(accent: c.gray, head-box: none)[
+  This document (this lecture course) is designed for first-year students in their second semester, *who have already studied derivatives well* in their first-semester calculus. As we do not cover the details of derivatives here, if you are not confident with derivatives, please first study #link("https://misho104.github.io/LecturePublic/", "the Derivative Boot Camp").
+]
+
+#v(1fr)
+
+#pagebreak()
 
 = Typical Pitfalls
 == Notations
 
 #let qeq = $quad = quad$
 
-There are several equivalent ways to write the derivative of $f(x)$:
+Consider a function $f(x)$. As we vary the value of $x$, $x$ is called a #keyword[variable].
+For a function $f(x)$, there are several equivalent ways to write its derivative:
 $ f'(x) qeq dv(f, x)(x) qeq dv(f(x), x) qeq dv(x)f(x) wide "[All means the same thing]." $
 Similarly, the value of $f'(x)$ at a specific point $x=3$ can be written as
 $ f'(3) qeq eval(f'(x))_(x=3) qeq eval(dv(f, x))_(x=3) qeq dv(f, x)(3) qeq dv(x)f(3), $
 and they are all equivalent. For example, if $f(x)=3x^2+6$, then $f'(x)=6x$ and $f'(3) = 18$.
 
-The real pitfalls come next. Students often get confused when a #keyword[constant] $a$ appears. If $a$ is _declared as a constant_, we can define a function such as $g(x)=a x^2+2a$, for which
+Most of students get confused when a #keyword[constant] $a$ appears. If $a$ is _declared as a constant_, we can define a function such as $g(x)=a x^2+2a$, for which
 $ g'(x) = 2 a x. $ <d1>
 We can evaluate $g'(x)$ at $x=a$. The result is $g'(a)=2a^2$, written as
 $ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(x)g(a) quad = quad 2a^2. $
 
 #be-careful[
-  the notation $display(dv(x)g(a))$ does *not* mean $display(dv(x)lr([g(a)], size: #150%)) = display(dv(x)(a^3+2a))=0$.
+  #show math.frac: math.display
+  The notation $dv(x)g(a)$ does *not* mean $dv(x)lr([g(a)], size: #150%) = dv(x)(a^3+2a)=0$.
 ]
 #fail-safe[
-  If you can't see @d1, try setting $a=3$. Then, $g(x)=f(x)$, and $g'(x)$ should equal $f'(x)$.
+  If you can't see @d1, try setting $a=3$. Then, you notice $g(x)$ is the same function as $f(x)$, and $g'(x)$ should equal $f'(x)$.
+]
+
+#quizzes[
+  + Let $a$ be a constant and $g(x)=a x^2+2a$. Calculate
+    #h-enum(cols: 4)[
+      + $g(1)$
+      + $g(a)$
+      + $g(0)$
+      + $g(7)$
+      + $g'(1)$
+      + $g'(a)$
+      + $g''(2)$
+      + $dv(, x)g(7)$
+    ]
 ]
 
 #make-indent
-There is more bad news. _Physicists are often lazy_, and we frequently omit the argument $(x)$. For example, if $f(x)=3x^2$ and $F(t)=t^2+a t+1$, and if $a$ is _declared as a constant_,
+One more bad news. _Physicists are often lazy_ and write $f(x)$ as $f$.
+If $f(x)=2x^2+1$, we may write $f'=4x$ and $f''=4$. For $g(t)=2t^2-1$, you may write $g'=4t$ and $g''=4$.
+Therefore, when you see a function $f$, you must *identify its variable from the context*.
+
+In physics, a variable can be a function of another variable.
+The kinetic energy $K(v)=m v^2\/2$ is a good example. Its variable $v$ is a function of time $t$~---we write this fact by $v=v(t)$--- and thus
 $
-  & f' qeq dv(x)f qeq 6x, wide   && f'(a) qeq dv(x)f(a) qeq 6a, \
-  & F' qeq dv(t)F qeq 2t+a, wide && F'(a) qeq dv(t)F(a) qeq 3a.
+  K(v) = 1/2 m v^2 quad "but also" quad K(t) = K(v(t)) = 1/2 m v(t)^2.
 $
-So when you see a function written as $f$, you must identify its variable by reading the context.
-For example, we sometimes replace the variables. Assume $f(x)=3x^2$. If $t$ is another #keyword[variable] (= not a constant), we can understand $3t^2$ is the same function $f(t)$. So we may write $f(t)=3t^2$, whose derivative is $f'(t)=dv(f, t, style: "horizontal")=6t$.
+Now, what does $K'$ mean? ---It is ambiguous and we must avoid such notation.
+Even though, if you see it in a textbook, you need to guess the author's intention from the context.
 
 #advanced-note[
-  We usually write "Let $k$ be a constant" to declare $k$ as a constant. You need to do so, too.
+  This rewrite, $K(t)$ and $K(v)$, is common in physics. However, mathematicians
+  do not like this practice because they consider $K$ a unique object: a
+  function should always mean the same rule applied to its input.
+  If they see $K(v)=m v^2\/2$, they would say #math.lr(size: 100%)[\[$K$ is an object that converts its input into $m\/2 times ("input")^2$, and thus if you feed $t$ into $K$, you must get $K(t) = m t^2\/2$\]].
+  This is of course not what we mean.
+  For example, imagine $v(t) = alpha t$ with $alpha$ a constant. Then
+  $ "physicists:" quad K(v) = 1/2 m v^2, quad K(t) = 1/2 m alpha^2 t^2; $
+  but mathematicians would say, #math.lr(size: 100%)[\[since it returns $m alpha^2\/2 times ("input")^2$, it is a different object\]] and hence use a different name for it, such as $tilde(K)$:
+  $ "mathematicians:" quad K lr(size: #150%, (v(t))) = 1/2 m times v(t)^2 = tilde(K)(t) = 1/2 m alpha^2 t^2. $
+  Both conventions are reasonable, and eventually you will get used to both.
 ]
 
 #EMPH[Higher-order derivatives]#index("order") is written as
@@ -91,27 +126,6 @@ $
 $
 etc. Please be careful on the position of "2" and "3".
 
-#quizzes[
-  + `4` Let $a$ and $b$ be constants. If $f(x)=3x^2$, $g(t)=a t^2+b$, $F(x)=a+3$, and $G(t)=a cos(t)+x sin(t)$, what are the following expressions?
-    #h-enum(cols: 4, v-sep: 1.5em)[
-      + $f'(x)$
-      + $f'(0)$
-      + $f'(a)$
-      + $f'(-a)$
-      + $g'(t)$
-      + $g'(0)$
-      + $g'(b)$
-      + $g'(x)$
-      + $F'(a)$
-      + $G'(t)$
-      + $G'(0)$
-      + $G'(a)$
-      + $display(dv(f, x))$
-      + $display(dv(f, x)(0))$
-      + $display(dv(g, t))$
-      + $display(dv(g(x), x))$
-    ]
-]
 
 == Radian and trigonometric functions
 
@@ -119,12 +133,12 @@ At university, angles are almost always measured in #keyword[radians]:
 $
   360 "degree" quad ("or:" 360degree) qeq 2pi "radian" quad ("or:" 2pi "rad")
 $
-Furthermore, we usually omit "radian" (because we are lazy!) Now,
+Furthermore, we usually omit "radian" (because we are lazy!). So,
 $
   "a right angle is " pi\/2.quad "The sum of the interior angles of a triangle is" pi.\
 $
 #quizzes[
-  + `4` Express the following angles in radians, and radians in angles.
+  + Express the following angles in radians, and radians in angles.
     #h-enum(cols: 5)[
       + $180 degree$
       + $45 degree$
@@ -148,13 +162,15 @@ Because we have chosen radians as the standard, $(sin x)'$ becomes this simple.
   The simpleness of @sin-deriv originates in the fact $sin(0.01 "rad") approx 0.01$. If we used degrees, we would have $sin(0.01 degree) approx 0.01 times 0.017453$ and  everything is messed up with this number 0.017453.
 ]
 
+#pagebreak()
+
 #make-indent
 There are a few remarks in the notation of #keyword(key: "trigonometric function", [trigonometric functions]):
 $
   & sin^2 x != sin x^2. wide && "Namely,"quad (sin x)^2 = sin^2 x quad   && != quad sin x^2 = sin(x^2). \
   & tan^(-1) x != 1/(tan x). && "Namely,"quad tan^(-1) x = arctan x quad && != quad (tan x)^(-1) = 1/(tan x) = cot x.
 $
-The following are not incorrect but confusing. _We should avoid ambiguity_, so please don't use them.
+The following expressions are not incorrect but confusing;
 #no-num(
   $
     #RED[$sin^(-2) x$],quad
@@ -163,7 +179,8 @@ The following are not incorrect but confusing. _We should avoid ambiguity_, so p
     #RED[$sin (x+1)^2$],...
   $,
 )
-Sho thinks we should only use $quad sin^k x quad$ for $k=2, 3, 4, ...$, and use $quad arcsin x quad$ instead of $sin^(-1)x$.
+*We should avoid ambiguity*, so please _never_ use confusing these notations.
+Sho thinks we should use $med sin^k x med$ only for $k=2, 3, 4, ...$, and use $med arcsin x med$ instead of $sin^(-1)x$.
 
 == Several interpretations of derivatives
 When you, physics learners, discuss $f'(t)$, you should have the following three interpretations:
@@ -179,23 +196,27 @@ When you, physics learners, discuss $f'(t)$, you should have the following three
 
 If you are unsure of them, please consult your first-year Calculus textbooks for further information.
 
+#quizzes[
+  + What is the definition of $f'(x)$? Explain.
+]
+In physics, it is important to memorize and understand the #keyword[definition] of each concept.
+
+
 = Taylor expansion
 
-Reviewing the previous equation for a function $f(x)$, we have
+Reviewing the definition of $f'(x)$, we have
 $
   f'(x) := lim_(Delta x->0) (f(x+Delta x)-f(x))/(Delta x),
   wide
   f'(a) := lim_(delta->0) (f(a+delta)-f(a))/(delta).
 $ <def-deriv>
-#advanced-note[
-  These two have a bit different sense: the first one defines a new function $f'(x)$, while the second one defines a number that is eventually equal to $f'(x)|_(x=a)$. Anyway, we don't care the difference.]
-We can understand the second equation as
+The second equation is interpreted as follows:
 $
-  "If " delta approx 0, quad f'(a) approx (f(a+delta)-f(a))/(delta),quad "i.e.,"quad f(a+delta)approx f(a)+delta thin f'(a).
+  "If " delta approx 0, quad f'(a) approx (f(a+delta)-f(a))/(delta),quad "i.e.,"quad f(a+delta)approx f(a)+delta thin f'(a)
 $<taylor-1>
-These equations will be helpful if you want to know *what is $f(x)$ around the point $x=a med$?*
+and this interpretation is useful in the following example:
 #example()[
-  Find the approximate value of the following expressions:
+  Find the approximate value of the following expressions without using calculators. Then, check your answer with a calculator.
   #h-enum(cols: 3)[
     + $sqrt(1.002)$
     + $(1.002)^10$
@@ -206,58 +227,117 @@ These equations will be helpful if you want to know *what is $f(x)$ around the p
   #enum(numbering: cn => box(width: 2em, align(right, text-sf[*(#cn)*])), tight: false)[
     Apply @taylor-1 for $f(x)=sqrt(x)$, $a=1$, and $delta=0.002$. Then,
     #no-num(
-      $f'(x)=1/(2sqrt(x)),quad f'(a)=f'(1)=1/2, quad f'(a)approx f(a)+delta f'(a)=sqrt(1)+delta/2=underline(1.001).$,
+      $f'(x)=1/(2sqrt(x)),quad f'(a)=f'(1)=1/2, quad f(a+delta)approx f(a)+delta f'(a)=1+delta/2=underline(1.001).$,
     )
   ][
-    Doing the same thing for $g(x)=x^10$, we have
-    #no-num($g'(x)=10x^9,quad g'(a)=g'(1)=10, quad g'(a)approx g(a)+delta g'(a)=1^10+10delta=underline(1.02).$)
+    Doing the same thing for $g(x)=x^10$ with $a=1$ and $delta=0.002$,
+    #no-num($g'(x)=10x^9,quad g'(a)=g'(1)=10, quad g(a+delta)approx g(a)+delta g'(a)=1^10+10delta=underline(1.02).$)
 
   ][
     Doing the same thing for $h(x)=sqrt(x)$, $a=4$, and $delta=0.004$, we have
-    #no-num(
-      $h'(4)=1/4,quad h'(4.004) approx h(4)+0.004times 1/4 = underline(2.001).$,
-    )
+    #no-num($h'(4)=1/4,quad h'(4.004) approx h(4)+0.004times 1/4 = underline(2.001).$)
   ]]
+#advanced-note[
+  "Solutions" contain not only the answer but also how you reached the answer. You are, of course, asked to write such explanations when you solve problems.]
 
-This technique, and @taylor-1, is a special case of the more general #keyword[Taylor's theorem]:
+Namely, with this technique, you can find *the value of $f(x)$ around a point $x=a$.*
+This technique, @taylor-1, is a special case of Taylor's theorem, which is discusssed in #TODO[???].
 
-#TODO[postpone the discussion below to a later chapter]
-#theorem(title: "Taylor's theorem")[
-  If a function $f(x)$ is sufficiently smooth, we can express it as
-  $
-    f(x) = sum_(k=0)^N ((x-a)^k)/k! f^((k))(a) + "[dangerous part]".
-  $
-  and we can ignore the dangerous part if $x approx a$. So, if we replace $x$ by $a+epsilon$ and $epsilon approx 0$,
-  $
-    f(a+epsilon) & = sum_(k=0)^N (epsilon^k)/k! f^((k))(a) + "[dangerous part]" \
-                 & approx f(a) + epsilon thin f'(a) + (epsilon^2)/2 thin f''(a) + (epsilon^3)/6 thin f'''(a) + dots.c
-  $
+#quizzes()[
+  + Find the approximate value of the following expressions without using calculators. Then, check your answer with a calculator.
+    #h-enum(cols: 3)[
+      + $sqrt(1.001)$
+      + $(1.0001)^30$
+      + $1/1.001$
+    ]
+]
 
+To summarize, we have the following statement:
+
+#theorem(type: "Statement", title: "Taylor expansion: basic")[
+  For a physicists-friendly function $f(x)$,
+  $ f(a+delta) & approx f(a) + delta f'(a), $ <taylor-simple>
+  or as an equivalent expression,
+  $ f(x) & approx f(x_0) + (x-x_0) f'(x_0). $
+]
+#quizzes()[
+  + Check these two equations are equivalent. You will be ready to use either of them in the future.
+  + Review how to derive @taylor-simple and summarize it in your own words.
 ]
 
 
+#pagebreak()
 #problems[
-  + `4` Find the approximate value of the following expressions:
-    #h-enum(cols: 3)[
-      + $(1.002)^5$
-      + $sin(0.001)$
-      + $cos(0.001)$
-      + $tan(0.001)$
-      + $sqrt(4.004)$
+  + `9` Calculate the following expression.
+    #h-enum(cols: 5)[
+      + $sin 30 degree$
+      + $cos 45 degree$
+      + $cos 120 degree$
+      + $sin 150 degree$
+      + $tan 180 degree$
+      + $cos 0$
+      + $sin 2pi$
+      + $cos pi$
+      + $sin(pi\/3)$
+      + $cos(-pi\/4)$
+      + $tan(2pi\/3)$
+      + $sin(pi\/6)$
+      + $tan(5pi\/6)$
+      + $cos(-pi\/6)$
+      + $tan(-pi\/2)$
     ]
-  + `3` Find the approximate value of the following expressions:
-    #h-enum(cols: 3)[
+  + `9` For the following $f(x)$, calculate $f'(x)$, $f''(x)$, $f^((3))(x)$, $f^((4))(x)$, and $f^((5))(x)$.
+    #h-enum(cols: 4)[
+      + $x^3$
+      + $sin 2x$
+      + $ee^(2x)$
+      + $ln 2x$
+    ]
+  + `9` Find the approximate value for the following expressions without calculators. Then, check your answer with a calculator.
+    #h-enum(cols: 5)[
+      + $(1.002)^7$
+      + $(2.002)^7$
+      + $(0.998)^4$
+      + $(10.01)^3$
+      + $1 div 0.998$
+      + $sqrt(0.998)$
+      + $sqrt(4.001)$
+      + $(0.999)^(1\/2)$
+      + $(0.999)^(-1\/2)$
+      + $(0.999)^(-3\/2)$
+      + $1/(2.02)^2$
+      + $tan 0.001$
+      + $cos 0.002$
+      + $sin 0.003$
+      + $ln 1.001$
+    ]
+  + `3` Find the approximate value for the following expressions without calculators. Then, check your answer with a calculator.
+    #h-enum(cols: 5)[
+      + $root(3, 1.001)$
+      + $root(3, 8.012)$
+      + $1.001^0.5$
+      + $1.001^(-0.9)$
       + $sin(3.14)$
       + $cos(1.57)$
-      + $root(3, 1.001)$
-      + $(1.002)^0.9$
-      + $1\/(10.004)^3$
-      + $sqrt(10001)$
+      + $sin 1degree$
+      + $cos 61degree$
+      + $ln 0.999$
+      + $log_10(10.01)$
+      + $sqrt(1.001)sin 0.001$
     ]
-
   #fail-safe[If you are not confident with the meaning of $root(3, 1.001)$, $(1.001)^(-0.9)$, etc., please go to #TODO[a chapter...]]
+  + `2` For the following $f(x)$, calculate $f^((n))(x)$ for all positive integers $n=1,2,3,...$.
+    #h-enum(cols: 5)[
+      + $x^10$
+      + $sin 2x$
+      + $ee^(2x)$
+      + $ln x^2$
+      + $sqrt(x)$
+    ]
 
   + `2` Write down the definition of the second derivative $f''(x)$. Repeat the discussion of @taylor-1 to find the expansion $f'(a+epsilon) approx f'(a) + epsilon f'(a) + (epsilon^2\/2) f''(a)$.
 ]
 
-#TODO[more problems]
+#advanced-note[
+  The two equations in @def-deriv have similar but different meanings: the first one defines a new function $f'(x)$, while the second one defines a number that is eventually equal to $f'(x)|_(x=a)$. Anyway, we don't care the difference.]
+

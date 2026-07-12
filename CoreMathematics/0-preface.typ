@@ -1,5 +1,5 @@
 #import "misho-text.typ": EMPH, JA, RED, TODO, ZH, c, h-enum, keyword, problems, quizzes, tab, text-sf
-#import "@preview/in-dexter:0.7.2": first-letter-up, make-index
+#import "in-dexter.typ": first-letter-up, make-index
 
 #let ds(body) = text-sf(body)
 
@@ -222,7 +222,7 @@ You need to write them so that *others can distinguish each from others*, but Sh
 
 
 #quizzes[
-  + `4` Read out the following words.
+  + Read out the following words.
     #h-enum(cols: 3)[
       + $α$-particle
       + $β$-decay

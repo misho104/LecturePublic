@@ -31,42 +31,63 @@
 }
 #let writing(body) = {
   (
-    h(0.6em)
+    h(0.3em)
       + box(
-        inset: (x: 0.6em, y: 0.55em),
-        baseline: 0.6em,
-        height: 1.8em,
+        inset: (x: 0.3em, y: 0.45em),
+        height: 1.6em,
         stroke: (thickness: 0.5pt, dash: "dashed"),
         body,
       )
-      + h(0.6em)
+      + h(0.3em)
   )
 }
 
+A #keyword[physical quantity] is usually not just a number, but also has a #keyword[unit] and an #keyword[uncertainty] (error).
+For example, "$(72 ± 2)kg$" has a number "72" and a unit "kg", which compose the #keyword[central value] "$72kg$".
+It also has uncertainty because every measurement has an uncertainty.
+In experimental physics, uncertainty is usually more important than the central value, and thus uncertainty handling is a fundamental skill of physicists.
 
+In this chapter, we first review physical quantities and how to handle units. Then, we discuss #keyword[significant figures], a simple and convenient method to express the uncertainty.
+Further discussions on uncertainty analysis are given in Chapter #TODO[chapter].
 
-A #keyword[physical quantity] is usually made of a number, a unit, and an #keyword[uncertainty] (#keyword[error]). For example,
+= Physical quantity
+
+The expression "$(72 ± 2)kg$" means the central value is $72kg$ and the #keyword[absolute uncertainty] is $2kg$.
+Accordingly, its #keyword[relative uncertainty] is given by $(2kg)\/(72kg)=0.028$.
+Let's see other examples.
+
 #align(center, table(
   columns: (auto, auto, auto, auto, auto),
   align: (left, center, center, center, center),
-  stroke: none,
-  table.header([], keyword[unit], keyword[central value], keyword[absolute uncertainty], keyword[relative uncertainty]),
-  table.hline(),
+  stroke: (x, y) => (x: none, bottom: (if y == 0 or y == 4 { 1pt } else { 0.5pt })),
+  table.header([], [unit], [central value], [absolute uncertainty], [relative uncertainty]),
   [$10meter ± 1cm$], [m (meter)], $10meter$, $1cm = 0.01meter$, [0.001 (or 0.1%)],
   [$1.6 ampere ± 0.04 ampere$], [A (ampere)], $1.6 ampere$, $0.04ampere$, [0.025 (or 2.5%)],
   [$(5±1)#EE(-3) coulomb$], [C (coulomb)], $0.005 coulomb$, $0.001 coulomb$, [0.2 (or 20%)],
   [$(50±1)mps$], [m/s], $50 mps$, $1 mps$, [0.02 (or 2%)],
 ))
+#index("uncertainty")
 #index("uncertainty", "absolute")
 #index("uncertainty", "relative")
-
-Measurements are always with uncertainty. Uncertainty handling is a fundamental skill of physicists because, in physics, uncertainty is often more important than the central value.
+#index-see("error", "uncertainty")
 
 #remark[
   Upper- and lowercase letters are distinguished. "M" *does not* mean "meter". The unit "A" is "ampere", not "Ampere". The unit "coulomb" is "C", not "c".
 ]
+
+As an undergraduate student, you need to follow the following rules:
+#theorem(type: "Statement", title: "Rules for Physical Quantities: Basic")[
+  + Numbers are always with units, even in calculations.
+  + Include units in a symbol.
+  + For physical quantities, use decimals (e.g., $1.6ampere)$. Do not use fractions like $(8\/5)ampere$.
+  + Use significant figures to express the measurement precision.
+]
+
+
+#pagebreak()
+
 #quizzes[
-  + `4` For each of the following values, find its unit, central value, absolute uncertainty, and relative uncertainty.
+  + For each of the following values, find its unit, central value, absolute uncertainty, and relative uncertainty.
     #h-enum(cols: 2)[
       + $50kg ± 500 unit(g)$
       + $(0.05 ± 0.001) ampere$
@@ -74,7 +95,7 @@ Measurements are always with uncertainty. Uncertainty handling is a fundamental 
       + $72unit("km/h") ± 1 mps$
     ]
 
-  + `4` The next passage has six (6) errors in the use of uppercase and lowercase letters. Find them out.
+  + The next passage has six (6) errors in the use of uppercase and lowercase letters. Find them out.
 
 
     In the SI system, temperature is expressed in k (kelvin), a unit named after Lord Kelvin.
@@ -83,20 +104,6 @@ Measurements are always with uncertainty. Uncertainty handling is a fundamental 
     , but comes from Greek.
 ]
 
-
-#make-indent
-As an undergraduate student, you need to follow the following rules:
-
-#theorem(type: "Statement", title: "Rules for Physical Quantities")[
-  + Numbers are always with units, even in calculations.
-  + Include units in a symbol.
-  + For physical quantities, use decimals (e.g., $1.6ampere)$. Do not use fractions like $(8\/5)ampere$.
-  + Use significant figures to express the measurement precision.
-]
-
-Significant figures are a simple way to express the uncertainty. We discuss it in this chapter, while Chapter #TODO[chapter] has further discussion on uncertainty and error analysis.
-
-#pagebreak()
 
 = Units
 When we educate kids, we write "my height is #blank()#cm", or "my height is $h$#cm", where $h=172$ is just a number.
@@ -122,18 +129,19 @@ Similarly, if $m=110 unit(g)$ and $g=9.8 mpss$,
 )
 This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equal to $0.11kg$ or $110 unit(g)$.
 
+
+#remark[
+  Usually, physicists use upright fonts for units and #text(style: "italic")[italic fonts] for quantities. For example, $m$, $T$, and $C$ are quantities, which can be mass, temperature, capacitance, etc. Meanwhile, m, T, and C are units: meter, tesla, and coulomb, respectively.
+]
+
 #let quiz-for-logic = quizzes[
-  + `4`
+  +
     + If $m r omega^2 = 10.0 unit("kg"*m/s^2)$, $m=5.0kg$, and $r=1.0 meter$, what is $omega$?
     + If $v_0t + 1/2a t^2=5.0meter$, where $a=-4.0mpss$ and $v_0=7.0 mps$, what is  $t$?
     + At time $t=0$, a particle is at $(x,y)=(2.0meter,0)$. It moves with a constant velocity $(v_x,v_y)=(3.0,4.0) mps$. What is its position at $t=1.0 second$?
 ]
 #quiz-for-logic
 <quiz-for-logic>
-
-#remark[
-  Usually, physicists use upright fonts for units and #text(style: "italic")[italic fonts] for quantities. For example, $m$, $T$, and $C$ are quantity symbols (describing mass, temperature, etc.), while m, T, and C are units (meter, tesla, and coulomb, respectively).
-]
 
 #make-indent
 Every physical concept has its own unit. For example, speed has $bare(m/s)$, acceleration has $bare(m/s^2)$, and energy has $bare("kg"*m/s^2)=bare(N*m)=bare(J)$.
@@ -179,11 +187,11 @@ Notice the last equation: units can be equal to other units, so we may write
 #writing($bare(s)=sqrt(bare("kg"*m/N))$).
 These are scientifically correct equations.
 #remark[
-  We sometimes use informal notations, such as #writing[$[F]=bare(N)$] or #writing($F arrow.r.dashed bare(N)$) to express "the unit of $F$ is $bare(N)$ (newton)". Still, using an equal symbol (=) is *not allowed*. Namely, #writing[#RED($F=bare(N)$)] is always incorrect.
+  We sometimes use informal notations, such as #writing[$[F]=bare(N)$] or #writing($F ⤳ bare(N)$) to express "the unit of $F$ is $bare(N)$ (newton)". Still, using an equal symbol (=) is *not allowed*. Namely, #writing[#RED($F=bare(N)$)] is always incorrect.
 ]
 
 #quizzes[
-  + `4` Using English, explain what unit the following quantities have.
+  + What are the units of the following concepts? Write English sentences to explain it.
     #h-enum(cols: 5)[
       + speed
       + velocity
@@ -198,8 +206,6 @@ These are scientifically correct equations.
   #tab[Since $DIM(m)= ds(M)$ and $DIM(g) = ds(L med T^(-2))$, $DIM (m g) = ds(M med L med T^(-2))$,]
   with the operator "dim" @si. However, it seems too complicated for most situations.
 ]
-
-#pagebreak()
 
 #problems[
   + `3` Express the following units only with SI base units, e.g., $bare(N) = bare("kg"*m/s^2)$.
@@ -222,8 +228,6 @@ These are scientifically correct equations.
     ]
   + `2` Find a few more examples of dimensionless quantities in physics.
 ]
-
-#pagebreak()
 
 = Significant figures <sig-figs>
 
@@ -286,25 +290,7 @@ We need to _avoid ambiguous notations_. Namely,
   [is not nice because it has four ways to interpret the author's intention.],
 )
 #quizzes[
-  + `4` What are the four interpretations of 42000?  Write them in scientific notation.
-  + `4` Write the following numbers in scientific notation. However, some of them are ambiguous, so answer "ambiguous" if so.
-    #grid(columns: 10, column-gutter: 1em)[152][340][1000][9999][43210][0.0300][0.00213][31.0][31.00][31]
-
-  + `4` The expressions 0.123, 1.23, and 123 are numbers with _*three* significant figures_. Similarly, 1234 and $1.234EE(-3)$ are numbers with _*four* significant figures_. How about the following expressions?
-    #h-enum(cols: 4)[
-      + $3.14$
-      + $0.11$
-      + $1.1EE(-2)$
-      + $1.1EE(1)$
-      + $1.0008$
-      + $1.0020$
-      + $1.0000$
-      + $4.00EE(-10)$
-      + 0.0008
-      + 0.00080
-      + 12345
-      + 67890
-    ]
+  + What are the four interpretations of 42000?  Write them in scientific notation.
 ]
 #make-indent
 We use #keyword[rounding]-to-the-nearest (#ZH[四捨五入]) when necessary. For example, if you need to convert to three significant figures, it will be
@@ -330,23 +316,44 @@ We use #keyword[rounding]-to-the-nearest (#ZH[四捨五入]) when necessary. For
   Programmers use `2.99e8` (or `2.99E8`) to mean $2.99EE(8)$, or `1.6e-12` (or `1.6E-12`) to mean $1.6EE(-12)$. However, we *should not* use them in handwriting.
 ]
 
+#problems[
+  + `9` Write the following numbers in scientific notation. However, some of them are ambiguous, so answer "ambiguous" if so.
+    #grid(columns: 10, column-gutter: 1em)[152][340][1000][9999][43210][0.0300][0.00213][31.0][31.00][31]
 
+  + `9` The expressions 0.123, 1.23, and 123 are numbers with _*three* significant figures_. Similarly, 1234 and $1.234EE(-3)$ are numbers with _*four* significant figures_. How about the following expressions?
+    #h-enum(cols: 4)[
+      + $3.14$
+      + $0.11$
+      + $1.1EE(-2)$
+      + $1.1EE(1)$
+      + $1.0008$
+      + $1.0020$
+      + $1.0000$
+      + $4.00EE(-10)$
+      + 0.0008
+      + 0.00080
+      + 12345
+      + 67890
+    ]
+
+]
+
+#pagebreak()
 
 = Calculation with Significant figures
 
-Now we are to calculate these numbers with significant figures, such as $1.23+4.56$ or $1.23\/4.56$, but how?
-The professional methods are given in #TODO[chap].
+We need to do calculations of numbers with uncertainties, such as $1.23+4.56$ or $1.23\/4.56$, but how?
 Here we discuss a simple method for
 
 - addition ($x+y$) and subtraction ($x - y$)
 
 - multiplication ($x times y$) and division ($x div y$ or $x\/y$)
 
-Treatments for $sqrt(x)$, $ee^(x)$ or $sin(x)$ need the professional method given in #TODO[chap].
+Other calculations, such as $sqrt(x)$, $ee^(x)$ or $sin(x)$, need the professional method given in #TODO[chap].
 
 === Multiplication and Division
 
-If $x$ has $m$ significant figures and $y$ has $n$ significant figures, then $x times m$ or $x div y$ should be rounded to have $min(m, n)$ significant figures.
+As a rule, if $x$ has $m$ significant figures and $y$ has $n$ significant figures, then $x times m$ or $x div y$ should be rounded to have $min(m, n)$ significant figures. ...But the rule is tough to understand. Probably you should see the example, and learn through practice.
 
 #example()[ Calculate the following expressions, using calculators.
   #h-enum(cols: 4)[
@@ -369,7 +376,7 @@ If $x$ has $m$ significant figures and $y$ has $n$ significant figures, then $x 
     #no-num($1.210^3 = 1.771561 → underline(1.772).$)]
 ]
 
-This treatment is justified if you carry out the long multiplication by your hand.
+If you want, we can justify this treatment by carrying out a hand calculation of the long multiplication.
 
 #let v-calc(columns, text) = table(
   columns: columns,
@@ -402,7 +409,8 @@ So, the result is #sig("1.57").
 
 === Addition and subtraction
 
-Different rules are applied for addition and subtraction, where we do long addition and observe which digits are polluted.
+Different rules are applied for addition and subtraction.
+You can understand the rules easily if you do long addition and observe which digits are polluted.
 
 #example[
   Calculate the following expressions.
@@ -424,7 +432,6 @@ Different rules are applied for addition and subtraction, where we do long addit
   )
   and we round the results. So, the answers are #sig("16.9"), #sig("128"), #sig("0.47"), and #sig("1.17", e: 3).
 ]
-Probably it is easier to understand the rules through examples, so now it's time to "drill"!
 
 
 #problems[
@@ -502,3 +509,4 @@ Probably it is easier to understand the rules through examples, so now it's time
 ]
 
 
+#advanced-note[Uncertainties can often be determined subjectively, but central values are also without specific definitions; it is often the averaged value of the measurements, but one may assume some probabilistic distribution and use its median, mean, or mode as the central value.]
