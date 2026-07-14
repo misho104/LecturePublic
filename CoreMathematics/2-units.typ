@@ -75,17 +75,6 @@ Let's see other examples.
   Upper- and lowercase letters are distinguished. "M" *does not* mean "meter". The unit "A" is "ampere", not "Ampere". The unit "coulomb" is "C", not "c".
 ]
 
-As an undergraduate student, you need to follow the following rules:
-#theorem(type: "Statement", title: "Rules for Physical Quantities: Basic")[
-  + Numbers are always with units, even in calculations.
-  + Include units in a symbol.
-  + For physical quantities, use decimals (e.g., $1.6ampere)$. Do not use fractions like $(8\/5)ampere$.
-  + Use significant figures to express the measurement precision.
-]
-
-
-#pagebreak()
-
 #quizzes[
   + For each of the following values, find its unit, central value, absolute uncertainty, and relative uncertainty.
     #h-enum(cols: 2)[
@@ -103,6 +92,15 @@ As an undergraduate student, you need to follow the following rules:
     In contrast, Kg (kilogram) is not named after a person.
     , but comes from Greek.
 ]
+
+As an undergraduate student, you need to follow the following rules:
+#theorem(type: "Statement", title: "Rules for Physical Quantities: Basic")[
+  + Numbers are always with units, even in calculations.
+  + Include units in a symbol.
+  + For physical quantities, use decimals (e.g., $1.6ampere)$. Do not use fractions like $(8\/5)ampere$.
+  + Use significant figures to express the measurement precision.
+]
+
 
 
 = Units
@@ -134,19 +132,18 @@ This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equ
   Usually, physicists use upright fonts for units and #text(style: "italic")[italic fonts] for quantities. For example, $m$, $T$, and $C$ are quantities, which can be mass, temperature, capacitance, etc. Meanwhile, m, T, and C are units: meter, tesla, and coulomb, respectively.
 ]
 
-#let quiz-for-logic = quizzes[
+#quizzes[
   +
     + If $m r omega^2 = 10.0 unit("kg"*m/s^2)$, $m=5.0kg$, and $r=1.0 meter$, what is $omega$?
     + If $v_0t + 1/2a t^2=5.0meter$, where $a=-4.0mpss$ and $v_0=7.0 mps$, what is  $t$?
     + At time $t=0$, a particle is at $(x,y)=(2.0meter,0)$. It moves with a constant velocity $(v_x,v_y)=(3.0,4.0) mps$. What is its position at $t=1.0 second$?
 ]
-#quiz-for-logic
-<quiz-for-logic>
 
 #make-indent
 Every physical concept has its own unit. For example, speed has $bare(m/s)$, acceleration has $bare(m/s^2)$, and energy has $bare("kg"*m/s^2)=bare(N*m)=bare(J)$.
 The table below lists the quantities you have learned.
 Notice that angle (rad) has no dimension. It is called a #keyword[dimensionless] quantity.
+<quiz:for-logic>
 
 #align(center, table(
   columns: (auto, auto, auto, auto),

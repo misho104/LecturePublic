@@ -108,6 +108,20 @@
 #let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
 #let root(n, x) = math.root(move(math.script(n), dy: -0.3em), x)
 
+// #show math.attach: it => {
+//   if it.has("label") and it.label == <u1> {
+//     it
+//   } else {
+//     let new-it = it
+//       .fields()
+//       .pairs()
+//       .filter(((k, v)) => k != "base")
+//       .to-dict()
+//       .map(v => if (v != none and v.text.starts-with("!")) { [#box(v.text.slice(1))] } else { v })
+//     [#math.attach(it.base, ..new-it)<u1>]
+//   }
+// }
+
 // ==== Block level styles =============================================================================================
 #let make-indent = h(dim.indent)
 #let no-num(content) = { math.equation(block: true, numbering: none, content) }
@@ -580,10 +594,10 @@
 
   show ref.where(form: "normal"): it => {
     if str(it.target).starts-with("quiz:") {
-      let t = query(selector(figure.where(kind: "quiz")).after(it.target)).first().location()
+      let t = query(selector(figure.where(kind: "quiz")).before(it.target)).last().location()
       link(t, [Quiz #counter(heading).at(t).at(0).#counter(figure.where(kind: "quiz")).display("1", at: t)])
     } else if str(it.target).starts-with("prob:") {
-      let t = query(selector(figure.where(kind: "problem")).after(it.target)).first().location()
+      let t = query(selector(figure.where(kind: "problem")).before(it.target)).last().location()
       link(t, [Problem #counter(heading).at(t).at(0).#counter(figure.where(kind: "problem")).display("1", at: t)])
     } else { it }
   }
