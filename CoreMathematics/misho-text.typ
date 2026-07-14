@@ -282,9 +282,15 @@
   current-chapter.update((number, title, [Chapter #number: #title]))
   set-page-style("normal")
   counter(math.equation).update(0)
-  counter("env").update(0)
+  counter(figure.where(kind: "env")).update(0)
   counter("problem").step()
   counter("quiz").step()
+}
+#let _chapter-numbering(n) = {
+  let _n = if type(n) == str {
+    counter(figure.where(kind: n)).get().at(0)
+  } else { n }
+  numbering("1.1", counter(heading).get().first(), _n)
 }
 
 // ==== Fenced containers ==============================================================================================
@@ -375,39 +381,51 @@
   ]
 }
 
-#let theorem(type: "Theorem", title: none, body) = [
-  #let border = 1pt + c.blue
-  #counter("env").step()
-  #_box(
-    accent: c.blue.lighten(40%),
-    call-out: false,
-    stroke: (top: border, bottom: border),
-    inset: (top: 0.4em, middle-above: 0.4em, middle-below: 1em),
-    head-box: (fill: c.blue),
-    label: text-sf(fill: white, size: 11pt, weight: "bold")[
-      #h(-.5em)
-      #type #context [#current-chapter.get().at(0).#counter("env").display()]
-      #if title != none [ #h(1em) (#title) ]
-    ],
-  )[#body]
-]
+#let theorem(type: "Theorem", title: none, body) = {
+  let border = 1pt + c.blue
+  figure(
+    caption: none,
+    kind: "env",
+    supplement: type,
+    numbering: _chapter-numbering,
+    align(left, _box(
+      accent: c.blue.lighten(40%),
+      call-out: false,
+      stroke: (top: border, bottom: border),
+      inset: (top: 0.4em, middle-above: 0.4em, middle-below: 1em),
+      head-box: (fill: c.blue),
+      label: text-sf(fill: white, size: 11pt, weight: "bold")[
+        #h(-.5em)
+        #type #context { _chapter-numbering("env") }
+        #if title != none [ #h(1em) (#title)  ]
+      ],
+      body,
+    )),
+  )
+}
 
-#let example(title: none, body) = [
-  #let border = 1pt + c.green
-  #counter("env").step()
-  #_box(
-    call-out: false,
-    stroke: (top: border, bottom: border, left: border, right: border),
-    inset: (top: 0.4em, middle-above: 0.5em, middle-below: .3em),
-    label: text-sf(fill: c.green, size: 11pt, weight: "bold")[
-      Example #context [#current-chapter.get().at(0).#counter("env").display()]
-      #if title != none [ #h(1em) (#title) ]
-    ],
-  )[#body]
-]
-#let solution(title: none, body) = [
-  #let border = 1pt + c.green
-  #_box(
+#let example(title: none, body) = {
+  let border = 1pt + c.green
+  figure(
+    caption: none,
+    kind: "env",
+    supplement: "Example",
+    numbering: _chapter-numbering,
+    align(left, _box(
+      call-out: false,
+      stroke: (top: border, bottom: border, left: border, right: border),
+      inset: (top: 0.4em, middle-above: 0.5em, middle-below: .3em),
+      label: text-sf(fill: c.green, size: 11pt, weight: "bold")[
+        Example #context { _chapter-numbering("env") }
+        #if title != none [ #h(1em) (#title) ]
+      ],
+      body,
+    )),
+  )
+}
+#let solution(title: none, body) = {
+  let border = 1pt + c.green
+  _box(
     call-out: false,
     stroke: (top: border, bottom: border, left: border, right: border),
     inset: (top: 0.4em, middle-above: 0.5em, middle-below: .3em),
