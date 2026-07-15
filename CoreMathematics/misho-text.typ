@@ -40,7 +40,7 @@
 )
 #let JA(true-size: none, size: none, ..args) = context text(
   lang: "ja",
-  script: "jpan",
+  script: "jpan", // cspell: disable-line
   region: "jp",
   font: _font-serif-ja,
   size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.95 },
@@ -54,6 +54,7 @@
   size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.95 },
   ..args,
 )
+
 // ==== Layout =========================================================================================================
 #let dim = (
   tab: 2.5em, // default "tab-shift" \BaseTab
@@ -82,7 +83,6 @@
 )
 // cspell:enable
 
-
 // ==== Text level styles ==============================================================================================
 #let GRAY(body) = text(fill: c.gray, body)
 #let BLUE(body) = text(fill: c.blue, body)
@@ -104,16 +104,13 @@
   show sym.ast: h(0.05em) + sym.dot.op + h(.05em)
   $#h(0.1667em)upright(body)$
 }
-
 #let ee = math.upright("e")
 #let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
-
 #let root(n, x) = math.root(move(math.script(n), dy: -0.3em), x)
 
 // ==== Block level styles =============================================================================================
 #let make-indent = h(dim.indent)
 #let no-num(content) = { math.equation(block: true, numbering: none, content) }
-
 #let tab(shift: dim.tab, ..args, body) = block(inset: (left: shift), ..args, body)
 
 // ==== Page level styles ==============================================================================================
@@ -152,18 +149,11 @@
   "1": "*",
   "9": text(font: "Noto Color Emoji", "🦾"), // cspell: disable-line
 )
+#let _exercise-enum-depth = state("_exercise-enum-depth", 0)
 
-
-// accepting counter, not int
-#let _label-styles = (
-  "problem": cn => text-sf(weight: 600, cn("1.1")),
-  "quiz": cn => text-sf(weight: 600, cn((..n) => [Q#n.pos().at(1).])),
-  "(1)": cn => text-sf(weight: 600, cn("(1)")),
-  "(a)": cn => text-sf(weight: 600, cn("(a)")),
-)
-
-// accepting int
 #let _labels = (
+  "problem": n => text-sf(weight: 600, n),
+  "quiz": n => text-sf(weight: 600, [Q#n.replace(regex(".*\."), "").]),
   "(1)": n => text-sf(weight: 600, [(#n)]),
   "(A)": n => text-sf(weight: 600, "(" + str.from-unicode(64 + n) + ")"),
   "(a)": n => text-sf(weight: 600, "(" + str.from-unicode(96 + n) + ")"),
@@ -171,12 +161,21 @@
   "A": n => text-sf(weight: 600, str.from-unicode(64 + n)),
   "a": n => text-sf(weight: 600, str.from-unicode(96 + n)),
   "1.": n => [#n.],
+  "A.": n => str.from-unicode(64 + n) + ".",
+  "a.": n => str.from-unicode(96 + n) + ".",
 )
 #let enum-style(width: dim.label-width, style) = n => box(width: width, align(right, _labels.at(style)(n)))
 
-#let num-a = _labels.at("(1)")
-#let num-b = _labels.at("1")
-#let num-c = _labels.at("a")
+#let _enum-labels = (
+  _labels.at("1."),
+  _labels.at("A."),
+  _labels.at("a."),
+)
+#let _enum-labels-problems = (
+  _labels.at("(1)"),
+  _labels.at("(a)"),
+  _labels.at("1."),
+)
 
 // for list
 #let list-markers = ([•], [‣], [–])
@@ -184,56 +183,58 @@
 
 #let _enum-horizontal(
   cols: 1,
-  label-width: dim.label-width,
+  label-width: auto,
   label-sep: dim.label-sep,
-  label-style: _label-styles.at("(1)"),
-  label-start: 0,
-  prefixes: (),
+  label-style: auto,
+  label-start: 1,
   label-align: top,
   v-sep: 1em,
   h-sep: 0mm,
   inset: (:),
   ..items,
-) = {
-  let style = if type(label-style) == str { _label-styles.at(label-style) } else { label-style }
-  let label = n => {
-    if type(label-start) == counter {
-      e => context (label-start.step(level: 2)) + context (label-start.display(e))
-    } else if type(label-start) == int {
-      e => context (counter("tmp").update(label-start + n + 1)) + context (counter("tmp").display(e))
-    } else {
-      assert(False, "invalid type for enum-counter")
-    }
+) = [
+  #let style = if label-style == auto {
+    let depth = _exercise-enum-depth.get()
+    if (depth > 0) { _enum-labels-problems.at(depth - 1) } else { _enum-labels.at(0) }
+  } else if type(label-style) == str {
+    _labels.at(label-style)
+  } else {
+    label-style
   }
-  let numbered = items
-    .pos()
-    .enumerate()
-    .map(((i, body)) => (align(right, prefixes.at(i, default: "") + style(label(i))), "", body))
-  set par(first-line-indent: 0em, hanging-indent: 0em)
-  grid(
+  #let label-width = if label-width == auto {
+    if _exercise-enum-depth.get() == 0 { dim.label-width } else { dim.problem-label-width }
+  } else { label-width }
+  #set par(first-line-indent: 0em, hanging-indent: 0em)
+  #grid(
     columns: if type(cols) == int { range(cols).map(it => 1fr) } else { cols },
     column-gutter: h-sep,
     row-gutter: v-sep,
-    ..numbered.map(it => grid(
-      columns: (label-width, label-sep, auto),
-      align: (label-align, label-align, horizon),
-      inset: (inset, 0em, 0em),
-      ..it
-    ))
+    ..items
+      .pos()
+      .enumerate()
+      .map(((i, body)) => grid(
+        columns: (label-width, label-sep, auto),
+        align: (label-align + right, label-align, left),
+        inset: (inset, 0em, 0em),
+        style(label-start + i), "", body,
+      ))
   )
-}
+]
 #let h-enum(..args, cols: 4, body) = {
-  show enum: it => _enum-horizontal(
-    label-align: horizon,
-    cols: cols,
-    ..args,
-    ..it.children.map(it => {
-      it.body
-    }),
-  )
+  show enum: it => {
+    let depth = _exercise-enum-depth.get()
+    if depth > 0 { _exercise-enum-depth.update(d => d + 1) }
+    _enum-horizontal(
+      cols: cols,
+      ..args,
+      ..it.children.map(it => {
+        it.body
+      }),
+    )
+    if depth > 0 { _exercise-enum-depth.update(d => d - 1) }
+  }
   body
 }
-
 
 // ==== Gray title/chapter box =========================================================================================
 // State is updated BEFORE pagebreak so the new page's header sees it.
@@ -283,8 +284,8 @@
   set-page-style("normal")
   counter(math.equation).update(0)
   counter(figure.where(kind: "env")).update(0)
-  counter("problem").step()
-  counter("quiz").step()
+  counter(figure.where(kind: "problem")).update(0)
+  counter(figure.where(kind: "quiz")).update(0)
 }
 #let _chapter-numbering(n) = {
   let _n = if type(n) == str {
@@ -439,15 +440,13 @@
 }
 
 // ==== Problems and Quizzes ===========================================================================================
-#let _exercise-enum-depth = state("_exercise-enum-depth", 0)
-
-#let _extract-levels(items) = array.zip(..items.map(it => if it.body.has("children")
-  and it.body.children.first().func() == raw
-  and (it.body.children.first().text.contains(regex("^\d+$"))) {
-  (levels.at(it.body.children.first().text, default: "?"), it.body.children.slice(1).join())
-} else {
-  ("", it.body)
-}))
+#let _extract-level(item) = {
+  if (
+    item.has("children")
+      and item.children.first().func() == raw
+      and (item.children.first().text.contains(regex("^\d+$")))
+  ) { (levels.at(item.children.first().text, default: "?"), item.children.slice(1).join()) } else { ("", item) }
+}
 
 #let _problem-box(t, body) = {
   let accent = c.light-orange
@@ -463,7 +462,7 @@
       weight: "black",
       size: 17pt,
       tracking: 3pt,
-      t.label,
+      t.heading,
     ),
   )[
     #show enum: it => {
@@ -471,22 +470,20 @@
       let depth = _exercise-enum-depth.get()
       if depth == 0 {
         set list(marker: _list-markers-aligned(dim.problem-label-width))
-        let c = _extract-levels(it.children)
+        set par(first-line-indent: 0em, hanging-indent: 0em)
+        it
+          .children
+          .map(it => [
+            #let (level, body) = _extract-level(it.body)
+            #figure(caption: none, kind: t.counter, supplement: t.supplement, numbering: _chapter-numbering, grid(
+              columns: (dim.label-width + 3mm, dim.label-sep, 1fr),
+              align: (top + right, top, horizon + left),
+              context { level + _labels.at(t.counter)(_chapter-numbering(t.counter)) }, "", body,
+            ))
+          ])
+          .join()
+      } else {
         _enum-horizontal(
-          label-start: counter(t.counter-name),
-          label-width: dim.label-width + 3mm,
-          label-sep: dim.label-sep,
-          v-sep: 2em,
-          label-style: _label-styles.at(t.counter-name),
-          prefixes: c.at(0),
-          inset: (left: -20mm),
-          ..c.at(1),
-        )
-      } else if depth > 0 {
-        _enum-horizontal(
-          label-width: dim.problem-label-width,
-          label-start: 0,
-          label-style: _label-styles.at("(1)"),
           ..it.children.map(it => it.body),
         )
       }
@@ -499,9 +496,10 @@
 #let quizzes(..args, body) = _problem-box(
   (
     stroke: (left: 2mm + c.light-orange, middle: .5pt + c.light-orange),
-    label: "Quiz",
+    heading: "Quiz",
+    counter: "quiz",
+    supplement: "Quiz",
     indent: true,
-    counter-name: "quiz",
   ),
   body,
 )
@@ -514,15 +512,15 @@
       bottom: 2pt + c.light-orange,
       middle: 0.5pt + c.light-orange,
     ),
-    label: "Problems",
+    heading: "Problems",
+    counter: "problem",
+    supplement: "Problem",
     indent: false,
-    counter-name: "problem",
   ),
   body,
 )
 
-// ==== Template =======================================================================================================
-
+// ==== Index ==========================================================================================================
 #import "in-dexter.typ": index
 #let keyword(..args, key: none, content) = [#index(..args, if key == none { content } else { key })#EMPH(content)]
 #let index-see(keyword, redirect-to) = index(render: it => [→ see #emph(redirect-to)], keyword)
@@ -579,6 +577,16 @@
   show enum: set par(first-line-indent: 1em, hanging-indent: 0em)
 
   set math.equation(supplement: "Eq.", numbering: it => { numbering("(1.1)", counter(heading).get().at(0), it) })
+
+  show ref.where(form: "normal"): it => {
+    if str(it.target).starts-with("quiz:") {
+      let t = query(selector(figure.where(kind: "quiz")).after(it.target)).first().location()
+      link(t, [Quiz #counter(heading).at(t).at(0).#counter(figure.where(kind: "quiz")).display("1", at: t)])
+    } else if str(it.target).starts-with("prob:") {
+      let t = query(selector(figure.where(kind: "problem")).after(it.target)).first().location()
+      link(t, [Problem #counter(heading).at(t).at(0).#counter(figure.where(kind: "problem")).display("1", at: t)])
+    } else { it }
+  }
 
   set footnote(numbering: it => text-sf([\##it]))
   show footnote: set super(size: 8pt)

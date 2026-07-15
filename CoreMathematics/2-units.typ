@@ -458,7 +458,7 @@ You can understand the rules easily if you do long addition and observe which di
       + $131 + 0.69$
       + $1.3EE(2) + 69$
     ]#v(-.2em)
-    #h-enum(cols: (2fr, 2.5fr), label-start: 20)[
+    #h-enum(cols: (2fr, 2.5fr), label-start: 21)[
       + $\(1.2EE(5)\) times 9.4$
       + $1.2 div \(5.2EE(5)\)$
       + $\(3.33EE(5)\) times \(6.3EE(4)\)$
@@ -481,7 +481,7 @@ You can understand the rules easily if you do long addition and observe which di
       + $3.0^3 + 1.2$
       + $5.0^3 - 5$
     ]#v(-.2em)
-    #h-enum(cols: (1.7fr, 1.7fr, 2fr), label-start: 8)[
+    #h-enum(cols: (1.7fr, 1.7fr, 2fr), label-start: 9)[
       + $(1.2 + 3.45) times 2.1$
       + $(8.0 - 1.25) div 2.0$
       + $1.2 times 3.4 + 5.6$
