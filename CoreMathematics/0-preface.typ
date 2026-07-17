@@ -1,5 +1,6 @@
 #import "misho-text.typ": EMPH, JA, RED, TODO, ZH, c, dim, h-enum, keyword, levels, problems, quizzes, tab, text-sf
 #import "in-dexter.typ": first-letter-up, make-index
+#import "physica.typ": dv
 
 #let ds(body) = text-sf(body)
 
@@ -188,20 +189,38 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
 
 == Mathematical Notations
 
-#block(height: 14em)[
+#block(height: 1.8 * 15em)[
+  #show math.frac: math.display
   #columns(2, gutter: 0em)[
     #table(
       columns: (auto, 1fr),
-      rows: 2em,
-      align: horizon,
+      rows: 1.8em,
+      align: (horizon + center, horizon + left),
       stroke: (x: none, y: .5pt),
-      table.cell(colspan: 2)[*Chapter 1*],
-      [$NN$], [natural numbers],
-      [$NN_0$], [natural numbers (0, 1, 2, ...)],
-      [$NN^+$], [natural numbers (1, 2, ...)],
+      table.cell(colspan: 2, align: left)[*Chapter 1*],
+      [$CC$], [complex numbers],
       [$RR$], [real numbers],
       [$QQ$], [rational numbers],
-      [$CC$], [complex numbers],
+      [$ZZ$], [integers],
+      [$NN^0$], [natural numbers (0, 1, 2, ...)],
+      [$NN^+$], [natural numbers (1, 2, ...)],
+      [$x in A$], [a member of],
+      [$A union B$], [union],
+      [$A inter B$], [intersection],
+      [$A without B$], [set difference],
+      table.cell(rowspan: 2)[$f'(x)$],
+      table.cell(rowspan: 2)[derivative #h(1em) $lr(("also" dv(f(x), x)))$ ],
+      table.cell(rowspan: 2)[$f^((n))(x)$],
+      table.cell(rowspan: 2)[$n$-th derivative #h(1em) $lr(("also" dv(f(x), x, n)))$],
+      table.cell(colspan: 2, align: left)[*Chapter 3*],
+      [$and$], [logical "and"],
+      [$or$], [logical "or"],
+      [$not$], [logical "not"],
+      [$==>$], [implication],
+      [$<==>$], [logical equivalence],
+      [$forall$], [for all],
+      [$exists$], [there exists],
+      [$:=$], [is defined as],
     )
   ]
 ]
@@ -312,6 +331,7 @@ It is built from seven #keyword[SI base units]:
   ),
 )<SI-units>
 
+#pagebreak()
 == Index
 #columns(3)[
   #make-index(

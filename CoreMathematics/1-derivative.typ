@@ -1,5 +1,6 @@
 #import "misho-text.typ": *
 #import "physica.typ": *
+#import "2-units.typ": writing, writings
 #let eval(expr, size: 80% + 10pt) = $lr(#expr|, size: size)$
 
 = The first step
@@ -242,7 +243,7 @@ and this interpretation is useful in the following example:
   "Solutions" contain not only the answer but also how you reached the answer. You are, of course, asked to write such explanations when you solve problems.]
 
 Namely, with this technique, you can find *the value of $f(x)$ around a point $x=a$.*
-This technique, @taylor-1, is a special case of Taylor's theorem, which is discusssed in #TODO[???].
+This technique, @taylor-1, is a special case of Taylor's theorem, which is discussed in #TODO[???].
 
 #quizzes()[
   + Find the approximate value of the following expressions without using calculators. Then, check your answer with a calculator.
@@ -266,8 +267,6 @@ To summarize, we have the following statement:
   + Review how to derive @taylor-simple and summarize it in your own words.
 ]
 
-
-#pagebreak()
 #problems[
   + `9` Calculate the following expression.
     #h-enum(cols: 5)[
@@ -342,3 +341,90 @@ To summarize, we have the following statement:
 #advanced-note[
   The two equations in @def-deriv have similar but different meanings: the first one defines a new function $f'(x)$, while the second one defines a number that is eventually equal to $f'(x)|_(x=a)$. Anyway, we don't care the difference.]
 
+
+
+= Mathematical Notation
+As _physicists are lazy_, we usually use the following notation:
+
+#writings(
+  box: (true, false, true, false),
+  align: (left, left),
+  $x in CC$,
+  [means "$x$ is a complex number".],
+  $x in ZZ$,
+  [means "$x$ is an #keyword[integer]".#footnote[Z comes from "Zahlen" (Zahl).]],
+  $x in RR$,
+  [means "$x$ is a real number".],
+  $x in NN^+$,
+  [means "$x$ is a positive integer".],
+  $x in QQ$,
+  [means "$x$ is a #keyword[rational number]".],
+  $x in NN^0$,
+  [means "$x$ is a non-negative integer".],
+)
+The symbol "$in$" means _"is a member of"_, and $NN^+$ means a #keyword[set] of positive integers, ${1, 2, 3, 4, ...}$. So,
+#writings(
+  box: (true, false, true, false),
+  align: (left, left),
+  $x in NN^+$,
+  "and",
+  [$x in {1, 2, 3, 4, 5, ...}$],
+  [means the same thing: "$x$ is a positive integer".],
+)
+
+#remark[
+  Mathematicians tend to call $NN^0$ natural numbers, while physicists (and educations until high school) call $NN^+$ natural numbers.
+]
+
+
+#quizzes[
+  + What is the difference between $NN^+$ and $NN^0$?
+  + What is the difference between $NN^0$ and $ZZ$?
+  + What is "rational numbers"? What is the difference between $ZZ$ and $QQ$?
+]
+
+We write "$x$ is a positive number" by #writing[$x in RR, x>0$] but also by #writing[$x>0$]. Similarly,
+#writings(
+  box: (true, false, true, false),
+  align: (left, left),
+  $x in RR, x <= 0$,
+  "or",
+  $x<=0$,
+  [means "$x$ is a non-positive number".],
+)
+Notice that, when we say "positive" or "negative", we implicitly assume the number is real.
+#advanced-note[
+  This is because we cannot compare complex numbers with $0$. The operator $>$ is defined only for real numbers. When we write $a>b$, we implicitly consider that $a$ and $b$ are real numbers.
+]
+#problems[
+  + `2`
+    The #keyword[intersection] of two sets $A$ and $B$ is a set made by elements both in $A$ and $B$; we write it by $A inter B$. The #keyword[union] of $A$ and $B$ is a set made by elements in $A$, $B$, or both; we write it by $A union B$.
+    The #keyword[set difference], $A without B$, is a set made by elements in $A$ but not in $B$.
+
+    For example, let $A={1, 2, 3}$, $B={2, 3, 4}$, and $C={2, 4}$. Then,
+    #no-num[$ A inter B = {2, 3}, quad A union B = {1, 2, 3, 4}, quad A without C = {1, 3}, quad B without C = {3}, quad C without B = {} $,]
+    where ${}$ (or $emptyset$) means the #keyword[empty set], the set without any elements.
+
+    + Write the following sets.
+      #h-enum(cols: (1fr, 1fr, 1fr, 1.3fr, 1.3fr))[
+        + $A inter C$
+        + $B inter C$
+        + $A union C$
+        + $B union C$
+        + $A union B union C$
+        + $B without A$
+        + $C without A$
+        + $C without B$
+        + $(B without A) union A$
+        + $(A inter C) union B$
+      ]
+    + Express the following statements only with $RR$, $QQ$, $ZZ$, $NN^+$, $NN^0$, $inter$, $union$, $without$, and $x$.
+      #h-enum(cols: (1.4fr, 1fr))[
+        + $x$ is a rational number.
+        + $x$ is an irrational number.
+        + $x$ is a rational number but not an integer.
+        + $x$ is a non-positive integer.
+        + $x$ is a negative integer.
+        + $x$ is a non-zero integer.
+      ]
+]

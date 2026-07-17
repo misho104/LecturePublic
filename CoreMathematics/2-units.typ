@@ -101,6 +101,10 @@ As an undergraduate student, you need to follow the following rules:
   + Use significant figures to express the measurement precision.
 ]
 
+#be-careful[
+  We use _decimals for physical quantities_ and _fractions for mathematical concepts_.
+  Since this lecture is mainly on math and math concepts, you will use decimals #TODO[only in this section].
+]
 
 
 = Units
