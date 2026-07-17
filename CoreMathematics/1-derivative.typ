@@ -1,5 +1,6 @@
 #import "misho-text.typ": *
 #import "physica.typ": *
+#let eval(expr, size: 80% + 10pt) = $lr(#expr|, size: size)$
 
 = The first step
 
@@ -61,19 +62,19 @@ You will solve many problems and drills, just as an athlete repeats the same mov
 
 Consider a function $f(x)$. As we vary the value of $x$, $x$ is called a #keyword[variable].
 For a function $f(x)$, there are several equivalent ways to write its derivative:
-$ f'(x) qeq dv(f, x)(x) qeq dv(f(x), x) qeq dv(x)f(x) wide "[All means the same thing]." $
+$ f'(x) qeq dv(f, x)(x) qeq dv(f(x), x) qeq dv(, x)f(x) wide "[All means the same thing]." $
 Similarly, the value of $f'(x)$ at a specific point $x=3$ can be written as
-$ f'(3) qeq eval(f'(x))_(x=3) qeq eval(dv(f, x))_(x=3) qeq dv(f, x)(3) qeq dv(x)f(3), $
+$ f'(3) qeq eval(f'(x))_(x=3) qeq eval(dv(f, x))_(x=3) qeq dv(f, x)(3) qeq dv(, x)f(3), $
 and they are all equivalent. For example, if $f(x)=3x^2+6$, then $f'(x)=6x$ and $f'(3) = 18$.
 
 Most of students get confused when a #keyword[constant] $a$ appears. If $a$ is _declared as a constant_, we can define a function such as $g(x)=a x^2+2a$, for which
 $ g'(x) = 2 a x. $ <d1>
 We can evaluate $g'(x)$ at $x=a$. The result is $g'(a)=2a^2$, written as
-$ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(x)g(a) quad = quad 2a^2. $
+$ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(, x)g(a) quad = quad 2a^2. $
 
 #be-careful[
   #show math.frac: math.display
-  The notation $dv(x)g(a)$ does *not* mean $dv(x)lr([g(a)], size: #150%) = dv(x)(a^3+2a)=0$.
+  The notation $dv(, x)g(a)$ does *not* mean $dv(, x)lr([g(a)], size: #150%) = dv(, x)(a^3+2a)=0$.
 ]
 #fail-safe[
   If you can't see @d1, try setting $a=3$. Then, you notice $g(x)$ is the same function as $f(x)$, and $g'(x)$ should equal $f'(x)$.
@@ -121,8 +122,8 @@ Even though, if you see it in a textbook, you need to guess the author's intenti
 
 #EMPH[Higher-order derivatives]#index("order") is written as
 $
-  dv(x)(dv(f, x)) = dv(f, x, x)=f''(x) = f^((2))(x),wide
-  dv(x)(dv(x)(dv(f, x))) = dv(f, x, x, x)=f'''(x) = f^((3))(x),
+  dv(, x)(dv(f, x)) = dv(f, x, 2)=f''(x) = f^((2))(x),wide
+  dv(, x)(dv(, x)(dv(f, x))) = dv(f, x, 3)=f'''(x) = f^((3))(x),
 $
 etc. Please be careful on the position of "2" and "3".
 
@@ -155,7 +156,7 @@ $
 
 Why do insist on radians?
 The answer comes from the derivative formula
-$ dv(x) sin x = cos x. $ <sin-deriv>
+$ dv(, x) sin x = cos x. $ <sin-deriv>
 Because we have chosen radians as the standard, $(sin x)'$ becomes this simple.
 
 #advanced-note[
