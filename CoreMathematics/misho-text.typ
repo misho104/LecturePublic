@@ -108,6 +108,7 @@
 #let ee = math.upright("e")
 #let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
 #let root(n, x) = math.root(move($math.script(#n)$, dy: -0.4em), x)
+#let math-strong(t) = text(font: _font-serif, strong(t))
 
 // #show math.attach: it => {
 //   if it.has("label") and it.label == <u1> {

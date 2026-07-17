@@ -1,19 +1,13 @@
 #import "misho-text.typ": *
 #import "physica.typ": *
-
-You have learned powers, exponential functions, and logarithmic functions in highschool, and their derivatives in your university first semester.
-Here, we will have a quick review on them.
-
-#remark[
-  We go back to mathematics, so we should avoid decimals but use fractions. For example, answer $8\/5$ instead of $1.6$.
-]
+#import "@preview/simple-plot:1.0.0": plot, set-plot-defaults
 
 = Powers
 
-Let's begin with reviewing the powers.
+Let's begin with a review: can you recall all the rules for powers...?
 
 #quizzes[
-  + `4` Calculate without a calculator. Can you solve them all...?
+  + Calculate without a calculator.
     #show sym.comma: "," + math.quad
     #h-enum(cols: 1, label-align: horizon)[
       + $2^4, 3^5, 4^2, 10^3, 1^25, 2^10$
@@ -27,7 +21,7 @@ Let's begin with reviewing the powers.
       + #[
           #show math.frac: it => math.display(it)
           #box(inset: (y: .5em))[
-            $(1/2)^4, (2/3)^(3), (5/2)^(2), (2/5)^(-2), (7/2)^2, (7/2)^(-2), (1/4)^(3)$
+            $(1/2)^4, (2/3)^(3), (5/2)^(2), (2/5)^(-2), (7/2)^2, (7/2)^(-2), (1/3)^(2), (1/3)^(-2).$
           ]]
       + #[
           #show math.frac: it => math.display(it)
@@ -40,307 +34,431 @@ Let's begin with reviewing the powers.
             $4^(-1\/2), 81^(-1\/2), 3^(3\/2), 27^(2\/3), 27^(-2\/3), (1/4)^(3\/2), (1/7)^(-1\/2), (1/2)^(-5\/2)$
           ]]
     ]
-  + `4` Choose ALL correct formulae from the list below. Here $A > 0$, $B > 0$, and $x, y$ are real numbers.
-    #h-enum(cols: 2)[
-      + $A^x dot A^y = A^(x+y)$
+  + Fill in the blanks, where $A > 0$, $B > 0$, and $x, y$ are real numbers.
+    #h-enum(cols: (1fr, 1fr, 1.2fr), height: 2em, label-align: horizon)[
+      + $A^3 dot A^3 = A^(med blank())$
+      + $(A^3)^3= A^(med blank())$
+      + $(A dot B)^4 = blank() dot blank()$
+      + $A^x dot A^y = A^(med blank())$
+      + $(A^x)^y = A^(med blank())$
+      + $(A dot B)^x = A^x dot blank()$
+      + #box(inset: (y: 0.5em), $A^(med #blank()) = 1/(A^x)$)
+      + $A^x = #box(inset: 0.3em, "1")/#box(inset: 0.3em, blank())$
+      + $A^x / A^y = A^(med blank())$
+      + $A^0 = #blank()$
+      + $A^#blank() = A$
+      + $A^#blank() = sqrt(A)$
+      + $A^#blank() = root(3, A)$
+      + $A^x / B^x = #blank()$
+      + #box(inset: (y: 0.5em), $(A/B)^(-1) = blank()$)
+    ]
+  + With $A>0$, $B>0$, $x in RR$, and $y in RR$, the following statements are all false. Find a counterexample for each.
+    #h-enum(cols: 3, label-align: horizon)[
       + $A^x + A^y = A^(x+y)$
-      + $(A^x)^y = A^(x y)$
-      + $(A dot B)^x = A^x dot B^x$
-      + $(A + B)^x = A^x + B^x$
-      + $A^x / A^y = A^(x-y)$
-      + $A^x / B^x = (A/B)^x$
-      + $A^x / B^x = (A/B)^(x^2)$
-      + $sqrt(A + B) = sqrt(A) + sqrt(B)$
-      + $sqrt(A dot B) = sqrt(A) dot sqrt(B)$
+      + $(A+B)^x = A^x + B^x$
+      + $(A dot B)^x = A dot B^x$
+      + $(A^x)^y = A^((x^y))$
       + $(A^x)^y = A^(x+y)$
-      + $A^0 = 0$
-      + $A^0 = 1$
-      + $0^0 = 1$
-      + $A^1 = A$
-      + $A^(-1) = -A$
-      + $A^(-1) = 1\/A$
-      + $A^(1\/2) = sqrt(A)$
-      + $A^(1\/3) = root(3, A)$
-      + $(A\/B)^(-1) = B\/A$
     ]
 ]
+Do not worry if you cannot recall all the rules! Learn this section and come back here, and then you will be able to answer all the questions!
 
-#remark[
-  How did you do?
-  If you found Quiz 1 or 2 difficult, you should review powers and exponentials in your high-school textbook before continuing.
-  This chapter will not re-teach that material from scratch---it is a quick workout to sharpen what you already know.
+Let's review the definitions of #keyword[power], $a^x$. Here, $a$ is called the #keyword[base] and $x$ is called the #keyword[exponent].
+
+#definition(title: [Power for positive base, real exponent])[
+  For positive base $a >0$ and real exponent $x in RR$, we define the power $a^x$ by the following steps.
+
+  First, consider a non-negative integer $n$. We define $a^n$ and $n$-th root $root(n, a)$, as
+  - $a^0 := 1$.
+
+  - If $n in NN^+$, then $a^n := a dot a^(n-1)$.
+
+  - For $n in NN^+$, we define $root(n, a)$ as the *positive* solution $X$ of the following equation: $X^n = a$.\
+    We write $root(2, a)$ as $sqrt(a)$.
+
+  If $a>0$, positive solution always exists and is unique.
+  So, $root(n, a)$ is "well-defined" for $a>0$. Then,
+
+  - If $x>0$ and $x in QQ$, we can write $x = p\/q$ with $p, q in NN^+$.
+    Then we define
+    #no-num[$a^x = a^(p\/q) := (root(q, a))^p = (a^(1\/q))^p$]
+  - If $x>0$ and $x in.not QQ$, we can consider a sequence of rational numbers $x_k in QQ$ such that $x_k -> x$.
+    Then we define $a^x := lim_(k -> oo) a^(x_k)$.
+
+  Now we have defined $a^x$ for all $x >= 0$. Finally,
+
+  - If $x<0$, we define $a^x := 1\/(a^(|x|))$.
+
+  and then we have defined $a^x$ for all $x in RR$, if $a>0$.
 ]
 
-#pagebreak()
+#example(title: [Integer-power of a positive number])[
 
-= The Exponential Function
+  - $2^0 := 1$, because of the first item in the above definition.
 
-#quizzes[
-  + `4` Without a calculator, decide which is larger in each pair.
-    #h-enum(cols: 3)[
-      + $2^10$ or $10^3$
-      + $3^4$ or $4^3$
-      + $(0.9)^100$ or $(0.99)^(1000)$
-    ]
+  - The second item says $2^3:=2 times 2^2$. Using it recursively, we get $2^2 := 2 times 2^1$ and $2^1 = 2 times 2^0 = 2 times 1 = 2$. So, $2^3 = 2 times 2 times 2 = 8$.
 
-  + `4` The graph of $f(x) = a^x$ passes through $(0, 1)$ for any $a > 0$.
-    For each base below, decide whether $f$ is increasing or decreasing, and sketch a rough graph.
-    #h-enum(cols: 3)[
-      + $a = 2$
-      + $a = 1\/2$
-      + $a = 1$
-    ]
+  - Similarly, $1.1^2 = 1.1 times 1.1 = 1.21$ and $1.1^3 = 1.1 times 1.21 = 1.331$.
+]
+#example(title: [n-th root of a positive number])[
+  The third item says $root(3, 8)$ is the positive solution of $X^3 = 8$. So, $root(3, 8) = 2$.
+  Similarly, $root(2, 1.21)$ is the positive solution of $X^2 = 1.21$, so $sqrt(1.21) = 1.1$.
+]
+#example(title: [positive-power of a positive number])[
+  To consider $a^x$ for rational but non-integer $x$, we use the fourth item of the above definition.
+  #grid(
+    columns: 2,
+    inset: (y: 0.5em),
+    align: horizon,
+    [- $27^(1\/3) = (root(3, 27))^1 = 3^1 = 3$.], [- $1.21^(0.5) = 1.21^(1\/2) = sqrt(1.21) = 1.1$.],
+    [- $27^(2\/3) = (root(3, 27))^2 = 3^2 = 9$.], [- $1.21^(1.5) = 1.21^(3\/2) = (sqrt(1.21))^3 = 1.1^3=1.331$.],
+  )
+  If $x$ is not rational, we need to use the fifth item. For example, if $x = sqrt(2)=1.4142...$, we consider a sequence
+  $1$, $14\/10$, $141\/100$, $1414\/1000$, ... which converges to $sqrt(2)$. Then,
 
-  + `4` Match each equation with its graph. (Sketch or describe the key features.)
-    #h-enum(cols: 2)[
-      + $y = 2^x$
-      + $y = 2^(-x)$
-      + $y = -2^x$
-      + $y = 2^x - 1$
-    ]
+  - $2^(sqrt(2))$ is the limit of $2^1,med 2^(14\/10),med 2^(141\/100),med 2^(1414\/1000), med... --> 2^(sqrt(2)) = 2.665...$.
+
+  - $3^(pi) = 3^(3.14159...)$ is the limit of $3^3,med 3^(31\/10),med 3^(314\/100),med 3^(3141\/1000), med... --> 3^(pi) = 31.544...$.
+]
+#example(title: [negative-power of a positive number])[
+  For $a^x$ with $x<0$, we use the last item in the above definition.
+  #no-num[
+    $
+      1.1^(-2) = 1 / (1.1^2) = 1 / 1.21 quad quad 1.21^(-1.5) = 1 / (1.21^(1.5)) = 1 / 1.331 quad quad 3^(-pi) = 1 / (3^(pi)) = 1 / (31.544...)
+    $
+  ]]
+We have defined $a^x$ for $a>0$ and $x in RR$. Other cases are more complicated, such as:
+
+- $a^x$ with $a>0$ and $x in CC$ is discussed in #TODO[chapter]; it needs a careful treatment.
+
+- $a^x$ with $a<=0$ is more complicated and requires the discussion in #TODO[chapter]. However, if $x$ is an integer, we can safely discuss it, as follows.
+
+#definition(title: [Power for negative base])[
+  For a negative base $a < 0$, we only consider $a^x$ for integer $x$.
+
+  - $a^0 := 1$.
+
+  - $a^x := a dot a^(x-1)$ for positive integer $x$.
+
+  - $a^x := 1\/a^(|x|)$ for negative integer $x$.
+
+  We do not consider $a^x$ if $a<0$ and $x$ is not an integer.
+]
+
+#definition(title: [Power for zero base])[
+  We define $0^x := 0$ for $x > 0$, and $root(n, 0) := 0$ for $n in NN^+$.  (We do not consider $0^x$ for $x <= 0$.)
 ]
 
 #be-careful[
-  $a^x$ is only defined for all real $x$ when $a > 0$.
-  Never write $(-2)^x$ for a general real number $x$.
+  Notice that we have not defined $sqrt(x)$ for $x<0$. Sho recommends *not* to use $root(n, x)$ for $x<0$ because it is not useful for physics; it will just make you confused.
 ]
-
-
-== The special base $e$ <natural-base>
-
-The number $e approx 2.718...$ is defined by
-$
-  e = lim_(n -> oo) (1 + 1/n)^n.
-$
-Its key property---which you should already know from Calculus I---is
-$
-  dv(x) e^x = e^x.
-$ <deriv-ex>
-
 #quizzes[
-  + `4` Differentiate. Write the answer in simplest form.
-    #h-enum(cols: 4)[
-      + $e^(5x)$
-      + $e^(-x)$
-      + $3e^(2x)$
-      + $e^(x^2)$
-      + $e^(sin x)$
-      + $x e^x$
-      + $e^x \/ (e^x + 1)$
-      + $e^(-t\/tau)$ (treat $tau$ as a constant)
-    ]
+  + Some of the following expressions are not defined. Find all the undefined ones.
+    #grid(
+      columns: (1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1.4fr),
+      inset: (x: 1em, y: 0.5em),
+      $pi^(-3)$, $pi^(-1\/pi)$, $(-2)^0$, $(-2)^(-3)$, $(-2)^(3\/8)$, $-2^(-pi)$, $sqrt(-4)$,
+      $root(3, 3.5)$, $root(3.5, 3)$, $root(-4, 3)$, $root(3, 0)$, $0^(2.5)$, $0^(-2.5)$, $0.1^(0.1)$,
+    )
+]
+In the following sections, we will only consider *powers of positive base*, i.e., $a^x$ for $a>0$.
 
-  + `3` Let $f(x) = e^(a x)$ where $a$ is a real constant. Show that $f'(x) = a f(x)$.
-    What does this say about the sign of $f'$?
+#advanced-note[
+  Technically, even if $x<0$, we can define $root(n, x)$ for an odd integer $n$ and then we can define $a^x$ for $x in Q$ if $x$ can be written by $x=p\/q$ with an integer $p$ and an *odd* integer $q$.
+]
+#advanced-note[
+  Many mathematicians define $0^0:=1$ for some technical reasons, but we do not need it.
+]
+#set-plot-defaults(
+  width: 5,
+  height: 5,
+  xlabel-anchor: "north",
+  ylabel-anchor: "east",
+  xlabel-offset: (-0.1, -0.05),
+  ylabel-offset: (-0.05, -0.1),
+  origin-leader: false,
+  style: (plot: (samples: 40)),
+)
+
+
+= Exponential functions and Logarithmic functions
+#grid(columns: (auto, 40%), align: (left, right))[
+  Powers with positive bases, such as $2^x$ and $0.7^x$, are considered as an #keyword[exponential function] defined for $x in RR$.
+  The figure to the right shows the graphs of $y=2^x$ and $y=0.7^x$.
+
+  Obviously, $f(x) = a^x$ is #EMPH[strictly increasing] if $a>1$; #EMPH[strictly decreasing] if $0<a<1$.
+  In Section #TODO[], we will check this property by calculating $f'(x)$.
+  It is also important that $a^x$ can take any positive real value. We will use these facts to define $log_a x$ below in this section.
+
+][
+  #plot(
+    height: 3.5,
+    xmin: -3.4,
+    xmax: 3.4,
+    ymin: -0.4,
+    ymax: 4.5,
+    show-grid: true,
+    ytick: (1, 2, 3, 4),
+    (fn: x => calc.pow(2.0, x), stroke: c.blue + 1.5pt, label: $y=2^x$, label-pos: 0.72),
+    (fn: x => calc.pow(0.7, x), stroke: c.pink + 1.5pt, label: $y=0.7^x$, label-pos: 0.05),
+  )
+]
+#quizzes[
+  + Draw the graphs of $y=2^x$, $y=0.5^x$, and $y=1^x$ by hand, without using calculators or computers.
 ]
 
+#theorem(title: [Properties of Exponential Functions])[
+  For $a>0$, $b>0$, and $x, y in RR$,
+  $
+    a^0=1, quad 1/(a^x) = a^(-x), quad root(n, a^x) = a^(x\/n)quad(n in NN, n>=2);
+  $
+  $
+    a^x a^y = a^(x+y), quad (a^x)/(a^y) = a^(x-y), quad (a^x)^y = a^(x y), quad (a b)^x = a^x b^x, quad (a/b)^x = (a^x)/(b^x).
+  $]
 #remark[
-  In physics you will constantly see $e^(-t\/tau)$ (exponential decay) and $e^(i omega t)$ (oscillation in complex form).
-  Being fluent with $dv(t) e^(-t\/tau) = -1\/tau dot e^(-t\/tau)$ will save you a lot of effort.
+  $a^(x^y)$ is usually interpreted as $a^((x^y))$; it is in general not equal to $(a^x)^y=a^(x y)$.
 ]
-
-#pagebreak()
-
-= Logarithms
 
 #quizzes[
-  + `4` Calculate without a calculator.
-    #h-enum(cols: 4)[
-      + $log_2 8$
-      + $log_2 (1\/4)$
-      + $log_3 81$
-      + $log_(10) 0.001$
-      + $log_5 1$
-      + $log_a a^7$
-      + $ln e^3$
-      + $e^(ln 5)$
-      + $log_4 2$
-      + $log_9 3$
-      + $log_(1\/2) 8$
-      + $log_4 8$
+  + Transform the following numbers to the form of $2^□$.
+    #h-enum(cols: 6, label-align: horizon)[
+      + $2$
+      + $1024$
+      + $sqrt(2)$
+      + $root(3, 4)$
+      + $0.25$
+      + $root(5, 0.25)$
+      + $4^x$
+      + $(sqrt(2))^x$
+      + $4 dot 2^x$
+      + $2^x\/16$
+      + $2^x 4^y$
+      + $2^x\/4^y$
     ]
 
-  + `4` Choose ALL correct formulae. Here $A > 0$, $B > 0$, $a > 0$, $a != 1$.
-    #h-enum(cols: 2)[
-      + $log_a (A B) = log_a A + log_a B$
-      + $log_a (A + B) = log_a A + log_a B$
-      + $log_a (A\/B) = log_a A - log_a B$
-      + $log_a (A^r) = r log_a A$
-      + $log_a (r A) = r log_a A$
-      + $log_a A + log_a B = log_a (A B)$
-      + $log_a A - log_a B = log_a (A\/B)$
-      + $log_a 0 = 1$
-      + $log_a 1 = 0$
-      + $log_a a = 1$
-      + $(log_a A)(log_a B) = log_a (A B)$
-      + $a^(log_a A) = A$
-      + $log_a (a^x) = x$
-      + $log_a A = (ln A)\/(ln a)$
+  + Without a calculator, arrange the following in order from smallest to largest.
+    #no-num[
+      $2, quad 1024, quad 2^5, quad 8^2, quad sqrt(2), quad root(3, 4), quad 0.25, quad 0.5^0.3, quad root(5, 0.25), quad 0, quad 1$
     ]
 ]
 
-#remark[
-  If you are unsure why $log_a x$ and $a^x$ are inverses of each other, or why the log rules hold, go back to your high-school textbook.
-  The exercises here assume you can use the rules fluently.
+
+Consider the equation $p = a^x$, where $a>0$, $a!=1$ and $p in RR$. For a given $p$, how many solutions $x$ does it have?
+Because $a!=1$, $a^x$ is strictly increasing or decreasing and it takes any value $0 < a^x < +oo$. Therefore, $p = a^x$ has a unique real solution $x$ for any $p>0$.
+We call the solution $x = log_a p$.
+
+#definition(title: [Logarithm])[
+  For $a>0$, $a!=1$, and $p>0$, we define the #keyword[logarithm] $log_a p$ as the unique solution $x$ of $a^x = p$.
+
+  $ "For " a > 0, a!=1, "and" p>0, #h(3em) a^x = p quad <==> quad x = log_a p. $
 ]
-
-#be-careful[
-  $log_a x$ is only defined for $x > 0$.
-  There is no real number $log_a 0$ or $log_a (-3)$.
-  Always check the domain when solving logarithmic equations.
+Notice that $log_a p$ is not defined for $p <= 0$ or $a <= 0$ or $a=1$.
+#quizzes[
+  + Based only on the above discussion, explain why $k=log_a (a^k)$ and $a^(log_a k)=k$.  <quiz:exp-change-base>
 ]
+We here review basic properties of $log_a x$. Drill problems are available later in this section.
 
+#theorem(title: [Properties of Logarithmic Functions])[
+  For $a>0$ but $a!=1$, $b>0$ but $b!=1$, $A>0$, and $B>0$,
+  $
+    log_a 1 = 0, quad
+    log_a a = 1, quad
+    log_a A^k = k log_a A quad (k in RR),
+  $
+  $
+    log_a (A B) = log_a A + log_a B, quad
+    log_a (A/B) = log_a A - log_a B,
+  $
+  $
+    log_a A = (log_b A)/(log_b a) quad "[changing the base]".
+  $<eq:log-base-change>]
 
-== Natural logarithm
-
-The #keyword[natural logarithm] $ln x := log_e x$ is the inverse of $e^x$:
+= Napier's number and Natural logarithm
+There is a special number for the base, called #keyword[Napier's number] $ee$:
+#index-see("e", "Napier's number")
 $
-  ln(e^x) = x quad forall x in RR, quad quad e^(ln x) = x quad forall x > 0.
+  ee = 2.718281828... = lim_(n -> oo) (1 + 1/n)^n = sum_(k=0)^oo 1/(k!) = 1 + 1 + 1/2 + 1/6 + 1/24 + 1/120 + ...
 $
+It is special because of the following theorem:
+#theorem(title: "Napier's number")[
+  $
+    dv(, x) ee^x = ee^x, quad dv(, x) ln x = 1/x,
+  $
+]
+where the #keyword[natural logarithm] ($ln x$) is defined by $ln x := log_e x$.
+Also, we often write $ee^x$ as $exp(x)$.
 
-Its derivative---which you know from Calculus I---is
-$
-  dv(x)(ln x) = 1\/x quad (x > 0).
-$ <deriv-ln>
 
 #quizzes[
-  + `4` Differentiate.
-    #h-enum(cols: 4)[
-      + $ln(3x)$
-      + $ln(x^2 + 1)$
-      + $ln(sin x)$
-      + $x ln x$
-      + $(ln x)^2$
-      + $ln(1\/x)$
-      + $e^x ln x$
-      + $ln|2x - 1|$
+  + Draw the graphs of $y=exp(x)$ and $y=ln x$, using computers or calculators.
+  + Calculate the following, where $a>0$, $b>0$, and  $b!=1$.
+    #h-enum(cols: (1.2fr, 1fr, 1fr, 1.2fr, 1.2fr), label-align: horizon)[
+      + $dv(, x)exp(x)$
+      + $dv(, x)ee^(-3x)$
+      + $dv(, x)a^(x)$
+      + $dv(, x)ln(3x)$
+      + $dv(, x)log_b x$
     ]
-
-  + `4` Simplify each expression to a single number or a single logarithm.
-    #h-enum(cols: 2)[
-      + $ln e^5$
-      + $e^(3 ln 2)$
-      + $ln 6 + ln(1\/6)$
-      + $2 ln 3 - ln 9$
-      + $ln 12 - ln 4 + ln 2$
-      + $e^(ln 3 + ln 4)$
-    ]
-]
-
-#pagebreak()
-
-= Exponential and Logarithmic Equations
-
-#quizzes[
-  + `4` Solve for $x$. Give exact answers.
-    #h-enum(cols: 3)[
-      + $2^x = 32$
-      + $3^x = 1\/27$
-      + $e^x = 5$
-      + $e^(-2x) = 7$
-      + $2^(x-1) = 16$
-      + $10^(2x+1) = 1000$
-      + $ln x = 4$
-      + $ln(x - 1) = 0$
-      + $log_3(2x + 1) = 3$
-    ]
-
-  + `4` Solve for $x$ and check for extraneous solutions.
-    #h-enum(cols: 2)[
-      + $ln x + ln(x - 1) = ln 6$
-      + $log_2 x + log_2(x + 2) = 3$
-      + $e^(2x) - 3e^x + 2 = 0$
-      + $ln(x+1) - ln(x-1) = ln 3$
-    ]
-]
-
-#be-careful[
-  When combining logarithms (e.g., $ln a + ln b = ln(a b)$) and then solving, the combined equation may have solutions that make one of the original $ln$ terms undefined.
-  Always substitute back and check.
-]
-
-#pagebreak()
-
-= Exponential Growth and Decay <exp-physics>
-
-Many physical quantities satisfy $dv(Q, t) = k Q$ for some constant $k$.
-The solution is always $Q(t) = Q_0 e^(k t)$, where $Q_0 = Q(0)$.
-
-- $k > 0$: #keyword[exponential growth] (population, compound interest)
-- $k < 0$: #keyword[exponential decay] (radioactivity, RC discharge, cooling)
-
-#quizzes[
-  + `4` A quantity obeys $N(t) = N_0 e^(-lambda t)$ with $lambda > 0$.
-    + Show that the #keyword[half-life] is $T_(1\/2) = (ln 2)\/lambda$.
-    + If $T_(1\/2) = 10$ days, find $lambda$.
-    + What fraction of $N_0$ remains after $3 T_(1\/2)$?
-
-  + `4` An RC circuit has charge $Q(t) = Q_0 e^(-t\/tau)$ where $tau = R C$.
-    + Verify that $Q(tau) = Q_0\/e$.
-    + If $R = 2.0 unit("k" Omega)$ and $C = 50 unit(mu "F")$, find $tau$ in seconds.
-    + At what time $t$ has $Q$ dropped to $10%$ of $Q_0$?
-
-  + `3` Sound intensity in decibels: $L = 10 log_(10)(I\/I_0)$.
-    + If intensity doubles, by how many dB does $L$ increase?
-    + Two sounds have $L_1 = 60 unit("dB")$ and $L_2 = 90 unit("dB")$. Find $I_2\/I_1$.
+  #fail-safe[Review @quiz:exp-change-base for (3). Review @eq:log-base-change for (5). Recall $ee$ is just a number.]
 ]
 
 #pagebreak()
 
 #problems[
-  + `9` Calculate without a calculator.
-    #h-enum(cols: 4)[
-      + $2^8$
-      + $3^(-3)$
+  You may skip these drill problems, as (Sho expects) you *already have learned* them.
+  + `9` Differentiate them, where $a$ is a positive constant such that $a!=1$.
+    #h-enum(cols: (1fr, 0.9fr, 1fr, 1fr, 1.2fr))[
+      + $exp(5x)$
+      + $ee^(-x^2)$
+      + $3exp(2x)$
+      + $ee^(sin x)$
+      + $x (ee^x)^2$
+      + $sqrt(ee^x + 1)$
+      + $ee^x ee^(x^2)$
+      + $ln(2x)$
+      + $ln|3x|$
+      + $ln(x^5 + x)$
+      + $ln lr(|cos x|)$
+      + $x ln x$
+      + $ln(1\/x)$
+      + $ee^x ln x$
+      + $ln|2x - 1|$
+      + $a^(4x)$
+      + $a^(x^2)$
+      + $(2a)^(2x)$
+      + $log_a x^5$
+      + $log_a (x^5+x)$
+    ]
+  + `9` Simplify each expression, where $a$ is a positive constant such that $a!=1$.
+    #h-enum(cols: (1fr, 1fr, 1fr, 1.3fr))[
+      + $9^(-1\/2)$
       + $16^(3\/4)$
       + $8^(-2\/3)$
-      + $log_2 32$
-      + $log_(10) 0.01$
-      + $ln e^3$
-      + $e^(ln 5)$
-      + $log_3(1\/27)$
+      + $ee^(3 ln 2)$
+      + $ee^(ln 3 + ln 4)$
+      + $ee^(ln (6+7))$
+      + $ln ee^(6+7)$
+      + $ee^3(ee^4)^4$
       + $log_4 8$
-      + $log_(1\/2) 4$
+      + $log_(10) 0.01$
+      + $log_(0.5) 2$
+      + $log_3(1\/27)$
       + $log_6 6^(10)$
+      + $ln 6 + ln(1\/6)$
+      + $2 ln 3 - ln 9$
+      + $ln 12 - ln 4 + ln 2$
+      + $1^(-a)$
+      + $log_a 1$
+      + $log_a (2a^2)^4$
+      + $log_a (ln(ee^(5a)))$
     ]
-
-  + `9` Differentiate.
-    #h-enum(cols: 4)[
-      + $e^(4x)$
-      + $e^(-x^2)$
-      + $ln(2x)$
-      + $ln(x^2 + x)$
-      + $x^2 e^x$
-      + $e^x\/(1 + e^x)$
-      + $ln(cos x)$
-      + $sqrt(e^x + 1)$
-    ]
-
-  + `3` Solve each equation.
-    #h-enum(cols: 3)[
-      + $2^(x+1) = 64$
-      + $e^(3x-1) = 4$
-      + $log_5(2x + 3) = 2$
-      + $ln(x^2 - 3) = ln(2x)$
-      + $e^(2x) - 3e^x + 2 = 0$
-      + $log_2 x - log_2(x-2) = 3$
-    ]
-
-  + `3` A population grows as $P(t) = P_0 e^(r t)$.
-    + Show the #keyword[doubling time] is $T = (ln 2)\/r$.
-    + If a population doubles in 20 years, find $r$.
-    + Starting from $P_0 = 1000$, find $P$ after 60 years.
-
-  + `3` Prove: $log_a x = (log_b x)\/(log_b a)$ for any valid base $b$ (change of base formula).
-
-  + `2` Let $f(x) = a^x$. Using the fact that $a^x = e^(x ln a)$, prove that $dv(x)(a^x) = a^x ln a$.
-
-  + `2` Differentiate $y = x^x$ for $x > 0$ using #keyword[logarithmic differentiation]:
-    write $ln y = x ln x$, differentiate both sides with respect to $x$, then solve for $y'$.
-
-  + `1` Define $cosh x = (e^x + e^(-x))\/2$ and $sinh x = (e^x - e^(-x))\/2$.
-    + Show $dv(x)(cosh x) = sinh x$ and $dv(x)(sinh x) = cosh x$.
-    + Show $cosh^2 x - sinh^2 x = 1$.
-    + Show $cosh x >= 1$ for all $x$.
+  + `9` Some of the following expressions are not defined. Find all the undefined ones.
+    #grid(
+      columns: (1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1.4fr),
+      inset: (x: 1em, y: 0.5em),
+      $pi^0$, $pi^(-3)$, $pi^(2.5)$, $pi^(-2.5)$, $pi^pi$, $pi^(-pi)$, $pi^(-1\/pi)$,
+      $0^0$, $0^(-3)$, $0^(2.5)$, $0^(-2.5)$, $0^pi$, $0^(-pi)$, $0^(-1\/pi)$,
+      $(-2)^0$, $(-2)^(-3)$, $(-2)^(2.5)$, $(-2)^(-2.5)$, $(-2)^pi$, $-2^(-pi)$, $-2^(-1\/pi)$,
+      $sqrt(4.5)$, $sqrt(-4)$, $root(3, 3.5)$, $root(3.5, 3)$, $root(-4, 3)$, $root(4, -3)$, $root(4, 1+sqrt(2))$,
+      $root(1.5, 1)$, $root(4, -8)$, $root(-3, 8)$, $root(0, 8)$, $root(3, pi)$, $root(pi, 3)$, $root(4, 1-sqrt(2))$,
+    )
 ]
 
+#problems[
+  + `4` Solve these equations.
+    #h-enum(cols: (1fr, 1fr, 1fr))[
+      + $2^(x+1) = 64$
+      + $ee^(3x-1) = 4$
+      + $ee^x = 5$
+      + $ln|x - 1| = 0$
+      + $ln x = 4$
+      + $log_5(2x + 3) = 2$
+      + $2^(-2x) = 7$
+      + $log_3(2x + 1) = 3$
+      + $ee^(2x) - 3ee^x + 2 = 0$
+    ]
+  + `3` Draw the graphs of the following functions.
+    #h-enum(cols: 5, label-align: horizon)[
+      + $y = 2^x$
+      + $y = 0.5^(x)$
+      + $y = (root(3, 2))^x$
+      + $y = 2 dot 2^x$
+      + $y = 2^x/2$
+    ]
+  #fail-safe[Draw $y=2^x$ first. Rewrite the other functions in the form of $y=2^("□")$.]
+  + `2` Solve these equations.
+    #h-enum(cols: 2)[
+      + $ln(x^2 - 3) = ln(2x)$
+      + $ln x + ln(x - 1) = ln 6$
+      + $log_2 x + log_2(x + 2) = 3$
+      + $ln(x+1) + ln(x-1) = ln 3$
+      + $log_2 x - log_2(x-2) = 3$
+      + $ln(x+1) - ln(x-1) = ln 4$
+      + $log_2|x| + log_2|x + 2| = 3$
+      + $ln|x+1| + ln|x-1| = ln 4$
+    ]
+  + `2` Calculate the derivative of $x^x$.
+  + `2` #keyword[Hyperbolic functions] are defined by
+    $
+      cosh x := (ee^x + ee^(-x))/2, quad
+      sinh x := (ee^x - ee^(-x))/2, quad
+      tanh x := (sinh x) / (cosh x), quad "etc."
+    $
+    + Calculate the derivative of $cosh x$, $sinh x$, and $tanh x$.
+    + Draw the graphs of $cosh x$, $sinh x$, and $tanh x$.
+    + Show the following properties:
+      #h-enum(cols: (1fr, 1.2fr), label-align: horizon)[
+        + $cosh^2 x - sinh^2 x = 1$.
+        + $cosh x >= 1$ for all $x$.
+        + $cosh x$ is an even function.
+        + $sinh x$ and $tanh x$ are odd functions.
+      ]
+]
+
+
+= Exponential Growth and Decay <exp-physics>
+
+Consider the function $f(t) = N exp(A t)$, where $N>0$ and $A in RR$.
+
+$
+  f(t) = N exp(A t) "is" #math-strong("strictly increasing") "if" A>0, "while"
+  #math-strong("strictly decreasing") "if" A<0.
+$<eq:exp-growth-decay>
+Therefore, $f(t) = N exp(A t)$ is called #keyword[exponential growth] if $A>0$ and #keyword[exponential decay] if $A<0$.
+We learn the properties of this function in the next quiz:
+#quizzes[
+  + Consider the above function $f(t) = N exp(A t)$, where $N>0$ and $A in RR$.
+    + What does "strictly increasing" mean?
+    + Calculate $f'(t)$. Confirm the two statements in @eq:exp-growth-decay.
+    + Show that $f(0) = N$ and $f'(t) = A f(t)$.
+  #remark[We will discuss these equations in #TODO[section].]
+]
+#[
+  #let th = $T_(1\/2)$
+  Consider an exponential decay, where the number at $t=0$ is $N$.
+  We usually express such decays by
+  $
+    f(t) & = N exp(-Gamma t) quad quad && (Gamma>0) \
+         & = N exp(-t/tau) quad        && "(we define" tau := 1\/Gamma). \
+  $
+  Then we define the #keyword[half-life] $th$ as the time $t$ such that $f(th) = f(0)\/2$.
+  #quizzes[
+    +
+      #h-enum(label-align: horizon, cols: 1)[
+        + Show that $f'(t) = -Gamma f(t)$.
+        + Show that $th = tau ln 2$.
+        + Assume $f(t_1) = 40$. Find $t_2$ and $t_3$ such that $f(t_2) = 20$ and $f(t_3) = 10$.
+        + Show that, for any $t$, $f(t+th)/f(t) = 1/2$.
+      ]
+  ]
+  So, each time one half-life passes, the quantity is reduced by half.
+  If $2th$ has passed, the number will be $1\/4$ of the original number.
+]
+
+#problems[
+  + `3` An RC circuit has charge $Q(t) = Q_0 ee^(-t\/tau)$, where $tau = R C$.
+    + Verify that $Q(tau) = Q_0\/e$.
+    + Assume $R = 2.0 unit("k"Omega)$ and $C = 50 unit(mu"F")$. Calculate $tau$. Then, find the time $t$ at which $Q$ dropped to $10%$ of $Q_0$.
+
+
+]
