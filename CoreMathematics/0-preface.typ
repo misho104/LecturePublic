@@ -1,4 +1,4 @@
-#import "misho-text.typ": EMPH, JA, RED, TODO, ZH, c, h-enum, keyword, problems, quizzes, tab, text-sf
+#import "misho-text.typ": EMPH, JA, RED, TODO, ZH, c, dim, h-enum, keyword, levels, problems, quizzes, tab, text-sf
 #import "in-dexter.typ": first-letter-up, make-index
 
 #let ds(body) = text-sf(body)
@@ -56,7 +56,7 @@ This document is primarily for first-year undergraduate students in their second
 
     The texts are kept short, so please read all the text carefully. Quizzes should be solved while reading, but you don't have to write down the solution process for Quizzes.
 
-  + Solve #EMPH[Drill Problems].
+  + Solve #EMPH[Drill Problems], until you feel "I can solve them _fluently and accurately_".
 
     This is to improve your fluency ($!=$ speed) and accuracy. Write down solution process clearly.
 
@@ -69,8 +69,35 @@ This document is primarily for first-year undergraduate students in their second
   Sho supposes [Boas] listed below is the best option.
 ]
 
+#problems[
+  #let i(level, body) = grid(
+    columns: (dim.label-width + 3mm, dim.label-sep, 1fr),
+    align: (top + right, top, horizon + left),
+    levels.at(str(level)), "", body,
+  )
+  #i(
+    9,
+    [#EMPH[Drill problems], marked with #levels.at("9"), are simple and easy. They help you practice the basic calculations until you can do them fluently and accurately. If they feel too easy for you, feel free to skip some of them.],
+  )
+  #i(
+    4,
+    [These are #EMPH[minimal basic] problems. To pass this course, you should be able to solve all of them. If you struggle with them, please come talk to Sho---don't wait until the exam!],
+  )
+  #i(
+    3,
+    [These #EMPH[basic] problems are the same difficulty as the #levels.at("4")-problems. Solve these for extra practice, to check that you really understand the #levels.at("4")-problems and were not just lucky.],
+  )
+  #i(
+    2,
+    [These are #EMPH[intermediate] problems. Solve these if you are aiming for an A+. Note also that, at this level, you are asked to write answers carefully with clear explanations.],
+  )
+  #i(
+    1,
+    [These are #EMPH[advanced] problems, beyond the scope of the lecture, for motivated students who are interested in research activities, a top-level engineering career, or demanding analytical-thinking work.],
+  )]
 
-#pagebreak()
+
+
 
 = References
 
@@ -94,7 +121,7 @@ This document is written under the influence of the following references.
     Sho recommends you to study [Boas] _in parallel with_ this document, using it as a reference, and to consult [AWH] when you want more details or more exercises.
   ]
 
-
+#pagebreak()
 = Lecture Plan
 
 The content is designed for 150-minute #sym.times 14-week lectures, as it is originally for a lecture _Mathematics for Fundamental Physics_ (#ZH[基礎物理數學]) in National Sun Yat-sen University (#ZH[國立中山大學]).

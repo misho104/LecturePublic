@@ -311,7 +311,7 @@ To summarize, we have the following statement:
       + $sin 0.003$
       + $ln 1.001$
     ]
-  + `3` Find the approximate value for the following expressions without calculators. Then, check your answer with a calculator.
+  + `2` Find the approximate value for the following expressions without calculators. Then, check your answer with a calculator.
     #h-enum(cols: 5)[
       + $root(3, 1.001)$
       + $root(3, 8.012)$
@@ -335,7 +335,7 @@ To summarize, we have the following statement:
       + $sqrt(x)$
     ]
 
-  + `2` Write down the definition of the second derivative $f''(x)$. Repeat the discussion of @taylor-1 to find the expansion $f'(a+epsilon) approx f'(a) + epsilon f'(a) + (epsilon^2\/2) f''(a)$.
+  + `1` Write down the definition of the second derivative $f''(x)$. Repeat the discussion of @taylor-1 to find the expansion $f'(a+epsilon) approx f'(a) + epsilon f'(a) + (epsilon^2\/2) f''(a)$.
 ]
 
 #advanced-note[

@@ -205,13 +205,14 @@ These are scientifically correct equations.
 ]
 
 #problems[
-  + `3` Express the following units only with SI base units, e.g., $bare(N) = bare("kg"*m/s^2)$.
+  + `4` Express the following units only with SI base units, e.g., $bare(N) = bare("kg"*m/s^2)$.
     #h-enum(cols: 4)[
       + W (watt)
       + Pa (pascal)
       + J (joule)
       + C (coulomb)
     ]
+  + `3` Find a few more examples of dimensionless quantities in physics.
   + `2` Use "dim" notation to express the dimensions of the following quantities. For example, if $v$ is speed, then $DIM(v) = ds(L thin T^(-1))$.
     #h-enum(cols: 2)[
       + speed $v$
@@ -223,7 +224,6 @@ These are scientifically correct equations.
       + Planck constant $h$
       + fine-structure constant $alpha$
     ]
-  + `2` Find a few more examples of dimensionless quantities in physics.
 ]
 
 = Significant figures <sig-figs>
@@ -297,7 +297,7 @@ We use #keyword[rounding]-to-the-nearest (#ZH[四捨五入]) when necessary. For
   $,
 )
 #quizzes[
-  + `4` Round the following numbers to three significant figures.
+  + Round the following numbers to three significant figures.
     #h-enum(cols: 4)[
       + $41.11$
       + $98.76$
@@ -467,7 +467,7 @@ You can understand the rules easily if you do long addition and observe which di
       + $2.99EE(2) + 0.814$
       + $1.23EE(-4) + 4.5EE(-6)$
     ]
-  + `3` Calculate the following, taking care of significant figures. You may use calculators.
+  + `2` Calculate the following, taking care of significant figures. You may use calculators.
     #h-enum(cols: (1.7fr, 1.7fr, 1fr, 1fr))[
       + $1.50 times 2.000 times 3.50$
       + $8.00 div 4.00 div 0.25$
