@@ -100,7 +100,7 @@ This document is primarily for first-year undergraduate students in their second
 
 
 
-= References
+= Bibliography
 
 This document is written under the influence of the following references.
 
@@ -122,31 +122,38 @@ This document is written under the influence of the following references.
     Sho recommends you to study [Boas] _in parallel with_ this document, using it as a reference, and to consult [AWH] when you want more details or more exercises.
   ]
 
-#pagebreak()
-= Lecture Plan
-
-The content is designed for 150-minute #sym.times 14-week lectures, as it is originally for a lecture _Mathematics for Fundamental Physics_ (#ZH[基礎物理數學]) in National Sun Yat-sen University (#ZH[國立中山大學]).
-
-+ Derivative
-+ Units. Significant Digits.
-+ Logic. Theorems. $a^x$ and $log_a x$.
-+ Logic. Theorems. $a^x$ and $log_a x$.
-+ Vectors are arrows.
-+ $a dot b$ and $a times b$
-+ Matrices (rotation, reflection, scaling)
-+ Complex numbers (polar form, Euler's formula, multi-valuedness)
-+ Complex vectors, Hermitian inner product, bra-ket notation
-+ Vector calculus (grad, div, rot; example of point charge)
-+ ODE basics
-+ ODE basics
-+ Probability and error analysis
-+ Probability and error analysis
-
-#TODO[a bit on (abstract) vector space to prep for QM?]
-
+Other references are:
+#tab(shift: 1em)[#bibliography(title: none, "refs.yml")]
 #pagebreak()
 
 = Symbols
+
+== SI Units
+
+Historically, different civilizations used different units.
+Today, science and engineering worldwide use the #keyword[SI units] (Système International d'Unités)---the single international standard.
+It is built from seven #keyword[SI base units]:
+
+
+#figure(
+  caption: [SI base units and their symbols for dimension @si. Recall that units are case-sensitive.],
+  table(
+    columns: (auto, auto, auto, auto),
+    align: (left, center, left, center),
+    stroke: none,
+    table.header([*quantity*], table.cell(colspan: 2, align: center)[*symbol and name*], [*symbol for dimension*]),
+    table.hline(),
+    [time], [s], [ (second)], ds("T"),
+    [length], [m], [(meter)], ds("L"),
+    [mass], [kg], [(kilogram)], ds("M"),
+    [electric current], [A], [(ampere)], ds("I"),
+    [temperature], [K], [(kelvin)], ds("Θ"),
+    [amount of substance], [mol], [(mole)], ds("N"),
+    [luminous intensity], [cd], [(candela)], ds("J"),
+  ),
+)<SI-units>
+
+
 /*
 #block(height: 26em)[
   #columns(2, gutter: 5em)[
@@ -224,7 +231,7 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
     )
   ]
 ]
-
+#pagebreak()
 == Greek symbols
 #let NU(body) = table.cell(fill: luma(90%), text(fill: luma(50%), body)) // cspell:disable-line
 #let CA(body) = table.cell(fill: c.alt-b, body)
@@ -307,32 +314,55 @@ You need to write them so that *others can distinguish each from others*, but Sh
     ]
 ]
 
-== SI Units
-
-Historically, different civilizations used different units.
-Today, science and engineering worldwide use the #keyword[SI units] (Système International d'Unités)---the single international standard.
-It is built from seven #keyword[SI base units]:
-
-#figure(
-  caption: [SI base units and their symbols for dimension @si. Recall that units are case-sensitive.],
-  table(
-    columns: (auto, auto, auto, auto),
-    align: (left, center, left, center),
-    stroke: none,
-    table.header([*quantity*], table.cell(colspan: 2, align: center)[*symbol and name*], [*symbol for dimension*]),
-    table.hline(),
-    [time], [s], [ (second)], ds("T"),
-    [length], [m], [(meter)], ds("L"),
-    [mass], [kg], [(kilogram)], ds("M"),
-    [electric current], [A], [(ampere)], ds("I"),
-    [temperature], [K], [(kelvin)], ds("Θ"),
-    [amount of substance], [mol], [(mole)], ds("N"),
-    [luminous intensity], [cd], [(candela)], ds("J"),
-  ),
-)<SI-units>
 
 #pagebreak()
-== Index
+
+= Lecture Plan
+
+The content is designed for 150-minute #sym.times 14-week lectures, as it is originally for a lecture _Mathematics for Fundamental Physics_ (#ZH[基礎物理數學]) in National Sun Yat-sen University (#ZH[國立中山大學]).
+
++ Derivative
++ Units. Significant Digits.
++ Logic. Theorems. $a^x$ and $log_a x$.
++ Logic. Theorems. $a^x$ and $log_a x$.
++ Vectors are arrows.
++ $a dot b$ and $a times b$
++ Matrices (rotation, reflection, scaling)
++ Complex numbers (polar form, Euler's formula, multi-valuedness)
++ Complex vectors, Hermitian inner product, bra-ket notation
++ Vector calculus (grad, div, rot; example of point charge)
++ ODE basics
++ ODE basics
++ Probability and error analysis
++ Probability and error analysis
+
+#TODO[a bit on (abstract) vector space to prep for QM?]
+
+#pagebreak()
+
+#columns(2, gutter: 0em)[
+  #outline(depth: 2)
+]
+
+#heading(depth: 1, outlined: false, bookmarked: false)[List of Theorems and Definitions]
+#columns(4, gutter: 1.5em)[
+  #outline(
+    title: none,
+    indent: 1em,
+    target: figure.where(kind: "env"),
+  )]
+#outline(
+  title: "List of tables",
+  target: figure.where(kind: table),
+)
+#outline(
+  title: "List of figures",
+  target: figure.where(kind: figure),
+)
+
+
+#pagebreak()
+= Index
 #columns(3)[
   #make-index(
     section-title: (l, c) => v(3mm),
@@ -347,4 +377,3 @@ It is built from seven #keyword[SI base units]:
   )
 ]
 
-#bibliography("refs.yml")

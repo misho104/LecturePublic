@@ -195,7 +195,7 @@ The difference between (a) and (c) is that
 #no-num[$2x - 1 = 0 <== x=1\/2 quad "is true, but" quad 2x - 1 = 0 <== x > -10 quad "is false."$]
 So, for (a), both $==>$ and $<==$ are correct: we use $<==>$ to express such cases.
 
-#theorem(type: "Definition", title: "Equivalent")[
+#definition(title: "Equivalent")[
   If both $A ==> B$ and $A <== B$ are true, we call "$A$ and $B$ are #keyword[equivalent]", and write $A <==> B$.
 ]
 $A=>B$ is read by "$B$ if $A$" in English. Similarly, $A <=> B$ is read by "$B$ if and only if $A$" or "$B$ #keyword[iff] $A$". (namely, #EMPH[if]-and-only-i#EMPH[f]).

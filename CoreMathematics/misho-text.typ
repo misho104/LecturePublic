@@ -104,9 +104,10 @@
   show sym.ast: h(0.05em) + sym.dot.op + h(.05em)
   $#h(0.1667em)upright(body)$
 }
+#let ii = math.upright("i")
 #let ee = math.upright("e")
 #let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
-#let root(n, x) = math.root(move(math.script(n), dy: -0.3em), x)
+#let root(n, x) = math.root(move($math.script(#n)$, dy: -0.4em), x)
 
 // #show math.attach: it => {
 //   if it.has("label") and it.label == <u1> {
@@ -418,6 +419,7 @@
     )),
   )
 }
+#let definition(..args) = theorem(type: "Definition", ..args)
 
 #let example(title: none, body) = {
   let border = 1pt + c.green
