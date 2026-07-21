@@ -20,11 +20,13 @@
 #set heading(numbering: "1.1.1")
 #show heading.where(level: 4): set heading(numbering: none)
 
-#chapter[Derivative (Review)]
+#chapter(key: "chap:deriv")[Derivative (Review)]
 #include "1-derivative.typ"
 
-#chapter[Units and Significant figures]
+#chapter(key: "chap:units")[Units and Significant figures]
 #include "2-units.typ"
 
-#chapter[Logic]
+#chapter(key: "chap:logic")[Logic]
 #include "3-logic.typ"
+
+#chapter(key: "chap:pow")[Power, Exponential, and Logarithm]

@@ -295,11 +295,7 @@ We need to _avoid ambiguous notations_. Namely,
 ]
 #make-indent
 We use #keyword[rounding]-to-the-nearest (#ZH[四捨五入]) when necessary. For example, if you need to convert to three significant figures, it will be
-#no-num(
-  $
-    1.234 → 1.23, quad 1.235 → 1.24, quad 31.98 → 32.0, quad 1234 → 1.23EE(3), quad "and so on."
-  $,
-)
+#no-num(comma-gap: auto, $ 1.234 → 1.23, 1.235 → 1.24, 31.98 → 32.0, 1234 → 1.23EE(3), "and so on." $)
 #quizzes[
   + Round the following numbers to three significant figures.
     #h-enum(cols: 4)[
@@ -338,8 +334,6 @@ We use #keyword[rounding]-to-the-nearest (#ZH[四捨五入]) when necessary. For
     ]
 
 ]
-
-#pagebreak()
 
 = Calculation with Significant figures
 

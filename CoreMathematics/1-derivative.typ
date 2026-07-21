@@ -174,10 +174,11 @@ $
 $
 The following expressions are not incorrect but confusing;
 #no-num(
+  comma-gap: auto,
   $
-    #RED[$sin^(-2) x$],quad
-    #RED[$sin^(1\/2) x$],quad
-    #RED[$sin(x)^2$],quad
+    #RED[$sin^(-2) x$],
+    #RED[$sin^(1\/2) x$],
+    #RED[$sin(x)^2$],
     #RED[$sin (x+1)^2$],...
   $,
 )
@@ -229,12 +230,23 @@ and this interpretation is useful in the following example:
   #enum(numbering: cn => box(width: 2em, align(right, text-sf[*(#cn)*])), tight: false)[
     Apply @taylor-1 for $f(x)=sqrt(x)$, $a=1$, and $delta=0.002$. Then,
     #no-num(
-      $f'(x)=1/(2sqrt(x)),quad f'(a)=f'(1)=1/2, quad f(a+delta)approx f(a)+delta f'(a)=1+delta/2=underline(1.001).$,
+      comma-gap: auto,
+      $
+        f'(x)=1/(2sqrt(x)),
+        f'(a)=f'(1)=1/2,
+        f(a+delta)approx f(a)+delta f'(a)=1+delta/2=underline(1.001).
+      $,
     )
   ][
     Doing the same thing for $g(x)=x^10$ with $a=1$ and $delta=0.002$,
-    #no-num($g'(x)=10x^9,quad g'(a)=g'(1)=10, quad g(a+delta)approx g(a)+delta g'(a)=1^10+10delta=underline(1.02).$)
-
+    #no-num(
+      comma-gap: auto,
+      $
+        g'(x)=10x^9,
+        g'(a)=g'(1)=10,
+        g(a+delta)approx g(a)+delta g'(a)=1^10+10delta=underline(1.02).
+      $,
+    )
   ][
     Doing the same thing for $h(x)=sqrt(x)$, $a=4$, and $delta=0.004$, we have
     #no-num($h'(4)=1/4,quad h'(4.004) approx h(4)+0.004times 1/4 = underline(2.001).$)
@@ -325,7 +337,7 @@ To summarize, we have the following statement:
       + $log_10(10.01)$
       + $sqrt(1.001)sin 0.001$
     ]
-  #fail-safe[If you are not confident with the meaning of $root(3, 1.001)$, $(1.001)^(-0.9)$, etc., please go to #TODO[a chapter...]]
+  #fail-safe[If you are not sure about $root(3, 1.001)$, $(1.001)^(-0.9)$, etc., study @chap:pow first.]
   + `2` For the following $f(x)$, calculate $f^((n))(x)$ for all positive integers $n=1,2,3,...$.
     #h-enum(cols: 5)[
       + $x^10$
@@ -373,7 +385,7 @@ The symbol "$in$" means _"is a member of"_, and $NN^+$ means a #keyword[set] of 
 )
 
 #remark[
-  Mathematicians tend to call $NN^0$ natural numbers, while physicists (and educations until high school) call $NN^+$ natural numbers.
+  In mathematics, "natural numbers" usually mean $NN^0$. Meanwhile, physicists and other people tend to think natural numbers mean $NN^+$ .
 ]
 
 
@@ -416,9 +428,9 @@ Notice that, when we say "positive" or "negative", we implicitly assume the numb
         + $C without A$
         + $C without B$
         + $(B without A) union A$
-        + $(A inter C) union B$
+        + $NN^0 without NN^+$
       ]
-    + Express the following statements only with $RR$, $QQ$, $ZZ$, $NN^+$, $NN^0$, $inter$, $union$, $without$, and $x$.
+    + Express the following statements only with $RR$, $QQ$, $ZZ$, $NN^+$, $NN^0$, $inter$, $union$, $without$, and "$x in$".
       #h-enum(cols: (1.4fr, 1fr))[
         + $x$ is a rational number.
         + $x$ is an irrational number.

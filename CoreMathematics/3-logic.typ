@@ -15,7 +15,7 @@ Solve @quiz:for-logic (on #ref(<quiz:for-logic>, form: "page")) again.
 }
 
 The answers are
-#h-enum(cols: (1fr, 1fr, 1fr, 0.2fr), label-width: 3.7em)[
+#h-enum(cols: (1fr, 1fr, 1fr, 0.2fr), label-width: 3.7em, label-style: "(1)")[
   + $omega = ±1.4 unit(s^(-1))$
   + $t=1.0 unit(s), 2.5 unit(s)$
   + $x=5.0 unit(m), y=4.0 unit(m)$
@@ -37,9 +37,9 @@ Elementary educations do not discuss these differences because kids do not know 
 = Basic Logics
 
 Since elementary school, you have written many equalities and inequalities, such as
-#no-num($ 3+5=8, quad 6 + 2 = 10, quad 1+3 > -3, quad 1+3 != 0, quad 3^3 = 9,quad 1>2, quad "and" quad sin(pi)!=0. $)
+#no-num(comma-gap: auto, $3+5=8, 6+2=10, 1+3>-3, 1+3!=0, 3^3=9, 1>2, "and" quad sin(pi)!=0.$)
 #quizzes[
-  + An equality can be #keyword[true] (T) or #keyword[false] (F).  For each of the above statements, state whether it is true or false.
+  + The above statements are either #keyword[true] (T) or #keyword[false] (F).  For each of them, state whether it is true or false.
   + Confirm that the following statements are all true:
     #h-enum(cols: 2)[
       + $3+5=8$ is true.
@@ -75,13 +75,13 @@ Numbers can be manipulated by operators such as $+$, $div$. Similarly, true (T) 
   align: bottom,
   [We can write these property as equations:
     #table(
-      columns: (.5fr, 2fr, 5fr),
+      columns: (2fr, 5fr),
       align: left,
       stroke: none,
-
-      "", $(bT and bT) = bT$, $(bT and bF) = (bF and bT) = (bF and bF) = bF$,
-      "", $(bF or bF) = bF$, $(bT or bT) = (bT or bF) = (bF or bT) = bT$,
-      "", $(not bT) = bF$, $(not bF) = bT.$,
+      inset: (left: 1em),
+      $(bT and bT) = bT,$, $(bT and bF) = (bF and bT) = (bF and bF) = bF,$,
+      $(bF or bF) = bF,$, $(bT or bT) = (bT or bF) = (bF or bT) = bT,$,
+      $(not bT) = bF,$, $(not bF) = bT,$,
     )
     but the #keyword[truth table], shown to the right, is more useful.
   ],
@@ -112,9 +112,16 @@ Numbers can be manipulated by operators such as $+$, $div$. Similarly, true (T) 
       + $(6 + 3 > 0) and not (5 - 2 > 0).$
     ]
 ]
-
+#fail-safe[
+  Don't be confused by daily English.
+  #list(
+    marker: "",
+    ["$x=1$ and $x=-1$ are the two solutions of $x^2=1$." (correct daily English)],
+    ["$x^2=0$ if and only if $x=1$ or $x=-1$." (correct mathematical English)],
+  )
+  are both correct, but if you say "#RED[$x=1 "and" x=-1$]", then it means an impossible equality #RED[$x=1=-1$].
+]
 = Implication ⟹
-
 
 
 We can discuss the following statements: are they true or false?
@@ -123,7 +130,7 @@ We can discuss the following statements: are they true or false?
   let f(w: 40mm, x, y) = list.item[#box(width: w, x) #sym.dots #y]
   list(
     //      tight: false,
-    f[If $x > 5$, then $x > 1$.][This is true.],
+    f[If $x > 5$, then $x > 1$.][This is true. (Number larger than $5$ are larger than 1.)],
     f[If $x < 9$, then $x < 2$.][This is false, because we have a counterexample $x = 5$.],
     f[If $x^2 < 1$, then $x<1$.][This is true.],
     f[If $x^2 = 1$, then $x=-1$.][This is false, because we have a counterexample $x=1$.],
@@ -133,7 +140,6 @@ We can discuss the following statements: are they true or false?
 In general, it is easy to claim that a statement is false, i.e., to _refute_ or _disprove_ a statement.
 You just have to find one #keyword[counterexample].
 Meanwhile, it is more difficult to claim that a statement is true. As mentioned above, you need to write a proof.
-
 
 Now, let's try to find some counterexamples.
 #quizzes[
@@ -155,15 +161,8 @@ We use the symbol "$=>$" to express "if ... then ..." statement.
   [or equivalently,],
   [$A$ implies $B$.],
 )
-and this is called  #keyword[implication]. For example, the statements in the previous quiz, which you already have found counterexamples, can be written as
-#no-num(
-  $
-    x^2>0 => x>0,quad
-    x^2-x=0 => x=0,quad
-    x^2=y^2 => x=y,quad
-    x+y<1 => x<1 and y<1.
-  $,
-)
+and this is called  #keyword[implication]. For example, the statements in the above quiz can be written as
+#no-num(comma-gap: auto, $x^2>0 => x>0, x^2-x=0 => x=0, x^2=y^2 => x=y, x+y<1 => x<1 and y<1.$)
 #quizzes[
   + Similarly rewrite the statements in @ex:implications with using the symbol "$==>$".
 ]
@@ -248,7 +247,7 @@ For example, because $x=1 ==> x^2=1$,
 #divider()
 
 "To solve an equation" means "to find an _equivalent_ equation in the form of $x=#blank()$". Since
-$2x-1=0 <==> x=1\/2$ and $x^2=4 <==> x=±2$, we say $x=1\/2$ and $x=±2$ are the solutions of the equations, respectively.
+$2x-1=0 <=> x=1\/2$ and $x^2=4 <=> x=±2$, we say $x=1\/2$ and $x=±2$ are the solutions of the equations, respectively.
 
 When you solve an equation, you have to check that the solution is *necessary and sufficient*.
 
@@ -259,10 +258,7 @@ When you solve an equation, you have to check that the solution is *necessary an
 #quizzes[
   +
     + Solve $sqrt(x + 2) = x$. You might reach an _extraneous solution_, which you need to _exclude_ it.
-    + Solve $sqrt(x^2)=4$. You might reach an _incomplete solution_, where you need to find more solutions.
-  #fail-safe[
-    Recall that $sqrt(x^2)=x$ is incorrect. (What should it be?)
-  ]
+    + Solve $sqrt(x^2)=4$. You might reach an _incomplete solution_, where you need to find more solutions. (Hint: $sqrt(x^2)=x$ is a false statement.)
 ]
 
 Before discussing advanced topics on logics, you should do some drills.
@@ -364,7 +360,7 @@ Before discussing advanced topics on logics, you should do some drills.
       Write a truth table (see #ref(<tab:truth>, form: "page")) for $A=>B$, $A arrow.l.double B$, and $A<=>B$.
     + Explain the reason we can understand $A<=>B$ as $A=B$.
     + Write a truth table for the following expressions:
-      #no-num[$A and B quad not(A and B) quad (not A)or(not B) quad not(A or B) quad (not A)and(not B)$]
+      #no-num(comma-gap: auto, $A and B, not(A and B), (not A)or(not B), not(A or B), (not A)and(not B)$)
       Explain that this truth table is considered as a _proof_ of #keyword[de Morgan's theorem]
       $
         not(A or B) = (not A)and(not B), quad quad not(A and B) = (not A)or(not B).
@@ -388,6 +384,8 @@ Before discussing advanced topics on logics, you should do some drills.
       + $|x| = x$ for all real $x$.
     ]
 ]
+
+#pagebreak()
 
 = A few more notes about logic and proof
 

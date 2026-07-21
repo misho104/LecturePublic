@@ -125,7 +125,10 @@
 
 // ==== Block level styles =============================================================================================
 #let make-indent = h(dim.indent)
-#let no-num(content) = { math.equation(block: true, numbering: none, content) }
+#let no-num(comma-gap: 0em, content) = {
+show sym.comma: "," + h(if(comma-gap == auto) { 1em } else {comma-gap})
+  math.equation(block: true, numbering: none, content)
+}
 #let tab(shift: dim.tab, ..args, body) = block(inset: (left: shift), ..args, body)
 
 // ==== Page level styles ==============================================================================================
@@ -289,19 +292,20 @@
   }
 }
 #let current-chapter = state("current-chapter", (0, "", ""))
-#let chapter(title) = {
-  set-page-style("chapter")
-  pagebreak()
-  heading(level: 1, title)
-  let number = context (counter(heading).at(here()).at(0))
-  _draw-chapter-box(number, title)
-  current-chapter.update((number, title, [Chapter #number: #title]))
-  set-page-style("normal")
-  counter(math.equation).update(0)
-  counter(figure.where(kind: "env")).update(0)
-  counter(figure.where(kind: "problem")).update(0)
-  counter(figure.where(kind: "quiz")).update(0)
-}
+#let chapter(title, key: none) = [
+  #set-page-style("chapter")
+  #pagebreak()
+  #heading(level: 1, title)
+  #if (key != none) { label(key) }
+  #let number = context (counter(heading).at(here()).at(0))
+  #_draw-chapter-box(number, title)
+  #current-chapter.update((number, title, [Chapter #number: #title]))
+  #set-page-style("normal")
+  #counter(math.equation).update(0)
+  #counter(figure.where(kind: "env")).update(0)
+  #counter(figure.where(kind: "problem")).update(0)
+  #counter(figure.where(kind: "quiz")).update(0)
+]
 #let _chapter-numbering(n) = {
   let _n = if type(n) == str {
     counter(figure.where(kind: n)).get().at(0)
@@ -329,7 +333,7 @@
   let inset = (left: 4mm, right: 4mm, top: 0.6em, bottom: 0.6em, middle-above: 1mm, middle-below: 2mm) + inset
   let _i(key) = inset.at(key, default: 0mm)
   set text(top-edge: "bounds", bottom-edge: "bounds") if call-out
-  set par(leading: 0.43em) if call-out
+  set par(leading: 0.43em, spacing: 0.43em) if call-out
   (it => if indent { pad(left: dim.shift, it) } else { it })[
     #if head-box != none {
       block(
@@ -397,7 +401,7 @@
   ]
 }
 
-#let theorem(type: "Theorem", title: none, body) = {
+#let theorem(type: "Theorem", title: none, key: none, body) = {
   let border = 1pt + c.blue
   figure(
     caption: none,
@@ -595,7 +599,9 @@
   set math.equation(supplement: "Eq.", numbering: it => { numbering("(1.1)", counter(heading).get().at(0), it) })
 
   show ref.where(form: "normal"): it => {
-    if str(it.target).starts-with("quiz:") {
+    if str(it.target).starts-with("chap:") {
+      link(it.target, counter(heading).display(e => [Chapter~#e], at: it.target))
+    } else if str(it.target).starts-with("quiz:") {
       let t = query(selector(figure.where(kind: "quiz")).before(it.target)).last().location()
       link(t, [Quiz #counter(heading).at(t).at(0).#counter(figure.where(kind: "quiz")).display("1", at: t)])
     } else if str(it.target).starts-with("prob:") {
@@ -624,6 +630,7 @@
     justify: true,
     first-line-indent: dim.indent,
     leading: 0.65em, // default
+    spacing: 1.2em, // default
     justification-limits: (
       spacing: (min: 100% * 2 / 3, max: 150%), // default
       tracking: (min: -0.01em, max: 0.02em),
