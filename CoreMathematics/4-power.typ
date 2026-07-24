@@ -161,6 +161,7 @@ We have defined $a^x$ for $a>0$ and $x in RR$. Other cases are more complicated,
       $root(3, 3.5)$, $root(3.5, 3)$, $root(-4, 3)$, $root(3, 0)$, $0^(2.5)$, $0^(-2.5)$, $0.1^(0.1)$,
     )
 ]
+#make-indent
 In the following sections, we will only consider *powers of positive base*, i.e., $a^x$ for $a>0$.
 
 #advanced-note[
@@ -242,9 +243,9 @@ In the following sections, we will only consider *powers of positive base*, i.e.
     ]
 ]
 
-
+#make-indent
 Consider the equation $p = a^x$, where $a>0$, $a!=1$ and $p in RR$. For a given $p$, how many solutions $x$ does it have?
-Because $a!=1$, $a^x$ is strictly increasing or decreasing and it takes any value $0 < a^x < +oo$. Therefore, $p = a^x$ has a unique real solution $x$ for any $p>0$.
+As $a!=1$, $a^x$ is strictly increasing or decreasing and it takes any value $0 < a^x < oo$. Therefore, $p = a^x$ has a unique real solution $x$ for any $p>0$.
 We call the solution $x = log_a p$.
 
 #definition(title: [Logarithm])[
@@ -435,6 +436,7 @@ We learn the properties of this function in the next quiz:
 ]
 #[
   #let th = $T_(1\/2)$
+  #make-indent
   Consider an exponential decay, where the number at $t=0$ is $N$.
   We usually express such decays by
   $
@@ -457,7 +459,7 @@ We learn the properties of this function in the next quiz:
 
 #problems[
   + `3` An RC circuit has charge $Q(t) = Q_0 ee^(-t\/tau)$, where $tau = R C$.
-    + Verify that $Q(tau) = Q_0\/e$.
+    + Verify that $Q(tau) = Q_0\/ee$.
     + Assume $R = 2.0 unit("k"Omega)$ and $C = 50 unit(mu"F")$. Calculate $tau$. Then, find the time $t$ at which $Q$ dropped to $10%$ of $Q_0$.
 
 

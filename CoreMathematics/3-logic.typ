@@ -8,7 +8,7 @@
 Solve @quiz:for-logic (on #ref(<quiz:for-logic>, form: "page")) again.
 
 #context {
-  set enum(numbering: n => text-sf(weight: 600, [(#n)]))
+  set enum(numbering: n => thick-sf([(#n)]))
   tab[
     #query(selector(figure.where(kind: "quiz")).before(<quiz:for-logic>)).last().body.children.at(2)
   ]

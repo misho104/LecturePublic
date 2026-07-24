@@ -11,7 +11,7 @@ Try the next quiz---and note how long it takes.
 
 #quizzes[
   + Calculate the first derivatives of the following functions, *measuring how many minutes it takes.*
-    #h-enum(cols: 4, v-sep: 1.5em)[
+    #h-enum(cols: 4, v-sep: 1.5em, label-align: horizon)[
       + $(x+1)^3$
       + $tan x$
       + $2cos^2x$
@@ -83,7 +83,7 @@ $ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(, x)g(a) quad = quad 2a^2. 
 
 #quizzes[
   + Let $a$ be a constant and $g(x)=a x^2+2a$. Calculate
-    #h-enum(cols: 4)[
+    #h-enum(cols: 4, label-align: horizon)[
       + $g(1)$
       + $g(a)$
       + $g(0)$

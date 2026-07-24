@@ -54,6 +54,7 @@
   size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.95 },
   ..args,
 )
+#let thick-sf(..args) = text-sf(weight: 600, ..args)
 
 // ==== Layout =========================================================================================================
 #let dim = (
@@ -97,6 +98,7 @@
   h(pad) + [#args.pos().at(0, default: "")] + h(pad),
 ))
 #let TODO(..args) = text(fill: c.alt-a, text-tt("♣TODO♣") + args.pos().join())
+#let hint(head: [Hint:~], body) = text-sf[\[#head#body\]]
 
 // ==== Mathematics ====================================================================================================
 #let unit(body) = {
@@ -127,7 +129,7 @@
 // ==== Block level styles =============================================================================================
 #let make-indent = h(dim.indent)
 #let no-num(comma-gap: 0em, content) = {
-show sym.comma: "," + h(if(comma-gap == auto) { 1em } else {comma-gap})
+  show sym.comma: "," + h(if (comma-gap == auto) { 1em } else { comma-gap })
   math.equation(block: true, numbering: none, content)
 }
 #let tab(shift: dim.tab, ..args, body) = block(inset: (left: shift), ..args, body)
@@ -168,33 +170,40 @@ show sym.comma: "," + h(if(comma-gap == auto) { 1em } else {comma-gap})
   "1": "*",
   "9": text(font: "Noto Color Emoji", "🦾"), // cspell: disable-line
 )
-#let _exercise-enum-depth = state("_exercise-enum-depth", 0)
+#let _enum-depth = state("_enum-depth", 0)
+#let problem-style-label = state("problem-style-label", false)
 
 #let _labels = (
-  "problem": n => text-sf(weight: 600, n),
-  "quiz": n => text-sf(weight: 600, [Q#n.replace(regex(".*\."), "").]),
-  "(1)": n => text-sf(weight: 600, [(#n)]),
-  "(A)": n => text-sf(weight: 600, "(" + str.from-unicode(64 + n) + ")"),
-  "(a)": n => text-sf(weight: 600, "(" + str.from-unicode(96 + n) + ")"),
-  "1": n => text-sf(weight: 600, [#n]),
-  "A": n => text-sf(weight: 600, str.from-unicode(64 + n)),
-  "a": n => text-sf(weight: 600, str.from-unicode(96 + n)),
+  "problem": n => thick-sf(n),
+  "quiz": n => thick-sf([Q#n.replace(regex(".*\."), "").]),
+  "(1)": n => thick-sf([(#n)]),
+  "(A)": n => thick-sf("(" + str.from-unicode(64 + n) + ")"),
+  "(a)": n => thick-sf("(" + str.from-unicode(96 + n) + ")"),
+  "1": n => thick-sf([#n]),
+  "A": n => thick-sf(str.from-unicode(64 + n)),
+  "a": n => thick-sf(str.from-unicode(96 + n)),
   "1.": n => [#n.],
   "A.": n => str.from-unicode(64 + n) + ".",
   "a.": n => str.from-unicode(96 + n) + ".",
 )
 #let enum-style(width: dim.label-width, style) = n => box(width: width, align(right, _labels.at(style)(n)))
 
-#let _enum-labels = (
-  _labels.at("1."),
-  _labels.at("A."),
-  _labels.at("a."),
-)
-#let _enum-labels-problems = (
-  _labels.at("(1)"),
-  _labels.at("(a)"),
-  _labels.at("1."),
-)
+#let _enum-labels(d) = (
+  if problem-style-label.get() {
+    (
+      _labels.at("(1)"),
+      _labels.at("(a)"),
+      _labels.at("1."),
+    )
+  } else {
+    (
+      _labels.at("1."),
+      _labels.at("A."),
+      _labels.at("a."),
+      _labels.at("1."),
+    )
+  }
+).at(d)
 
 // for list
 #let list-markers = ([•], [‣], [–])
@@ -212,16 +221,16 @@ show sym.comma: "," + h(if(comma-gap == auto) { 1em } else {comma-gap})
   inset: (:),
   ..items,
 ) = [
+  #_enum-depth.update(d => d + 1)
   #let style = if label-style == auto {
-    let depth = _exercise-enum-depth.get()
-    if (depth > 0) { _enum-labels-problems.at(depth - 1) } else { _enum-labels.at(0) }
+    _enum-labels(_enum-depth.get() - 1)
   } else if type(label-style) == str {
     _labels.at(label-style)
   } else {
     label-style
   }
   #let label-width = if label-width == auto {
-    if _exercise-enum-depth.get() == 0 { dim.label-width } else { dim.problem-label-width }
+    if problem-style-label.get() { dim.problem-label-width } else { dim.label-width }
   } else { label-width }
   #set par(first-line-indent: 0em, hanging-indent: 0em)
   #grid(
@@ -233,16 +242,15 @@ show sym.comma: "," + h(if(comma-gap == auto) { 1em } else {comma-gap})
       .enumerate()
       .map(((i, body)) => grid(
         columns: (label-width, label-sep, auto),
-        align: (label-align + right, label-align, left),
+        align: (right + label-align, label-align, left),
         inset: (inset, 0em, 0em),
         style(label-start + i), "", body,
       ))
   )
+  #_enum-depth.update(d => d - 1)
 ]
 #let h-enum(..args, cols: 4, body) = {
   show enum: it => {
-    let depth = _exercise-enum-depth.get()
-    if depth > 0 { _exercise-enum-depth.update(d => d + 1) }
     _enum-horizontal(
       cols: cols,
       ..args,
@@ -250,7 +258,6 @@ show sym.comma: "," + h(if(comma-gap == auto) { 1em } else {comma-gap})
         it.body
       }),
     )
-    if depth > 0 { _exercise-enum-depth.update(d => d - 1) }
   }
   body
 }
@@ -487,9 +494,9 @@ show sym.comma: "," + h(if(comma-gap == auto) { 1em } else {comma-gap})
     ),
   )[
     #show enum: it => {
-      _exercise-enum-depth.update(d => d + 1)
-      let depth = _exercise-enum-depth.get()
+      let depth = _enum-depth.get()
       if depth == 0 {
+        _enum-depth.update(d => d + 1)
         set list(marker: _list-markers-aligned(dim.problem-label-width))
         set par(first-line-indent: 0em, hanging-indent: 0em)
         it
@@ -503,14 +510,16 @@ show sym.comma: "," + h(if(comma-gap == auto) { 1em } else {comma-gap})
             ))
           ])
           .join()
+        _enum-depth.update(d => d - 1)
       } else {
         _enum-horizontal(
           ..it.children.map(it => it.body),
         )
       }
-      _exercise-enum-depth.update(d => d - 1)
     }
+    #problem-style-label.update(true)
     #body
+    #problem-style-label.update(false)
   ]
 }
 
@@ -596,6 +605,14 @@ show sym.comma: "," + h(if(comma-gap == auto) { 1em } else {comma-gap})
   )
   show list: set par(first-line-indent: 1em, hanging-indent: 0em)
   show enum: set par(first-line-indent: 1em, hanging-indent: 0em)
+  set enum(full: true, numbering: (..arg) => context {
+    _enum-labels(arg.len() - 1)(arg.pos().last())
+  })
+  show enum: it => context {
+    _enum-depth.update(d => d + 1)
+    it
+    _enum-depth.update(d => d - 1)
+  }
 
   set math.equation(supplement: "Eq.", numbering: it => { numbering("(1.1)", counter(heading).get().at(0), it) })
 
