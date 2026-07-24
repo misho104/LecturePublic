@@ -1,397 +1,390 @@
 #import "misho-text.typ": *
 #import "physica.typ": *
+#import "@preview/cetz:0.5.2": canvas, draw
 
 // Vector notation: arrow over symbol
-#let vc(v) = $accent(v, arrow)$
+#let vc(v) = $accent(#v, arrow)$
+#let va(v) = $lr(|vc(#v)|)$
 // Unit vector: hat over symbol
-#let vcu(v) = $accent(v, hat)$
-// Zero vector
-#let vzero = $accent(0, arrow)$
+#let vcu(v) = $accent(#v, hat)$
 
-= What is a Vector?
+#let xy-plus(p, q) = (p.at(0) + q.at(0), p.at(1) + q.at(1))
+#let vector(p, d, label: none, end: "stealth", offset: (0, 0), color: black, thickness: 1.5pt, dash: none) = {
+  draw.line(
+    p,
+    xy-plus(p, d),
+    stroke: color + thickness,
+    mark: (
+      end: end,
+      fill: color,
+      stroke: color + thickness,
+      transform-shape: false,
+    ),
+    dash: dash,
+  )
+  if label != none {
+    draw.content(
+      (
+        p.at(0) + d.at(0) / 2 + offset.at(0),
+        p.at(1) + d.at(1) / 2 + offset.at(1),
+      ),
+      label,
+    )
+  }
+}
 
-You have likely seen vectors written as $(1, 2)$ or $mat(4; -3)$ in high school.
-Let us forget that for now (we will return to it in @sec:components), and think from scratch.
 
-#theorem(type: "Definition", title: "Vector (for physics)")[
-  A #keyword[vector] is a physical quantity that has both #keyword[magnitude] and #keyword[direction].
-]
+Physicists understand a vector in three ways:
 
-We draw vectors as arrows. The length of the arrow represents the magnitude; the arrow points in the direction of the vector.
+- an arrow in $n$-dimensional space ($n in NN^+$, but usually $n=3$),
 
-#theorem(type: "Definition", title: "Notation for vectors")[
-  - We write vectors with an arrow over the symbol: $vc(v)$, $vc(F)$, $vc(a)$, $vc(p)$.
-  - Their magnitudes are written as $|vc(v)|$, $|vc(F)|$, $|vc(a)|$, $|vc(p)|$.
-  - In figures, vectors are drawn as arrows. The arrow's length is proportional to the magnitude.
-]
+- a list of $n$ numbers arranged vertically ($n in NN^+$), and
+
+- an element of a vector space (such as a Hilbert space).
+
+In this chapter, we will focus on the first two interpretations.
+The last interpretation, more abstract and mathematical, will be discussed in #TODO[chap:linear-algebra], after we visit complex numbers.
 
 #remark[
-  In printed textbooks, vectors are often written in bold: $bold(v)$, $bold(F)$.
-  When handwriting, always use the arrow notation $vc(v)$ so that you never confuse a vector with a scalar.
+  This document discusses vectors mainly in terms of mathematics; more detailed _physical_ discussion about vectors can be found in  Sho's #link("https://misho104.github.io/LecturePublic/", "Vector Boot Camp").#footnote[Visit https://misho104.github.io/LecturePublic and find `gp2_boot2_vector.pdf`.]
 ]
-
 #be-careful[
-  $v$ and $vc(v)$ are *completely different objects*.
-  Just as $a$ and $B$ are unrelated, $v$ (a number) and $vc(v)$ (a vector) are unrelated.
-  However, in physics, we are sometimes lazy and write $v$ to mean $|vc(v)|$ (the magnitude).
-  Watch out for this in textbooks.
+  In university, we *never* use the horizontal notation $vc(v)=(x, y, z)$ to describe vectors. Please *always* use the vertical form $vc(v)=mat(x; y; z)$ to be prepared for @chap:matrix.
+]
+#remark[
+  We use the arrow notation $vc(v)$ because this is a first-year lecture.
+  Usually, physicists use boldface ($bold(a), bold(x), bold(β)$, etc.) to denote vectors.
+]
+#advanced-note[
+  The discussion in this chapter is only valid for _finite-dimensional_ vectors because here we will define vectors as arrows in a "space".
+  As the "space", readers are expected to imagine _the 3d space_ of our Universe, a 2d-sheet of paper in our Universe, or something like those, and then the #EMPH[dimension] of the space (defined in @def-dimension) will be limited to a finite integer.
 ]
 
-#theorem(type: "Definition", title: "Vector and scalar quantities")[
-  - A #keyword[vector quantity] is a physical quantity with direction. It is described by a vector.
-  - A #keyword[scalar quantity] is a physical quantity without direction. It is described by a number.
-  - For a vector quantity $vc(A)$, its magnitude $|vc(A)|$ is a scalar quantity.
+= What is a Vector? <sec:vec-intro>
+
+You have seen vectors, such as $(5, -1)$, $(1, 0, 2)$, or $(-1, 3)$, or in the vertical form $mat(1; 2)$, $mat(1; 0; 0)$, etc.
+However, it represents a _mathematical_ nature of vectors. As a *physicist*, you have to forget about such expressions in this section (we will return to it in @sec:vec-comp). Instead, we will first _define_ vectors in a more physical way.
+
+#definition(title: "Vector for physicists")[
+  Consider a space.
+  A #keyword[vector] is a straight arrow drawn in the space, or in general, a quantity that has both #keyword[magnitude] (= length) and #keyword[direction] in the space.
 ]
-
-Some examples: *mass* $m$ is a scalar. *Temperature* $T$ can be positive or negative but is scalar (it has no direction). *Velocity* $vc(v)$ is a vector; its magnitude $|vc(v)|$ is the *speed* (scalar). *Force* $vc(F)$, *acceleration* $vc(a)$, *position* $vc(r)$, and *momentum* $vc(p)$ are all vectors. *Area* and *volume* are scalars.
-
+We here do not investigate what "the space" is, but you may well imagine a lecture room as the space.
+#theorem(type: "Notation", title: "Vectors and Scalars")[
+  We denote vectors with an arrow over the symbol, such as $vc(v)$, $vc(F)$, $vc(a)$, $vc(p)$.
+  Their magnitudes are written as $va(v)$, $va(F)$, $va(a)$, $va(p)$, respectively.
+  Meanwhile, a quantity that has no direction is called a #keyword[scalar]. Symbols without arrows, such as $v$, $F$, $a$, $p$, are scalars.
+  #be-careful(indent: false)[
+    $v$ and $vc(v)$ are *completely different objects*.
+    They are totally unrelated, just as $A$ and $a$ are unrelated.
+    However, in physics, we are sometimes _lazy_ enough to write $v$ to mean $va(v)$, the magnitude of $vc(v)$.
+    Please not be confused.
+  ]
+]
 #quizzes[
-  + `4` Classify each quantity as a vector or a scalar.
-    #h-enum(cols: 4)[
-      + air pressure
-      + wind velocity
-      + wind speed
-      + electric charge
-      + position
-      + distance
-      + displacement
-      + temperature
-      + resistance
-      + electric field
-      + $vc(x)$
-      + $x$
-      + $|vc(x)|$
-      + $v + |vc(x)|$
+  + Choose scalar quantities. Choose vector quantities.
+    #h-enum(cols: (1fr, 1fr, 1fr, 1.2fr, 1.7fr))[
+      + $vc(a)$
+      + $p$
+      + $va(b)$
+      + $|g|$
       + magnitude of $vc(v)$
+      + mass
+      + velocity
+      + speed
+      + $vc(x) + va(x)$
       + direction of $vc(v)$
     ]
-  + `4`
-    + If $vc(a)$ is a vector, what does $|vc(a)|$ mean?
-    + If $v$ is a scalar, what does $|v|$ mean?
-    #fail-safe[These two are different. $|vc(a)|$ is the magnitude of a vector; $|v|$ is the absolute value of a number.]
+  +
+    + What do we call $va(v)$? Also, clearly write down its definition.
+    + What do we call $|v|$?   Also, clearly write down its definition.
+
+]
+#fail-safe[
+  #show math.cases: it => math.display(it)
+  For $x in RR$, we define $|x| := cases(gap: #4pt, x quad && "if " x >= 0",", -x &&"if " x < 0,)quad$ and call it "the #keyword[absolute value] of $x$".
 ]
 
-#pagebreak()
+There is a special vector called the #keyword[zero vector], which has magnitude $0$ and no direction.
+#definition(title: "Zero vector")[
+  There is a vector with magnitude 0 and no direction. We call it #EMPH[the] #keyword[zero vector] and denote $vc(0)$.
+]
+Any other vectors have a direction and *positive* magnitude. Namely,
+$ |vc(0)|=0 quad "and" quad vc(v) != vc(0) <==> va(v)>0. $
+#quizzes[
+  + Explain why $vc(0) != 0$. Explain why $|vc(0)| = 0$.
+]
+#advanced-note[
+  The uniqueness of $vc(0)$ is easy to prove, once we clarify the definition of "=". Namely, "$vc(a) = vc(b)$" means "$vc(a)$ and $vc(b)$ have the same magnitude and direction". (Try to complete the proof yourself.)
+]
 
-= How to Describe Directions
+= Addition and Scalar multiplication <sec:vec-op>
+Like $+$ and $div$ for numbers and $and$ and $or$ for true/false, we have two operations for vectors:
 
-When you describe a vector, you must specify both its magnitude and its direction.
-The magnitude is easy: it is a non-negative number with a unit.
-The direction is harder: you must describe it in words or with angles.
+- #keyword[addition]: two vectors $vc(a)$ and $vc(b)$ can be added; we write the result by $vc(a) + vc(b)$.
 
-== Directions in words
+- #keyword[scalar multiplication]: a vector $vc(a)$ is multiplied by a scalar $k$; we write the result by $k vc(a)$.
 
-In one dimension, a sign ($plus.minus$) is enough to specify direction.
-But you must *declare which direction is positive*.
+#definition(title: "Vector addition")[
+  If $vc(a)$ and $vc(b)$ are vectors drawn in the same space, we can define $vc(a)+vc(b)$ by the vector obtained by placing the tail of $vc(b)$ at the head of $vc(a)$.
+]<vec-def-1>
 
-In two or three dimensions, the following English expressions are useful:
 
-#align(center, table(
-  columns: (auto, auto),
-  stroke: none,
-  align: (left, left),
-  table.hline(),
-  [*In the plane (horizontal):*], [leftward, rightward, upward, downward],
-  [*Into/out of the page:*], [into the page / out of the page (= away from the page)],
-  [*With compass directions:*], [northward, southward, eastward, westward, northwestward, ...],
-  [*With axes defined:*], [in the positive $x$-direction, in the $+y$-direction, in the $-z$-direction],
-  table.hline(),
-))
+#grid(
+  columns: (auto, 170pt),
+  column-gutter: 2em,
+  [
+    #make-indent
+    The triangle in the figure to the right represents this definition: the tail of $vc(b)$ is put at the head of $vc(a)$ to get the blue arrow $vc(a)+vc(b)$.
+    You may also use the parallelogram method shown to the right: consider a parallelogram made by $vc(a)$ and $vc(b)$ sharing the same tail. Then its diagonal, the blue arrow, is $vc(a)+vc(b)$.],
+  canvas({
+    let O = (0, 0)
+    let O2 = (3.2, -0.3)
+    let A = (1.5, 0)
+    let B = (-1.2, 2)
+    vector(O, A, label: $vc(a)$, offset: (0, -0.3))
+    vector(A, B, label: $vc(b)$, offset: (0.3, 0))
+    vector(O, xy-plus(A, B), label: $vc(a)+vc(b)$, offset: (-0.5, 0.25), color: c.blue, thickness: 1.6pt)
+    vector(O2, A, label: $vc(a)$, offset: (0, -0.3))
+    vector(O2, B, label: $vc(b)$, offset: (0.2, 0.1))
+    vector(O2, xy-plus(A, B), color: c.blue, label: $vc(a)+vc(b)$, offset: (0.8, 1))
+    vector(xy-plus(O2, B), A, end: none, thickness: 0.7pt, dash: "dashed")
+    vector(xy-plus(O2, A), B, end: none, thickness: 0.7pt, dash: "dashed")
+  }),
+)
+#make-indent
+Notice that the two horizontal arrows in the figure are both $vc(a)$, although their locations are different. Similarly, both blue arrows show the vector $vc(a)+vc(b)$.
+Vectors are the same if and only if they have the same magnitude and direction; location does not matter.
+#definition(title: "Scalar multiplication")[
+  For a vector $vc(v)$ and a real number (scalar) $k$, we define $k vc(v)$ as follows:
 
+  - if $k > 0$, $k vc(v)$ has the magnitude $|k|va(v)$ and has the same direction as $vc(v)$.
+
+  - if $k < 0$, $k vc(v)$ has the magnitude $|k|va(v)$ and is anti-parallel to $vc(v)$.
+
+  - if $k = 0$, $k vc(v) = vc(0)$.
+]<vec-def-2>
 #remark[
-  Compass directions (north, south, ...) require you to *declare what "north" means* in your diagram.
-  Axis directions require you to *draw and label the axes* first.
-  Always make the reference clear.
+  The word "#keyword[anti-parallel]" means "in the opposite direction".
+  Meanwhile, *we should avoid* the ambiguous word "#keyword[parallel]" for vectors, as it may mean either the same direction or the opposite direction; use the phrase "has the same direction" instead.
+  For more vocabulary to describe directions, please check #link("https://misho104.github.io/LecturePublic/", "the Vector Boot Camp").
 ]
+#advanced-note[Watch out we assume $k in RR$ in this definition.]
 
-Angles can also specify direction:
-- $30°$ counterclockwise from the positive $x$-axis
-- $45°$ west of north
-- $10°$ above the horizontal
+We should carefully digest these definitions, as they are the basis for Chap#TODO[].
+Let's see an example, and try the next quiz.
+#problem-style-label.update(true)
+#example[
+  + Explain the meaning of $|k vc(v)|$ and $|k|va(v)$.
 
-#be-careful[
-  $45$ and $45°$ are *completely different*: $45°$ means 45 degrees, while $45$ (without the $°$) is always 45 radians.
-  In particular, $cos 60° = 1/2$ but $cos 60 approx -0.95$.
-  Always write the degree symbol when you mean degrees.
+  + Prove $|k vc(v)| = |k|va(v)$, where $vc(v)$ is a vector and $k in RR$.
+
+  + Based on the above definitions, explain what $-vc(v)$ is.
 ]
+#solution[
+  + $|k vc(v)|$ means the magnitude of a vector $k vc(v)$, which is a scalar multiplication of $vc(v)$ by $k$. Meanwhile, $|k|va(v)$ means the absolute value of $k$ times the magnitude of $vc(v)$.
 
-== Relationships between two vectors
+  + If $k!=0$, then, according to the above definition, $k vc(v)$ has the magnitude $|k|va(v)$ and it means $|k vc(v)|=|k|va(v)$.
+    If $k=0$, then $k vc(v)=vc(0)$ and thus $"LHS"=|k vc(v)|=0$, while $"RHS"=0 va(v)=0$.  $qed$
 
-When two vectors $vc(a)$ and $vc(b)$ have a specific angular relationship, we use these terms:
-
-#align(center, table(
-  columns: (auto, 1fr),
-  stroke: none,
-  align: (left, left),
-  table.hline(),
-  [angle $= 0°$:],    [$vc(a)$ is *in the same direction as* $vc(b)$.  Avoid "parallel" for this case (see below).],
-  [angle $= 90°$:],   [$vc(a)$ is *perpendicular to* $vc(b)$.  Also: orthogonal to, normal to.],
-  [angle $= 180°$:],  [$vc(a)$ is *anti-parallel to* $vc(b)$.  Also: opposite to, in the opposite direction.],
-  table.hline(),
-))
-
-#remark[
-  The word "parallel" is ambiguous: some people use it to mean $0°$, others use it to include both $0°$ and $180°$.
-  To avoid confusion, say "in the same direction" for $0°$ and "anti-parallel" for $180°$.
+  + $-vc(v)$ is a shorthand notation of $(-1)vc(v)$, the scalar multiplication of $vc(v)$ by $-1$.  So, $-vc(v)$ has the same magnitude as $vc(v)$ but is anti-parallel to $vc(v)$.
 ]
-
+#problem-style-label.update(false)
 #quizzes[
-  + `4` #TODO[figure: grid with several vectors] Describe the direction of each vector in English. Then describe the relationship between the following pairs: ($vc(a)$ and $vc(b)$), ($vc(b)$ and $vc(c)$), ($vc(p)$ and $vc(q)$), ($vc(p)$ and $vc(r)$).
+  + Find out how the following vectors are defined based on the above definitions of addition and scalar multiplication.
+    #h-enum(cols: (1.3fr, 1fr, 1.3fr, 1fr, 1.3fr, 1.3fr))[
+      + $vc(a) + vc(a)$
+      + $2 vc(a)$
+      + $2 vc(a)+3vc(b)$
+      + $-vc(a)$
+      + $vc(a)-vc(b)$
+      + $- vc(a)-2 vc(b)$
+    ]
 ]
 
-== Rotations
-
-To describe the direction of a rotation, use *clockwise* and *counterclockwise* (as viewed from a specific direction). Always state the viewpoint clearly:
-
-#tab[
-  - counterclockwise as viewed from the positive $z$-axis
-  - clockwise as viewed from $+x$ toward the origin
-]
-
-For rotations about an axis, the *right-hand rule* is the standard: align the right thumb with the axis; the fingers curl in the direction of rotation.
-
-#pagebreak()
-
-= Vector Operations
-
-== Zero vector
-
-There is a special vector with magnitude zero.
-
-#theorem(type: "Definition", title: "Zero vector")[
-  The #keyword[zero vector] $vzero$ has magnitude $0$ and no direction.
-]
-
-Note: $vzero$ is a vector and $|vzero| = 0$ is a scalar. They are different objects.
-
-#quizzes[
-  + `4` Explain the difference between $vzero$ and $0$. Explain why $|vzero| = 0$.
-]
-
-== Scalar multiplication
-
-#theorem(type: "Definition", title: "Scalar multiplication")[
-  If $vc(v)$ is a vector and $k$ is a real number, then $k vc(v)$ is defined as follows:
-  - If $k > 0$: $k vc(v)$ has the same direction as $vc(v)$ and magnitude $k |vc(v)|$.
-  - If $k < 0$: $k vc(v)$ is anti-parallel to $vc(v)$ and has magnitude $|k| |vc(v)|$.
-  - If $k = 0$: $k vc(v) = vzero$.
-
-  In summary: $|k vc(v)| = |k| |vc(v)|$.
-]
-
-#quizzes[
-  + `4` Most students misread the formula $|k vc(v)| = |k| |vc(v)|$.
-    Explain the meaning of $|k|$, $|vc(v)|$, and $|k vc(v)|$. Are they the same type of object?
-    Then explain why $|k vc(v)| = |k| |vc(v)|$ holds.
-    #fail-safe[$|k|$ is the absolute value of a number; $|vc(v)|$ is the magnitude of a vector. They are both non-negative scalars, but their meaning is different.]
-]
-
-== Vector addition
-
-#theorem(type: "Definition", title: "Vector addition")[
-  If $vc(a)$ and $vc(b)$ are vectors, $vc(a) + vc(b)$ is obtained by placing the *tail* of $vc(b)$ at the *head* of $vc(a)$; the sum is the arrow from the tail of $vc(a)$ to the head of $vc(b)$.
-
-  #TODO[figure: parallelogram law / head-to-tail construction]
-]
-
-The following identities follow from these definitions: for vectors $vc(a)$, $vc(b)$, $vc(c)$ and real numbers $p$, $q$:
-$
-  vc(a) + vc(b) &= vc(b) + vc(a), &quad&
-  vc(a) + vzero &= vc(a), \
-  vc(a) + (vc(b) + vc(c)) &= (vc(a) + vc(b)) + vc(c), &quad&
-  p vc(a) + q vc(a) &= (p+q) vc(a), \
-  p vc(a) + p vc(b) &= p(vc(a) + vc(b)), &quad&
-  |vc(a) + vc(b)| &<= |vc(a)| + |vc(b)|.
-$ <vec-identities>
-
-The last inequality is the #keyword[triangle inequality].
-
-#quizzes[
-  + `4` While $vc(a) + vc(a)$ and $2 vc(a)$ are the same vector, their meanings differ.
-    Explain the difference based on the definitions above.
-  + `4` When is $|vc(a) + vc(b)| = |vc(a)| + |vc(b)|$? When is $|vc(a) + vc(b)| = 0$?
-]
+Addition and scalar multiplication have the following properties:
+#theorem[
+  For vectors $vc(a)$ and $vc(b)$ in the same space and $p,q in RR$,
+  #v-enum(
+    cols: 2,
+    label-style: "(A)",
+  )[
+    + $vc(a)+vc(b) = vc(b)+vc(a),$
+    + $\(vc(a)+vc(b))+vc(c) = vc(a)+\(vc(b)+vc(c)),$
+    + $vc(a)+vc(0)=vc(a),$
+    + $vc(a)+(-vc(a))=vc(0),$
+    + $p vc(a) + p vc(b) = p\(vc(a)+vc(b)),$
+    + $p vc(a) + q vc(a) = (p+q) vc(a),$
+    + $(p q)vc(a) = p\(q vc(a)),$
+    + $1 vc(a)= vc(a).$
+  ]
+] <vec-axiom-1>
+These properties seems obvious, but in fact, they play a fundamental role in Chapter#TODO[].
 
 #problems[
-  + `4` #TODO[figure: grid with vectors $vc(a)$, $vc(b)$, $vc(c)$, $vc(p)$, $vc(q)$, $vc(r)$, $vc(A)$, $vc(B)$, $vc(e)_x$, $vc(e)_y$]
-    Vectors are drawn on a grid with spacing 1.
-    + Describe the direction and magnitude of each vector in English.
-    + Describe the relationships between: ($vc(a)$ and $vc(b)$), ($vc(b)$ and $vc(c)$), ($vc(p)$ and $vc(q)$), ($vc(p)$ and $vc(r)$).
-    + Describe $vc(a)$ using $vc(e)_x$ and a number. Describe $vc(b)$ and $vc(c)$ using $vc(e)_y$.
-    + Describe $vc(A)$ and $vc(B)$ using $vc(e)_x$ and $vc(e)_y$.
-    + Draw a vector that is normal to $vc(p)$ and has length $sqrt(8)$.
 
-  + `3` Consider $vc(s)$ and $vc(t)$ with $|vc(s)| = 3$ and $|vc(t)| = 2$.
-    + Do we know $|vc(s) + vc(t)|$? Explain why or why not.
-    + Find the minimum and maximum values of $|vc(s) + vc(t)|$. When are they achieved?
+  + `3` Consider a vector $vc(a)!=vc(0)$ and a constant $k in RR$. Consider three vectors $vc(a)$, $k vc(a)$, and $k^2 vc(a)$.
+    + Which are in the same direction? Which are anti-parallel to each other?
+    + Compare their magnitudes; which are the longest and the shortest?
+  + `3` Consider a vector $vc(a)$ and a constant $k$.
+    + Write a vector that has magnitude $va(a)$ and is anti-parallel to $vc(a)$.
+    + Write a vector that has magnitude $3va(a)$ and is in the same direction as $vc(a)$.
+    + Write a vector that has magnitude $3k va(a)$ and is in the same direction as $vc(a)$.
+    Vectors with magnitude $1$ are called #keyword[unit vectors].
+    #h-enum(cols: 1, label-start: 4)[
+      + Write a vector that has magnitude $1$ and is in the same direction as $vc(a)$.\
+        (Namely, write a unit vector that has the same direction as $vc(a)$.)
+      + Write a unit vector that is anti-parallel to $vc(a)$.
+    ]
+  + `3` Prove the next "#keyword[triangle inequality]" geometrically, i.e., only with the above definitions.
+    $ "For any two vectors" vc(a) "and" vc(b) "in the same space", |vc(a) + vc(b)| <= |vc(a)| + |vc(b)|. $
+  + `2` Starting from @vec-def-1 and @vec-def-2, prove the properties in @vec-axiom-1.
+  + `2` Prove that, for any two vectors $vc(a)$ and $vc(b)$ in the same space, $lr(|\|vc(a)\|-\|vc(b)\||) <= |vc(a)-vc(b)|$.
 
-  + `3` Try to explain, in words only (no coordinates), why each identity in @vec-identities is true. Base your explanation on the definitions of scalar multiplication and addition.
-    #fail-safe[You are asked to argue geometrically, not algebraically. Think of how the arrows move.]
 ]
 
-#pagebreak()
-
-= Unit Vectors
-
-#theorem(type: "Definition", title: "Unit vector")[
-  A vector with magnitude 1 is called a #keyword[unit vector].
-]
-
-If $vc(a) != vzero$, the unit vector in the same direction as $vc(a)$ is
-$
-  vcu(a) = vc(a) / |vc(a)|.
-$
-
-#quizzes[
-  + `4` Let $|vc(s)| = 3$ and $k$ be a real number.
-    + Calculate the magnitudes of $2 vc(s)$, $-3 vc(s)$, $0 vc(s)$, and $vc(s) / |vc(s)|$.
-    + Calculate the magnitude of $k vc(s)$ and $k^2 vc(s)$.
-    + Is $|k vc(s)|$ always non-negative? Explain.
-]
-
-#problems[
-  + `4` Let $vc(e)$ be a unit vector and $k$ a real number. Let $vc(a) != vzero$.
-    + Find the magnitudes of $-3 vc(e)$, $k vc(e)$, $k^2 vc(e)/5$, and $-k vc(e)$.
-    + Find the magnitudes of $vc(a)/|vc(a)|$, $k vc(a)/|vc(a)|$, and $-k vc(a)/|vc(a)|$.
-
-  + `4` Let $|vc(a)| = 3$ and $k > 0$.
-    + Find the unit vector in the same direction as $vc(a)$.
-    + Find the vector in the same direction as $vc(a)$ with magnitude $6$.
-    + Find the vector in the same direction as $vc(a)$ with magnitude $k$.
-    + Find the unit vector anti-parallel to $vc(a)$.
-    + Find the vector anti-parallel to $vc(a)$ with magnitude $k$.
-
-  + `3` Consider two points A and B at distance $5$ apart.
-    We write $arrow(A B)$ for the vector pointing from A to B.
-    + Calculate $|arrow(A B)|$.
-    + Find the unit vector in the direction of $arrow(A B)$.
-    + Given $vc(F) = display(k / (4pi)) display(arrow(A B) / |arrow(A B)|^3)$, describe the direction and magnitude of $vc(F)$.
-]
-
-#pagebreak()
-
-= Inner Product
-
-We define the inner product using only magnitude and direction---no coordinates needed.
-
-#theorem(type: "Definition", title: "Inner product (dot product)")[
-  For vectors $vc(a)$ and $vc(b)$, the #keyword[inner product] (or #keyword[dot product]) is
+= Inner Product <sec:vec-ip>
+Imagine two arrows. Probably you can think the angle $theta$ between the arrows. The angle leads you to the following *geometric* definition of the inner product.
+#definition(title: "Inner product (geometrical definition)")[
+  For vectors $vc(a)$ and $vc(b)$ drawn in the same space, the #keyword[inner product] is defined by
   $
     vc(a) dot vc(b) := |vc(a)| |vc(b)| cos theta,
   $
-  where $theta$ is the angle between $vc(a)$ and $vc(b)$.
-]
-
-From this definition, the following properties follow directly: for vectors $vc(a)$, $vc(b)$, $vc(c)$ and real number $k$:
-
-#align(center, table(
-  columns: (auto, 1fr),
-  stroke: none,
-  align: (left, left),
-  [(1)], [$vc(a) dot vc(a) = |vc(a)|^2$, so $|vc(a)| = sqrt(vc(a) dot vc(a))$],
-  [(2)], [$vc(a) dot vc(b) = vc(b) dot vc(a)$],
-  [(3)], [$(k vc(a)) dot vc(b) = k (vc(a) dot vc(b))$],
-  [(4)], [$vc(a) dot vc(b) = 0$ if $vc(a) = vzero$, $vc(b) = vzero$, or $vc(a) perp vc(b)$],
-  [(4')], [If $vc(a) != vzero$, $vc(b) != vzero$, and $vc(a) dot vc(b) = 0$, then $vc(a) perp vc(b)$],
-  [(5)], [$-|vc(a)| |vc(b)| <= vc(a) dot vc(b) <= |vc(a)| |vc(b)|$],
-  [(6)], [$(vc(a) + vc(b)) dot vc(c) = vc(a) dot vc(c) + vc(b) dot vc(c)$],
-))
-
-Properties (4) and (4') together mean:
-$
-  vc(a) dot vc(b) = 0 quad <==> quad vc(a) = vzero "  or  " vc(b) = vzero "  or  " vc(a) perp vc(b).
-$
-
+  where $theta$ is the angle between $vc(a)$ and $vc(b)$; if $vc(a) = vc(0)$ or $vc(b) = vc(0)$, then $vc(a) dot vc(b) := 0$.
+]<vip-def>
 #quizzes[
-  + `4` Prove property (1) directly from the definition.
-  + `4` Explain why properties (2), (3), (4), (4'), and (5) are correct.
-  + `4` Explain why the following are true:
-    + $(vc(a) + vc(b)) dot vc(a) = |vc(a)|^2 + vc(a) dot vc(b)$
-    + $|vc(a) + vc(b)|^2 = |vc(a)|^2 + 2 vc(a) dot vc(b) + |vc(b)|^2$
+  + Assume $vc(a)=3$ and $vc(b)=2$.
+    + If $vc(a)perp vc(b)$, then what is $vc(a) dot vc(b)$?
+    + If $vc(a)$ and $vc(b)$ are anti-parallel, what is $vc(a) dot vc(b)$?
+    + What is the maximum value of $vc(a) dot vc(b)$? When is it achieved?
+    + If $vc(a) dot vc(b) = -3$, what can you say about the angle between $vc(a)$ and $vc(b)$?
+  #fail-safe[
+    $vc(a)perp vc(b)$ means that $vc(a)$ and $vc(b)$ are #keyword[perpendicular] to each other, or #keyword[normal] to each other; in other words, the angle $theta$ between them is $pi\/2=90degree$.
+  ]
 ]
+This inner product has the following properties:
+#theorem(title: "Inner product of real vectors")[
+  For vectors $vc(a)$ and $vc(b)$ drawn in the same space and a constant $k in RR$,
+  #let vd(x, y) = $vc(#x) dot vc(#y)$
+  #v-enum(cols: 2, label-style: "(A)")[
+    + $vd(a, b)=vd(b, a),$
+    + $\(vc(a)+vc(b))dot vc(c) = vd(a, c)+vd(b, c),$
+    + $vd(a, a)=0 <==> vc(a)=vc(0),$
+    + $vc(a)dot\(vc(b)+vc(c)) = vd(a, b)+vd(a, c),$
+    + $vd(a, a) >= 0 "for any vector" vc(a),$
+    + $\(k vc(a))dot vc(b) = k\(vd(a, b)),$
+    + $vc(a)dot \(k vc(b)) = k\(vd(a, b)).$
+  ]
+  #advanced-note(indent: false)[
+    These properties are valid only for "real vectors". As we will see in Chapter #TODO[], if $vc(a)$ and $vc(b)$ are "complex vectors", then some of these properties becomes invalid and we need to modify them.
+    In fact, all vectors in this chapter are "real vectors" because we have assumed $k in RR$ in @vec-def-2.
+  ]
+]<vip-theorem>
 
-#remark[
-  Formula (b) in the quiz above is the *vector form of the cosine rule*. Compare it with the law of cosines from trigonometry.
+We will skip their proof. Instead, we focus on the following geometrical properties:
+#quizzes[
+  #let vd(x, y) = $vc(#x) dot vc(#y)$
+  + Prove the following theorems directly from @vip-def.
+    + $vc(a) perp vc(b) ==> vd(a, b)=0.$
+    + $vd(a, b) = 0 ==> \(vc(a)perp vc(b))or\(vc(a)=vc(0))or\(vc(b)=vc(0)).$
+    + $-|vc(a)| |vc(b)| <= vd(a, b) <= |vc(a)| |vc(b)|.$
+    + $|vc(a)|^2=vd(a, a)$.
+    + $|vc(a)|=sqrt(vd(a, a))$. #h(2em)#hint[Most students make mistakes in this question.]
+  + Prove the following theorems, using @vip-def, @vip-theorem, and the equations in the previous quiz.
+    #h-enum(cols: 2)[
+      + $\(vc(a)+vc(b))dot vc(a) = |vc(a)|^2 + vd(a, b).$
+      + $|vc(a) + vc(b)|^2 = |vc(a)|^2 + 2 vd(a, b) + |vc(b)|^2$.
+    ]
 ]
 
 #problems[
   + `3` Two vectors $vc(a)$ and $vc(b)$ satisfy $|vc(a)| = 2$, $|vc(b)| = 3$, and $vc(a) dot vc(b) = 3$.
-    Let $x$, $y$, $p$, $q$ be real numbers.
+    Let $x$, $y$ be real numbers.
     + Find the angle between $vc(a)$ and $vc(b)$.
     + Calculate $|vc(a) + vc(b)|$.
     + Calculate the magnitude of $4 vc(a) + 3 vc(b)$ and $x vc(a) + y vc(b)$.
     + Explain why $|x vc(a) + y vc(b)|^2$ is *not* in general equal to $x^2 + y^2$.
-
     Now let $vc(e)_1$ and $vc(e)_2$ satisfy $|vc(e)_1| = |vc(e)_2| = 1$ and $vc(e)_1 dot vc(e)_2 = 0$.
-    + Find the angle between $vc(e)_1$ and $vc(e)_2$.
-    + Explain why $(p vc(e)_1 + q vc(e)_2) dot (x vc(e)_1 + y vc(e)_2) = p x + q y$.
-    + Explain why $|x vc(e)_1 + y vc(e)_2| = sqrt(x^2 + y^2)$.
+    Let $p$, $q$ be real numbers.
+    #h-enum(label-start: 5, cols: 1)[
+      + Find the angle between $vc(e)_1$ and $vc(e)_2$.
+      + Explain why $(p vc(e)_1 + q vc(e)_2) dot (x vc(e)_1 + y vc(e)_2) = p x + q y$.
+      + Explain why $|x vc(e)_1 + y vc(e)_2| = sqrt(x^2 + y^2)$.
+    ]
 
   + `2` Three vectors $vc(A)$, $vc(B)$, $vc(C)$ satisfy $|vc(A)| = 2$, $|vc(B)| = 3$, $vc(A) dot vc(B) = 3sqrt(2)$, and $vc(A) dot vc(C) = -1$.
     + Find the angle between $vc(A)$ and $vc(B)$.
     + Calculate $|vc(A) + vc(B)|^2$, $|vc(A) - vc(B)|^2$, and $|2 vc(A) + 4 vc(B)|^2$.
-    + Calculate $(vc(A) - 2 vc(B)) dot (2 vc(A) + vc(B) + vc(C)) + 2 vc(B) dot vc(C)$.
+    + Calculate $\(vc(A) - 2 vc(B)) dot \(2 vc(A) + vc(B) + vc(C)) + 2 vc(B) dot vc(C)$.
     + Find $k$ such that $|vc(A) + k vc(B)| = sqrt(10)$.
     + Find $c$ such that $vc(B) + c vc(C)$ is perpendicular to $vc(A)$.
 ]
 
-#pagebreak()
+= Cross Product (only for 3d-vectors) <sec:vec-cp>
+For two arrows drawn in three-dimensional space, we can define the #EMPH[cross product].
+#definition(title: "Cross product")[
+  For $vc(a)$ and $vc(b)$ drawn in a _three-dimensional_ space, the #keyword[cross product] $vc(a) times vc(b)$ is defined as follows:
 
-= Cross Product <sec:cross>
 
-The cross product produces a *vector* from two vectors.
+  - It is a vector with magnitude $|vc(a)times vc(b)|=|vc(a)| |vc(b)| sin theta$, where $theta$ is the angle between $vc(a)$ and $vc(b)$.
 
-#theorem(type: "Definition", title: "Cross product")[
-  For vectors $vc(a)$ and $vc(b)$, the #keyword[cross product] $vc(a) times vc(b)$ is defined by:
-  - It is a vector.
-  - Its magnitude is $|vc(a) times vc(b)| = |vc(a)| |vc(b)| sin theta$, where $theta$ is the angle between $vc(a)$ and $vc(b)$.
-  - If the magnitude is not zero, its direction is:
-    - perpendicular to both $vc(a)$ and $vc(b)$;
-    - such that $(vc(a), vc(b), vc(a) times vc(b))$ satisfies the right-hand rule.
+  - If $|vc(a)times vc(b)|!=0$, we determine its direction so that $(vc(a)times vc(b))perp vc(a)$ and $(vc(a)times vc(b))perp vc(b)$.
+
+  Here, we always have two possible directions. We impose another condition to make it unique:
+
+  - If you hold the _right_ hand so that your thumb points in the direction of $vc(a)$ and your index finger in the direction of $vc(b)$, your middle finger points in the direction of $vc(a) times vc(b)$.
+
+    (This is often quoted that "the ordered triple $\(vc(a), vc(b), vc(a) times vc(b))$ obeys the #keyword[right-hand rule]".)
 ]
+We will not discuss much about the cross product, but only the following properties:
+#theorem[
+  For vectors $vc(a)$, $vc(b)$, $vc(c)$ and real number $k$,
+  #v-enum(cols: (1fr, 1.3fr), label-style: "(A)")[
+    #let vt(x, y) = $vc(#x) times vc(#y)$
+    + $vt(a, a)=vc(0).$
+    + $vt(a, b)=-vt(b, a).$
+    + $0 <= |vc(a) times vc(b)| <= |vc(a)| |vc(b)|.$
+    + $\(k vc(a)) times vc(b) = vc(a) times \(k vc(b)) = k\(vc(a) times vc(b)).$
+    + $vc(a)times\(vc(b)+vc(c))=vt(a, b)+vt(a, c).$
+    + $vc(a) times vc(b) = vc(0)$ if $vc(a)$ and $vc(b)$ are parallel or anti-parallel.
+    + $vc(a) dot (vc(a) times vc(b)) = vc(b) dot (vc(a) times vc(b)) = 0$.
+    + $vc(a) dot \(vc(b) times vc(c)) = vc(b) dot \(vc(c) times vc(a)) = vc(c) dot \(vc(a) times vc(b))$.
+  ]
+]<vcp-theorem>
+The equation (B) is the most important.
+For (A), notice $vc(a) times vc(a)$ is not zero.
 
-The #keyword[right-hand rule]: hold your right hand so that your thumb points in the direction of $vc(a)$ and your index finger in the direction of $vc(b)$; your middle finger then points in the direction of $vc(a) times vc(b)$.
+#advanced-note[
+  Geometrical interpretation of the cross product is sometimes useful:
+  - $|vc(a)times vc(b)|$ is the area of the parallelogram formed by $vc(a)$ and $vc(b)$.
 
-#TODO[figure: right-hand rule illustration]
-
-The following properties follow from the definition: for vectors $vc(a)$, $vc(b)$, $vc(c)$ and real number $k$:
-
-#align(center, table(
-  columns: (auto, 1fr),
-  stroke: none,
-  align: (left, left),
-  [(1)], [$vc(a) times vc(a) = vzero$],
-  [(2)], [$vc(a) times vc(b) = -vc(b) times vc(a)$ ~~(anti-commutative)],
-  [(3)], [$(vc(a) + vc(b)) times vc(c) = vc(a) times vc(c) + vc(b) times vc(c)$ ~~(distributive)],
-  [(4)], [$0 <= |vc(a) times vc(b)| <= |vc(a)| |vc(b)|$],
-  [(5)], [$(k vc(a)) times vc(b) = vc(a) times (k vc(b)) = k(vc(a) times vc(b))$],
-  [(6)], [$vc(a) times vzero = vzero times vc(a) = vzero$],
-  [(7)], [$vc(a) times vc(b) = vzero$ if $vc(a)$ and $vc(b)$ are parallel or anti-parallel],
-  [(8)], [$vc(a) dot (vc(a) times vc(b)) = vc(b) dot (vc(a) times vc(b)) = 0$],
-  [(9)], [$(vc(a) dot vc(b))^2 + |vc(a) times vc(b)|^2 = |vc(a)|^2 |vc(b)|^2$],
-  [(10)], [$vc(a) dot (vc(b) times vc(c)) = vc(b) dot (vc(c) times vc(a)) = vc(c) dot (vc(a) times vc(b))$],
-))
-
-Property (9) is Lagrange's identity; it follows from $cos^2 theta + sin^2 theta = 1$.
-
-#quizzes[
-  + `4` Explain why properties (1), (2), (4), and (6)--(9) are valid. Use only the definition.
-    #fail-safe[We skip the proof of (3) and (5) because they are more complicated.]
-  + `4`
-    + Explain why $(vc(a) + vc(b)) times vc(a) = -vc(a) times vc(b)$.
-    + #TODO[figure reference] For the vectors in the figure: describe $vc(a) times vc(b)$, $vc(b) times vc(a)$, $vc(b) times vc(c)$, and $vc(a) times vc(p)$.
+  - $\(vc(a)times vc(b))dot vc(c)$ is the volume of the parallelepiped formed by $vc(a)$, $vc(b)$, and $vc(c)$.
 ]
 
 #problems[
-  + `3` Three unit vectors $vc(e)_x$, $vc(e)_y$, $vc(e)_z$ satisfy
-    $vc(e)_x times vc(e)_y = vc(e)_z$, $vc(e)_y times vc(e)_z = vc(e)_x$, $vc(e)_z times vc(e)_x = vc(e)_y$.
-    + Calculate $vc(e)_x dot vc(e)_y$. Find all angles among $vc(e)_x$, $vc(e)_y$, $vc(e)_z$.
-    + Expand $(a vc(e)_x + b vc(e)_y + c vc(e)_z) times (p vc(e)_x + q vc(e)_y + r vc(e)_z)$ and simplify.
+  + `4` Prove #thick-sf[(A)], #thick-sf[(B)], #thick-sf[(C)], #thick-sf[(F)], and #thick-sf[(G)] of @vcp-theorem.
+  + `2` In physics, we *always* use the #keyword(key: "right-handed system")[right-handed] #keyword[Cartesian coordinate system] to describe our three-dimensional space, which is characterized by three unit vectors $vc(e)_x$, $vc(e)_y$, $vc(e)_z$ defined so that they are perpendicular to each other and $(vc(e)_x, vc(e)_y, vc(e)_z)$ obeys the right-hand rule. Calculate their inner products and cross products, such as $vc(e)_x dot vc(e)_y$ and $vc(e)_x times vc(e)_z$
+  + `1` Prove #thick-sf[(B)] of @vip-theorem and #thick-sf[(E)] of @vcp-theorem geometrically (i.e., based on the definitions given in this chapter). Sho has his own proof but not very confident. Can you find a better proof?
 ]
 
-#pagebreak()
+= Position Vectors <sec:vec-pos>
+We have defined vectors as arrows. Arrows are not positions, so vectors are not positions. However, _once we define the origin_ O in the space, we can use vectors to represent each position in the space.
 
-= Vector/Scalar/Not
+#definition(title: "Position vector")[
+  Consider a space and fix a point O as the origin. To each point P, we associate the vector $arrow("OP")$ and call it the #keyword[position vector] of P.  We often write $vc(p)=arrow("OP")$, $vc(q)=arrow("OQ")$, and so on.
+]
+Consider $vc(p)=arrow("OP")$, $vc(p)=arrow("OQ")$, and $vc(r)=arrow("OR")$.
+They are obviously dependent on the choice of the origin O. Also, the point described by $vc(p)+vc(q)$ will be different if we chose a different point as the origin.
+However, we can check that
+
+- the vector $arrow("PQ")$ is given by $vc(q) - vc(p)$
+- the length of the segment PQ is given by $|vc(q)-vc(p)|$.
+- the middle point M of the segment PQ has the position vector $vc(m) = (vc(p)+vc(q))\/2$.
+
+These properties are independent of the choice of O. Namely, whatever choice we did for origin, $(vc(p)+vc(q))\/2$ represents the midpoint of PQ.
+For further discussion, please check #link("https://misho104.github.io/LecturePublic/", "the Vector Boot Camp").
+
+= Intermission: Vector or Scalar or Not <sec:vec-vsn>
 
 Let us summarize the operations on vectors.
 With $k$ a real number and $vc(a)$, $vc(b)$ vectors:
@@ -401,183 +394,252 @@ With $k$ a real number and $vc(a)$, $vc(b)$ vectors:
   stroke: none,
   align: (left, center, left),
   table.hline(),
-  [*magnitude*],             [$|vc(a)|$],            [$arrow.r$ scalar],
-  [*scalar multiplication*], [$k vc(a)$],             [$arrow.r$ vector],
-  [*addition*],              [$vc(a) + vc(b)$],       [$arrow.r$ vector],
-  [*inner product*],         [$vc(a) dot vc(b)$],     [$arrow.r$ scalar],
-  [*cross product*],         [$vc(a) times vc(b)$],   [$arrow.r$ vector],
+  [magnitude], [$|vc(a)|$], [$arrow.r$ scalar],
+  [scalar multiplication], [$k vc(a)$], [$arrow.r$ vector],
+  [addition], [$vc(a) + vc(b)$], [$arrow.r$ vector],
+  [inner product], [$vc(a) dot vc(b)$], [$arrow.r$ scalar],
+  [cross product], [$vc(a) times vc(b)$], [$arrow.r$ vector (only in 3d)],
   table.hline(),
 ))
-
-These five operations are the *only* operations defined on vectors.
-Any complicated expression can be reduced to combinations of these five.
-The following are *invalid*---they have no mathematical meaning:
-$
-  #RED[$vc(a)^2$], quad
-  #RED[$1 / vc(a)$], quad
-  #RED[$k + vc(a)$], quad
-  #RED[$vc(a) vc(b)$], quad
-  #RED[$sqrt(vc(a))$], quad
-  #RED[$vc(a) / vc(a)$], quad
-  #RED[$vc(a) dot vc(b) + vc(a) times vc(b)$].
-$
+Then, how about them? Try to ensure that you understand the meaning of each operation.
 
 #problems[
-  + `4` For each expression, answer *V* if it is a vector, *S* if it is a scalar, and *N* if it is invalid.
-    #h-enum(cols: 4)[
-      + $3 + |vc(a)|$
-      + $vc(a) - vc(b)$
-      + $vc(a) vc(b)$
-      + $vc(a) \/ vc(b)$
-      + $3 vc(a)$
-      + $vzero + 1$
-      + $vzero$
-      + $-vc(a)$
+  + `9` For each expression, answer *V* if it is a vector, *S* if scalar, and *N* if invalid (not defined).
+    Here, $vc(a), vc(b), ...$ are three-dimensional vectors and $a, b, ...$ are scalars (real numbers).
+    #h-enum(cols: 5, label-align: horizon, v-sep: 0em, fixed-height: 3em, block-spacing: (below: 0pt))[
+      + $vc(a)$
+      + $vc(a)^2$
+      + $(vc(a))^2$
+      + $|vc(a)|^2$
+      + $|a|^2$
+      + $vc(0)$
+      + $vc(0)+0$
+      + $vc(0)+vc(0)$
+      + $0dot vc(0)$
+      + $vc(0)dot vc(0)$
+      //
+      + $(med 1 med) / vc(a)$
+      + $(med vc(a)med) / vc(a)$
+      + $(med vc(a)med) / vc(b)$
+      + $1 / (|vc(a)|)$
+      + $1 / (|vc(a)|^2)$
+      + $1 / (\(vc(a)\)^2)$
+      + $vc(a) / (\(vc(a) dot vc(b)\))$
+      + $vc(a) / (\(vc(a) dot vc(b)\)^2)$
+      + $vc(a) / (|vc(a) dot vc(b)|)$
+      + $vc(a) / (\(vc(a) dot vc(b)\))$
+      + $sqrt(vc(a)^2)$
+      + $sqrt(vc(a))$
+      + $sqrt(|vc(a)|)$
+      + $sqrt(|a|)$
+      + $sqrt(a^2)$
+      //
+      + $a + 1$
+      + $a + vc(a)$
+      + $a times vc(a)$
+      + $a dot vc(a)$
+      + $a vc(a)$
+      + $vc(a) + 1$
+      + $vc(a) + vc(a)$
+      + $vc(a) times vc(a)$
+      + $vc(a) dot vc(a)$
+      + $vc(a) vc(a)$
+      //
+      + $a^(-2)$
+      + $|vc(a)|^(-2)$
+      + $|vc(a)|^(-2)$
       + $|vc(a)|^(-1) vc(a)$
+      + $|vc(a)|^(-1\/2) vc(a)$
+    ]
+    #h-enum(cols: 4, label-align: horizon, label-start: 41, v-sep: 0em, fixed-height: 3em)[
+      + $vc(p) dot vc(q) + vc(p) times vc(q)$
       + $vc(p) times (vc(q) times vc(r))$
       + $vc(p) dot (vc(q) times vc(r))$
       + $p (vc(q) times vc(r))$
-      + $display(1 / (vc(x) + vc(y)))$
-      + $display((x+y) / |vc(x) + vc(y)|)$
-      + $display((vc(x) + vc(y)) / |vc(x) + vc(y)|)$
-      + $display((vc(x) + vc(y)) / (vc(x) + vc(y)))$
-      + $display(1 / (vc(a) dot vc(b))^2)$
-      + $display(vc(a) / (vc(a) dot vc(b))^2)$
-      + $display(1 / (vc(a))^2)$
-      + $display(1 / |vc(a)|^2)$
+      + $(vc(p) times vc(q))^2$
+      + $1/(\|vc(x)-vc(r)\|^(3\/2))$
+      + $(vc(x)-vc(r))/(\|vc(x)-vc(r)\|^(3\/2))$
+      + $(vc(d)times(vc(x)-vc(r)))/(\|vc(x)-vc(r)\|^(3\/2))$
+      + $dv(vc(y), x)$
+      + $dv(y, vc(x))$
     ]
 ]
 
-#pagebreak()
+= Axes and Components <sec:vec-comp>
+So far, we considered vectors as arrows drawn in some space.
+Vectors are characterized only by the magnitude and direction.
+Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 2; 3)$. We define "orthonormal basis vectors" and then see we _can_ describe an arrow by a list of numbers.
 
-= Axes and Components <sec:components>
+#definition(title: "Orthonormal basis vectors")[
+  If $n$ vectors $vc(e)_1, ..., vc(e)_n$ satisfy the following properties, we call them #keyword[orthonormal basis]:
 
-So far, we have not used coordinates or components---all our results hold independent of any coordinate system. This is an important point: *vectors are independent of coordinate systems*.
+  - All of them are unit vectors, i.e., $|vc(e)_i|=1$ for all $i$.
 
-In physics, our universe has no predefined $x$-, $y$-, or $z$-direction. We *choose* axes to make calculations easier.
+  - Any of them are perpendicular, i.e., $i!=j ==> vc(e)_i dot vc(e)_j=0$.
 
-The simplest coordinate system is the #keyword[Cartesian coordinate system].
+  - We cannot add any more vectors without violating the above two rules.
 
-#theorem(type: "Definition", title: "Right-handed Cartesian coordinate system")[
-  We define unit vectors $vc(e)_x$, $vc(e)_y$, $vc(e)_z$ in the $+x$-, $+y$-, $+z$-directions. They satisfy
-  $
-    |vc(e)_x| = |vc(e)_y| = |vc(e)_z| = 1, quad
-    vc(e)_x dot vc(e)_y = vc(e)_y dot vc(e)_z = vc(e)_z dot vc(e)_x = 0.
-  $
-  In a *right-handed* system, they also satisfy
-  $
-    vc(e)_x times vc(e)_y = vc(e)_z, quad
-    vc(e)_y times vc(e)_z = vc(e)_x, quad
-    vc(e)_z times vc(e)_x = vc(e)_y.
-  $
-  We always use right-handed coordinate systems.
+  Precisely speaking, we call the set $\{vc(e)_1, ..., vc(e)_n\}$ "_an_ orthonormal basis". Then, if we fix _one_ orthonormal basis to use, we call its members "orthonormal basis vectors".]<def-ortho-basis>
+#fail-safe[A woman, two women. A nucleus, two nuclei. A basis, two bases. A matrix, two matrices.]
+#example(title: "Basis vectors for arrows on this sheet")[
+  #let p1 = $vc(p)_1$
+  #let p2 = $vc(p)_2$
+  #let q1 = $vc(q)_1$
+  #let q2 = $vc(q)_2$
+  #let r = $vc(r)$
+  #grid(
+    columns: (auto, 120pt),
+    column-gutter: 2em,
+    [
+      Let's limit our "space" to this page and consider the five vectors drawn to the right. Assume their length are all "1".
+
+      If we choose #p1 and #p2, they form _one_ orthonormal basis $\{p1, p2\}$ because they are unit vectors, perpendicular to each other, and we cannot add any more.
+      Similarly, $\{q1, q2\}$ is _another_ orthonormal basis.
+    ],
+    canvas({
+      vector(thickness: 1pt, (0, 0), (1.5, 0.0), label: p1, offset: (0, -0.3))
+      vector(thickness: 1pt, (0, 0), (0.0, 1.5), label: p2, offset: (0.3, 0))
+      vector(thickness: 1pt, (2.2, 0.3), (1.2, 0.9), label: q1, offset: (0.2, 0.7))
+      vector(thickness: 1pt, (2.2, 0.3), (-0.9, 1.2), label: q2, offset: (-0.1, 0.7))
+      vector(thickness: 1pt, (3.5, 0.5), (0, -1.5), label: r, offset: (0.2, 0))
+    }),
+  )
+  #make-indent
+  Meanwhile, $\{p1, q2\}$ and $\{p1, p2, q1, q2\}$ are not orthonormal bases because the members are not orthogonal. $\{p1\}$ is not an orthonormal basis because we can add one more vector, such as #r, without breaking the conditions.
+]
+#quizzes[
+  + Consider the figure in the above example. Which sets are orthogonal bases?
+    #no-num[
+      $
+        \{vc(p)_1, -vc(p)_2\},quad
+        \{vc(p)_1, vc(r)\},quad
+        \{vc(p)_2, vc(r)\},quad
+        \{vc(p)_1, vc(p)_2, vc(r)\},quad
+        \{vc(q)_1, 2vc(q)_2\},quad
+        \{-vc(q)_1, -vc(q)_2\}.
+      $
+    ]
+]
+A space has infinitely many orthonormal bases; we can choose an orthonormal basis at our convenience. However, the number of the members is fixed by the space we considered.
+#theorem(title: "Properties of orthonormal basis vectors")[
+  - Any orthonormal bases of a space have the same number of vectors. We call the number #EMPH[the] #keyword[dimension] of the space.
+
+  - If $\{vc(e)_1, vc(e)_2, ..., vc(e)_n\}$ is an orthonormal basis, any arrow $vc(v)$ in the space can be expressed as
+    $
+      vc(v)= c_1 vc(e)_1 + c_2 vc(e)_2 + dots + c_n vc(e)_n = sum_(k=1)^n c_k vc(e)_k, quad "where" quad c_k in RR
+    $<v1-lin>
+    and this expression is _unique_, i.e., if $vc(v)$ is expressed by
+    #no-num[$
+      vc(v) & = c_1 vc(e)_1 + c_2 vc(e)_2 + dots + c_n vc(e)_n \
+            & = d_1 vc(e)_1 + d_2 vc(e)_2 + dots + d_n vc(e)_n,
+    $]
+    then all the coefficients are equal: $c_k = d_k$.
+]<def-dimension>
+#quizzes[
+  + Show that the numbers $c_k$ in @v1-lin are actually determined by $c_k=vc(v)dot vc(e)_k.$
+]
+#advanced-note[Sho thinks this theorem is not difficult to prove because we only think finite-dimensional spaces, but there can be caveats or subtleties. A more rigorous construction is in Chapter #TODO[].]
+
+#make-indent
+If you choose an orthogonal basis, then it automatically defines the #keyword(display: "axis")[axes] of the space:
+
+- For a 2d space, we call the directions of the basis vectors as $x$-axis and $y$-axis, respectively. Sho usually writes the basis vectors by $vc(e)_x$ and $vc(e)_y$, but other textbooks may write as $hat(bold(upright(i)))$ and $hat(bold(upright(j)))$.
+
+- For a 3d space, we call the directions of the basis vectors as $x$-axis, $y$-axis, and $z$-axis, respectively. The basis vectors are expressed by $(vc(e)_x,vc(e)_y,vc(e)_z)$ or $(hat(bold(upright(i))), hat(bold(upright(j))),hat(bold(upright(k))))$. Here, physicists *always* choose the axes so that $vc(e)_x,vc(e)_y,vc(e)_z)$ obeys  the #keyword[right-hand rule] (see @sec:vec-cp).
+
+They are called #keyword(key: "Cartesian coordinate system")[2d Cartesian coordinate system] and #keyword(key: "right-handed system")[3d right-handed Cartesian coordinate system], respectively.
+In general, a coordinate system defined by an orthonormal basis is called Cartesian coordinate system.
+#index("coordinate system")
+
+Now we are ready to express vectors in their #EMPH[components] because we have reached @v1-lin; if we _fix_ an orthonormal basis, any vectors are expressed as @v1-lin with _uniquely determined_ numbers $c_k:=vc(e)_k dot vc(v)$.
+
+#definition(title: "Components of a vector")[
+  If we fix an orthonormal basis and label the basis vectors by $vc(e)_1, ..., vc(e)_k$, any vector $vc(v)$ can be written as
+  #no-num[$
+    vc(v) = c_1 vc(e)_1 + dots + c_k vc(e)_k, quad quad c_k := vc(e)_k dot vc(v) in RR.
+  $]
+  We call $c_k$ #keyword(display: "component")[the $bold(k)$-th component] of $vc(v)$ and express $vc(v)$ by them:
+  $display(vc(v) = mat(c_1; c_2; dots.v; c_k)= mat(vc(e)_1 dot vc(v); vc(e)_2 dot vc(v); dots.v; vc(e)_n dot vc(v)).)$
+]<def-vec-comp>
+#advanced-note[
+  We have to make sure this representation is _well-defined_; we do not want to have two different expressions for one vector, or two different vectors having the same expressions.
+
+  Because $c_k$ is uniquely determined, the component-wise notation is unique for a vector. Meanwhile, if $vc(a)$ and $vc(b)$ are different but have the same component-wise notation, it means $vc(a)-vc(b)=:vc(Delta)$ has the same notation as $vc(0)$ (why?). It means $vc(Delta)\/|vc(Delta)|$ is a unit vector orthogonal to all of $vc(e)_k$, which contradicts that $\{vc(e)_1,dots,vc(e)_n}$ is the basis (why?). Accordingly, different vectors must have different component-wise notation.
 ]
 
-#remark[
-  In many textbooks, $vc(e)_x$, $vc(e)_y$, $vc(e)_z$ are written as $hat(i)$, $hat(j)$, $hat(k)$ or $bold(hat(i))$, $bold(hat(j))$, $bold(hat(k))$.
-  They all refer to the same basis vectors.
+#make-indent
+Vectors in $n$-dimensional spaces are called #keyword(key: "$-dimensional vector", display: [$n$-dimensional vector])[$bold(n)$-dimensional vectors].
+Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $n$-dimensional vectors are expressed with $n$ real numbers $c_1, ..., c_n$.
+
+#index("$-dimensional space", display: [$n$-dimensional space])
+
+#problem-style-label.update(true)
+#example[
+  Prove the following equations in a 2d space.
+  #h-enum(cols: 3, label-style: "(1)", label-align: horizon)[
+    + $display(mat(a; b) + mat(p; q) = mat(a + p; b + q))$
+    + $display(mat(a; b) dot mat(p; q) = a p + b q)$
+    + $display(lr(|mat(a; b)|) = sqrt(a^2 + b^2))$
+  ]]
+#solution[
+  #let dm(..args) = math.display(math.mat(..args))
+  + Since $dm(a; b)$ means $a vc(e)_x + b vc(e)_y$ and $dm(p; q)$ means $p vc(e)_x + q vc(e)_y$ under some orthonormal basis $(vc(e)_x, vc(e)_y)$,
+    #no-num[$
+      "LHS" = ( a vc(e)_x + b vc(e)_y ) + ( p vc(e)_x + q vc(e)_y ) =( a +p) vc(e)_x + (b+q) vc(e)_y = "RHS",
+    $]
+    where we used the equations in @vec-axiom-1. $qed$
+  + Similarly, using the equations in @vip-theorem and @def-ortho-basis,
+    #no-num[$
+      "LHS" & = ( a vc(e)_x + b vc(e)_y ) dot ( p vc(e)_x + q vc(e)_y ) \
+      & = a p (vc(e)_x dot vc(e)_x) + b p (vc(e)_y dot vc(e)_x) + a q (vc(e)_x dot vc(e)_y) + b q (vc(e)_y dot vc(e)_y) = a p + b q. qed
+    $]
+  + Because of #thick-sf[(2)], $display("(LHS)"^2 = mat(a; b) dot mat(a; b) = a^2 + b^2)$. Since $"(LHS)" >= 0$, $"LHS"=sqrt(a^2+b^2)="RHS".qed$
+]
+#problem-style-label.update(false)
+#fail-safe[
+  In #thick-sf[(3)], the phrase "$"LHS" >= 0$" is necessary. Without it, you can only claim "$=±sqrt(a^2+b^2)$".
 ]
 
-After defining axes, we can express every vector in components.
 
-#theorem(type: "Definition", title: "Components of a vector")[
-  If a vector $vc(v)$ can be written as
-  $
-    vc(v) = A vc(e)_x + B vc(e)_y + C vc(e)_z,
-  $
-  then $A$, $B$, $C$ are the #keyword[components] of $vc(v)$, and we write
-  $
-    vc(v) = mat(A; B; C).
-  $
+Notice that we _proved_ these equations based on @vec-axiom-1 etc.
+These equations are not _definitions_ or _assumptions_, but _derived statements_ (→ @sec:logic-type). So, we also have to prove a few more statements.
+
+#quizzes[
+  #let dm(..args) = math.display(math.mat(..args))
+  + Consider a 2d space.
+    #h-enum(cols: 1, label-align: horizon)[
+      + Prove $vc(0)=dm(0; 0)$, $vc(e)_x = dm(1; 0)$, and $vc(e)_y = dm(0; 1)$. #hint[Recall $c_k= vc(e)_k dot vc(v)$.]
+      + Prove $k dm(a; b)= dm(k a; k b)$, where $k in RR$.
+    ]
 ]
 
-#remark[
-  In high school, you may have used the horizontal notation $(A, B, C)$.
-  In university, use the vertical (column) form $mat(A; B; C)$, which is consistent with matrix notation.
+#problems[
+  #let dm(..args) = math.display(math.mat(..args))
+  + `3` Consider a 3d space. An orthonormal basis $(vc(e)_x, vc(e)_y, vc(e)_z)$ is taken according to the right-hand rule. Let $vc(a) = dm(a; b; c)$ and $vc(p)=dm(p; q; r)$.
+    #h-enum(cols: 1, label-align: horizon)[
+      + Prove $vc(0)=dm(0; 0; 0)$, $vc(e)_x = dm(1; 0; 0)$, $vc(e)_y = dm(0; 1; 0)$, and $vc(e)_z = dm(0; 0; 1)$.
+      + Prove $k vc(a)+ l vc(b) = dm(k a+l p; k b + l q; k c + l r).$
+      + Prove $vc(a)dot vc(p)=a p+b q+c r$ and $|vc(a)|=sqrt(c^2+b^2+c^2)$.
+      + Express $vc(a)times vc(p)$ with using $a, b, c, p, q, r$.
+    ]
+  + `2` Consider a $n$-dimensional space ($n in NN^+$) and an orthonormal basis $(vc(e)_1, ..., vc(e)_n)$ of it. Prove the following.
+    - $vc(0) = dm(0; dots.v; 0)$ and $(i"-th component of" vc(e)_j) = display(cases(1 "if "i=j",", 0 "if" i!=j).)$
+    - Consider $p, q in RR$ and $n$-dimensional vectors $vc(a)$ and $vc(b)$. Let the $k$-th component of $vc(a)$ be $a_k$ and the $k$-th component of $vc(b)$ be $b_k$. Then, the $k$-th component of $p vc(a) + q vc(b)$ is equal to $p a_k + q b_k$. Also,
+      $display(vc(a)dot vc(b) = sum_(k=1)^n a_k b_k)$ and $display(|vc(a)|= sqrt(sum_(k=1)^n a_k^2)).$
 ]
-
-Check: $vc(e)_x = mat(1;0;0)$, $vc(e)_y = mat(0;1;0)$, $vc(e)_z = mat(0;0;1)$.
-
-With components, the operations become:
-
-#align(center, table(
-  columns: (auto, auto),
-  stroke: none,
-  align: (left, left),
-  table.hline(),
-  [Addition:], [$mat(A;B;C) + mat(P;Q;R) = mat(A+P; B+Q; C+R)$],
-  [Scalar multiplication:], [$k mat(A;B;C) = mat(k A; k B; k C)$],
-  [Inner product:], [$mat(A;B;C) dot mat(P;Q;R) = A P + B Q + C R$],
-  [Magnitude:], [$|mat(A;B;C)| = sqrt(A^2 + B^2 + C^2)$],
-  [Cross product:], [$mat(A;B;C) times mat(P;Q;R) = mat(B R - C Q; C P - A R; A Q - B P)$],
-  table.hline(),
-))
 
 #be-careful[
-  These component formulas are *consequences* of the definitions we gave earlier (scalar multiplication, addition, inner product, cross product), together with the fact that $vc(e)_x$, $vc(e)_y$, $vc(e)_z$ are mutually perpendicular unit vectors satisfying the right-hand rule.
-  They are *not* new definitions.
+  Again, these formulas are _consequences_ of the definitions we gave earlier.  They are *not* new definitions.
 ]
+Since you must be familiar with this component-wise notation and calculations based on it, we do not discuss it further.
+Consult your high-school math textbook or Sho's #link("https://misho104.github.io/LecturePublic/", "Vector Boot Camp") if you are not confident in such calculations.
 
-#quizzes[
-  + `4` Let $vc(a) = mat(1;2;0)$ and $vc(b) = mat(3;-1;2)$.
-    + Calculate $vc(a) + vc(b)$, $2 vc(a) - vc(b)$.
-    + Calculate $vc(a) dot vc(b)$. Find the angle between $vc(a)$ and $vc(b)$.
-    + Calculate $|vc(a)|$ and $|vc(b)|$.
-    + Calculate $vc(a) times vc(b)$. Verify it is perpendicular to both $vc(a)$ and $vc(b)$.
-]
+Vectors are closely related to matrices, the main topic of #TODO[].
+We will there discuss both real and complex matrices, and thus complex vectors will be introduced there. Since complex vectors are not arrows, we need to _define_ complex vectors in a way different from what we did in this chapter.
+
+To prepare for the discussion on complex matrices in #TODO[], we first review #EMPH[complex numbers] in the next chapter.
 
 #problems[
-  + `3` Let $vc(A) = mat(a;b;c)$ and $vc(B) = mat(p;q;r)$. Prove each formula in the table above. #fail-safe[Use the inner product and cross product properties from the previous sections, together with $vc(e)_x dot vc(e)_y = 0$, $vc(e)_x times vc(e)_y = vc(e)_z$, etc.]
-
-  + `3` Let $vc(a) = mat(1;2;-1)$, $vc(b) = mat(3;0;2)$, $vc(c) = mat(-1;1;1)$.
-    + Calculate $vc(a) dot vc(b)$, $|vc(a)|$, $|vc(b)|$, and the angle between $vc(a)$ and $vc(b)$.
-    + Calculate $vc(a) times vc(b)$. Verify $|vc(a) times vc(b)|^2 + (vc(a) dot vc(b))^2 = |vc(a)|^2 |vc(b)|^2$.
-    + Find the unit vector in the direction of $vc(a) + vc(b)$.
-    + Find a real number $k$ such that $vc(a) + k vc(b)$ is perpendicular to $vc(c)$.
-
-  + `2` Let $vc(v) = A vc(e)_x + B vc(e)_y + C vc(e)_z$.
-    Show that $vc(v) dot vc(e)_x = A$, $vc(v) dot vc(e)_y = B$, $vc(v) dot vc(e)_z = C$.
-    This means we can always "read off" the components by taking dot products with the basis vectors:
-    $
-      vc(v) = (vc(v) dot vc(e)_x) vc(e)_x + (vc(v) dot vc(e)_y) vc(e)_y + (vc(v) dot vc(e)_z) vc(e)_z.
-    $
-]
-
-#pagebreak()
-
-= Position Vectors
-
-We can use vectors to describe the positions of points.
-
-Fix a reference point O (the *origin*). For any point P, define the #keyword[position vector] of P as the vector $arrow(O P)$ pointing from O to P.
-
-For points A and B with position vectors $vc(a) = arrow(O A)$ and $vc(b) = arrow(O B)$:
-$
-  arrow(A B) = vc(b) - vc(a), quad |arrow(A B)| = |vc(b) - vc(a)|.
-$
-
-#quizzes[
-  + `4` #TODO[figure: three points A, B, C]
-    Three points A, B, C are given. Choose an origin O (anywhere) and define $vc(a) = arrow(O A)$, $vc(b) = arrow(O B)$, $vc(c) = arrow(O C)$.
-    + Draw $vc(a)$, $vc(b)$, $vc(c)$, and $vc(b) + vc(c)$.
-    + Draw $vc(b) - vc(a)$ and $vc(a) - vc(c)$.
-    + Express $|arrow(A B)|$ using $vc(a)$ and $vc(b)$.
-]
-
-#problems[
-  + `3` Three points A, B, C have position vectors $vc(a)$, $vc(b)$, $vc(c)$ relative to origin O.
-    + Find the position vector of the midpoint M of segment AB.
-    + Let G be the centroid (geometric center) of triangle ABC. Show that $arrow(O G) = (vc(a) + vc(b) + vc(c))/3$.
-
-  + `3` Let $vc(a) = mat(1;2;3)$ and $vc(b) = mat(4;0;-1)$.
-    + Find the distance $|arrow(A B)|$ between the points A and B.
-    + Find the position vector of the midpoint of AB.
-    + Find the position vector of the point P that divides AB in ratio $1:2$ (closer to A).
-
-  + `2` A particle moves so that its position vector at time $t$ is
-    $vc(r)(t) = mat(cos t; sin t; t)$.
-    + Calculate $|vc(r)(t)|$ at $t = 0$ and at $t = pi/2$.
-    + Calculate the velocity vector $vc(v)(t) = dv(vc(r), t)$ by differentiating component-wise.
-    + Show that $vc(r)(t) dot vc(v)(t)$ depends on $t$ and find its value.
-    + Calculate $|vc(v)(t)|$.
+  + `1` Complete the proof in "Advanced Note" after @def-vec-comp.
+  + `1` When we define a Cartesian coordinate system for a 3d space, we require that $(vc(e)_x, vc(e)_y, vc(e)_z)$ satisfies the right-hand rule. However, similar rules are not required for 2d spaces. Why?
 ]

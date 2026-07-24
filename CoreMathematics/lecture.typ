@@ -32,8 +32,8 @@
 #chapter(key: "chap:pow")[Power, Exponential, and Logarithm]
 #include "4-power.typ"
 
-//#chapter[Vectors are arrows]
-//#include "5-vector.typ"
+#chapter(key: "chap:vector")[Vectors as arrows]
+#include "5-vector.typ"
 
-//#chapter[Matrices]
+#chapter(key: "chap:matrix")[Matrices]
 //#include "6-matrix.typ"
