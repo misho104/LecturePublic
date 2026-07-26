@@ -2,7 +2,7 @@
 #import "physica.typ": *
 #import "@preview/simple-plot:1.0.0": plot, set-plot-defaults
 
-= Powers
+= Powers <sec:pow-pow>
 
 Let's begin with a review: can you recall all the rules for powers...?
 
@@ -182,7 +182,7 @@ In the following sections, we will only consider *powers of positive base*, i.e.
 )
 
 
-= Exponential functions and Logarithmic functions
+= Exponential functions and Logarithmic functions <sec:pow-exp>
 #grid(columns: (auto, 40%), align: (left, right))[
   Powers with positive bases, such as $2^x$ and $0.7^x$, are considered as an #keyword[exponential function] defined for $x in RR$.
   The figure to the right shows the graphs of $y=2^x$ and $y=0.7^x$.
@@ -274,8 +274,8 @@ We here review basic properties of $log_a x$. Drill problems are available later
     log_a A = (log_b A)/(log_b a) quad "[changing the base]".
   $<eq:log-base-change>]
 
-= Napier's number and Natural logarithm
-There is a special number for the base, called #keyword[Napier's number] $ee$:
+= Napier's number and Natural logarithm <sec:pow-e>
+There is a special number for the base, called #keyword(display: "Napier's number")[Napier's number] $ee$:
 #index-see("e", "Napier's number")
 $
   ee = 2.718281828... = lim_(n -> oo) (1 + 1/n)^n = sum_(k=0)^oo 1/(k!) = 1 + 1 + 1/2 + 1/6 + 1/24 + 1/120 + ...
@@ -399,7 +399,7 @@ Also, we often write $ee^x$ as $exp(x)$.
       + $ln|x+1| + ln|x-1| = ln 4$
     ]
   + `2` Calculate the derivative of $x^x$.
-  + `2` #keyword[Hyperbolic functions] are defined by
+  + `2` #keyword(display: "hyperbolic function")[Hyperbolic functions] are defined by
     $
       cosh x := (ee^x + ee^(-x))/2, quad
       sinh x := (ee^x - ee^(-x))/2, quad
@@ -417,7 +417,7 @@ Also, we often write $ee^x$ as $exp(x)$.
 ]
 
 
-= Exponential Growth and Decay <exp-physics>
+= Exponential Growth and Decay <sec:pow-decay>
 
 Consider the function $f(t) = N exp(A t)$, where $N>0$ and $A in RR$.
 

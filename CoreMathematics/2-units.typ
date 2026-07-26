@@ -50,7 +50,7 @@ In experimental physics, uncertainty is usually more important than the central 
 In this chapter, we first review physical quantities and how to handle units. Then, we discuss #keyword[significant figures], a simple and convenient method to express the uncertainty.
 Further discussions on uncertainty analysis are given in Chapter #TODO[chapter].
 
-= Physical quantity
+=s Physical quantity <sec:unit-q>
 
 The expression "$(72 ± 2)kg$" means the central value is $72kg$ and the #keyword[absolute uncertainty] is $2kg$.
 Accordingly, its #keyword[relative uncertainty] is given by $(2kg)\/(72kg)=0.028$.
@@ -107,7 +107,7 @@ As an undergraduate student, you need to follow the following rules:
 ]
 
 
-= Units
+= Units <sec:unit-unit>
 When we educate kids, we write "my height is #blank()#cm", or "my height is $h$#cm", where $h=172$ is just a number.
 But this is not nice! We want to convert the units freely and write equations such as
 $1.72#meter = 172#cm = 0.00172unit("km")$.
@@ -230,7 +230,7 @@ These are scientifically correct equations.
     ]
 ]
 
-= Significant figures <sig-figs>
+= Significant figures <sec:unit-sf>
 
 In researches, we need to treat uncertainties in the method given in #TODO[chap].
 However, most of lectures use #keyword[significant figures] to express the accuracy of a value, so that students becomes familiar with the concept of uncertainties.
@@ -335,7 +335,7 @@ We use #keyword[rounding]-to-the-nearest (#ZH[四捨五入]) when necessary. For
 
 ]
 
-= Calculation with Significant figures
+= Calculation with Significant figures <sec:unit-sf-calc>
 
 We need to do calculations of numbers with uncertainties, such as $1.23+4.56$ or $1.23\/4.56$, but how?
 Here we discuss a simple method for

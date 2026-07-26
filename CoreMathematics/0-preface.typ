@@ -363,13 +363,14 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
 
 #pagebreak()
 = Index
+#let no-chop = ("axis", "basis")
 #columns(3)[
   #make-index(
     section-title: (l, c) => v(3mm),
     entry-casing: e => {
       if type(e) == str and e.len() > 0 {
         let c = e.trim().clusters()
-        let chop = c.len() >= 3 and c.last() == "s" and c.at(-2) != "s"
+        let chop = c.len() >= 3 and c.last() == "s" and c.at(-2) != "s" and not no-chop.any(i => e.ends-with(i))
         // upper(c.first()) + c.slice(1, if chop { -1 }).join()
         c.slice(0, if chop { -1 }).join()
       } else { e }

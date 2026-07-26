@@ -128,8 +128,8 @@
 
 // ==== Block level styles =============================================================================================
 #let make-indent = h(dim.indent)
-#let no-num(comma-gap: 0em, content) = {
-  show sym.comma: "," + h(if (comma-gap == auto) { 1em } else { comma-gap })
+#let no-num(comma-gap: none, content) = {
+  show sym.comma: if comma-gap == none { it => it } else { "," + h(if comma-gap == auto { 1em } else { comma-gap }) }
   math.equation(block: true, numbering: none, content)
 }
 #let tab(shift: dim.tab, ..args, body) = block(inset: (left: shift), ..args, body)
@@ -168,7 +168,7 @@
   "3": "***",
   "2": "**",
   "1": "*",
-  "9": text(font: "Noto Color Emoji", "🦾"), // cspell: disable-line
+  "9": text(size: 9pt, font: "Noto Color Emoji", "🦾"), // cspell: disable-line
 )
 #let _enum-depth = state("_enum-depth", 0)
 #let problem-style-label = state("problem-style-label", false)
@@ -219,7 +219,9 @@
   v-sep: 1em,
   h-sep: 0mm,
   inset: (:),
-  ..items,
+  block-spacing: (:),
+  fixed-height: none,
+  ..items, // must be passed after enumerate()
 ) = [
   #_enum-depth.update(d => d + 1)
   #let style = if label-style == auto {
@@ -232,31 +234,54 @@
   #let label-width = if label-width == auto {
     if problem-style-label.get() { dim.problem-label-width } else { dim.label-width }
   } else { label-width }
+  #let separator = if (fixed-height == none) { none } else { box(height: fixed-height, "") }
   #set par(first-line-indent: 0em, hanging-indent: 0em)
-  #grid(
+  #block(..block-spacing, grid(
     columns: if type(cols) == int { range(cols).map(it => 1fr) } else { cols },
     column-gutter: h-sep,
     row-gutter: v-sep,
     ..items
       .pos()
-      .enumerate()
       .map(((i, body)) => grid(
         columns: (label-width, label-sep, auto),
         align: (right + label-align, label-align, left),
         inset: (inset, 0em, 0em),
-        style(label-start + i), "", body,
+        if (i != none) { style(label-start + i) }, separator, body,
       ))
-  )
+  ))
   #_enum-depth.update(d => d - 1)
 ]
+#let _enum-vertical(cols: 1, ..args) = {
+  let items = args.pos()
+  let n = items.len()
+  let c = if type(cols) == int { cols } else { cols.len() }
+  let rows = calc.ceil(n / c)
+  _enum-horizontal(
+    cols: cols,
+    ..args.named(),
+    ..range(0, rows * c).map(i => {
+      let r = calc.rem(i, c) * rows + calc.quo(i, c)
+      if (r < n) { items.at(r) } else { (none, none) }
+    }),
+  )
+}
+
 #let h-enum(..args, cols: 4, body) = {
   show enum: it => {
     _enum-horizontal(
       cols: cols,
       ..args,
-      ..it.children.map(it => {
-        it.body
-      }),
+      ..it.children.map(it => { it.body }).enumerate(),
+    )
+  }
+  body
+}
+#let v-enum(..args, cols: 4, body) = {
+  show enum: it => {
+    _enum-vertical(
+      cols: cols,
+      ..args,
+      ..it.children.map(it => { it.body }).enumerate(),
     )
   }
   body
@@ -388,23 +413,23 @@
 }
 
 #let remark(..args, body) = {
-  _box(indent: true, accent: c.gray, head-box: none)[
+  _box(indent: true, accent: c.gray, head-box: none, ..args)[
     #text-sf(weight: "bold", size: 11pt, "Remark: ") #body
   ]
 }
 #let be-careful(..args, body) = {
-  _box(indent: true, accent: c.alt-a.desaturate(50%), head-box: none, stroke: (left: 2mm + c.alt-a))[
+  _box(indent: true, accent: c.alt-a.desaturate(50%), head-box: none, stroke: (left: 2mm + c.alt-a), ..args)[
     #text-sf(weight: "bold", size: 11pt, "Be careful: ") #body
   ]
 }
 #let fail-safe(..args, body) = {
-  _box(indent: true, accent: c.gray, head-box: none)[
+  _box(indent: true, accent: c.gray, head-box: none, ..args)[
     #text(size: 9pt)[#text-sf(weight: "bold", "Fail safe note: ") #body]
   ]
 }
 
 #let advanced-note(..args, body) = {
-  _box(indent: true, accent: c.light-purple, head-box: none)[
+  _box(indent: true, accent: c.light-purple, head-box: none, ..args)[
     #text-sf(weight: "bold", true-size: 9pt, "Advanced note: ") #text(size: 9pt)[#body]
   ]
 }
@@ -513,7 +538,7 @@
         _enum-depth.update(d => d - 1)
       } else {
         _enum-horizontal(
-          ..it.children.map(it => it.body),
+          ..it.children.map(it => it.body).enumerate(),
         )
       }
     }

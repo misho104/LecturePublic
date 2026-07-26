@@ -34,7 +34,7 @@ but *what do they mean?*
 
 Elementary educations do not discuss these differences because kids do not know *logical thinking*. Now, you are a grown-up university student. You need to think about it.
 
-= Basic Logics
+= Basic Logics <sec:logic-basic>
 
 Since elementary school, you have written many equalities and inequalities, such as
 #no-num(comma-gap: auto, $3+5=8, 6+2=10, 1+3>-3, 1+3!=0, 3^3=9, 1>2, "and" quad sin(pi)!=0.$)
@@ -172,7 +172,7 @@ and this is called  #keyword[implication]. For example, the statements in the ab
   Through this definition, it is clear that $A=>B$ is equivalent to $not B => not A$, which we will see below.
 ]
 
-= Equivalent Statements---What does "solve" mean?
+= Equivalent Statements---What does "solve" mean? <sec:logic-equiv>
 
 Since elementary school, you have solved many equations, but what does "solving an equation" mean?
 
@@ -361,7 +361,7 @@ Before discussing advanced topics on logics, you should do some drills.
     + Explain the reason we can understand $A<=>B$ as $A=B$.
     + Write a truth table for the following expressions:
       #no-num(comma-gap: auto, $A and B, not(A and B), (not A)or(not B), not(A or B), (not A)and(not B)$)
-      Explain that this truth table is considered as a _proof_ of #keyword[de Morgan's theorem]
+      Explain that this truth table is considered as a _proof_ of #keyword(display: "de Morgan's theorem")[de Morgan's theorem]
       $
         not(A or B) = (not A)and(not B), quad quad not(A and B) = (not A)or(not B).
       $
@@ -387,7 +387,7 @@ Before discussing advanced topics on logics, you should do some drills.
 
 #pagebreak()
 
-= A few more notes about logic and proof
+= A few more notes about logic and proof <sec:logic-note>
 
 There is a useful theorem for "not" operator, called #keyword[de Morgan's theorem].
 #theorem(title: "De Morgan's theorem")[
@@ -463,7 +463,7 @@ Another powerful method is #keyword[proof by contradiction] (deductio ad absurdu
 ]
 
 
-= Facts, Definitions, Assumptions, and Conclusions
+= Facts, Definitions, Assumptions, and Conclusions <sec:logic-type>
 
 One of the main reasons students find university physics difficult is that they treat all statements in the same way.
 In physics, every statement has its own role:
