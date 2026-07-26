@@ -35,5 +35,8 @@
 #chapter(key: "chap:vector")[Vectors as arrows]
 #include "5-vector.typ"
 
+#chapter(key: "chap:complex")[Complex Numbers]
+#include "6-complex.typ"
+
 #chapter(key: "chap:matrix")[Matrices]
 //#include "6-matrix.typ"

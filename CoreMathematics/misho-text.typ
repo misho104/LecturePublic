@@ -106,8 +106,8 @@
   show sym.ast: h(0.05em) + sym.dot.op + h(.05em)
   $#h(0.1667em)upright(body)$
 }
-#let ii = math.upright("i")
-#let ee = math.upright("e")
+#let ii = $upright(i)$
+#let ee = $upright(e)$
 #let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
 #let root(n, x) = math.root(move($math.script(#n)$, dy: -0.4em), x)
 #let math-strong(t) = text(font: _font-serif, strong(t))
@@ -436,27 +436,41 @@
 
 #let theorem(type: "Theorem", title: none, key: none, body) = {
   let border = 1pt + c.blue
-  figure(
-    caption: none,
-    kind: "env",
-    supplement: type,
-    numbering: _chapter-numbering,
-    align(left, _box(
-      accent: c.blue.lighten(40%),
-      call-out: false,
-      stroke: (top: border, bottom: border),
-      inset: (top: 0.4em, middle-above: 0.4em, middle-below: 1em),
-      head-box: (fill: c.blue),
-      label: text-sf(fill: white, size: 11pt, weight: "bold")[
-        #h(-.5em)
-        #type #context { _chapter-numbering("env") }
-        #if title != none [ #h(1em) (#title)  ]
-      ],
-      body,
-    )),
+  (
+    figure(
+      caption: none,
+      kind: "env",
+      supplement: type,
+      numbering: _chapter-numbering,
+      align(left, _box(
+        accent: c.blue.lighten(40%),
+        call-out: false,
+        stroke: (top: border, bottom: border),
+        inset: (top: 0.4em, middle-above: 0.4em, middle-below: 1em),
+        head-box: (fill: c.blue),
+        main-box: (sticky: true),
+        label: text-sf(fill: white, size: 11pt, weight: "bold")[
+          #h(-.5em)
+          #type #context { _chapter-numbering("env") }
+          #if title != none [ #h(1em) (#title)  ]
+        ],
+        body,
+      )),
+    )
   )
 }
 #let definition(..args) = theorem(type: "Definition", ..args)
+
+#let proof(body) = {
+  _box(
+    indent: true,
+    call-out: true,
+    stroke: (left: 1pt),
+    head-box: none,
+  )[
+    #text-sf(weight: "bold", true-size: 9pt, "Proof: ") #text(size: 9pt)[#body]
+  ]
+}
 
 #let example(title: none, body) = {
   let border = 1pt + c.green

@@ -215,7 +215,7 @@ In the following sections, we will only consider *powers of positive base*, i.e.
   $
   $
     a^x a^y = a^(x+y), quad (a^x)/(a^y) = a^(x-y), quad (a^x)^y = a^(x y), quad (a b)^x = a^x b^x, quad (a/b)^x = (a^x)/(b^x).
-  $]
+  $]<exp-properties>
 #remark[
   $a^(x^y)$ is usually interpreted as $a^((x^y))$; it is in general not equal to $(a^x)^y=a^(x y)$.
 ]
