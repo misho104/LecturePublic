@@ -23,25 +23,21 @@ Try the next quiz---and note how long it takes.
     ]
 ]
 
-- Less than two minutes? Amazing! It is as fast as Sho!
+- No mistake, less than two minutes? Amazing! It is as fast as Sho!
 
-- Less than four minutes? Great, it is exactly as Sho anticipates. Please continue your effort!
+- No mistake, less than four minutes? Great, it is exactly as Sho anticipates. Please continue your effort!
 
-- Even if you took more than four minutes, do not worry.
-  At least you don't make any mistakes.
-  A little more practice will help you.
+- No mistake but takes more than four? That's okay, do not worry. You are just not _fluent_; a little more practice will help you.
   Try more problems in #link("https://misho104.github.io/LecturePublic/", "the Derivative Boot Camp").#footnote[Visit https://misho104.github.io/LecturePublic and find `gp1_boot1_deriv_true.pdf`.]
 
 - If you make any mistakes in these eight calculations, then it is a serious issue---just as serious as forgetting how to do the calculations at all.
   In university, you will perform similar calculations more than 100 times. You need to be both fast and accurate.
-
 
 #divider()
 
 At university, students often underestimate the importance of basic calculations.
 In physics, simple calculations appear constantly, so your speed and accuracy directly affect how well you follow lectures, how efficiently you study, and ultimately your grade.
 Both can be improved with practice.
-
 
 This course will help you strengthen these basic calculations---some of which you already know from high school---while also introducing new topics that are essential for physics.
 You will solve many problems and drills, just as an athlete repeats the same move hundreds of times to master it.
@@ -63,7 +59,7 @@ You will solve many problems and drills, just as an athlete repeats the same mov
 
 Consider a function $f(x)$. As we vary the value of $x$, $x$ is called a #keyword[variable].
 For a function $f(x)$, there are several equivalent ways to write its derivative:
-$ f'(x) qeq dv(f, x)(x) qeq dv(f(x), x) qeq dv(, x)f(x) wide "[All means the same thing]." $
+$ f'(x) qeq dv(f, x)(x) qeq dv(f(x), x) qeq dv(, x)f(x) quad "[All means the same thing]." $
 Similarly, the value of $f'(x)$ at a specific point $x=3$ can be written as
 $ f'(3) qeq eval(f'(x))_(x=3) qeq eval(dv(f, x))_(x=3) qeq dv(f, x)(3) qeq dv(, x)f(3), $
 and they are all equivalent. For example, if $f(x)=3x^2+6$, then $f'(x)=6x$ and $f'(3) = 18$.
@@ -80,6 +76,12 @@ $ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(, x)g(a) quad = quad 2a^2. 
 #fail-safe[
   If you can't see @d1, try setting $a=3$. Then, you notice $g(x)$ is the same function as $f(x)$, and $g'(x)$ should equal $f'(x)$.
 ]
+#EMPH[Higher-order derivatives]#index("order") is written as
+$
+  dv(, x)(dv(f, x)) = dv(f, x, 2)=f''(x) = f^((2))(x),quad
+  dv(, x)(dv(, x)(dv(f, x))) = dv(f, x, 3)=f'''(x) = f^((3))(x),
+$
+etc. Please be careful on the position of "2" and "3".
 
 #quizzes[
   + Let $a$ be a constant and $g(x)=a x^2+2a$. Calculate
@@ -93,6 +95,13 @@ $ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(, x)g(a) quad = quad 2a^2. 
       + $g''(2)$
       + $dv(, x)g(7)$
     ]
+  + Let $f(x)=x^3 + 2x^2 + 5x + 1$. Calculate
+    #h-enum(cols: (1fr, 1fr, 1fr, 1.5fr), label-align: horizon)[
+      + $f^((2))(1)$
+      + $f'''(1)$
+      + $dv(f, x, 2)(2)$
+      + $dv(, x)(dv(, x)(dv(f, x)))$
+    ]
 ]
 
 #make-indent
@@ -102,9 +111,7 @@ Therefore, when you see a function $f$, you must *identify its variable from the
 
 In physics, a variable can be a function of another variable.
 The kinetic energy $K(v)=m v^2\/2$ is a good example. Its variable $v$ is a function of time $t$~---we write this fact by $v=v(t)$--- and thus
-$
-  K(v) = 1/2 m v^2 quad "but also" quad K(t) = K(v(t)) = 1/2 m v(t)^2.
-$
+$ K(v) = 1/2 m v^2 quad "but also" quad K(t) = K(v(t)) = 1/2 m v(t)^2. $
 Now, what does $K'$ mean? ---It is ambiguous and we must avoid such notation.
 Even though, if you see it in a textbook, you need to guess the author's intention from the context.
 
@@ -121,24 +128,14 @@ Even though, if you see it in a textbook, you need to guess the author's intenti
   Both conventions are reasonable, and eventually you will get used to both.
 ]
 
-#EMPH[Higher-order derivatives]#index("order") is written as
-$
-  dv(, x)(dv(f, x)) = dv(f, x, 2)=f''(x) = f^((2))(x),wide
-  dv(, x)(dv(, x)(dv(f, x))) = dv(f, x, 3)=f'''(x) = f^((3))(x),
-$
-etc. Please be careful on the position of "2" and "3".
-
 
 == Radian and trigonometric functions
 
 At university, angles are almost always measured in #keyword[radians]:
-$
-  360 "degree" quad ("or:" 360degree) qeq 2pi "radian" quad ("or:" 2pi "rad")
-$
+$ 360 "degree" quad ("or:" 360degree) qeq 2pi "radian" quad ("or:" 2pi "rad") $
 Furthermore, we usually omit "radian" (because we are lazy!). So,
-$
-  "a right angle is " pi\/2.quad "The sum of the interior angles of a triangle is" pi.\
-$
+$ "a right angle is " pi\/2.quad "The sum of the interior angles of a triangle is" pi. $
+You may write $180degree=pi$, $pi\/180=1degree$, and so on, but the small circle $degree$ must be written _clearly_.
 #quizzes[
   + Express the following angles in radians, and radians in angles.
     #h-enum(cols: 5)[
@@ -154,8 +151,7 @@ $
       + $x$
     ]
 ]
-
-Why do insist on radians?
+Why do we insist on radians?
 The answer comes from the derivative formula
 $ dv(, x) sin x = cos x. $ <sin-deriv>
 Because we have chosen radians as the standard, $(sin x)'$ becomes this simple.
@@ -164,12 +160,10 @@ Because we have chosen radians as the standard, $(sin x)'$ becomes this simple.
   The simpleness of @sin-deriv originates in the fact $sin(0.01 "rad") approx 0.01$. If we used degrees, we would have $sin(0.01 degree) approx 0.01 times 0.017453$ and  everything is messed up with this number 0.017453.
 ]
 
-#pagebreak()
-
 #make-indent
 There are a few remarks in the notation of #keyword(key: "trigonometric function", [trigonometric functions]):
 $
-  & sin^2 x != sin x^2. wide && "Namely,"quad (sin x)^2 = sin^2 x quad   && != quad sin x^2 = sin(x^2). \
+  & sin^2 x != sin x^2. quad && "Namely,"quad (sin x)^2 = sin^2 x quad   && != quad sin x^2 = sin(x^2). \
   & tan^(-1) x != 1/(tan x). && "Namely,"quad tan^(-1) x = arctan x quad && != quad (tan x)^(-1) = 1/(tan x) = cot x.
 $
 The following expressions are not incorrect but confusing;
@@ -184,6 +178,7 @@ The following expressions are not incorrect but confusing;
 )
 *We should avoid ambiguity*, so please _never_ use confusing these notations.
 Sho thinks we should use $med sin^k x med$ only for $k=2, 3, 4, ...$, and use $med arcsin x med$ instead of $sin^(-1)x$.
+
 
 == Several interpretations of derivatives
 When you, physics learners, discuss $f'(t)$, you should have the following three interpretations:
@@ -202,7 +197,7 @@ If you are unsure of them, please consult your first-year Calculus textbooks for
 #quizzes[
   + What is the definition of $f'(x)$? Explain.
 ]
-In physics, it is important to memorize and understand the #keyword[definition] of each concept.
+In physics, it is important to memorize and understand the #keyword[definition] of each concept. We will talk about "definitions" in @sec:logic-type.
 
 
 = Taylor expansion
@@ -210,7 +205,7 @@ In physics, it is important to memorize and understand the #keyword[definition] 
 Reviewing the definition of $f'(x)$, we have
 $
   f'(x) := lim_(Delta x->0) (f(x+Delta x)-f(x))/(Delta x),
-  wide
+  quad
   f'(a) := lim_(delta->0) (f(a+delta)-f(a))/(delta).
 $ <def-deriv>
 The second equation is interpreted as follows:
@@ -354,7 +349,6 @@ To summarize, we have the following statement:
   The two equations in @def-deriv have similar but different meanings: the first one defines a new function $f'(x)$, while the second one defines a number that is eventually equal to $f'(x)|_(x=a)$. Anyway, we don't care the difference.]
 
 
-
 = Mathematical Notation
 As _physicists are lazy_, we usually use the following notation:
 
@@ -384,8 +378,8 @@ The symbol "$in$" means _"is a member of"_, and $NN^+$ means a #keyword[set] of 
   [means the same thing: "$x$ is a positive integer".],
 )
 
-#remark[
-  In mathematics, "natural numbers" usually mean $NN^0$. Meanwhile, physicists and other people tend to think natural numbers mean $NN^+$ .
+#be-careful[
+  In mathematics, "natural numbers" usually mean $NN^0$, including 0. Meanwhile, physicists and other people tend to think 0 is not a natural number.
 ]
 
 
@@ -404,7 +398,7 @@ We write "$x$ is a positive number" by #writing[$x in RR, x>0$] but also by #wri
   $x<=0$,
   [means "$x$ is a non-positive number".],
 )
-Notice that, when we say "positive" or "negative", we implicitly assume the number is real.
+#be-careful[Namely, when we say something is "positive" or "negative", we implicitly assume it is a real number.]
 #advanced-note[
   This is because we cannot compare complex numbers with $0$. The operator $>$ is defined only for real numbers. When we write $a>b$, we implicitly consider that $a$ and $b$ are real numbers.
 ]

@@ -54,11 +54,15 @@
   size: if true-size != none { true-size } else { (if size != none { size } else { text.size }) * 0.95 },
   ..args,
 )
+
 #let thick-sf(..args) = text-sf(weight: 600, ..args)
+
+#let math-thick-sans(s) = text(font: _font-sans, weight: "bold", style: "italic", s)
 
 // ==== Layout =========================================================================================================
 #let dim = (
   tab: 2.5em, // default "tab-shift" \BaseTab
+  eq-shift: 10mm,
   shift: 15mm,
   label-width: 2.0em,
   label-sep: 0.5em,
@@ -100,6 +104,7 @@
 #let TODO(..args) = text(fill: c.alt-a, text-tt("♣TODO♣") + args.pos().join())
 #let hint(head: [Hint:~], body) = text-sf[\[#head#body\]]
 
+#let _link-style(t) = text(fill: c.blue.darken(20%), underline(offset: 0.25em, t))
 // ==== Mathematics ====================================================================================================
 #let unit(body) = {
   show math.frac: it => [#it.num #sym.slash #it.denom]
@@ -128,11 +133,18 @@
 
 // ==== Block level styles =============================================================================================
 #let make-indent = h(dim.indent)
-#let no-num(comma-gap: none, content) = {
-  show sym.comma: if comma-gap == none { it => it } else { "," + h(if comma-gap == auto { 1em } else { comma-gap }) }
-  math.equation(block: true, numbering: none, content)
-}
 #let tab(shift: dim.tab, ..args, body) = block(inset: (left: shift), ..args, body)
+
+// equations
+#let no-num(comma-gap: none, shift: true, content) = [
+  #show sym.comma: if comma-gap == none { it => it } else { "," + h(if comma-gap == auto { 1em } else { comma-gap }) }
+  #if shift == false { h(-dim.eq-shift) }
+  #math.equation(block: true, numbering: none, content)
+]
+#let no-shift(comma-gap: none, content) = [
+  #show sym.comma: if comma-gap == none { it => it } else { "," + h(if comma-gap == auto { 1em } else { comma-gap }) }
+  #math.equation(block: true)[#h(-dim.eq-shift)#content]
+]
 
 // ==== Page level styles ==============================================================================================
 // The gray box visually covers the header rule on non-normal pages.
@@ -173,7 +185,8 @@
 #let _enum-depth = state("_enum-depth", 0)
 #let problem-style-label = state("problem-style-label", false)
 
-#let _labels = (
+// get int and return content
+#let _label-styles = (
   "problem": n => thick-sf(n),
   "quiz": n => thick-sf([Q#n.replace(regex(".*\."), "").]),
   "(1)": n => thick-sf([(#n)]),
@@ -186,24 +199,22 @@
   "A.": n => str.from-unicode(64 + n) + ".",
   "a.": n => str.from-unicode(96 + n) + ".",
 )
-#let enum-style(width: dim.label-width, style) = n => box(width: width, align(right, _labels.at(style)(n)))
+// public api. usage: #enum(numbering: enum-style("(1)")); "style" accepts str or lambda.
+#let enum-style(width: dim.label-width, style) = {
+  let s = if type(style) == str { _label-styles.at(style) } else { style }
+  n => box(width: width, align(right, s(n)))
+}
 
-#let _enum-labels(d) = (
-  if problem-style-label.get() {
-    (
-      _labels.at("(1)"),
-      _labels.at("(a)"),
-      _labels.at("1."),
-    )
-  } else {
-    (
-      _labels.at("1."),
-      _labels.at("A."),
-      _labels.at("a."),
-      _labels.at("1."),
-    )
-  }
-).at(d)
+// default value, and thus width is dim.width-label.
+#let _default-enum-labels(d) = (
+  enum-style(
+    if problem-style-label.get() {
+      ("(1)", "(a)", "1.").at(d)
+    } else {
+      ("1.", "A.", "a.", "1.").at(d)
+    },
+  )
+)
 
 // for list
 #let list-markers = ([•], [‣], [–])
@@ -225,9 +236,9 @@
 ) = [
   #_enum-depth.update(d => d + 1)
   #let style = if label-style == auto {
-    _enum-labels(_enum-depth.get() - 1)
+    _default-enum-labels(_enum-depth.get() - 1)
   } else if type(label-style) == str {
-    _labels.at(label-style)
+    _label-styles.at(label-style)
   } else {
     label-style
   }
@@ -433,7 +444,14 @@
     #text-sf(weight: "bold", true-size: 9pt, "Advanced note: ") #text(size: 9pt)[#body]
   ]
 }
-
+#let restriction(..args, body) = (
+  pad(y: 1em, box(stroke: c.alt-a + 1mm, _box(
+    accent: c.alt-a.desaturate(50%),
+    head-box: none,
+    ..args,
+    body,
+  )))
+)
 #let theorem(type: "Theorem", title: none, key: none, body) = {
   let border = 1pt + c.blue
   (
@@ -545,7 +563,7 @@
             #figure(caption: none, kind: t.counter, supplement: t.supplement, numbering: _chapter-numbering, grid(
               columns: (dim.label-width + 3mm, dim.label-sep, 1fr),
               align: (top + right, top, horizon + left),
-              context { level + _labels.at(t.counter)(_chapter-numbering(t.counter)) }, "", body,
+              context { level + _label-styles.at(t.counter)(_chapter-numbering(t.counter)) }, "", body,
             ))
           ])
           .join()
@@ -624,35 +642,36 @@
   // hardcodes ×0.8 scaling for raw blocks; pre-multiply to get net ×0.85.
   show raw: it => text-tt(size: 1em / 0.8, it)
   show heading: it => text(font: _font-sans, it)
-  show link: it => underline(offset: .25em, it)
+  show link: it => _link-style(it)
   show link: it => {
     let is-bare-url = (it.body.has("text") and (it.body.text.starts-with("http") or it.body.text.starts-with("mailto")))
-    if is-bare-url { text-tt(fill: c.blue, it) } else { text(fill: c.blue, it) }
+    if is-bare-url { text-tt(it) } else { text(it) }
   }
-  show math.equation.where(block: true): pad.with(left: 1cm)
+  show math.equation.where(block: true): pad.with(left: dim.eq-shift)
   show math.equation.where(block: true): set align(left)
 
   set enum(
     indent: dim.left-margin - dim.label-sep - dim.label-width,
     body-indent: dim.label-sep,
     numbering: enum-style("1."),
+    tight: false, // default = loose
   )
   set list(
     indent: dim.left-margin - dim.label-sep - dim.label-width,
     body-indent: dim.label-sep,
     marker: _list-markers-aligned(dim.label-width),
+    tight: false, // default = loose
   )
   show list: set par(first-line-indent: 1em, hanging-indent: 0em)
   show enum: set par(first-line-indent: 1em, hanging-indent: 0em)
   set enum(full: true, numbering: (..arg) => context {
-    _enum-labels(arg.len() - 1)(arg.pos().last())
+    _default-enum-labels(arg.len() - 1)(arg.pos().last())
   })
   show enum: it => context {
     _enum-depth.update(d => d + 1)
     it
     _enum-depth.update(d => d - 1)
   }
-
   set math.equation(supplement: "Eq.", numbering: it => { numbering("(1.1)", counter(heading).get().at(0), it) })
 
   show ref.where(form: "normal"): it => {
@@ -664,7 +683,7 @@
     } else if str(it.target).starts-with("prob:") {
       let t = query(selector(figure.where(kind: "problem")).before(it.target)).last().location()
       link(t, [Problem #counter(heading).at(t).at(0).#counter(figure.where(kind: "problem")).display("1", at: t)])
-    } else { it }
+    } else { _link-style(it) }
   }
 
   set footnote(numbering: it => text-sf([\##it]))

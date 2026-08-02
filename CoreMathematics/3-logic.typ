@@ -1,6 +1,6 @@
 #import "misho-text.typ": *
 #import "physica.typ": *
-#import "2-units.typ": bare, writings
+#import "2-units.typ": bare, writing, writings
 
 #let bT = math.upright("T")
 #let bF = math.upright("F")
@@ -8,14 +8,12 @@
 Solve @quiz:for-logic (on #ref(<quiz:for-logic>, form: "page")) again.
 
 #context {
-  set enum(numbering: n => thick-sf([(#n)]))
-  tab[
-    #query(selector(figure.where(kind: "quiz")).before(<quiz:for-logic>)).last().body.children.at(2)
-  ]
+  set enum(numbering: enum-style("(1)"))
+  query(selector(figure.where(kind: "quiz")).before(<quiz:for-logic>)).last().body.children.at(2)
 }
 
 The answers are
-#h-enum(cols: (1fr, 1fr, 1fr, 0.2fr), label-width: 3.7em, label-style: "(1)")[
+#h-enum(cols: (0.8fr, 0.8fr, 2fr), label-style: "(1)")[
   + $omega = ±1.4 unit(s^(-1))$
   + $t=1.0 unit(s), 2.5 unit(s)$
   + $x=5.0 unit(m), y=4.0 unit(m)$
@@ -101,7 +99,7 @@ Numbers can be manipulated by operators such as $+$, $div$. Similarly, true (T) 
 
 
 #remark[
-  Note that "$1+1 = 2 "or" 2+2 = 4$" is true, which says the word "or" is a bit different from everyday English. In daily conversation, _"Sho will eat ramen or sushi tonight"_ usually means "but not both". However, in mathematics, if Sho eats both ramen and sushi for a dinner, the statement _"Sho had sushi or ramen tonight"_ is true.
+  Note that "$1+1 = 2 "or" 2+2 = 4$" is true, which says the word "or" is a bit different from everyday English. In daily conversation, _"Sho will eat ramen or sushi tonight"_ usually means "but not both". However, in mathematics, if Sho eats both ramen and sushi for a dinner#footnote[Sho sometimes does it.], the statement _"Sho had sushi or ramen tonight"_ is true.
 ]
 #quizzes[
   + State whether it is true or false for the following statements.
@@ -117,9 +115,9 @@ Numbers can be manipulated by operators such as $+$, $div$. Similarly, true (T) 
   #list(
     marker: "",
     ["$x=1$ and $x=-1$ are the two solutions of $x^2=1$." (correct daily English)],
-    ["$x^2=0$ if and only if $x=1$ or $x=-1$." (correct mathematical English)],
+    ["$x^2=0$ is satisfied for $x=1$ or $x=-1$." (correct mathematical English)],
   )
-  are both correct, but if you say "#RED[$x=1 "and" x=-1$]", then it means an impossible equality #RED[$x=1=-1$].
+  are both correct, but if you say "$x=1 "and" x=-1$", then it means an impossible equality $x=1=-1$.
 ]
 = Implication ⟹
 
@@ -132,14 +130,15 @@ We can discuss the following statements: are they true or false?
     //      tight: false,
     f[If $x > 5$, then $x > 1$.][This is true. (Number larger than $5$ are larger than 1.)],
     f[If $x < 9$, then $x < 2$.][This is false, because we have a counterexample $x = 5$.],
-    f[If $x^2 < 1$, then $x<1$.][This is true.],
+    f[If $x^2 = 1$, then $x<=1$.][This is true.],
+    f[If $x^2 = 1$, then $x<=0$.][This is false, because we have a counterexample $x=1$.],
     f[If $x^2 = 1$, then $x=-1$.][This is false, because we have a counterexample $x=1$.],
   )
 })
 <ex:implications>
 In general, it is easy to claim that a statement is false, i.e., to _refute_ or _disprove_ a statement.
 You just have to find one #keyword[counterexample].
-Meanwhile, it is more difficult to claim that a statement is true. As mentioned above, you need to write a proof.
+Meanwhile, it is more difficult to claim that a statement is true: you need to write a rigorous proof.
 
 Now, let's try to find some counterexamples.
 #quizzes[
@@ -152,7 +151,7 @@ Now, let's try to find some counterexamples.
     ]
 ]
 
-We use the symbol "$=>$" to express "if ... then ..." statement.
+We use the symbol "$==>$" to express "if ... then ..." statement.
 #writings(
   box: (true, false, true, false, true),
   $A==>B$,
@@ -178,8 +177,7 @@ Since elementary school, you have solved many equations, but what does "solving 
 
 #quizzes[
   +
-    + Choose the true statements.
-
+    + Choose true statements.
       #h-enum(cols: 2, label-style: "(a)")[
         + $2x - 1 = 0 ==> x=1\/2.$
         + $x^2 = 4 ==> x=2.$
@@ -188,17 +186,30 @@ Since elementary school, you have solved many equations, but what does "solving 
         //      + $(x+y=2) and (x-y=0) quad => quad (x=1) and (y=1)$.
       ]
     + Do you think these statements can be considered as "solving an equation"?
+    <quiz:solving-eq>
 ]
-(b) and (d) are false statements (find counterexamples!), so we cannot write them. (a) and (c) are true statements, and (a) looks "solving an equation", but we do not consider (c) is "solving an equation".
-The difference between (a) and (c) is that
+#thick-sf[(b)] and #thick-sf[(d)] are false statements (find counterexamples!), so we cannot write them.
+#thick-sf[(a)] and #thick-sf[(c)] are true statements, and #thick-sf[(a)] looks "solving an equation", but we do not consider #thick-sf[(c)] is "solving an equation".
+The difference between #thick-sf[(a)] and #thick-sf[(c)] is that
 #no-num[$2x - 1 = 0 <== x=1\/2 quad "is true, but" quad 2x - 1 = 0 <== x > -10 quad "is false."$]
-So, for (a), both $==>$ and $<==$ are correct: we use $<==>$ to express such cases.
+So, for #thick-sf[(a)], both $==>$ and $<==$ are correct: we use #writing[$<==>$] to express such cases.
 
 #definition(title: "Equivalent")[
   If both $A ==> B$ and $A <== B$ are true, we call "$A$ and $B$ are #keyword[equivalent]", and write $A <==> B$.
 ]
-$A=>B$ is read by "$B$ if $A$" in English. Similarly, $A <=> B$ is read by "$B$ if and only if $A$" or "$B$ #keyword[iff] $A$". (namely, #EMPH[if]-and-only-i#EMPH[f]).
-
+#writings(
+  box: (true, false, true, false, true, false),
+  $A==>B$,
+  [is read by],
+  [$B$ if $A$],
+  grid.cell(colspan: 3, align: left)[in English.],
+  $A <==> B$,
+  [is read by],
+  [$B$ if and only if $A$],
+  [or],
+  [$B$ #keyword[iff] $A$],
+  [(namely, #EMPH[if]-and-only-i#EMPH[f]).],
+)
 
 
 Now you need to do a bit of practice. It is actually tough, unfortunately, but this drill is important for logical thinking.
@@ -219,7 +230,7 @@ Now you need to do a bit of practice. It is actually tough, unfortunately, but t
     ]
 ]
 
-
+#make-indent
 If the statement "$A=>B$" is true, then
 
 - $B$ is called a #keyword[necessary condition] for $A$, because $B$ is necessary for $A$; if not $B$, then not $A$.
@@ -246,8 +257,11 @@ For example, because $x=1 ==> x^2=1$,
 ]
 #divider()
 
-"To solve an equation" means "to find an _equivalent_ equation in the form of $x=#blank()$". Since
-$2x-1=0 <=> x=1\/2$ and $x^2=4 <=> x=±2$, we say $x=1\/2$ and $x=±2$ are the solutions of the equations, respectively.
+Now we have the answer for the question: What does "solving an equation" mean?
+#definition(title: "Solving an equation")[
+  "Solving an equation" means "finding an _equivalent_ equation in the form of $x=#blank()$".
+]
+Consider the equations in @quiz:solving-eq. As #writing[$2x-1=0 <=> x=1\/2$] and #writing[$x^2=4 <=> x=2 or x=-2$] are true statements, we say $x=1\/2$ and $x=±2$ are the solutions of the equations, respectively.
 
 When you solve an equation, you have to check that the solution is *necessary and sufficient*.
 
@@ -258,9 +272,8 @@ When you solve an equation, you have to check that the solution is *necessary an
 #quizzes[
   +
     + Solve $sqrt(x + 2) = x$. You might reach an _extraneous solution_, which you need to _exclude_ it.
-    + Solve $sqrt(x^2)=4$. You might reach an _incomplete solution_, where you need to find more solutions. (Hint: $sqrt(x^2)=x$ is a false statement.)
+    + Solve $|2x|=|x+1|$. Obviously $x=1$ satisfies this equation, but it is an _incomplete solution_ and you need to find more solutions.
 ]
-
 Before discussing advanced topics on logics, you should do some drills.
 
 #problems[
@@ -312,6 +325,21 @@ Before discussing advanced topics on logics, you should do some drills.
       + $sin x = 1\/2$
       + $tan x = 0$
     ]
+  + `4` The following "solutions" have logical errors. Identify errors and find the right answer.
+
+    + A student solves $x^2 = 9$ and writes $x = 3$.
+    + He solves $x^2 - 3x = 0$ by dividing both sides by $x$, obtaining $x - 3 = 0$, so $x = 3$.
+    + He solves $x^6 = x^4$ by dividing both sides by $x^4$, obtaining $x^2=1$, so $x = ±1$.
+
+    Next, fill in the blanks  with $==>$, $<==$, or $<==>$.
+
+    #h-enum(cols: (1fr, 2fr), label-start: 4)[
+      + $x^2=9 #b x=3$
+      + $x^2-3x=0 #b x-3 = 0 #b x=3$
+    ]
+    #h-enum(cols: 1, label-start: 6)[
+      + $x^6 = x^4 #b x^2 = 1 #b x=±1$
+    ]
 
   + `4` Let $x$ and $y$ be real numbers. Fill in the blanks with $==>$, $<==$, or $<==>$. If your answer is $==>$ or $<==$, explain the reason by giving relevant counter examples.
     #h-enum(cols: (1fr, 1.5fr))[
@@ -340,21 +368,6 @@ Before discussing advanced topics on logics, you should do some drills.
     #h-enum(cols: 1, label-start: 5)[
       + Solve the equation $sqrt(x^2)=a$, noting that $a$ can be negative.
     ]
-  + `4` The following "solutions" have logical errors. Identify errors and find the right answer.
-
-    + A student solves $x^2 = 9$ and writes $x = 3$.
-    + He solves $x^2 - 3x = 0$ by dividing both sides by $x$, obtaining $x - 3 = 0$, so $x = 3$.
-    + He solves $x^6 = x^4$ by dividing both sides by $x^4$, obtaining $x^2=1$, so $x = ±1$.
-
-    Next, fill in the blanks  with $==>$, $<==$, or $<==>$.
-
-    #h-enum(cols: (1fr, 2fr), label-start: 4)[
-      + $x^2=9 #b x=3$
-      + $x^2-3x=0 #b x-3 = 0 #b x=3$
-    ]
-    #h-enum(cols: 1, label-start: 6)[
-      + $x^6 = x^4 #b x^2 = 1 #b x=±1$
-    ]
   + `2`
     + Recall that $A=>B$ is defined by $(not A) or B$. Also, recall that $A<=>B$ is defined by $A=>B and A arrow.l.double B$.
       Write a truth table (see #ref(<tab:truth>, form: "page")) for $A=>B$, $A arrow.l.double B$, and $A<=>B$.
@@ -369,14 +382,14 @@ Before discussing advanced topics on logics, you should do some drills.
       $ blr((A=>B)) =blr(((not B)=>(not A))), quad quad blr((A=>B)) =not blr((A and not B)). $<proofs>
     <prob:de-morgan>
 
-  + `2` This lecture does not cover #keyword[quantifiers] "for-all $forall$" and "exists $exists$". Learn them by yourselves. In particular, prove the following:
+  + `1` This lecture does not cover #keyword[quantifiers] "for-all $forall$" and "exists $exists$". Learn them by yourselves. In particular, prove the following:
     #h-enum(cols: 2)[
       + $exists x, P(x) <==> not blr((forall x, not P(x)))$
       + $not blr((exists x, P(x))) <==> forall x, not P(x)$
       + $forall x, P(x) <==> not blr((exists x, not P(x)))$
       + $not blr((forall x, P(x))) <==> exists x, not P(x)$
     ]
-  + `2` For each statement, write its negation, such as "not (#box[$x>=0$] for all real $x$)", in a natural form. Then, state whether the original statement and the negated one are true or false.
+  + `1` For each statement, write its negation, such as "not (#box[$x>=0$] for all real $x$)", in a natural form. Then, state whether the original statement and the negated one are true or false.
     #h-enum(cols: (1fr, 1.3fr))[
       + $x^2 >= 0$ for all real $x$.
       + There exists a real $x$ such that $x^2 = -1$.
@@ -394,18 +407,26 @@ There is a useful theorem for "not" operator, called #keyword[de Morgan's theore
   + "not (A and B)" is equivalent to "(not A) or (not B)", i.e., $not(A and B) = (not A) or (not B)$.
 
   + "not (A or B)" is equivalent to "(not A) and (not B)", i.e., $not(A or B) = (not A) and (not B)$.
-]
+]<de-morgan>
 The proof is given as @prob:de-morgan.
+#example[
+  #let qq(x) = [#box(width: 10em, x)#sym.dots.c]
+  For each of the following statements, write their negation in a natural form.
+  #h-enum(cols: 4, label-style: "(1)")[
+    + $x=3$
+    + $y<2$
+    + $x=3 "or" y<2$
+    + $x=3 "and" y<2$
+  ]
+]
+#solution[
+  The negation of #thick-sf[(1)] is $x!=3$ and the negation of #thick-sf[(2)] is $y>=2$.
+  Since de Morgan's theorem says $"not"(A "or" B)=("not" A "and not" B)$, the negation of #thick-sf[(3)] is $x!=3 "and" y >= 2$.
+  Similarly, with de Morgan's theorem, the negation of #thick-sf[(4)] is $x!=3 "or" y >= 2$.
+]
 
 #quizzes[
-  + Simplify the following statements by using de Morgan's theorem.
-    #h-enum(cols: 2)[
-      + $"not" (("not" A) "or" ("not" B))$
-      + $"not" (("not" A) "and" ("not" B))$
-      + $not ((not A) and (not B))$
-      + $not (A or not B)$
-    ]
-  + For each of the following, write its negation ("not A").
+  + For each of the following, write its negation.\
     #h-enum(cols: 3)[
       + $x>0$ or $x<1$.
       + $x != 4$ and $x != 5$.
@@ -496,9 +517,12 @@ You should always know which role each statement plays.
   - #text-sf[Derived statement (conclusion)]: the averaged velocity between $t=0$ and $t_0$ is $v_"avg" = k t_0$.
 ]
 #quizzes[
-  + Carry out a similar discussion for "find the instantaneous velocity at $t=t_1$".
+  + Solve the following problem, but with clarifying the nature of each of your statements  (as is done in the above example).
+
+    A particle moves as $x(t) = k t^2 + x_0$, where $k$ and $x_0$ are constants. Find the instantaneous velocity at $t=t_1$.
 ]
 
+#make-indent
 Consider an *experimental fact*, such as "gravity is always attractive". We have to accept it. We need to remember it and understand what it says.
 "Protons have charge $+|e|$ and electrons have charge $-|e|$" is another experimental fact, but we can understand it as the definition of the elementary charge $|e|$.
 
@@ -519,6 +543,8 @@ Meanwhile, *assumption* is what we can impose freely. For example, you can decid
     + $x^2 + y^2 = 0 ==> x = 0$.
     + $a b = 0 ==> a = 0 "or" b = 0$.
     + $a b = 0 <== a = 0 "or" b = 0$.
+  + `4` Find a logical mistake: Let $a = b = 1$. Then $a^2 = a b$, so $a^2 - b^2 = a b - b^2$. So, $(a - b)(a + b) = b(a - b)$, which gives $a + b = b$, so $2 = 1$.
+
   + `4` With de Morgan's theorem, rewrite the following statements in a form without "not".
     #h-enum(cols: 2)[
       + not ($x > 0$ and $y > 0$)
@@ -526,7 +552,13 @@ Meanwhile, *assumption* is what we can impose freely. For example, you can decid
       + not (if $x > 1$, then $x^2 > 1$)
       + not ($x > 0$ iff $x^2 > 0$)
     ]
-  + `4` Find the logical error: Let $a = b = 1$. Then $a^2 = a b$, so $a^2 - b^2 = a b - b^2$. So, $(a - b)(a + b) = b(a - b)$, which gives $a + b = b$, so $2 = 1$.
+  + `3` With de Morgan's theorem, rewrite the following statements in a natural form.
+    #h-enum(cols: 2)[
+      + $"not" (("not" A) "or" ("not" B))$
+      + $"not" (("not" A) "and" ("not" B))$
+      + $not ((not A) and (not B))$
+      + $not (A or not B)$
+    ]
 
   + `3` For each of the following statements, write its converse, inverse, and contrapositive.   State T or F for the original statement, its converse, inverse, and contrapositive.
     + If $x^2 - 5x + 6 = 0$, then $x = 2$ or $x = 3$.

@@ -2,7 +2,9 @@
 #import "in-dexter.typ": first-letter-up, make-index
 #import "physica.typ": dv
 
-#let ds(body) = text-sf(body)
+#let ds(body) = text-sf(body) // dimension symbol
+#let Boas = EMPH("[Boas]")
+#let AWH = EMPH("[AWH]")
 
 #place(bottom + left, dx: 1.3mm, dy: 2.3mm, float: true, text-sf(size: 9pt, fill: c.gray)[
   #grid(
@@ -31,7 +33,7 @@ To be logical, you must think each problem carefully; otherwise your discussion 
 To be quick and accurate, you must _"drill"_ repeatedly, as if top NBA players do shooting practice almost everyday.
 You should reach the point where basic calculations feel automatic.
 
-#EMPH[This is not] a math textbook. #EMPH[This is rather] a math "drill" book. Rigorous proofs are mostly omitted, but drill problems are the core of this document, through which students are expected to achieve better conceptual understanding.
+*This is not* a math textbook. *This is rather* a math "drill" book. Rigorous proofs are mostly omitted. Drill problems are the core of this document, through which students are expected to achieve better conceptual understanding.
 
 
 === Target of this document
@@ -55,7 +57,7 @@ This document is primarily for first-year undergraduate students in their second
 
   + Read the text and solve #EMPH[Quizzes].
 
-    The texts are kept short, so please read all the text carefully. Quizzes should be solved while reading, but you don't have to write down the solution process for Quizzes.
+    Read all the text carefully. The texts are kept short!! Quizzes should be solved while reading, but you don't have to write down the solution process for Quizzes.
 
   + Solve #EMPH[Drill Problems], until you feel "I can solve them _fluently and accurately_".
 
@@ -67,7 +69,7 @@ This document is primarily for first-year undergraduate students in their second
     Write down the solution process clearly _as an English text_, taking care of _logical completeness_.
 
   Optionally, you you are encouraged to prepare a reference book, so that you can consult it when you want to know more.
-  Sho supposes [Boas] listed below is the best option.
+  Sho supposes #Boas listed below is the best option.
 ]
 
 #problems[
@@ -113,8 +115,8 @@ This document is written under the influence of the following references.
   #tab[This document is grounded in a "learn steadily" approach ("#JA[じっくり]" in Japanese), which originates from Prof. Gocho and Prof. Kiyono, who were instructors of Sho in his freshman.
     Problems and rigorous math descriptions are taken from their works.]
 
-- #text-sf[*[Boas]*] Mary L. Boas, _Mathematical Methods in the Physical Sciences_, 3rd ed., Wiley, 2006.
-- #text-sf[*[AWH]*] George B. Arfken, Hans J. Weber, and Frank E. Harris,\ #h(4em) _Mathematical Methods for Physicists_, 7th ed., Academic Press, 2023.
+- #Boas Mary L. Boas, _Mathematical Methods in the Physical Sciences_, 3rd ed., Wiley, 2006.
+- #AWH George B. Arfken, Hans J. Weber, and Frank E. Harris,\ #h(4em) _Mathematical Methods for Physicists_, 7th ed., Academic Press, 2023.
 
   #tab[
     These two books are widely used in physics departments around the world.

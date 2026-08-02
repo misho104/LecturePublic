@@ -1,5 +1,6 @@
 #import "misho-text.typ": *
 #import "physica.typ": *
+#import "2-units.typ": writing
 #import "@preview/cetz:0.5.2": canvas, draw
 
 // Vector notation: arrow over symbol
@@ -7,6 +8,7 @@
 #let va(v) = $lr(|vc(#v)|)$
 // Unit vector: hat over symbol
 #let vcu(v) = $accent(#v, hat)$
+#let dm(..args) = math.display(math.mat(..args))
 
 #let xy-plus(p, q) = (p.at(0) + q.at(0), p.at(1) + q.at(1))
 #let vector(p, d, label: none, end: "stealth", offset: (0, 0), color: black, thickness: 1.5pt, dash: none) = {
@@ -32,18 +34,19 @@
     )
   }
 }
-
+#let vector-three-ways = enum(
+  indent: dim.left-margin - dim.label-sep - dim.label-width,
+  body-indent: dim.label-sep,
+  tight: false,
+  [an arrow in $n$-dimensional space ($n in NN^+$, but usually $n=3$),],
+  [a list of $n$ numbers arranged vertically ($n in NN^+$), and],
+  [an element of a vector space (such as a Hilbert space).],
+)
 
 Physicists understand a vector in three ways:
-
-- an arrow in $n$-dimensional space ($n in NN^+$, but usually $n=3$),
-
-- a list of $n$ numbers arranged vertically ($n in NN^+$), and
-
-- an element of a vector space (such as a Hilbert space).
-
+#vector-three-ways
 In this chapter, we will focus on the first two interpretations.
-The last interpretation, more abstract and mathematical, will be discussed in #TODO[chap:linear-algebra], after we visit complex numbers.
+The last interpretation, more abstract and mathematical, will be discussed in #TODO[chap:linear-algebra].
 
 #remark[
   This document discusses vectors mainly in terms of mathematics; more detailed _physical_ discussion about vectors can be found in  Sho's #link("https://misho104.github.io/LecturePublic/", "Vector Boot Camp").#footnote[Visit https://misho104.github.io/LecturePublic and find `gp2_boot2_vector.pdf`.]
@@ -98,24 +101,23 @@ We here do not investigate what "the space" is, but you may well imagine a lectu
   +
     + What do we call $va(v)$? Also, clearly write down its definition.
     + What do we call $|v|$?   Also, clearly write down its definition.
-
 ]
 #fail-safe[
   #show math.cases: it => math.display(it)
   For $x in RR$, we define $|x| := cases(gap: #4pt, x quad && "if " x >= 0",", -x &&"if " x < 0,)quad$ and call it "the #keyword[absolute value] of $x$".
 ]
 
-There is a special vector called the #keyword[zero vector], which has magnitude $0$ and no direction.
+There is a special vector "#EMPH[zero vector]", which has magnitude $0$ and no direction.
 #definition(title: "Zero vector")[
   There is a vector with magnitude 0 and no direction. We call it #EMPH[the] #keyword[zero vector] and denote $vc(0)$.
 ]
 Any other vectors have a direction and *positive* magnitude. Namely,
-$ |vc(0)|=0 quad "and" quad vc(v) != vc(0) <==> va(v)>0. $
+$ |vc(0)|=0. wide va(v) = 0 <==> vc(v)=vc(0). wide va(v)>0 <==> vc(v) != vc(0). $
 #quizzes[
   + Explain why $vc(0) != 0$. Explain why $|vc(0)| = 0$.
 ]
 #advanced-note[
-  The uniqueness of $vc(0)$ is easy to prove, once we clarify the definition of "=". Namely, "$vc(a) = vc(b)$" means "$vc(a)$ and $vc(b)$ have the same magnitude and direction". (Try to complete the proof yourself.)
+  The uniqueness of $vc(0)$ is easy to prove, once we clarify the definition of "=". Namely, "$vc(a) = vc(b)$" means "$vc(a)$ and $vc(b)$ have the same magnitude and direction". (Try to complete the proof.)
 ]
 
 = Addition and Scalar multiplication <sec:vec-op>
@@ -128,7 +130,6 @@ Like $+$ and $div$ for numbers and $and$ and $or$ for true/false, we have two op
 #definition(title: "Vector addition")[
   If $vc(a)$ and $vc(b)$ are vectors drawn in the same space, we can define $vc(a)+vc(b)$ by the vector obtained by placing the tail of $vc(b)$ at the head of $vc(a)$.
 ]<vec-def-1>
-
 
 #grid(
   columns: (auto, 170pt),
@@ -152,6 +153,7 @@ Like $+$ and $div$ for numbers and $and$ and $or$ for true/false, we have two op
     vector(xy-plus(O2, A), B, end: none, thickness: 0.7pt, dash: "dashed")
   }),
 )
+
 #make-indent
 Notice that the two horizontal arrows in the figure are both $vc(a)$, although their locations are different. Similarly, both blue arrows show the vector $vc(a)+vc(b)$.
 Vectors are the same if and only if they have the same magnitude and direction; location does not matter.
@@ -169,9 +171,9 @@ Vectors are the same if and only if they have the same magnitude and direction; 
   Meanwhile, *we should avoid* the ambiguous word "#keyword[parallel]" for vectors, as it may mean either the same direction or the opposite direction; use the phrase "has the same direction" instead.
   For more vocabulary to describe directions, please check #link("https://misho104.github.io/LecturePublic/", "the Vector Boot Camp").
 ]
-#advanced-note[Watch out we assume $k in RR$ in this definition.]
+#advanced-note[Watch out we assume $k in RR$ in @vec-def-2. It restricts the discussion in this chapter to _real vectors_. In @chap:cvec, we will discuss _complex vectors_ by modifying this definition.]
 
-We should carefully digest these definitions, as they are the basis for Chap#TODO[].
+We should carefully digest these definitions.
 Let's see an example, and try the next quiz.
 #problem-style-label.update(true)
 #example[
@@ -190,6 +192,7 @@ Let's see an example, and try the next quiz.
   + $-vc(v)$ is a shorthand notation of $(-1)vc(v)$, the scalar multiplication of $vc(v)$ by $-1$.  So, $-vc(v)$ has the same magnitude as $vc(v)$ but is anti-parallel to $vc(v)$.
 ]
 #problem-style-label.update(false)
+
 #quizzes[
   + Find out how the following vectors are defined based on the above definitions of addition and scalar multiplication.
     #h-enum(cols: (1.3fr, 1fr, 1.3fr, 1fr, 1.3fr, 1.3fr))[
@@ -219,7 +222,7 @@ Addition and scalar multiplication have the following properties:
     + $1 vc(a)= vc(a).$
   ]
 ] <vec-axiom-1>
-These properties seems obvious, but in fact, they play a fundamental role in Chapter#TODO[].
+These properties seems obvious, but in fact, they play a fundamental role in @chap:cvec.
 
 #problems[
 
@@ -240,8 +243,13 @@ These properties seems obvious, but in fact, they play a fundamental role in Cha
     $ "For any two vectors" vc(a) "and" vc(b) "in the same space", |vc(a) + vc(b)| <= |vc(a)| + |vc(b)|. $
   + `2` Starting from @vec-def-1 and @vec-def-2, prove the properties in @vec-axiom-1.
   + `2` Prove that, for any two vectors $vc(a)$ and $vc(b)$ in the same space, $lr(|\|vc(a)\|-\|vc(b)\||) <= |vc(a)-vc(b)|$.
-
 ]
+
+#pagebreak()
+
+#restriction[#align(center)[
+  Most of the following discussion is only for _real vectors_ and do not apply for _complex vectors_.
+]]
 
 = Inner Product <sec:vec-ip>
 Imagine two arrows. Probably you can think the angle $theta$ between the arrows. The angle leads you to the following *geometric* definition of the inner product.
@@ -263,7 +271,7 @@ Imagine two arrows. Probably you can think the angle $theta$ between the arrows.
   ]
 ]
 This inner product has the following properties:
-#theorem(title: "Inner product of real vectors")[
+#theorem(title: "Real-vector inner product")[
   For vectors $vc(a)$ and $vc(b)$ drawn in the same space and a constant $k in RR$,
   #let vd(x, y) = $vc(#x) dot vc(#y)$
   #v-enum(cols: 2, label-style: "(A)")[
@@ -275,22 +283,29 @@ This inner product has the following properties:
     + $\(k vc(a))dot vc(b) = k\(vd(a, b)),$
     + $vc(a)dot \(k vc(b)) = k\(vd(a, b)).$
   ]
-  #advanced-note(indent: false)[
-    These properties are valid only for "real vectors". As we will see in Chapter #TODO[], if $vc(a)$ and $vc(b)$ are "complex vectors", then some of these properties becomes invalid and we need to modify them.
-    In fact, all vectors in this chapter are "real vectors" because we have assumed $k in RR$ in @vec-def-2.
-  ]
+  #be-careful[These properties are valid only for "real vectors".]
 ]<vip-theorem>
 
-We will skip their proof. Instead, we focus on the following geometrical properties:
+We will skip their proof. Instead, we focus on these four very important properties.
+You need to memorize them securely.
+#theorem(title: "Properties of real-vector inner product")[
+  $ "For a vector" vc(a), quad va(a) = sqrt(vc(a)dot vc(a)). $<ip-norm>
+  $ "For non-zero vectors" vc(a) "and" vc(b), quad vc(a)dot vc(b) = 0 <==> vc(a)perp vc(b). $<ip-perp>
+  $ "For vectors" vc(a) "and" vc(b), quad -|vc(a)||vc(b)| <= vc(a)dot vc(b) <= |vc(a)||vc(b)|. $<ip-schwartz>
+  $ "For vectors" vc(a) "and" vc(b), quad |vc(a) + vc(b)|^2 = |vc(a)|^2 + 2 vc(a)dot vc(b) + |vc(b)|^2 $<ip-expand>
+  #be-careful[These properties are valid only for "real vectors".]
+]
+
 #quizzes[
   #let vd(x, y) = $vc(#x) dot vc(#y)$
   + Prove the following theorems directly from @vip-def.
     + $vc(a) perp vc(b) ==> vd(a, b)=0.$
     + $vd(a, b) = 0 ==> \(vc(a)perp vc(b))or\(vc(a)=vc(0))or\(vc(b)=vc(0)).$
     + $-|vc(a)| |vc(b)| <= vd(a, b) <= |vc(a)| |vc(b)|.$
+    + $|vd(a, b)| <= |vc(a)| |vc(b)|.$ #h(1fr)#hint[Recall that $|x|<=3$ means $-3<=x<=3$.]
     + $|vc(a)|^2=vd(a, a)$.
-    + $|vc(a)|=sqrt(vd(a, a))$. #h(2em)#hint[Most students make mistakes in this question.]
-  + Prove the following theorems, using @vip-def, @vip-theorem, and the equations in the previous quiz.
+    + $|vc(a)|=sqrt(vd(a, a))$. #h(1fr)#hint[Most students make mistakes in this question.]
+  + Prove the following equation, using @vip-def, @vip-theorem, and the equations in the previous quiz.
     #h-enum(cols: 2)[
       + $\(vc(a)+vc(b))dot vc(a) = |vc(a)|^2 + vd(a, b).$
       + $|vc(a) + vc(b)|^2 = |vc(a)|^2 + 2 vd(a, b) + |vc(b)|^2$.
@@ -320,11 +335,10 @@ We will skip their proof. Instead, we focus on the following geometrical propert
     + Find $c$ such that $vc(B) + c vc(C)$ is perpendicular to $vc(A)$.
 ]
 
-= Cross Product (only for 3d-vectors) <sec:vec-cp>
+= Cross Product (only for 3d real-vectors) <sec:vec-cp>
 For two arrows drawn in three-dimensional space, we can define the #EMPH[cross product].
 #definition(title: "Cross product")[
   For $vc(a)$ and $vc(b)$ drawn in a _three-dimensional_ space, the #keyword[cross product] $vc(a) times vc(b)$ is defined as follows:
-
 
   - It is a vector with magnitude $|vc(a)times vc(b)|=|vc(a)| |vc(b)| sin theta$, where $theta$ is the angle between $vc(a)$ and $vc(b)$.
 
@@ -332,8 +346,7 @@ For two arrows drawn in three-dimensional space, we can define the #EMPH[cross p
 
   Here, we always have two possible directions. We impose another condition to make it unique:
 
-  - If you hold the _right_ hand so that your thumb points in the direction of $vc(a)$ and your index finger in the direction of $vc(b)$, your middle finger points in the direction of $vc(a) times vc(b)$.
-
+  - If you hold the _right_ hand so that your thumb points in the direction of $vc(a)$ and your index finger in the direction of $vc(b)$, your middle finger points in the direction of $vc(a) times vc(b)$.\
     (This is often quoted that "the ordered triple $\(vc(a), vc(b), vc(a) times vc(b))$ obeys the #keyword[right-hand rule]".)
 ]
 We will not discuss much about the cross product, but only the following properties:
@@ -351,14 +364,14 @@ We will not discuss much about the cross product, but only the following propert
     + $vc(a) dot \(vc(b) times vc(c)) = vc(b) dot \(vc(c) times vc(a)) = vc(c) dot \(vc(a) times vc(b))$.
   ]
 ]<vcp-theorem>
-The equation (B) is the most important.
-For (A), notice $vc(a) times vc(a)$ is not zero.
+The equation #thick-sf[(B)] is the most important.
+For #thick-sf[(A)], notice $vc(a) times vc(a)$ is not zero.
 
 #advanced-note[
   Geometrical interpretation of the cross product is sometimes useful:
   - $|vc(a)times vc(b)|$ is the area of the parallelogram formed by $vc(a)$ and $vc(b)$.
 
-  - $\(vc(a)times vc(b))dot vc(c)$ is the volume of the parallelepiped formed by $vc(a)$, $vc(b)$, and $vc(c)$.
+  - $\(vc(a)times vc(b))dot vc(c)$ is the (signed) volume of the parallelepiped formed by $vc(a)$, $vc(b)$, and $vc(c)$.
 ]
 
 #problems[
@@ -384,8 +397,11 @@ However, we can check that
 These properties are independent of the choice of O. Namely, whatever choice we did for origin, $(vc(p)+vc(q))\/2$ represents the midpoint of PQ.
 For further discussion, please check #link("https://misho104.github.io/LecturePublic/", "the Vector Boot Camp").
 
-= Intermission: Vector or Scalar or Not <sec:vec-vsn>
 
+#pagebreak()
+
+
+= Intermission: Vector or Scalar or Not <sec:vec-vsn>
 Let us summarize the operations on vectors.
 With $k$ a real number and $vc(a)$, $vc(b)$ vectors:
 
@@ -465,13 +481,13 @@ Then, how about them? Try to ensure that you understand the meaning of each oper
     ]
 ]
 
+
 = Axes and Components <sec:vec-comp>
-So far, we considered vectors as arrows drawn in some space.
-Vectors are characterized only by the magnitude and direction.
-Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 2; 3)$. We define "orthonormal basis vectors" and then see we _can_ describe an arrow by a list of numbers.
+So far, we have considered vectors as arrows drawn in a space. Vectors are characterized only by the magnitude and direction.
+Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 2)$. We define "orthonormal basis vectors" and then see we can _describe an arrow by a list of numbers_.
 
 #definition(title: "Orthonormal basis vectors")[
-  If $n$ vectors $vc(e)_1, ..., vc(e)_n$ satisfy the following properties, we call them #keyword[orthonormal basis]:
+  If $n$ vectors $vc(e)_1, ..., vc(e)_n$ satisfy the following properties, we call them #EMPH[an] #keyword[orthonormal basis]:
 
   - All of them are unit vectors, i.e., $|vc(e)_i|=1$ for all $i$.
 
@@ -491,9 +507,9 @@ Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 
     columns: (auto, 120pt),
     column-gutter: 2em,
     [
-      Let's limit our "space" to this page and consider the five vectors drawn to the right. Assume their length are all "1".
+      Let's limit our "space" to this 2d sheet and consider the five vectors drawn to the right. Assume their length are all "1".
 
-      If we choose #p1 and #p2, they form _one_ orthonormal basis $\{p1, p2\}$ because they are unit vectors, perpendicular to each other, and we cannot add any more.
+      If we choose #p1 and #p2, they form _an_ orthonormal basis $\{p1, p2\}$ because they are unit vectors, perpendicular to each other, and we cannot add any more.
       Similarly, $\{q1, q2\}$ is _another_ orthonormal basis.
     ],
     canvas({
@@ -505,7 +521,7 @@ Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 
     }),
   )
   #make-indent
-  Meanwhile, $\{p1, q2\}$ and $\{p1, p2, q1, q2\}$ are not orthonormal bases because the members are not orthogonal. $\{p1\}$ is not an orthonormal basis because we can add one more vector, such as #r, without breaking the conditions.
+  Meanwhile, $\{p1, q2\}$ and $\{p1, p2, q1, q2\}$ are not orthonormal bases because the members are not orthogonal. $\{p1\}$ is not an orthonormal basis because we can add one more vector, such as #r, without breaking the conditions; after adding $#r$, we have an orthonormal basis $\{p1, #r\}$.
 ]
 #quizzes[
   + Consider the figure in the above example. Which sets are orthogonal bases?
@@ -520,7 +536,10 @@ Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 
       $
     ]
 ]
-A space has infinitely many orthonormal bases; we can choose an orthonormal basis at our convenience. However, the number of the members is fixed by the space we considered.
+This example shows we can find many orthogonal bases, but *the number* of the members is always two. This number is called the #EMPH[dimension] of the space, and this is why we call "this _2d_ sheet" in the above example.
+
+In general, a space has _infinitely many_ orthonormal bases and we can choose _an_ orthonormal basis at our convenience. However, the number of the orthonormal basis vectors, the #EMPH[dimension], is fixed by the space we considered.
+
 #theorem(title: "Properties of orthonormal basis vectors")[
   - Any orthonormal bases of a space have the same number of vectors. We call the number #EMPH[the] #keyword[dimension] of the space.
 
@@ -536,9 +555,9 @@ A space has infinitely many orthonormal bases; we can choose an orthonormal basi
     then all the coefficients are equal: $c_k = d_k$.
 ]<def-dimension>
 #quizzes[
-  + Show that the numbers $c_k$ in @v1-lin are actually determined by $c_k=vc(v)dot vc(e)_k.$
+  + Show that the numbers $c_k$ in @v1-lin are actually determined by $c_k= vc(e)_k dot vc(v).$
 ]
-#advanced-note[Sho thinks this theorem is not difficult to prove because we only think finite-dimensional spaces, but there can be caveats or subtleties. A more rigorous construction is in Chapter #TODO[].]
+#advanced-note[This theorem seems not difficult to prove because we only think finite-dimensional spaces, but there could be caveats that Sho did not notice. A more rigorous construction is in @chap:cvec.]
 
 #make-indent
 If you choose an orthogonal basis, then it automatically defines the #keyword(display: "axis")[axes] of the space:
@@ -551,26 +570,21 @@ They are called #keyword(key: "Cartesian coordinate system")[2d Cartesian coordi
 In general, a coordinate system defined by an orthonormal basis is called Cartesian coordinate system.
 #index("coordinate system")
 
-Now we are ready to express vectors in their #EMPH[components] because we have reached @v1-lin; if we _fix_ an orthonormal basis, any vectors are expressed as @v1-lin with _uniquely determined_ numbers $c_k:=vc(e)_k dot vc(v)$.
-
+Now we are ready to express vectors in their #EMPH[components] because we have reached @v1-lin:
 #definition(title: "Components of a vector")[
-  If we fix an orthonormal basis and label the basis vectors by $vc(e)_1, ..., vc(e)_k$, any vector $vc(v)$ can be written as
-  #no-num[$
-    vc(v) = c_1 vc(e)_1 + dots + c_k vc(e)_k, quad quad c_k := vc(e)_k dot vc(v) in RR.
-  $]
-  We call $c_k$ #keyword(display: "component")[the $bold(k)$-th component] of $vc(v)$ and express $vc(v)$ by them:
-  $display(vc(v) = mat(c_1; c_2; dots.v; c_k)= mat(vc(e)_1 dot vc(v); vc(e)_2 dot vc(v); dots.v; vc(e)_n dot vc(v)).)$
+  If we fix an orthonormal basis and label the basis vectors by $vc(e)_1, ..., vc(e)_n$, then @def-dimension says any vector $vc(v)$ can be written as
+  $vc(v) = c_1 vc(e)_1 + dots + c_n vc(e)_n$ with uniquely determined $c_k := vc(e)_k dot vc(v) in RR.$
+  We call $c_k$ #keyword(display: "component")[the $bold(k)$-th component] of $vc(v)$ and express $vc(v)$ with the components as
+  $ vc(v) = mat(c_1; c_2; dots.v; c_n)= mat(vc(e)_1 dot vc(v); vc(e)_2 dot vc(v); dots.v; vc(e)_n dot vc(v)). $
 ]<def-vec-comp>
+Vectors in $n$-dimensional spaces are called #keyword(key: "$-dimensional vector", display: [$n$-dimensional vector])[$bold(n)$-dimensional vectors].
+Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $n$-dimensional vddectors are expressed with $n$ real numbers $c_1, ..., c_n$.
+
 #advanced-note[
   We have to make sure this representation is _well-defined_; we do not want to have two different expressions for one vector, or two different vectors having the same expressions.
 
   Because $c_k$ is uniquely determined, the component-wise notation is unique for a vector. Meanwhile, if $vc(a)$ and $vc(b)$ are different but have the same component-wise notation, it means $vc(a)-vc(b)=:vc(Delta)$ has the same notation as $vc(0)$ (why?). It means $vc(Delta)\/|vc(Delta)|$ is a unit vector orthogonal to all of $vc(e)_k$, which contradicts that $\{vc(e)_1,dots,vc(e)_n}$ is the basis (why?). Accordingly, different vectors must have different component-wise notation.
 ]
-
-#make-indent
-Vectors in $n$-dimensional spaces are called #keyword(key: "$-dimensional vector", display: [$n$-dimensional vector])[$bold(n)$-dimensional vectors].
-Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $n$-dimensional vectors are expressed with $n$ real numbers $c_1, ..., c_n$.
-
 #index("$-dimensional space", display: [$n$-dimensional space])
 
 #problem-style-label.update(true)
@@ -582,39 +596,38 @@ Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $
     + $display(lr(|mat(a; b)|) = sqrt(a^2 + b^2))$
   ]]
 #solution[
-  #let dm(..args) = math.display(math.mat(..args))
   + Since $dm(a; b)$ means $a vc(e)_x + b vc(e)_y$ and $dm(p; q)$ means $p vc(e)_x + q vc(e)_y$ under some orthonormal basis $(vc(e)_x, vc(e)_y)$,
     #no-num[$
       "LHS" = ( a vc(e)_x + b vc(e)_y ) + ( p vc(e)_x + q vc(e)_y ) =( a +p) vc(e)_x + (b+q) vc(e)_y = "RHS",
     $]
     where we used the equations in @vec-axiom-1. $qed$
+
   + Similarly, using the equations in @vip-theorem and @def-ortho-basis,
     #no-num[$
       "LHS" & = ( a vc(e)_x + b vc(e)_y ) dot ( p vc(e)_x + q vc(e)_y ) \
       & = a p (vc(e)_x dot vc(e)_x) + b p (vc(e)_y dot vc(e)_x) + a q (vc(e)_x dot vc(e)_y) + b q (vc(e)_y dot vc(e)_y) = a p + b q. qed
     $]
-  + Because of #thick-sf[(2)], $display("(LHS)"^2 = mat(a; b) dot mat(a; b) = a^2 + b^2)$. Since $"(LHS)" >= 0$, $"LHS"=sqrt(a^2+b^2)="RHS".qed$
+
+  + Thanks to #thick-sf[(2)], $display("(LHS)"^2 = mat(a; b) dot mat(a; b) = a^2 + b^2)$. Since $"(LHS)" >= 0$, $"LHS"=sqrt(a^2+b^2)="RHS".qed$
 ]
 #problem-style-label.update(false)
+
 #fail-safe[
-  In #thick-sf[(3)], the phrase "$"LHS" >= 0$" is necessary. Without it, you can only claim "$=±sqrt(a^2+b^2)$".
+  In #thick-sf[(3)], you must write #writing[$"LHS" >= 0$]. Without it, you can only claim $"LHS"=±sqrt(a^2+b^2)$.
 ]
 
-
 Notice that we _proved_ these equations based on @vec-axiom-1 etc.
-These equations are not _definitions_ or _assumptions_, but _derived statements_ (→ @sec:logic-type). So, we also have to prove a few more statements.
+These equations are not _definitions_ or _assumptions_, but _derived statements_ #footnote[→ @sec:logic-type] with proofs.
+There are a few more statements to be proved:
 
 #quizzes[
-  #let dm(..args) = math.display(math.mat(..args))
   + Consider a 2d space.
     #h-enum(cols: 1, label-align: horizon)[
       + Prove $vc(0)=dm(0; 0)$, $vc(e)_x = dm(1; 0)$, and $vc(e)_y = dm(0; 1)$. #hint[Recall $c_k= vc(e)_k dot vc(v)$.]
       + Prove $k dm(a; b)= dm(k a; k b)$, where $k in RR$.
     ]
 ]
-
 #problems[
-  #let dm(..args) = math.display(math.mat(..args))
   + `3` Consider a 3d space. An orthonormal basis $(vc(e)_x, vc(e)_y, vc(e)_z)$ is taken according to the right-hand rule. Let $vc(a) = dm(a; b; c)$ and $vc(p)=dm(p; q; r)$.
     #h-enum(cols: 1, label-align: horizon)[
       + Prove $vc(0)=dm(0; 0; 0)$, $vc(e)_x = dm(1; 0; 0)$, $vc(e)_y = dm(0; 1; 0)$, and $vc(e)_z = dm(0; 0; 1)$.
@@ -627,7 +640,6 @@ These equations are not _definitions_ or _assumptions_, but _derived statements_
     - Consider $p, q in RR$ and $n$-dimensional vectors $vc(a)$ and $vc(b)$. Let the $k$-th component of $vc(a)$ be $a_k$ and the $k$-th component of $vc(b)$ be $b_k$. Then, the $k$-th component of $p vc(a) + q vc(b)$ is equal to $p a_k + q b_k$. Also,
       $display(vc(a)dot vc(b) = sum_(k=1)^n a_k b_k)$ and $display(|vc(a)|= sqrt(sum_(k=1)^n a_k^2)).$
 ]
-
 #be-careful[
   Again, these formulas are _consequences_ of the definitions we gave earlier.  They are *not* new definitions.
 ]

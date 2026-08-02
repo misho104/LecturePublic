@@ -50,7 +50,8 @@ In experimental physics, uncertainty is usually more important than the central 
 In this chapter, we first review physical quantities and how to handle units. Then, we discuss #keyword[significant figures], a simple and convenient method to express the uncertainty.
 Further discussions on uncertainty analysis are given in Chapter #TODO[chapter].
 
-=s Physical quantity <sec:unit-q>
+
+= Physical quantity <sec:unit-q>
 
 The expression "$(72 ± 2)kg$" means the central value is $72kg$ and the #keyword[absolute uncertainty] is $2kg$.
 Accordingly, its #keyword[relative uncertainty] is given by $(2kg)\/(72kg)=0.028$.
@@ -86,21 +87,22 @@ Let's see other examples.
 
   + The next passage has six (6) errors in the use of uppercase and lowercase letters. Find them out.
 
-
     In the SI system, temperature is expressed in k (kelvin), a unit named after Lord Kelvin.
     The unit of force is N (newton), named after the british scientist Isaac newton. The units A (Ampere) and c (coulomb) are named after French scientists.
     In contrast, Kg (kilogram) is not named after a person.
     , but comes from Greek.
 ]
 
-As an undergraduate student, you need to follow the following rules:
-#theorem(type: "Statement", title: "Rules for Physical Quantities: Basic")[
-  + Numbers are always with units, even in calculations.
-  + Include units in a symbol.
-  + For physical quantities, use decimals (e.g., $1.6ampere)$. Do not use fractions like $(8\/5)ampere$.
-  + Use significant figures to express the measurement precision.
+#block(breakable: false)[
+  As an undergraduate student, you need to follow the following rules:
+  #theorem(type: "Statement", title: "Rules for Physical Quantities: Basic")[
+    + Numbers are always with units, even in calculations.
+    + Include units in a symbol.
+    + For physical quantities, use decimals (e.g., $1.6ampere)$. Do not use fractions like $(8\/5)ampere$.
+    + Use significant figures to express the measurement precision.
+  ]
 ]
-
+These rules are explained below.
 #be-careful[
   We use _decimals for physical quantities_ and _fractions for mathematical concepts_.
   Since this lecture is mainly on math and math concepts, you will use decimals #TODO[only in this section].
@@ -111,8 +113,7 @@ As an undergraduate student, you need to follow the following rules:
 When we educate kids, we write "my height is #blank()#cm", or "my height is $h$#cm", where $h=172$ is just a number.
 But this is not nice! We want to convert the units freely and write equations such as
 $1.72#meter = 172#cm = 0.00172unit("km")$.
-So,
-*we always include units in symbols* #writing($h=172 cm$). Then
+So, *we always include units in symbols* #writing($h=172 cm$). Then
 #writings(
   box: (false, true),
   [we can write:],
@@ -123,14 +124,12 @@ Similarly, if $m=110 unit(g)$ and $g=9.8 mpss$,
 #writings(
   box: (false, true),
   align: (right, left),
-
   [we may write:],
   $w = m g = 110 unit(g) times 9.8 mpss = 1.1 unit("kg"*m/s^2)$,
   [but not:],
   $#RED[$w = m g = 0.11 times 9.8 = 1.1 unit("kg"*m/s^2)$]$,
 )
 This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equal to $0.11kg$ or $110 unit(g)$.
-
 
 #remark[
   Usually, physicists use upright fonts for units and #text(style: "italic")[italic fonts] for quantities. For example, $m$, $T$, and $C$ are quantities, which can be mass, temperature, capacitance, etc. Meanwhile, m, T, and C are units: meter, tesla, and coulomb, respectively.
@@ -145,7 +144,7 @@ This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equ
 
 #make-indent
 Every physical concept has its own unit. For example, speed has $bare(m/s)$, acceleration has $bare(m/s^2)$, and energy has $bare("kg"*m/s^2)=bare(N*m)=bare(J)$.
-The table below lists the quantities you have learned.
+The next table lists the quantities you have learned.
 Notice that angle (rad) has no dimension. It is called a #keyword[dimensionless] quantity.
 <quiz:for-logic>
 
@@ -163,7 +162,6 @@ Notice that angle (rad) has no dimension. It is called a #keyword[dimensionless]
   [frequency], $ds(T)^(-1)$, $bare(1/s)$, $(=bare("Hz"))$,
   [angle], [$1$ (dimensionless)], $bare("rad")$, [],
 ))
-
 
 #advanced-note[
   To understand why angle has no dimension, you may consider the definition of the radian: it is defined as the ratio of the arc length to the radius, so the units cancel ($"meter" \/ "meter" = 1$).
@@ -229,6 +227,7 @@ These are scientifically correct equations.
       + fine-structure constant $alpha$
     ]
 ]
+
 
 = Significant figures <sec:unit-sf>
 
@@ -402,6 +401,7 @@ Observe which digits are uncertain, and how they "pollute" the results in each s
 In $#sig("1.20") times #sig("1.31")$, the last #sig("1") pollutes the part of $#sig("1")+6$ and we get an uncertain number #sig("7").
 So, the result is #sig("1.57").
 
+
 === Addition and subtraction
 
 Different rules are applied for addition and subtraction.
@@ -427,7 +427,6 @@ You can understand the rules easily if you do long addition and observe which di
   )
   and we round the results. So, the answers are #sig("16.9"), #sig("128"), #sig("0.47"), and #sig("1.17", e: 3).
 ]
-
 
 #problems[
   + `9` Calculate the following, taking care of significant figures. You may use calculators.
@@ -502,6 +501,5 @@ You can understand the rules easily if you do long addition and observe which di
       + $1.50 unit("MJ") div 20.0 meter$
     ]
 ]
-
 
 #advanced-note[Uncertainties can often be determined subjectively, but central values are also without specific definitions; it is often the averaged value of the measurements, but one may assume some probabilistic distribution and use its median, mean, or mode as the central value.]
