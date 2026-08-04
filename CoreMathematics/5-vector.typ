@@ -60,7 +60,7 @@ The last interpretation, more abstract and mathematical, will be discussed in #T
 ]
 #advanced-note[
   The discussion in this chapter is only valid for _finite-dimensional_ vectors because here we will define vectors as arrows in a "space".
-  As the "space", readers are expected to imagine _the 3d space_ of our Universe, a 2d-sheet of paper in our Universe, or something like those, and then the #EMPH[dimension] of the space (defined in @def-dimension) will be limited to a finite integer.
+  As the "space", readers are expected to imagine _the 3d space_ of our Universe, a 2d-sheet of paper in our Universe, or something like those, and then the #EMPH[dimension] of the space (defined in @def:va-dimension) will be limited to a finite integer.
 ]
 
 = What is a Vector? <sec:vec-intro>
@@ -71,7 +71,7 @@ However, it represents a _mathematical_ nature of vectors. As a *physicist*, you
 #definition(title: "Vector for physicists")[
   Consider a space.
   A #keyword[vector] is a straight arrow drawn in the space, or in general, a quantity that has both #keyword[magnitude] (= length) and #keyword[direction] in the space.
-]
+]<def:v-arrow>
 We here do not investigate what "the space" is, but you may well imagine a lecture room as the space.
 #theorem(type: "Notation", title: "Vectors and Scalars")[
   We denote vectors with an arrow over the symbol, such as $vc(v)$, $vc(F)$, $vc(a)$, $vc(p)$.
@@ -129,7 +129,7 @@ Like $+$ and $div$ for numbers and $and$ and $or$ for true/false, we have two op
 
 #definition(title: "Vector addition")[
   If $vc(a)$ and $vc(b)$ are vectors drawn in the same space, we can define $vc(a)+vc(b)$ by the vector obtained by placing the tail of $vc(b)$ at the head of $vc(a)$.
-]<vec-def-1>
+]<def:va-add>
 
 #grid(
   columns: (auto, 170pt),
@@ -165,13 +165,13 @@ Vectors are the same if and only if they have the same magnitude and direction; 
   - if $k < 0$, $k vc(v)$ has the magnitude $|k|va(v)$ and is anti-parallel to $vc(v)$.
 
   - if $k = 0$, $k vc(v) = vc(0)$.
-]<vec-def-2>
+]<def:va-sca>
 #remark[
   The word "#keyword[anti-parallel]" means "in the opposite direction".
   Meanwhile, *we should avoid* the ambiguous word "#keyword[parallel]" for vectors, as it may mean either the same direction or the opposite direction; use the phrase "has the same direction" instead.
   For more vocabulary to describe directions, please check #link("https://misho104.github.io/LecturePublic/", "the Vector Boot Camp").
 ]
-#advanced-note[Watch out we assume $k in RR$ in @vec-def-2. It restricts the discussion in this chapter to _real vectors_. In @chap:cvec, we will discuss _complex vectors_ by modifying this definition.]
+#advanced-note[Watch out we assume $k in RR$ in @def:va-sca. It restricts the discussion in this chapter to _real vectors_. In @chap:cvec, we will discuss _complex vectors_ by modifying this definition.]
 
 We should carefully digest these definitions.
 Let's see an example, and try the next quiz.
@@ -221,7 +221,7 @@ Addition and scalar multiplication have the following properties:
     + $(p q)vc(a) = p\(q vc(a)),$
     + $1 vc(a)= vc(a).$
   ]
-] <vec-axiom-1>
+] <thm:va-axiom>
 These properties seems obvious, but in fact, they play a fundamental role in @chap:cvec.
 
 #problems[
@@ -241,7 +241,7 @@ These properties seems obvious, but in fact, they play a fundamental role in @ch
     ]
   + `3` Prove the next "#keyword[triangle inequality]" geometrically, i.e., only with the above definitions.
     $ "For any two vectors" vc(a) "and" vc(b) "in the same space", |vc(a) + vc(b)| <= |vc(a)| + |vc(b)|. $
-  + `2` Starting from @vec-def-1 and @vec-def-2, prove the properties in @vec-axiom-1.
+  + `2` Starting from @def:va-add and @def:va-sca, prove the properties in @thm:va-axiom.
   + `2` Prove that, for any two vectors $vc(a)$ and $vc(b)$ in the same space, $lr(|\|vc(a)\|-\|vc(b)\||) <= |vc(a)-vc(b)|$.
 ]
 
@@ -259,7 +259,7 @@ Imagine two arrows. Probably you can think the angle $theta$ between the arrows.
     vc(a) dot vc(b) := |vc(a)| |vc(b)| cos theta,
   $
   where $theta$ is the angle between $vc(a)$ and $vc(b)$; if $vc(a) = vc(0)$ or $vc(b) = vc(0)$, then $vc(a) dot vc(b) := 0$.
-]<vip-def>
+]<def:va-ip>
 #quizzes[
   + Assume $vc(a)=3$ and $vc(b)=2$.
     + If $vc(a)perp vc(b)$, then what is $vc(a) dot vc(b)$?
@@ -284,28 +284,28 @@ This inner product has the following properties:
     + $vc(a)dot \(k vc(b)) = k\(vd(a, b)).$
   ]
   #be-careful[These properties are valid only for "real vectors".]
-]<vip-theorem>
+]<thm:va-ip-prop>
 
 We will skip their proof. Instead, we focus on these four very important properties.
 You need to memorize them securely.
 #theorem(title: "Properties of real-vector inner product")[
-  $ "For a vector" vc(a), quad va(a) = sqrt(vc(a)dot vc(a)). $<ip-norm>
-  $ "For non-zero vectors" vc(a) "and" vc(b), quad vc(a)dot vc(b) = 0 <==> vc(a)perp vc(b). $<ip-perp>
-  $ "For vectors" vc(a) "and" vc(b), quad -|vc(a)||vc(b)| <= vc(a)dot vc(b) <= |vc(a)||vc(b)|. $<ip-schwartz>
-  $ "For vectors" vc(a) "and" vc(b), quad |vc(a) + vc(b)|^2 = |vc(a)|^2 + 2 vc(a)dot vc(b) + |vc(b)|^2 $<ip-expand>
+  $ "For a vector" vc(a), quad va(a) = sqrt(vc(a)dot vc(a)). $<eq:vip-norm>
+  $ "For non-zero vectors" vc(a) "and" vc(b), quad vc(a)dot vc(b) = 0 <==> vc(a)perp vc(b). $<eq:vip-perp>
+  $ "For vectors" vc(a) "and" vc(b), quad -|vc(a)||vc(b)| <= vc(a)dot vc(b) <= |vc(a)||vc(b)|. $<eq:vip-schwartz>
+  $ "For vectors" vc(a) "and" vc(b), quad |vc(a) + vc(b)|^2 = |vc(a)|^2 + 2 vc(a)dot vc(b) + |vc(b)|^2 $<eq:vip-expand>
   #be-careful[These properties are valid only for "real vectors".]
 ]
 
 #quizzes[
   #let vd(x, y) = $vc(#x) dot vc(#y)$
-  + Prove the following theorems directly from @vip-def.
+  + Prove the following theorems directly from @def:va-ip.
     + $vc(a) perp vc(b) ==> vd(a, b)=0.$
     + $vd(a, b) = 0 ==> \(vc(a)perp vc(b))or\(vc(a)=vc(0))or\(vc(b)=vc(0)).$
     + $-|vc(a)| |vc(b)| <= vd(a, b) <= |vc(a)| |vc(b)|.$
     + $|vd(a, b)| <= |vc(a)| |vc(b)|.$ #h(1fr)#hint[Recall that $|x|<=3$ means $-3<=x<=3$.]
     + $|vc(a)|^2=vd(a, a)$.
     + $|vc(a)|=sqrt(vd(a, a))$. #h(1fr)#hint[Most students make mistakes in this question.]
-  + Prove the following equation, using @vip-def, @vip-theorem, and the equations in the previous quiz.
+  + Prove the following equation, using @def:va-ip, @thm:va-ip-prop, and the equations in the previous quiz.
     #h-enum(cols: 2)[
       + $\(vc(a)+vc(b))dot vc(a) = |vc(a)|^2 + vd(a, b).$
       + $|vc(a) + vc(b)|^2 = |vc(a)|^2 + 2 vd(a, b) + |vc(b)|^2$.
@@ -335,7 +335,7 @@ You need to memorize them securely.
     + Find $c$ such that $vc(B) + c vc(C)$ is perpendicular to $vc(A)$.
 ]
 
-= Cross Product (only for 3d real-vectors) <sec:vec-cp>
+= Cross Product (only for 3d real-vectors) <sec:vec-xp>
 For two arrows drawn in three-dimensional space, we can define the #EMPH[cross product].
 #definition(title: "Cross product")[
   For $vc(a)$ and $vc(b)$ drawn in a _three-dimensional_ space, the #keyword[cross product] $vc(a) times vc(b)$ is defined as follows:
@@ -363,7 +363,7 @@ We will not discuss much about the cross product, but only the following propert
     + $vc(a) dot (vc(a) times vc(b)) = vc(b) dot (vc(a) times vc(b)) = 0$.
     + $vc(a) dot \(vc(b) times vc(c)) = vc(b) dot \(vc(c) times vc(a)) = vc(c) dot \(vc(a) times vc(b))$.
   ]
-]<vcp-theorem>
+]<thm:vxp-prop>
 The equation #thick-sf[(B)] is the most important.
 For #thick-sf[(A)], notice $vc(a) times vc(a)$ is not zero.
 
@@ -375,9 +375,9 @@ For #thick-sf[(A)], notice $vc(a) times vc(a)$ is not zero.
 ]
 
 #problems[
-  + `4` Prove #thick-sf[(A)], #thick-sf[(B)], #thick-sf[(C)], #thick-sf[(F)], and #thick-sf[(G)] of @vcp-theorem.
+  + `4` Prove #thick-sf[(A)], #thick-sf[(B)], #thick-sf[(C)], #thick-sf[(F)], and #thick-sf[(G)] of @thm:vxp-prop.
   + `2` In physics, we *always* use the #keyword(key: "right-handed system")[right-handed] #keyword[Cartesian coordinate system] to describe our three-dimensional space, which is characterized by three unit vectors $vc(e)_x$, $vc(e)_y$, $vc(e)_z$ defined so that they are perpendicular to each other and $(vc(e)_x, vc(e)_y, vc(e)_z)$ obeys the right-hand rule. Calculate their inner products and cross products, such as $vc(e)_x dot vc(e)_y$ and $vc(e)_x times vc(e)_z$
-  + `1` Prove #thick-sf[(B)] of @vip-theorem and #thick-sf[(E)] of @vcp-theorem geometrically (i.e., based on the definitions given in this chapter). Sho has his own proof but not very confident. Can you find a better proof?
+  + `1` Prove #thick-sf[(B)] of @thm:va-ip-prop and #thick-sf[(E)] of @thm:vxp-prop geometrically (i.e., based on the definitions given in this chapter). Sho has his own proof but not very confident. Can you find a better proof?
 ]
 
 = Position Vectors <sec:vec-pos>
@@ -495,7 +495,7 @@ Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 
 
   - We cannot add any more vectors without violating the above two rules.
 
-  Precisely speaking, we call the set $\{vc(e)_1, ..., vc(e)_n\}$ "_an_ orthonormal basis". Then, if we fix _one_ orthonormal basis to use, we call its members "orthonormal basis vectors".]<def-ortho-basis>
+  Precisely speaking, we call the set $\{vc(e)_1, ..., vc(e)_n\}$ "_an_ orthonormal basis". Then, if we fix _one_ orthonormal basis to use, we call its members "orthonormal basis vectors".]<def:va-ortho-basis>
 #fail-safe[A woman, two women. A nucleus, two nuclei. A basis, two bases. A matrix, two matrices.]
 #example(title: "Basis vectors for arrows on this sheet")[
   #let p1 = $vc(p)_1$
@@ -546,16 +546,16 @@ In general, a space has _infinitely many_ orthonormal bases and we can choose _a
   - If $\{vc(e)_1, vc(e)_2, ..., vc(e)_n\}$ is an orthonormal basis, any arrow $vc(v)$ in the space can be expressed as
     $
       vc(v)= c_1 vc(e)_1 + c_2 vc(e)_2 + dots + c_n vc(e)_n = sum_(k=1)^n c_k vc(e)_k, quad "where" quad c_k in RR
-    $<v1-lin>
+    $<eq:va-lin-comb>
     and this expression is _unique_, i.e., if $vc(v)$ is expressed by
     #no-num[$
       vc(v) & = c_1 vc(e)_1 + c_2 vc(e)_2 + dots + c_n vc(e)_n \
             & = d_1 vc(e)_1 + d_2 vc(e)_2 + dots + d_n vc(e)_n,
     $]
     then all the coefficients are equal: $c_k = d_k$.
-]<def-dimension>
+]<def:va-dimension>
 #quizzes[
-  + Show that the numbers $c_k$ in @v1-lin are actually determined by $c_k= vc(e)_k dot vc(v).$
+  + Show that the numbers $c_k$ in @eq:va-lin-comb are actually determined by $c_k= vc(e)_k dot vc(v).$
 ]
 #advanced-note[This theorem seems not difficult to prove because we only think finite-dimensional spaces, but there could be caveats that Sho did not notice. A more rigorous construction is in @chap:cvec.]
 
@@ -564,19 +564,19 @@ If you choose an orthogonal basis, then it automatically defines the #keyword(di
 
 - For a 2d space, we call the directions of the basis vectors as $x$-axis and $y$-axis, respectively. Sho usually writes the basis vectors by $vc(e)_x$ and $vc(e)_y$, but other textbooks may write as $hat(bold(upright(i)))$ and $hat(bold(upright(j)))$.
 
-- For a 3d space, we call the directions of the basis vectors as $x$-axis, $y$-axis, and $z$-axis, respectively. The basis vectors are expressed by $(vc(e)_x,vc(e)_y,vc(e)_z)$ or $(hat(bold(upright(i))), hat(bold(upright(j))),hat(bold(upright(k))))$. Here, physicists *always* choose the axes so that $vc(e)_x,vc(e)_y,vc(e)_z)$ obeys  the #keyword[right-hand rule] (see @sec:vec-cp).
+- For a 3d space, we call the directions of the basis vectors as $x$-axis, $y$-axis, and $z$-axis, respectively. The basis vectors are expressed by $(vc(e)_x,vc(e)_y,vc(e)_z)$ or $(hat(bold(upright(i))), hat(bold(upright(j))),hat(bold(upright(k))))$. Here, physicists *always* choose the axes so that $vc(e)_x,vc(e)_y,vc(e)_z)$ obeys  the #keyword[right-hand rule] (see @sec:vec-xp).
 
 They are called #keyword(key: "Cartesian coordinate system")[2d Cartesian coordinate system] and #keyword(key: "right-handed system")[3d right-handed Cartesian coordinate system], respectively.
 In general, a coordinate system defined by an orthonormal basis is called Cartesian coordinate system.
 #index("coordinate system")
 
-Now we are ready to express vectors in their #EMPH[components] because we have reached @v1-lin:
+Now we are ready to express vectors in their #EMPH[components] because we have reached @eq:va-lin-comb:
 #definition(title: "Components of a vector")[
-  If we fix an orthonormal basis and label the basis vectors by $vc(e)_1, ..., vc(e)_n$, then @def-dimension says any vector $vc(v)$ can be written as
+  If we fix an orthonormal basis and label the basis vectors by $vc(e)_1, ..., vc(e)_n$, then @def:va-dimension says any vector $vc(v)$ can be written as
   $vc(v) = c_1 vc(e)_1 + dots + c_n vc(e)_n$ with uniquely determined $c_k := vc(e)_k dot vc(v) in RR.$
   We call $c_k$ #keyword(display: "component")[the $bold(k)$-th component] of $vc(v)$ and express $vc(v)$ with the components as
   $ vc(v) = mat(c_1; c_2; dots.v; c_n)= mat(vc(e)_1 dot vc(v); vc(e)_2 dot vc(v); dots.v; vc(e)_n dot vc(v)). $
-]<def-vec-comp>
+]<def:va-comp>
 Vectors in $n$-dimensional spaces are called #keyword(key: "$-dimensional vector", display: [$n$-dimensional vector])[$bold(n)$-dimensional vectors].
 Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $n$-dimensional vddectors are expressed with $n$ real numbers $c_1, ..., c_n$.
 
@@ -600,9 +600,9 @@ Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $
     #no-num[$
       "LHS" = ( a vc(e)_x + b vc(e)_y ) + ( p vc(e)_x + q vc(e)_y ) =( a +p) vc(e)_x + (b+q) vc(e)_y = "RHS",
     $]
-    where we used the equations in @vec-axiom-1. $qed$
+    where we used the equations in @thm:va-axiom. $qed$
 
-  + Similarly, using the equations in @vip-theorem and @def-ortho-basis,
+  + Similarly, using the equations in @thm:va-ip-prop and @def:va-ortho-basis,
     #no-num[$
       "LHS" & = ( a vc(e)_x + b vc(e)_y ) dot ( p vc(e)_x + q vc(e)_y ) \
       & = a p (vc(e)_x dot vc(e)_x) + b p (vc(e)_y dot vc(e)_x) + a q (vc(e)_x dot vc(e)_y) + b q (vc(e)_y dot vc(e)_y) = a p + b q. qed
@@ -616,7 +616,7 @@ Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $
   In #thick-sf[(3)], you must write #writing[$"LHS" >= 0$]. Without it, you can only claim $"LHS"=±sqrt(a^2+b^2)$.
 ]
 
-Notice that we _proved_ these equations based on @vec-axiom-1 etc.
+Notice that we _proved_ these equations based on @thm:va-axiom etc.
 These equations are not _definitions_ or _assumptions_, but _derived statements_ #footnote[→ @sec:logic-type] with proofs.
 There are a few more statements to be proved:
 
@@ -640,9 +640,21 @@ There are a few more statements to be proved:
     - Consider $p, q in RR$ and $n$-dimensional vectors $vc(a)$ and $vc(b)$. Let the $k$-th component of $vc(a)$ be $a_k$ and the $k$-th component of $vc(b)$ be $b_k$. Then, the $k$-th component of $p vc(a) + q vc(b)$ is equal to $p a_k + q b_k$. Also,
       $display(vc(a)dot vc(b) = sum_(k=1)^n a_k b_k)$ and $display(|vc(a)|= sqrt(sum_(k=1)^n a_k^2)).$
 ]
+Let us summarize the above discussion.
+#theorem(title: "Component-wise interpretation of real-vector arithmetic")[
+  Consider $n$-dimensional real vectors, $display(vc(a)=mat(a_1; dots.v; a_n))$ and $display(vc(b)=mat(b_1; dots.v; b_n))$, and $k in RR$. Then, addition, scalar multiplication by $k in RR$, and inner product are given by, respectively,
+  $
+    vc(a)+vc(b)=mat(a_1+b_1; dots.v; a_n+b_n), wide
+    k vc(a)=mat(k a_1; dots.v; k a_n),
+  $<eq:va-arith-comp>
+  $
+    vc(a)dot vc(b)=sum_(k=1)^n a_k b_k = a_1b_1+a_2b_2+dots+a_n b_n,
+  $<eq:va-ip-comp>
+]<thm:va-comp-arith>
 #be-careful[
   Again, these formulas are _consequences_ of the definitions we gave earlier.  They are *not* new definitions.
 ]
+
 Since you must be familiar with this component-wise notation and calculations based on it, we do not discuss it further.
 Consult your high-school math textbook or Sho's #link("https://misho104.github.io/LecturePublic/", "Vector Boot Camp") if you are not confident in such calculations.
 
@@ -652,6 +664,6 @@ We will there discuss both real and complex matrices, and thus complex vectors w
 To prepare for the discussion on complex matrices in #TODO[], we first review #EMPH[complex numbers] in the next chapter.
 
 #problems[
-  + `1` Complete the proof in "Advanced Note" after @def-vec-comp.
+  + `1` Complete the proof in "Advanced Note" after @def:va-comp.
   + `1` When we define a Cartesian coordinate system for a 3d space, we require that $(vc(e)_x, vc(e)_y, vc(e)_z)$ satisfies the right-hand rule. However, similar rules are not required for 2d spaces. Why?
 ]

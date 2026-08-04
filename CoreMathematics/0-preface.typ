@@ -153,7 +153,7 @@ It is built from seven #keyword[SI base units]:
     [amount of substance], [mol], [(mole)], ds("N"),
     [luminous intensity], [cd], [(candela)], ds("J"),
   ),
-)<SI-units>
+)<tab:SI-units>
 
 
 /*

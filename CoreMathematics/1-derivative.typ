@@ -65,7 +65,7 @@ $ f'(3) qeq eval(f'(x))_(x=3) qeq eval(dv(f, x))_(x=3) qeq dv(f, x)(3) qeq dv(, 
 and they are all equivalent. For example, if $f(x)=3x^2+6$, then $f'(x)=6x$ and $f'(3) = 18$.
 
 Most of students get confused when a #keyword[constant] $a$ appears. If $a$ is _declared as a constant_, we can define a function such as $g(x)=a x^2+2a$, for which
-$ g'(x) = 2 a x. $ <d1>
+$ g'(x) = 2 a x. $<eq:d1>
 We can evaluate $g'(x)$ at $x=a$. The result is $g'(a)=2a^2$, written as
 $ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(, x)g(a) quad = quad 2a^2. $
 
@@ -74,7 +74,7 @@ $ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(, x)g(a) quad = quad 2a^2. 
   The notation $dv(, x)g(a)$ does *not* mean $dv(, x)lr([g(a)], size: #150%) = dv(, x)(a^3+2a)=0$.
 ]
 #fail-safe[
-  If you can't see @d1, try setting $a=3$. Then, you notice $g(x)$ is the same function as $f(x)$, and $g'(x)$ should equal $f'(x)$.
+  If you can't see @eq:d1, try setting $a=3$. Then, you notice $g(x)$ is the same function as $f(x)$, and $g'(x)$ should equal $f'(x)$.
 ]
 #EMPH[Higher-order derivatives]#index("order") is written as
 $
@@ -153,11 +153,11 @@ You may write $180degree=pi$, $pi\/180=1degree$, and so on, but the small circle
 ]
 Why do we insist on radians?
 The answer comes from the derivative formula
-$ dv(, x) sin x = cos x. $ <sin-deriv>
+$ dv(, x) sin x = cos x. $<eq:sin-deriv>
 Because we have chosen radians as the standard, $(sin x)'$ becomes this simple.
 
 #advanced-note[
-  The simpleness of @sin-deriv originates in the fact $sin(0.01 "rad") approx 0.01$. If we used degrees, we would have $sin(0.01 degree) approx 0.01 times 0.017453$ and  everything is messed up with this number 0.017453.
+  The simpleness of @eq:sin-deriv originates in the fact $sin(0.01 "rad") approx 0.01$. If we used degrees, we would have $sin(0.01 degree) approx 0.01 times 0.017453$ and  everything is messed up with this number 0.017453.
 ]
 
 #make-indent
@@ -207,11 +207,11 @@ $
   f'(x) := lim_(Delta x->0) (f(x+Delta x)-f(x))/(Delta x),
   quad
   f'(a) := lim_(delta->0) (f(a+delta)-f(a))/(delta).
-$ <def-deriv>
+$<eq:deriv-def>
 The second equation is interpreted as follows:
 $
   "If " delta approx 0, quad f'(a) approx (f(a+delta)-f(a))/(delta),quad "i.e.,"quad f(a+delta)approx f(a)+delta thin f'(a)
-$<taylor-1>
+$<eq:taylor-1>
 and this interpretation is useful in the following example:
 #example()[
   Find the approximate value of the following expressions without using calculators. Then, check your answer with a calculator.
@@ -223,7 +223,7 @@ and this interpretation is useful in the following example:
 ]
 #solution[
   #enum(numbering: cn => box(width: 2em, align(right, text-sf[*(#cn)*])), tight: false)[
-    Apply @taylor-1 for $f(x)=sqrt(x)$, $a=1$, and $delta=0.002$. Then,
+    Apply @eq:taylor-1 for $f(x)=sqrt(x)$, $a=1$, and $delta=0.002$. Then,
     #no-num(
       comma-gap: auto,
       $
@@ -250,7 +250,7 @@ and this interpretation is useful in the following example:
   "Solutions" contain not only the answer but also how you reached the answer. You are, of course, asked to write such explanations when you solve problems.]
 
 Namely, with this technique, you can find *the value of $f(x)$ around a point $x=a$.*
-This technique, @taylor-1, is a special case of Taylor's theorem, which is discussed in #TODO[???].
+This technique, @eq:taylor-1, is a special case of Taylor's theorem, which is discussed in #TODO[???].
 
 #quizzes()[
   + Find the approximate value of the following expressions without using calculators. Then, check your answer with a calculator.
@@ -265,13 +265,13 @@ To summarize, we have the following statement:
 
 #theorem(type: "Statement", title: "Taylor expansion: basic")[
   For a physicists-friendly function $f(x)$,
-  $ f(a+delta) & approx f(a) + delta f'(a), $ <taylor-simple>
+  $ f(a+delta) & approx f(a) + delta f'(a), $<eq:taylor-0>
   or as an equivalent expression,
   $ f(x) & approx f(x_0) + (x-x_0) f'(x_0). $
 ]
 #quizzes()[
   + Check these two equations are equivalent. You will be ready to use either of them in the future.
-  + Review how to derive @taylor-simple and summarize it in your own words.
+  + Review how to derive @eq:taylor-0 and summarize it in your own words.
 ]
 
 #problems[
@@ -342,11 +342,11 @@ To summarize, we have the following statement:
       + $sqrt(x)$
     ]
 
-  + `1` Write down the definition of the second derivative $f''(x)$. Repeat the discussion of @taylor-1 to find the expansion $f'(a+epsilon) approx f'(a) + epsilon f'(a) + (epsilon^2\/2) f''(a)$.
+  + `1` Write down the definition of the second derivative $f''(x)$. Repeat the discussion of @eq:taylor-1 to find the expansion $f'(a+epsilon) approx f'(a) + epsilon f'(a) + (epsilon^2\/2) f''(a)$.
 ]
 
 #advanced-note[
-  The two equations in @def-deriv have similar but different meanings: the first one defines a new function $f'(x)$, while the second one defines a number that is eventually equal to $f'(x)|_(x=a)$. Anyway, we don't care the difference.]
+  The two equations in @eq:deriv-def have similar but different meanings: the first one defines a new function $f'(x)$, while the second one defines a number that is eventually equal to $f'(x)|_(x=a)$. Anyway, we don't care the difference.]
 
 
 = Mathematical Notation

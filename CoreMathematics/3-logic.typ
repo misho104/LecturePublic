@@ -5,11 +5,11 @@
 #let bT = math.upright("T")
 #let bF = math.upright("F")
 
-Solve @quiz:for-logic (on #ref(<quiz:for-logic>, form: "page")) again.
+Solve @prob:for-logic (on #ref(<prob:for-logic>, form: "page")) again.
 
 #context {
   set enum(numbering: enum-style("(1)"))
-  query(selector(figure.where(kind: "quiz")).before(<quiz:for-logic>)).last().body.children.at(2)
+  query(selector(figure.where(kind: "quiz")).before(<prob:for-logic>)).last().body.children.at(2)
 }
 
 The answers are
@@ -49,7 +49,7 @@ Since elementary school, you have written many equalities and inequalities, such
     ]
 ]
 We can only write true things, such as "$3+5=8$", "$3^2=9$ is true", or "$6+2=10$ is false".
-In other words, *when you write something, you must confirm that it is true.*<write-true-things>
+In other words, *when you write something, you must confirm that it is true.*
 Sometimes, you are asked to confirm a statement, or #EMPH[prove] a statement. The process is called #keyword[proof] of the statement.
 
 Numbers can be manipulated by operators such as $+$, $div$. Similarly, true (T) and false (F) can be manipulated by #keyword(display: "and operator", "and"), #keyword(display: "or operator", "or"), and #keyword(display: "not operator", "not") operators.
@@ -93,7 +93,7 @@ Numbers can be manipulated by operators such as $+$, $div$. Similarly, true (T) 
     $bT$, $bF$, $bF$, $bT$, $bF$,
     $bF$, $bT$, $bF$, $bT$, $bT$,
     $bF$, $bF$, $bF$, $bF$, $bT$,
-  )<tab:truth>],
+  )<tab:truth-table>],
 )
 
 
@@ -186,7 +186,7 @@ Since elementary school, you have solved many equations, but what does "solving 
         //      + $(x+y=2) and (x-y=0) quad => quad (x=1) and (y=1)$.
       ]
     + Do you think these statements can be considered as "solving an equation"?
-    <quiz:solving-eq>
+    <prob:solving-eq>
 ]
 #thick-sf[(b)] and #thick-sf[(d)] are false statements (find counterexamples!), so we cannot write them.
 #thick-sf[(a)] and #thick-sf[(c)] are true statements, and #thick-sf[(a)] looks "solving an equation", but we do not consider #thick-sf[(c)] is "solving an equation".
@@ -261,7 +261,7 @@ Now we have the answer for the question: What does "solving an equation" mean?
 #definition(title: "Solving an equation")[
   "Solving an equation" means "finding an _equivalent_ equation in the form of $x=#blank()$".
 ]
-Consider the equations in @quiz:solving-eq. As #writing[$2x-1=0 <=> x=1\/2$] and #writing[$x^2=4 <=> x=2 or x=-2$] are true statements, we say $x=1\/2$ and $x=±2$ are the solutions of the equations, respectively.
+Consider the equations in @prob:solving-eq. As #writing[$2x-1=0 <=> x=1\/2$] and #writing[$x^2=4 <=> x=2 or x=-2$] are true statements, we say $x=1\/2$ and $x=±2$ are the solutions of the equations, respectively.
 
 When you solve an equation, you have to check that the solution is *necessary and sufficient*.
 
@@ -370,7 +370,7 @@ Before discussing advanced topics on logics, you should do some drills.
     ]
   + `2`
     + Recall that $A=>B$ is defined by $(not A) or B$. Also, recall that $A<=>B$ is defined by $A=>B and A arrow.l.double B$.
-      Write a truth table (see #ref(<tab:truth>, form: "page")) for $A=>B$, $A arrow.l.double B$, and $A<=>B$.
+      Write a truth table (see #ref(<tab:truth-table>, form: "page")) for $A=>B$, $A arrow.l.double B$, and $A<=>B$.
     + Explain the reason we can understand $A<=>B$ as $A=B$.
     + Write a truth table for the following expressions:
       #no-num(comma-gap: auto, $A and B, not(A and B), (not A)or(not B), not(A or B), (not A)and(not B)$)
@@ -379,7 +379,7 @@ Before discussing advanced topics on logics, you should do some drills.
         not(A or B) = (not A)and(not B), quad quad not(A and B) = (not A)or(not B).
       $
     + Prove the following, which we will discuss in the next section.
-      $ blr((A=>B)) =blr(((not B)=>(not A))), quad quad blr((A=>B)) =not blr((A and not B)). $<proofs>
+      $ blr((A=>B)) =blr(((not B)=>(not A))), quad quad blr((A=>B)) =not blr((A and not B)). $<eq:proofs-by-cc>
     <prob:de-morgan>
 
   + `1` This lecture does not cover #keyword[quantifiers] "for-all $forall$" and "exists $exists$". Learn them by yourselves. In particular, prove the following:
@@ -407,7 +407,7 @@ There is a useful theorem for "not" operator, called #keyword[de Morgan's theore
   + "not (A and B)" is equivalent to "(not A) or (not B)", i.e., $not(A and B) = (not A) or (not B)$.
 
   + "not (A or B)" is equivalent to "(not A) and (not B)", i.e., $not(A or B) = (not A) and (not B)$.
-]<de-morgan>
+]<thm:de-morgan>
 The proof is given as @prob:de-morgan.
 #example[
   #let qq(x) = [#box(width: 10em, x)#sym.dots.c]
@@ -477,7 +477,7 @@ Another powerful method is #keyword[proof by contradiction] (deductio ad absurdu
     + If $a$, $b$, and $c$ are integers and $a b c$ is even, at least one of $a$, $b$, or $c$ is even.
 ]
 
-#remark[The validity of "proof by contrapositive" and "proof by contradiction" was already discussed on #ref(form: "page", <proofs>), @proofs.]
+#remark[The validity of "proof by contrapositive" and "proof by contradiction" was already discussed on #ref(form: "page", <eq:proofs-by-cc>), @eq:proofs-by-cc.]
 
 #advanced-note[
   You learned another useful method for proof, #keyword[mathematical induction], in high school. In university, you may learn more advanced methods, such as #keyword[infinite descent] and #keyword[transfinite induction].

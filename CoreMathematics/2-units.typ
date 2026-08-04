@@ -146,7 +146,7 @@ This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equ
 Every physical concept has its own unit. For example, speed has $bare(m/s)$, acceleration has $bare(m/s^2)$, and energy has $bare("kg"*m/s^2)=bare(N*m)=bare(J)$.
 The next table lists the quantities you have learned.
 Notice that angle (rad) has no dimension. It is called a #keyword[dimensionless] quantity.
-<quiz:for-logic>
+<prob:for-logic>
 
 #align(center, table(
   columns: (auto, auto, auto, auto),
@@ -201,7 +201,7 @@ These are scientifically correct equations.
 ]
 
 #advanced-note[
-  In very formal situations, we use #keyword[symbols for dimensions] (see @SI-units on #ref(<SI-units>, form: "page")):
+  In very formal situations, we use #keyword[symbols for dimensions] (see @tab:SI-units on #ref(<tab:SI-units>, form: "page")):
   #tab[Since $DIM(m)= ds(M)$ and $DIM(g) = ds(L med T^(-2))$, $DIM (m g) = ds(M med L med T^(-2))$,]
   with the operator "dim" @si. However, it seems too complicated for most situations.
 ]

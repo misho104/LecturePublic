@@ -107,7 +107,7 @@ We are ready to define the #EMPH[power], $a^x$. Here, $a$ is called the #EMPH[ba
   - If $x<0$, we define $a^x := 1\/(a^(|x|))$.
 
   and then we have defined $a^x$ for all $x in RR$, if $a>0$.
-]<def-pow-pos>
+]<def:pow-pos>
 
 #example(title: [First two items: integer-power of a positive number])[
   - $2^0 := 1$, because of the first item in the above definition.
@@ -147,18 +147,18 @@ We are ready to define the #EMPH[power], $a^x$. Here, $a$ is called the #EMPH[ba
   ]]
 
 #make-indent
-We have discussed $a^x$ for positive base $a$. Powers $a^x$ for $a<=0$ require very careful consideration and we postpone it to the later chapters; @tab:power gives a summary of $a^x$ for various $a$ and $x$.
+We have discussed $a^x$ for positive base $a$. Powers $a^x$ for $a<=0$ require very careful consideration and we postpone it to the later chapters; @tab:power-summary gives a summary of $a^x$ for various $a$ and $x$.
 Two simplest cases are discussed here.
 
 #definition(title: [Power for negative base])[
   For a negative base $a < 0$, we only consider $a^n$ for integer $n$.
   $ a^0 := 1, wide a^n := a dot a^(n-1) "for" n>0, wide a^n := 1\/a^(|n|) "for" n<0. $
   This is equivalent to $a^n:= (-1)^n|a|^n$, where we define $(-1)^n$ is $+1$ for even $n$ and $-1$ for odd $n$.
-]<def-pow-neg>
+]<def:pow-neg>
 
 #definition(title: [Power for zero base])[
   We define $0^x := 0$ for $x > 0$, and $root(n, 0) := 0$ for $n in NN^+$.  (We do not consider $0^x$ for $x <= 0$.)
-]<def-pow-zero>
+]<def:pow-zero>
 
 #quizzes[
   + Some of the following expressions are not defined. Find all the undefined ones.
@@ -175,18 +175,18 @@ Two simplest cases are discussed here.
     columns: 4,
     align: (center, center, left, left),
     stroke: ((i, j) => if (i < 2) { (right: 0.5pt, y: 0.5pt) } else { (x: none, y: 0.5pt) }),
-    table.cell(rowspan: 2, $a>0$), $x in RR$, $"(positive)"^("(real)")$, [@def-pow-pos],
+    table.cell(rowspan: 2, $a>0$), $x in RR$, $"(positive)"^("(real)")$, [@def:pow-pos],
     $x in CC without RR$, $"(positive)"^("(non-real)")$, [@exp-complex-properties],
     table.cell(rowspan: 2, $a<0$),
-    $x in ZZ$, $"(negative)"^("(integer)")$, [@def-pow-neg: $a^x = |a|^x times (-1)^x$],
+    $x in ZZ$, $"(negative)"^("(integer)")$, [@def:pow-neg: $a^x = |a|^x times (-1)^x$],
     $x in.not ZZ$, $"(negative)"^("(others)")$, [#TODO[chapter]],
-    table.cell(rowspan: 3, $a=0$), $x>0$, $0^"(positive)"$, [@def-pow-zero: $0^x = 0$],
+    table.cell(rowspan: 3, $a=0$), $x>0$, $0^"(positive)"$, [@def:pow-zero: $0^x = 0$],
     $x=0$, $0^0$, [_not considered_ (but sometimes $0^0:=1$)],
     $"not" x>=0$, $0^"(other)"$, [_not considered_],
   ),
   caption: [Summary of the definition of $a^x$ for various $a$ and $x$],
   placement: top,
-)<tab:power>
+)<tab:power-summary>
 
 #restriction[#align(center)[
   In the rest of this chapter, we will only consider powers of positive base, i.e., $a^x$ for $a>0$.
@@ -236,7 +236,7 @@ Two simplest cases are discussed here.
   $
   $
     a^x a^y = a^(x+y), quad (a^x)/(a^y) = a^(x-y), quad (a^x)^y = a^(x y), quad (a b)^x = a^x b^x, quad (a/b)^x = (a^x)/(b^x).
-  $]<exp-properties>
+  $]<thm:exp-prop>
 #remark[
   Usually, $a^(x^y)$ is interpreted as $a^((x^y))$, not as $(a^x)^y=a^(x y)$.
 ]
@@ -275,9 +275,9 @@ We call the solution $x = log_a p$.
   $ "For " a > 0, a!=1, "and" p>0, #h(3em) a^x = p quad <==> quad x = log_a p. $
 ]
 Notice that $log_a p$ is undefined if not $(a>0 and a!=1 and p>0)$, i.e., if $(a<0 or a = 1 or p <= 0)$.
-#fail-safe[Go back to @de-morgan, de Morgan's theorem, on #ref(form: "page", <de-morgan>).]
+#fail-safe[Go back to @thm:de-morgan, de Morgan's theorem, on #ref(form: "page", <thm:de-morgan>).]
 #quizzes[
-  + Based only on the above discussion, explain why $k=log_a (a^k)$ and $a^(log_a k)=k$.  <quiz:exp-change-base>
+  + Based only on the above discussion, explain why $k=log_a (a^k)$ and $a^(log_a k)=k$. <prob:exp-change-base>
 ]
 We here review basic properties of $log_a x$. Drill problems are prepared later in this section.
 
@@ -323,7 +323,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
       + $dv(, x)ln(3x)$
       + $dv(, x)log_b x$
     ]
-  #fail-safe[Review @quiz:exp-change-base for (3). Review @eq:log-base-change for (5). Recall $ee$ is just a number.]
+  #fail-safe[Review @prob:exp-change-base for (3). Review @eq:log-base-change for (5). Recall $ee$ is just a number.]
 ]
 
 #problems[
@@ -420,7 +420,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
       + $log_2|x| + log_2|x + 2| = 3$
       + $ln|x+1| + ln|x-1| = ln 4$
     ]
-  + `2` #keyword(display: "hyperbolic function")[Hyperbolic functions] are defined by<hyperbolic-intro>
+  + `2` #keyword(display: "hyperbolic function")[Hyperbolic functions] are defined by<prob:hyperbolic>
     $
       cosh x := (ee^x + ee^(-x))/2, quad
       sinh x := (ee^x - ee^(-x))/2, quad
