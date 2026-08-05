@@ -171,7 +171,7 @@ Vectors are the same if and only if they have the same magnitude and direction; 
   Meanwhile, *we should avoid* the ambiguous word "#keyword[parallel]" for vectors, as it may mean either the same direction or the opposite direction; use the phrase "has the same direction" instead.
   For more vocabulary to describe directions, please check #link("https://misho104.github.io/LecturePublic/", "the Vector Boot Camp").
 ]
-#advanced-note[Watch out we assume $k in RR$ in @def:va-sca. It restricts the discussion in this chapter to _real vectors_. In @chap:cvec, we will discuss _complex vectors_ by modifying this definition.]
+#advanced-note[Watch out we assume $k in RR$ in @def:va-sca. It restricts the discussion in this chapter to _real vectors_. In @sec:comp-vec, we will discuss _complex vectors_ by modifying this definition.]
 
 We should carefully digest these definitions.
 Let's see an example, and try the next quiz.
@@ -222,7 +222,7 @@ Addition and scalar multiplication have the following properties:
     + $1 vc(a)= vc(a).$
   ]
 ] <thm:va-axiom>
-These properties seems obvious, but in fact, they play a fundamental role in @chap:cvec.
+These properties seems obvious, but in fact, they play a fundamental role in #TODO[...].
 
 #problems[
 
@@ -276,10 +276,11 @@ This inner product has the following properties:
   #let vd(x, y) = $vc(#x) dot vc(#y)$
   #v-enum(cols: 2, label-style: "(A)")[
     + $vd(a, b)=vd(b, a),$
-    + $\(vc(a)+vc(b))dot vc(c) = vd(a, c)+vd(b, c),$
-    + $vd(a, a)=0 <==> vc(a)=vc(0),$
-    + $vc(a)dot\(vc(b)+vc(c)) = vd(a, b)+vd(a, c),$
     + $vd(a, a) >= 0 "for any vector" vc(a),$
+    + $vd(a, a) > 0 "for any vector" vc(a)!=vc(0),$
+    + $vd(a, a)=0 <==> vc(a)=vc(0),$
+    + $\(vc(a)+vc(b))dot vc(c) = vd(a, c)+vd(b, c),$
+    + $vc(a)dot\(vc(b)+vc(c)) = vd(a, b)+vd(a, c),$
     + $\(k vc(a))dot vc(b) = k\(vd(a, b)),$
     + $vc(a)dot \(k vc(b)) = k\(vd(a, b)).$
   ]
@@ -291,10 +292,12 @@ You need to memorize them securely.
 #theorem(title: "Properties of real-vector inner product")[
   $ "For a vector" vc(a), quad va(a) = sqrt(vc(a)dot vc(a)). $<eq:vip-norm>
   $ "For non-zero vectors" vc(a) "and" vc(b), quad vc(a)dot vc(b) = 0 <==> vc(a)perp vc(b). $<eq:vip-perp>
-  $ "For vectors" vc(a) "and" vc(b), quad -|vc(a)||vc(b)| <= vc(a)dot vc(b) <= |vc(a)||vc(b)|. $<eq:vip-schwartz>
+  $
+    "For vectors" vc(a) "and" vc(b), quad -|vc(a)||vc(b)| <= vc(a)dot vc(b) <= |vc(a)||vc(b)|quad(#keyword[Cauchy-Schwarz inequality]).
+  $<eq:vip-schwartz>
   $ "For vectors" vc(a) "and" vc(b), quad |vc(a) + vc(b)|^2 = |vc(a)|^2 + 2 vc(a)dot vc(b) + |vc(b)|^2 $<eq:vip-expand>
   #be-careful[These properties are valid only for "real vectors".]
-]
+]<thm:va-ip-prop2>
 
 #quizzes[
   #let vd(x, y) = $vc(#x) dot vc(#y)$
@@ -495,7 +498,8 @@ Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 
 
   - We cannot add any more vectors without violating the above two rules.
 
-  Precisely speaking, we call the set $\{vc(e)_1, ..., vc(e)_n\}$ "_an_ orthonormal basis". Then, if we fix _one_ orthonormal basis to use, we call its members "orthonormal basis vectors".]<def:va-ortho-basis>
+  Precisely speaking, we call the set $\{vc(e)_1, ..., vc(e)_n\}$ "_an_ orthonormal basis". Then, if we fix _one_ orthonormal basis to use, we call its members "orthonormal basis vectors".
+]<def:va-ortho-basis>
 #fail-safe[A woman, two women. A nucleus, two nuclei. A basis, two bases. A matrix, two matrices.]
 #example(title: "Basis vectors for arrows on this sheet")[
   #let p1 = $vc(p)_1$
@@ -557,7 +561,7 @@ In general, a space has _infinitely many_ orthonormal bases and we can choose _a
 #quizzes[
   + Show that the numbers $c_k$ in @eq:va-lin-comb are actually determined by $c_k= vc(e)_k dot vc(v).$
 ]
-#advanced-note[This theorem seems not difficult to prove because we only think finite-dimensional spaces, but there could be caveats that Sho did not notice. A more rigorous construction is in @chap:cvec.]
+#advanced-note[This theorem seems not difficult to prove because we only think finite-dimensional spaces, but there could be caveats that Sho did not notice. A more rigorous construction is in #TODO[abs-vec].]
 
 #make-indent
 If you choose an orthogonal basis, then it automatically defines the #keyword(display: "axis")[axes] of the space:

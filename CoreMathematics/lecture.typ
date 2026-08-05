@@ -38,8 +38,5 @@
 #chapter(key: "chap:complex")[Complex Numbers]
 #include "6-complex.typ"
 
-#chapter(key: "chap:cvec")[Complex Vectors]
-#include "7-cvec.typ"
-
 #chapter(key: "chap:matrix")[Matrices]
-//#include "8-matrix.typ"
+//#include "7-matrix.typ"

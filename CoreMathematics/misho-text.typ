@@ -190,8 +190,8 @@
   "problem": n => thick-sf(n),
   "quiz": n => thick-sf([Q#n.replace(regex(".*\."), "").]),
   "(1)": n => thick-sf([(#n)]),
-  "(A)": n => thick-sf("(" + str.from-unicode(64 + n) + ")"),
-  "(a)": n => thick-sf("(" + str.from-unicode(96 + n) + ")"),
+  "(A)": n => box(width: 1.3em, align(center, thick-sf("(" + str.from-unicode(64 + n) + ")"))),
+  "(a)": n => box(width: 1.3em, align(center, thick-sf("(" + str.from-unicode(96 + n) + ")"))),
   "1": n => thick-sf([#n]),
   "A": n => thick-sf(str.from-unicode(64 + n)),
   "a": n => thick-sf(str.from-unicode(96 + n)),
@@ -683,7 +683,7 @@
     } else if str(it.target).starts-with("prob:") {
       let t = query(selector(figure.where(kind: "problem")).before(it.target)).last().location()
       link(t, [Problem #counter(heading).at(t).at(0).#counter(figure.where(kind: "problem")).display("1", at: t)])
-    } else { _link-style(it) }
+    } else { it }
   }
 
   set footnote(numbering: it => text-sf([\##it]))

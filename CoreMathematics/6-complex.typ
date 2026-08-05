@@ -1,7 +1,11 @@
 #import "misho-text.typ": *
+#import "physica.typ": Im, Re, bra, braket, ket
 #import "2-units.typ": writing
-
+#import "5-vector.typ": dm, va, vc, vcu, vector-three-ways
 #let Arg = math.op("Arg")
+#let vk(x) = ket(vc(x))
+#let lbk(x, y) = $chevron.l thin#x thin|thin#y thin chevron.r$ // loose bra-ket
+#let cip(x, y) = $lbk(vc(#x), vc(#y))$
 
 You have learned complex numbers in high school but it is worth reviewing them in a university style.
 As you learned in @sec:logic-type, try to distinguish between definitions and derived consequences.
@@ -308,7 +312,7 @@ Due to the subtlety of $Arg(z)$, we do not discuss $Arg(z)$ in the rest of this 
 ]
 
 
-= Euler's formula
+= Euler's formula <sec:comp-e>
 We have seen five types of operations on complex numbers: $overline(z)$, $|z|$, $z+w$, $z w$, and $z^n$ for $n in ZZ$.
 The next step is to define $ee^z$ for $z in CC$, but we want to define it nicely: we want to keep the key properties of $ee^x$ such as $upright(d)ee^(a x)\/upright(d)x = a ee^(a x)$ and $ee^(a+b) = ee^a ee^b$ even for $a, b in CC$.
 So,
@@ -330,7 +334,7 @@ Accordingly, the polar form of complex numbers is given by
 $ z = a + b ii = r(cos theta + ii sin theta) =r exp(ii theta) = |z|exp lr(size: #180%, (ii Arg(z))). $
 
 As we defined $ee^z$ so that the key properties are kept, the following formulae are valid.
-(Compare with @exp-properties).
+(Compare with @thm:exp-prop).
 #theorem(title: [Properties of Exponential Functions (2)])[
   #no-shift[$
     "For" z, w in CC,quad
@@ -341,7 +345,7 @@ As we defined $ee^z$ so that the key properties are kept, the following formulae
     "For" z in CC "and" a>0, quad a^z = (e^(ln a))^z = e^(z ln a).
   $]
 ]<exp-complex-properties>
-Currently, we know $ln a$ only for $a>0$. So, the second statement is only for $a>0$ (see @tab:power).
+Currently, we know $ln a$ only for $a>0$. So, the second statement is only for $a>0$ (see @tab:power-summary).
 Discussions on $a^z$ for $a<=0$ and $a in.not RR$ will be given in #TODO[later?].
 
 #quizzes[
@@ -440,8 +444,8 @@ Then for $theta in RR$ and $n in ZZ$, #index[de Moivre's theorem] de Moivre's th
 ]
 
 
-= Trigonometric and Hyperbolic functions
-For real numbers, we have defined the trigonometric and hyperbolic functions (see #ref(form: "page", <hyperbolic-intro>)) by
+= Trigonometric and Hyperbolic functions <sec:comp-trig>
+For real numbers, we have defined the trigonometric and hyperbolic functions (see #ref(form: "page", <prob:hyperbolic>)) by
 #no-num[$
   & cos x = Re ee^(ii x) = (ee^(ii x) + ee^(-ii x))/(2),   & #h(4em) & cosh x = (ee^(x)+ee^(-x))/2, \
   & sin x = Im ee^(ii x) = (ee^(ii x) - ee^(-ii x))/(2ii), &         & sinh x = (ee^(x) - ee^(-x))/(2).
@@ -463,3 +467,121 @@ Then, almost obviously,
   $
 ]
 Other functions, such as $tan z$, $cot z$, $tanh z$, ... are defined similarly.
+
+#pagebreak()
+
+= Complex vectors <sec:comp-vec>
+The next step is "complex vectors". Let us recall three interpretations of vectors, given in @chap:vector:
+#vector-three-ways
+There we started from the first interpretation (@def:v-arrow) and reached the second interpretation (@def:va-comp).
+For complex vectors, the first interpretation seems not nice, but @def:va-comp looks nice to _define_ complex vectors: we just extend real numbers to complex numbers.
+#definition(title: "Inner product of Complex vectors")[
+  We define $n$-dimensional #keyword[complex vectors] by a list of $n$ complex number:
+  (cf. @def:va-comp)
+  $ vc(v) = mat(v_1; v_2; dots.v; v_n); quad v_k in CC, quad n in NN^+. $
+]
+With this definition, we can analyze complex vectors similarly as real vectors, except for one caveat.
+We would like to use @eq:va-ip-comp to define inner products, but then it would break nice properties such as @eq:vip-norm and #thick-sf[(C)] of @thm:va-ip-prop.
+#quizzes[
+  + Confirm that we cannot use @eq:va-ip-comp for complex vectors since it would break @eq:vip-norm and #thick-sf[(C)] of @thm:va-ip-prop in some cases such as $mat(1; ii)$ or $mat(0; ii)$.
+]
+So, we define inner products for complex vectors by (compare with @eq:va-ip-comp)
+#definition(title: "Complex vectors")[
+  Consider $n$-dimensional complex vectors $vc(a)$ and $vc(b)$. We define the #keyword[inner product] by
+  $
+    cip(a, b) = overline(a_1)thin b_1 + overline(a_2)thin b_2 + dots + overline(a_n)thin b_n = sum_(k=1)^n overline(a_k)thin b_k wide "(for complex vectors)."
+  $
+  We use a different notation $cip(a, b)$ to indicate it is _complex_ inner product.
+]<def:vc-ip>
+#quizzes[
+  #be-careful(indent: false)[Important quizzes!]
+  + Check that #RED[$cip(a, b) = cip(b, a)$] is false (incorrect). #hint[Find a counterexample.]
+  + Let $vc(v) = k vc(a)$ with $k in CC$. Check that #RED[$cip(v, b) = k cip(a, b)$] is false.
+]
+#remark[Cross products are not defined for complex vectors.]
+#block(breakable: false)[
+  For completeness, we give the definition of addition and scalar multiplication of complex vectors:
+
+  #definition(title: "Addition and Scalar multiplication of complex vectors")[
+    #no-shift[
+      $
+        "For complex vectors"
+        vc(a)=mat(a_1; dots.v; a_n) "and" vc(b)=mat(b_1; dots.v; b_n),quad
+        vc(a)+vc(b)=mat(a_1+b_1; dots.v; a_n+b_n),quad
+        k vc(a)=mat(k a_1; dots.v; k a_n),
+      $<eq:vc-arith>
+    ]
+    where $k in CC$.
+    (Compare with @eq:va-arith-comp: there we only considered $k in RR$, but here $k in CC$.)
+  ]]
+
+With these definitions, @thm:va-axiom holds *as is* for complex vectors (compare!):
+#theorem[
+  For $n$-dimensional complex vectors $vc(a)$ and $vc(b)$ and $p,q in CC$,
+  #v-enum(
+    cols: 2,
+    label-style: "(A)",
+  )[
+    + $vc(a)+vc(b) = vc(b)+vc(a),$
+    + $\(vc(a)+vc(b))+vc(c) = vc(a)+\(vc(b)+vc(c)),$
+    + $vc(a)+vc(0)=vc(a),$
+    + $vc(a)+(-vc(a))=vc(0),$
+    + $p vc(a) + p vc(b) = p\(vc(a)+vc(b)),$
+    + $p vc(a) + q vc(a) = (p+q) vc(a),$
+    + $(p q)vc(a) = p\(q vc(a)),$
+    + $1 vc(a)= vc(a).$
+  ]
+] <thm:vc-axiom>
+Properties in @thm:va-ip-prop are also valid for complex vectors _with slight modifications_.
+#theorem(title: "Complex-vector inner product")[
+  For vectors $vc(a)$ and $vc(b)$ drawn in the same space and a constant $k in RR$,
+  #v-enum(cols: 2, label-style: "(A)", label-align: horizon)[
+    + $cip(a, b)=overline(cip(b, a)),$
+    + $cip(a, a) >= 0 "for any vector" vc(a),$
+    + $cip(a, a) > 0 "for any vector" vc(a)!=vc(0),$
+    + $cip(a, a)=0 <==> vc(a)=vc(0),$
+    + $lbk(vc(a)+vc(b), vc(c)) = cip(a, c)+cip(b, c),$
+    + $lbk(vc(a), vc(b)+vc(c)) = cip(a, b)+cip(a, c),$
+    + $lbk(k vc(a), vc(b)) = overline(k)cip(a, b),$
+    + $lbk(vc(a), k vc(b)) = k cip(a, b).$
+  ]
+]<thm:vc-ip-prop>
+Using #thick-sf[(B)] of the above, we can define the #EMPH[magnitude] of complex vectors by
+#theorem(title: "Magnitude of complex vectors")[
+  #no-shift[$
+      "For a complex vector" vc(a)", we define its" #keyword[magnitude] "by"
+      va(a) := sqrt(cip(a, a)).
+    $
+  ]
+]
+#theorem(title: "Properties of complex-vector magnitude")[
+  For complex vectors $vc(a)$ and $vc(b)$ and a constant $k in CC$,
+  $
+    |vc(a)| >= 0, wide |vc(a)| = 0 <==> vc(a) = vc(0), wide |k vc(a)| = |k| |vc(a)|, wide |vc(a)+vc(b)| <= |vc(a)| + |vc(b)|.
+  $<eq:vc-magnitude-prop>
+]<thm:vc-magnitude-prop>
+#quizzes[
+  + In @eq:vc-magnitude-prop, what do $|k|$ and $|vc(a)|$ mean, respectively? What are their definitions?
+  + Compare @thm:vc-ip-prop with @thm:va-ip-prop and find all the differences.
+  + Prove #thick-sf[(A)] and #thick-sf[(G)] of @thm:vc-ip-prop using component-wise notation.
+  + Prove #thick-sf[(B)] and #thick-sf[(H)] of @thm:vc-ip-prop.
+    #hint[(A) and (G) might be useful.]
+]
+
+#problems[
+  Compare these problems with @thm:va-ip-prop2.
+  + `4`
+    + Verify $|vc(a) + vc(b)|^2 = |vc(a)|^2 + 2Re cip(a, b) + |vc(b)|^2$.
+    + Simplify $|(3+4ii) vc(v)|+|5 vc(v)|.$
+    + Expand the following expressions, where $k in CC$.
+      #h-enum(cols: 3)[
+        + $lr(size: #120%, |vc(v) - vc(w)|^2)$
+        + $lr(size: #120%, |vc(v) + ii vc(w)|)^2$
+        + $lr(size: #120%, |vc(v) + k vc(w)|)^2$
+      ]
+  + `3` Prove #thick-sf[(C)], #thick-sf[(D)], #thick-sf[(E)], #thick-sf[(F)] of @thm:vc-ip-prop.
+  + `2` Show #keyword[Cauchy-Schwarz inequality], $lr(|cip(a, b)|) <= |vc(a)||vc(b)|.$
+  + `2` Prove @thm:vc-magnitude-prop.
+]
+
+#advanced-note[In @chap:vector, we introduced component-wise notation with respect to a specific orthonormal basis. Here, as well, we implicitly assume the existence of an orthonormal basis for complex vectors (and the well-definedness of the dimension (cf. @def:va-dimension)). We will further discuss these topics in #TODO[matrix: basis change part] and #TODO[lin arg: existene of a basis part]].
