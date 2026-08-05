@@ -222,8 +222,7 @@ Addition and scalar multiplication have the following properties:
     + $1 vc(a)= vc(a).$
   ]
 ] <thm:va-axiom>
-These properties seems obvious, but in fact, they play a fundamental role in #TODO[...].
-
+These properties seem obvious, but in fact, they play a fundamental role in #TODO[...].
 #problems[
 
   + `3` Consider a vector $vc(a)!=vc(0)$ and a constant $k in RR$. Consider three vectors $vc(a)$, $k vc(a)$, and $k^2 vc(a)$.
@@ -261,7 +260,7 @@ Imagine two arrows. Probably you can think the angle $theta$ between the arrows.
   where $theta$ is the angle between $vc(a)$ and $vc(b)$; if $vc(a) = vc(0)$ or $vc(b) = vc(0)$, then $vc(a) dot vc(b) := 0$.
 ]<def:va-ip>
 #quizzes[
-  + Assume $vc(a)=3$ and $vc(b)=2$.
+  + Assume the length of $vc(a)$ is 3 and the length of $vc(b)$ is 2.
     + If $vc(a)perp vc(b)$, then what is $vc(a) dot vc(b)$?
     + If $vc(a)$ and $vc(b)$ are anti-parallel, what is $vc(a) dot vc(b)$?
     + What is the maximum value of $vc(a) dot vc(b)$? When is it achieved?
@@ -368,7 +367,7 @@ We will not discuss much about the cross product, but only the following propert
   ]
 ]<thm:vxp-prop>
 The equation #thick-sf[(B)] is the most important.
-For #thick-sf[(A)], notice $vc(a) times vc(a)$ is not zero.
+For #thick-sf[(A)], notice $vc(a) times vc(a)$ is not "zero".
 
 #advanced-note[
   Geometrical interpretation of the cross product is sometimes useful:
@@ -389,7 +388,7 @@ We have defined vectors as arrows. Arrows are not positions, so vectors are not 
 #definition(title: "Position vector")[
   Consider a space and fix a point O as the origin. To each point P, we associate the vector $arrow("OP")$ and call it the #keyword[position vector] of P.  We often write $vc(p)=arrow("OP")$, $vc(q)=arrow("OQ")$, and so on.
 ]
-Consider $vc(p)=arrow("OP")$, $vc(p)=arrow("OQ")$, and $vc(r)=arrow("OR")$.
+Consider $vc(p)=arrow("OP")$, $vc(q)=arrow("OQ")$, and $vc(r)=arrow("OR")$.
 They are obviously dependent on the choice of the origin O. Also, the point described by $vc(p)+vc(q)$ will be different if we chose a different point as the origin.
 However, we can check that
 
@@ -582,7 +581,7 @@ Now we are ready to express vectors in their #EMPH[components] because we have r
   $ vc(v) = mat(c_1; c_2; dots.v; c_n)= mat(vc(e)_1 dot vc(v); vc(e)_2 dot vc(v); dots.v; vc(e)_n dot vc(v)). $
 ]<def:va-comp>
 Vectors in $n$-dimensional spaces are called #keyword(key: "$-dimensional vector", display: [$n$-dimensional vector])[$bold(n)$-dimensional vectors].
-Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $n$-dimensional vddectors are expressed with $n$ real numbers $c_1, ..., c_n$.
+Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $n$-dimensional vectors are expressed with $n$ real numbers $c_1, ..., c_n$.
 
 #advanced-note[
   We have to make sure this representation is _well-defined_; we do not want to have two different expressions for one vector, or two different vectors having the same expressions.
@@ -636,7 +635,7 @@ There are a few more statements to be proved:
     #h-enum(cols: 1, label-align: horizon)[
       + Prove $vc(0)=dm(0; 0; 0)$, $vc(e)_x = dm(1; 0; 0)$, $vc(e)_y = dm(0; 1; 0)$, and $vc(e)_z = dm(0; 0; 1)$.
       + Prove $k vc(a)+ l vc(b) = dm(k a+l p; k b + l q; k c + l r).$
-      + Prove $vc(a)dot vc(p)=a p+b q+c r$ and $|vc(a)|=sqrt(c^2+b^2+c^2)$.
+      + Prove $vc(a)dot vc(p)=a p+b q+c r$ and $|vc(a)|=sqrt(a^2+b^2+c^2)$.
       + Express $vc(a)times vc(p)$ with using $a, b, c, p, q, r$.
     ]
   + `2` Consider a $n$-dimensional space ($n in NN^+$) and an orthonormal basis $(vc(e)_1, ..., vc(e)_n)$ of it. Prove the following.
@@ -662,10 +661,10 @@ Let us summarize the above discussion.
 Since you must be familiar with this component-wise notation and calculations based on it, we do not discuss it further.
 Consult your high-school math textbook or Sho's #link("https://misho104.github.io/LecturePublic/", "Vector Boot Camp") if you are not confident in such calculations.
 
-Vectors are closely related to matrices, the main topic of #TODO[].
+Vectors are closely related to matrices, the main topic of @chap:matrix.
 We will there discuss both real and complex matrices, and thus complex vectors will be introduced there. Since complex vectors are not arrows, we need to _define_ complex vectors in a way different from what we did in this chapter.
 
-To prepare for the discussion on complex matrices in #TODO[], we first review #EMPH[complex numbers] in the next chapter.
+To prepare for the discussion on complex matrices in @chap:matrix, we first review #EMPH[complex numbers] in the next chapter (@chap:complex).
 
 #problems[
   + `1` Complete the proof in "Advanced Note" after @def:va-comp.

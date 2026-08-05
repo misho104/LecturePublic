@@ -82,7 +82,7 @@ Also, notice that $root(n, a)>=0$ _by definition_.
 #be-careful[
   We *do not* consider $root(n, x)$ for $x<0$.
 ]
-#advanced-note[  It is actually not impossible to consider such cases, but Sho recommend not to use such a notation because it has some mathematical and notational subtleties. You will just be confused.]
+#advanced-note[It is actually not impossible to consider such cases, but Sho recommends not to use such notations because they involve mathematical subtleties. You will just be confused.]
 
 We are ready to define the #EMPH[power], $a^x$. Here, $a$ is called the #EMPH[base] and $x$ is called the #EMPH[exponent].
 #definition(title: [Power for positive base, real exponent])[
@@ -210,7 +210,7 @@ Two simplest cases are discussed here.
 
   Obviously, $f(x) = a^x$ is #EMPH[strictly increasing] if $a>1$; #EMPH[strictly decreasing] if $0<a<1$.
   In @sec:pow-decay, we will check this property by calculating $f'(x)$.
-  It is also important that $a^x$ can ake any positive real value. We will use these facts to define $log_a x$ below in this section.
+  It is also important that $a^x$ can take any positive real value. We will use these facts to define $log_a x$ below in this section.
 
 ][
   #plot(
@@ -452,7 +452,7 @@ Therefore, $f_0(t)=exp(A t)$ is called exponential growth if $A>0$ and exponenti
   + Consider the above function $f_0(t) = exp(A t)$ with $A,t in RR$.
     + What does "strictly increasing" mean?
     + Calculate $f'_0(t)$ and confirm the two statements in @eq:exp-growth-decay.
-    + Show that $f_0(0) = 1$ and $f'_0(t) = A f(t)$.
+    + Show that $f_0(0) = 1$ and $f'_0(t) = A f_0(t)$.
 ]
 Notice $ee^(A t) = 1$ at $t=0$.
 If the number at $t=0$ is $N$ (we assume $N>0$), we should use $N ee^(A t)$:
@@ -462,7 +462,7 @@ If the number at $t=0$ is $N$ (we assume $N>0$), we should use $N ee^(A t)$:
 
   - If $A>0$, it is strictly increasing; we call $f(t)$ #keyword[exponential growth].
 
-  - If $A>0$, it is strictly increasing; we call $f(t)$ #keyword[exponential decay].
+  - If $A<0$, it is strictly decreasing; we call $f(t)$ #keyword[exponential decay].
 
   The function $f(t)$ is characterized by $ f(0) = N, quad f'(t) = A f(t). $<eq:exp-growth-char>
   (We will come back to @eq:exp-growth-char in #TODO[ode-section].)

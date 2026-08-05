@@ -33,7 +33,7 @@ As you learned in @sec:logic-type, try to distinguish between definitions and de
   Recall, in @chap:pow, we _avoided_ definitions of $sqrt(x)$ for $x<0$.
 ]
 #advanced-note[
-  Notice that $ii$ is just a symbol and it has only one property $i dot i=-1$.
+  Notice that $ii$ is just a symbol and it has only one property $ii dot ii=-1$.
   You may well ask "$-ii$ also satisfies $(-ii)^2=-1$; which should we choose as $ii$?" but it sounds a weird question since "$-ii$" was not _a priori_: it was not there before we introduced $ii$, so we can discuss $-ii$ only after we fix $ii$.
 ]
 Hereafter, when we write #writing[$z = a + b ii in CC$], we implicitly assume $a$ and $b$ are real numbers.
@@ -75,6 +75,9 @@ Furthermore, two more important operations are defined:
 
   - its #keyword[absolute value] by $|z| := (overline(z)med z)^(1\/2) = (a^2 + b^2)^(1\/2)$.
 ]<def:comp-conj>
+//#remark[
+//  Geometrically, $|z|$ is the distance from $z$ to the origin in the complex plane, and $overline(z)$ is the reflection of $z$ in the real axis.
+//]
 #quizzes[
   + Prove that, if $z=a + b ii$, then $overline(z)z$ is a real and non-negative number.
   + Explain why $|z| >= 0$. #hint[See the definition carefully. What does $x^(1\/2)$ mean?]
@@ -534,7 +537,7 @@ With these definitions, @thm:va-axiom holds *as is* for complex vectors (compare
 ] <thm:vc-axiom>
 Properties in @thm:va-ip-prop are also valid for complex vectors _with slight modifications_.
 #theorem(title: "Complex-vector inner product")[
-  For vectors $vc(a)$ and $vc(b)$ drawn in the same space and a constant $k in RR$,
+  For $n$-dimensional complex vectors $vc(a)$ and $vc(b)$ and a constant $k in CC$,
   #v-enum(cols: 2, label-style: "(A)", label-align: horizon)[
     + $cip(a, b)=overline(cip(b, a)),$
     + $cip(a, a) >= 0 "for any vector" vc(a),$
@@ -584,4 +587,4 @@ Using #thick-sf[(B)] of the above, we can define the #EMPH[magnitude] of complex
   + `2` Prove @thm:vc-magnitude-prop.
 ]
 
-#advanced-note[In @chap:vector, we introduced component-wise notation with respect to a specific orthonormal basis. Here, as well, we implicitly assume the existence of an orthonormal basis for complex vectors (and the well-definedness of the dimension (cf. @def:va-dimension)). We will further discuss these topics in #TODO[matrix: basis change part] and #TODO[lin arg: existene of a basis part]].
+#advanced-note[In @chap:vector, we introduced component-wise notation with respect to a specific orthonormal basis. Here, as well, we implicitly assume the existence of an orthonormal basis for complex vectors (and the well-definedness of the dimension (cf. @def:va-dimension)). We will further discuss these topics in #TODO[matrix: basis change part] and #TODO[lin arg: existence of a basis part]].
