@@ -137,23 +137,22 @@ Today, science and engineering worldwide use the #keyword[SI units] (Système In
 It is built from seven #keyword[SI base units]:
 
 
-#figure(
-  caption: [SI base units and their symbols for dimension @si. Recall that units are case-sensitive.],
-  table(
-    columns: (auto, auto, auto, auto),
-    align: (left, center, left, center),
-    stroke: none,
-    table.header([*quantity*], table.cell(colspan: 2, align: center)[*symbol and name*], [*symbol for dimension*]),
-    table.hline(),
-    [time], [s], [ (second)], ds("T"),
-    [length], [m], [(meter)], ds("L"),
-    [mass], [kg], [(kilogram)], ds("M"),
-    [electric current], [A], [(ampere)], ds("I"),
-    [temperature], [K], [(kelvin)], ds("Θ"),
-    [amount of substance], [mol], [(mole)], ds("N"),
-    [luminous intensity], [cd], [(candela)], ds("J"),
-  ),
-)<tab:SI-units>
+#figure(caption: [SI base units and their symbols for dimension.], table(
+  columns: (auto, auto, auto, auto),
+  align: (left, center, left, center),
+  stroke: none,
+  table.header([*quantity*], table.cell(colspan: 2, align: center)[*symbol and name*], [*symbol for dimension*]),
+  table.hline(),
+  [time], [s], [ (second)], ds("T"),
+  [length], [m], [(meter)], ds("L"),
+  [mass], [kg], [(kilogram)], ds("M"),
+  [electric current], [A], [(ampere)], ds("I"),
+  [temperature], [K], [(kelvin)], ds("Θ"),
+  [amount of substance], [mol], [(mole)], ds("N"),
+  [luminous intensity], [cd], [(candela)], ds("J"),
+  table.hline(),
+  table.cell(colspan: 4, align: right)[See @si for details. Recall that units are case-sensitive.],
+))<tab:SI-units>
 
 
 /*

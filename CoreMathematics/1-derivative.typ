@@ -11,7 +11,7 @@ Try the next quiz---and note how long it takes.
 
 #quizzes[
   + Calculate the first derivatives of the following functions, *measuring how many minutes it takes.*
-    #h-enum(cols: 4, v-sep: 1.5em, label-align: horizon)[
+    #h-enum(cols: 4, v-sep: 1.5em)[
       + $(x+1)^3$
       + $tan x$
       + $2cos^2x$
@@ -85,7 +85,7 @@ etc. Please be careful on the position of "2" and "3".
 
 #quizzes[
   + Let $a$ be a constant and $g(x)=a x^2+2a$. Calculate
-    #h-enum(cols: 4, label-align: horizon)[
+    #h-enum(cols: 4)[
       + $g(1)$
       + $g(a)$
       + $g(0)$
@@ -96,7 +96,7 @@ etc. Please be careful on the position of "2" and "3".
       + $dv(, x)g(7)$
     ]
   + Let $f(x)=x^3 + 2x^2 + 5x + 1$. Calculate
-    #h-enum(cols: (1fr, 1fr, 1fr, 1.5fr), label-align: horizon)[
+    #h-enum(cols: (1fr, 1fr, 1fr, 1.5fr))[
       + $f^((2))(1)$
       + $f'''(1)$
       + $dv(f, x, 2)(2)$
@@ -215,7 +215,7 @@ $<eq:taylor-1>
 and this interpretation is useful in the following example:
 #example()[
   Find the approximate value of the following expressions without using calculators. Then, check your answer with a calculator.
-  #h-enum(cols: 3)[
+  #h-enum(cols: 3, label-style: "(1)")[
     + $sqrt(1.002)$
     + $(1.002)^10$
     + $sqrt(4.004)$

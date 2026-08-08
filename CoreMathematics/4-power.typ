@@ -35,7 +35,7 @@ Let's begin with a review: can you recall all the rules for powers...?
           ]]
     ]
   + Fill in the blanks, where $A > 0$, $B > 0$, and $x, y$ are real numbers.
-    #h-enum(cols: (1fr, 1fr, 1.2fr), height: 2em, label-align: horizon)[
+    #h-enum(cols: (1fr, 1fr, 1.2fr), height: 2em)[
       + $A^3 dot A^3 = A^(med blank())$
       + $(A^3)^3= A^(med blank())$
       + $(A dot B)^4 = blank() dot blank()$
@@ -53,7 +53,7 @@ Let's begin with a review: can you recall all the rules for powers...?
       + #box(inset: (y: 0.5em), $(A/B)^(-1) = blank()$)
     ]
   + With $A>0$, $B>0$, $x in RR$, and $y in RR$, the following statements are all false. Find a counterexample for each.
-    #h-enum(cols: 3, label-align: horizon)[
+    #h-enum(cols: 3)[
       + $A^x + A^y = A^(x+y)$
       + $(A+B)^x = A^x + B^x$
       + $(A dot B)^x = A dot B^x$
@@ -131,7 +131,7 @@ We are ready to define the #EMPH[power], $a^x$. Here, $a$ is called the #EMPH[ba
 ]
 #quizzes[
   + Using calculators, calculate the following numbers.
-    #h-enum(cols: 2, label-align: horizon)[
+    #h-enum(cols: 2)[
       + $3^3$ and $3^(3.1)$.
       + $root(10, 3)$ and $(root(10, 3)med)^31$
       + $root(100, 3)$ and $(root(100, 3)med)^314$
@@ -176,7 +176,7 @@ Two simplest cases are discussed here.
     align: (center, center, left, left),
     stroke: ((i, j) => if (i < 2) { (right: 0.5pt, y: 0.5pt) } else { (x: none, y: 0.5pt) }),
     table.cell(rowspan: 2, $a>0$), $x in RR$, $"(positive)"^("(real)")$, [@def:pow-pos],
-    $x in CC without RR$, $"(positive)"^("(non-real)")$, [@exp-complex-properties],
+    $x in CC without RR$, $"(positive)"^("(non-real)")$, [exp-complex-properties],
     table.cell(rowspan: 2, $a<0$),
     $x in ZZ$, $"(negative)"^("(integer)")$, [@def:pow-neg: $a^x = |a|^x times (-1)^x$],
     $x in.not ZZ$, $"(negative)"^("(others)")$, [#TODO[chapter]],
@@ -184,7 +184,7 @@ Two simplest cases are discussed here.
     $x=0$, $0^0$, [_not considered_ (but sometimes $0^0:=1$)],
     $"not" x>=0$, $0^"(other)"$, [_not considered_],
   ),
-  caption: [Summary of the definition of $a^x$ for various $a$ and $x$],
+  caption: [Summary of the definition of $a^x$ for various $a$ and $x$.],
   placement: top,
 )<tab:power-summary>
 
@@ -243,7 +243,7 @@ Two simplest cases are discussed here.
 
 #quizzes[
   + Transform the following numbers to the form of $2^□$.
-    #h-enum(cols: 6, label-align: horizon)[
+    #h-enum(cols: 6)[
       + $2$
       + $1024$
       + $sqrt(2)$
@@ -316,7 +316,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
 #quizzes[
   + Draw the graphs of $y=exp(x)$ and $y=ln x$, using computers or calculators.
   + Calculate the following, where $a>0$, $b>0$, and  $b!=1$.
-    #h-enum(cols: (1.2fr, 1fr, 1fr, 1.2fr, 1.2fr), label-align: horizon)[
+    #h-enum(cols: (1.2fr, 1fr, 1fr, 1.2fr, 1.2fr))[
       + $dv(, x)exp(x)$
       + $dv(, x)ee^(-3x)$
       + $dv(, x)a^(x)$
@@ -399,7 +399,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
       + $ee^(2x) - 3ee^x + 2 = 0$
     ]
   + `3` Draw the graphs of the following functions.
-    #h-enum(cols: 5, label-align: horizon)[
+    #h-enum(cols: 5)[
       + $y = 2^x$
       + $y = 0.5^(x)$
       + $y = (root(3, 2))^x$
@@ -429,7 +429,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
     + Calculate the derivative of $cosh x$, $sinh x$, and $tanh x$.
     + Draw the graphs of $cosh x$, $sinh x$, and $tanh x$.
     + Show the following properties:
-      #h-enum(cols: (1fr, 1.2fr), label-align: horizon)[
+      #h-enum(cols: (1fr, 1.2fr))[
         + $cosh^2 x - sinh^2 x = 1$.
         + $cosh x >= 1$ for all $x$.
         + $cosh x$ is an even function.
@@ -476,7 +476,7 @@ If the number at $t=0$ is $N$ (we assume $N>0$), we should use $N ee^(A t)$:
   We also define the #keyword[half-life] $th$ so that, at the time $th$, the number becomes half ($N\/2$) of the number $N$ at $t=0$.
   #quizzes[
     +
-      #h-enum(label-align: horizon, cols: 1)[
+      #h-enum(cols: 1)[
         + Show that $f'(t) = -Gamma f(t)$.
         + Show that $th = tau ln 2$. Namely, show $f(t)=N\/2$ at the time $t= tau ln 2$.
         + Assume $f(0) = 40$. Find $f(th)$, $f(2th)$, and $f(3th)$.

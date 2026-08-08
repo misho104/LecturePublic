@@ -135,7 +135,7 @@ $
     + What are the real part, imaginary part, and complex conjugate of each? (goal time: )
     + What are their absolute values? (goal time: 120 seconds)
   + `9` Calculate the following.
-    #h-enum(cols: 3, label-align: horizon)[
+    #h-enum(cols: 3)[
       + $(3+2ii)+(4-5ii)$
       + $(-2+7ii)-(5+3ii)$
       + $(6-4ii)-(-1+2ii)$
@@ -209,7 +209,7 @@ The following relations hold for these operations. They are somewhat obvious, bu
 
 #quizzes[
   + Calculate them.
-    #h-enum(cols: (1fr, 0.8fr, 0.8fr, 1fr), label-align: horizon)[
+    #h-enum(cols: (1fr, 0.8fr, 0.8fr, 1fr))[
       + $lr(|(sqrt(2)+ ii sqrt(7))^4|)$
       + $lr(|11+22ii|)^2$
       + $lr(|(1+ii)/(med 1-ii med)|)$
@@ -439,7 +439,7 @@ Then for $theta in RR$ and $n in ZZ$, #index[de Moivre's theorem] de Moivre's th
   + `2` For $n in NN^+$ the equation $z^n=1$ has $n$ solutions. They are called the $n$-th roots of unity.
     + Let $omega = ee^(2pi i\/n)$. Show that $omega^k$ with $k=0, 1, ..., n-1$ are the solutions of $z^n=1$.
     + Show the following equations for $n>=2$:
-      #h-enum(cols: (.8fr, 1fr, 1.8fr), label-align: horizon)[
+      #h-enum(cols: (.7fr, 1fr, 1.9fr))[
         + $display(sum_(k=0)^(n-1) omega^k = 0)$
         + $display(product_(k=0)^(n-1) omega^k = (-1)^(n+1))$
         + $display(sum_(k=0)^(n-1) cos((2pi k)/n) =sum_(k=0)^(n-1) sin((2pi k)/n)= 0)$
@@ -538,7 +538,7 @@ With these definitions, @thm:va-axiom holds *as is* for complex vectors (compare
 Properties in @thm:va-ip-prop are also valid for complex vectors _with slight modifications_.
 #theorem(title: "Complex-vector inner product")[
   For $n$-dimensional complex vectors $vc(a)$ and $vc(b)$ and a constant $k in CC$,
-  #v-enum(cols: 2, label-style: "(A)", label-align: horizon)[
+  #v-enum(cols: 2, label-style: "(A)")[
     + $cip(a, b)=overline(cip(b, a)),$
     + $cip(a, a) >= 0 "for any vector" vc(a),$
     + $cip(a, a) > 0 "for any vector" vc(a)!=vc(0),$
@@ -576,15 +576,32 @@ Using #thick-sf[(B)] of the above, we can define the #EMPH[magnitude] of complex
   + `4`
     + Verify $|vc(a) + vc(b)|^2 = |vc(a)|^2 + 2Re cip(a, b) + |vc(b)|^2$.
     + Simplify $|(3+4ii) vc(v)|+|5 vc(v)|.$
-    + Expand the following expressions, where $k in CC$.
-      #h-enum(cols: 3)[
-        + $lr(size: #120%, |vc(v) - vc(w)|^2)$
-        + $lr(size: #120%, |vc(v) + ii vc(w)|)^2$
-        + $lr(size: #120%, |vc(v) + k vc(w)|)^2$
-      ]
+    + Expand $lr(size: #120%, |vc(v) - vc(w)|^2)$, $lr(size: #120%, |vc(v) + ii vc(w)|)^2$, and $lr(size: #120%, |vc(v) + k vc(w)|)^2$ with $k in CC$.
   + `3` Prove #thick-sf[(C)], #thick-sf[(D)], #thick-sf[(E)], #thick-sf[(F)] of @thm:vc-ip-prop.
-  + `2` Show #keyword[Cauchy-Schwarz inequality], $lr(|cip(a, b)|) <= |vc(a)||vc(b)|.$
-  + `2` Prove @thm:vc-magnitude-prop.
+  + `2` Prove @thm:vc-magnitude-prop. Also, prove #keyword[Cauchy-Schwarz inequality], $lr(|cip(a, b)|) <= |vc(a)||vc(b)|.$
 ]
 
-#advanced-note[In @chap:vector, we introduced component-wise notation with respect to a specific orthonormal basis. Here, as well, we implicitly assume the existence of an orthonormal basis for complex vectors (and the well-definedness of the dimension (cf. @def:va-dimension)). We will further discuss these topics in #TODO[matrix: basis change part] and #TODO[lin arg: existence of a basis part]].
+Recall that the component-wise notation was introduced in @sec:vec-comp with respect to a _specific_ orthonormal basis vectors.
+Our discussion in this section is also built over a _specific_ orthonormal basis vectors,
+$
+  vc(e)_1 = mat(1; 0; dots.v; 0), quad vc(e)_2 = mat(0; 1; dots.v; 0), dots, quad vc(e)_n = mat(0; 0; dots.v; 1), quad "with which"
+  vc(v) = mat(v_1; v_2; dots.v; v_n) = sum_(k=1)^n v_k vc(e)_k.
+$<eq:vc-comp-basis>
+#definition(title: "Orthonormal basis vectors for complex vectors")[
+  Assume that we are considering $n$-dimensional _complex_ vectors. If $n$ _complex_ vectors $vc(e)_1, ..., vc(e)_n$ satisfy the following properties, we call them #EMPH[an] #keyword[orthonormal basis] (for complex vectors):
+
+  - All of them are unit vectors, i.e., $|vc(e)_i|=1$ for all $i$.
+
+  - Any of them are perpendicular, i.e., $i!=j ==> lbk(vc(e)_i, vc(e)_j)=0$.
+
+  - We cannot add any more vectors without violating the above two rules.
+]<def:vc-ortho-basis>
+#quizzes[
+  + Compare this definition with @def:va-ortho-basis and find the differences.
+  + Check that ${vc(e)_1, ..., vc(e)_n}$ in @eq:vc-comp-basis is a basis.
+]
+
+#advanced-note[
+  In mathematical literature, you may find different notations for the inner product.
+  Most physicists write $cip(a, b)=sum overline(a_k)b_k$, which we use in this document. Meanwhile, mathematicians tend to denote inner products by $\(vc(a), vc(b)\)$ and define it by $\(vc(a), vc(b)\)=sum a_k overline(b_k)$, or even $cip(a, b)=sum a_k overline(b_k)$.
+]

@@ -10,6 +10,8 @@
 #let vcu(v) = $accent(#v, hat)$
 #let dm(..args) = math.display(math.mat(..args))
 
+#let vip(a, b) = $vc(#a) dot vc(#b)$
+
 #let xy-plus(p, q) = (p.at(0) + q.at(0), p.at(1) + q.at(1))
 #let vector(p, d, label: none, end: "stealth", offset: (0, 0), color: black, thickness: 1.5pt, dash: none) = {
   draw.line(
@@ -424,7 +426,7 @@ Then, how about them? Try to ensure that you understand the meaning of each oper
 #problems[
   + `9` For each expression, answer *V* if it is a vector, *S* if scalar, and *N* if invalid (not defined).
     Here, $vc(a), vc(b), ...$ are three-dimensional vectors and $a, b, ...$ are scalars (real numbers).
-    #h-enum(cols: 5, label-align: horizon, v-sep: 0em, fixed-height: 3em, block-spacing: (below: 0pt))[
+    #h-enum(cols: 5, v-sep: 0em, fixed-height: 3em, block-spacing: (below: 0pt))[
       + $vc(a)$
       + $vc(a)^2$
       + $(vc(a))^2$
@@ -469,7 +471,7 @@ Then, how about them? Try to ensure that you understand the meaning of each oper
       + $|vc(a)|^(-1) vc(a)$
       + $|vc(a)|^(-1\/2) vc(a)$
     ]
-    #h-enum(cols: 4, label-align: horizon, label-start: 41, v-sep: 0em, fixed-height: 3em)[
+    #h-enum(cols: 4, label-start: 41, v-sep: 0em, fixed-height: 3em)[
       + $vc(p) dot vc(q) + vc(p) times vc(q)$
       + $vc(p) times (vc(q) times vc(r))$
       + $vc(p) dot (vc(q) times vc(r))$
@@ -541,7 +543,7 @@ Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 
 ]
 This example shows we can find many orthogonal bases, but *the number* of the members is always two. This number is called the #EMPH[dimension] of the space, and this is why we call "this _2d_ sheet" in the above example.
 
-In general, a space has _infinitely many_ orthonormal bases and we can choose _an_ orthonormal basis at our convenience. However, the number of the orthonormal basis vectors, the #EMPH[dimension], is fixed by the space we considered.
+In general, a space has _infinitely many_ orthonormal bases and we can choose _an_ orthonormal basis at our convenience; we will come back to this point in @sec:mat-basis-change. However, the number of the orthonormal basis vectors, the #EMPH[dimension], is fixed by the space we considered.
 
 #theorem(title: "Properties of orthonormal basis vectors")[
   - Any orthonormal bases of a space have the same number of vectors. We call the number #EMPH[the] #keyword[dimension] of the space.
@@ -563,7 +565,7 @@ In general, a space has _infinitely many_ orthonormal bases and we can choose _a
 #advanced-note[This theorem seems not difficult to prove because we only think finite-dimensional spaces, but there could be caveats that Sho did not notice. A more rigorous construction is in #TODO[abs-vec].]
 
 #make-indent
-If you choose an orthogonal basis, then it automatically defines the #keyword(display: "axis")[axes] of the space:
+If you choose an orthonormal basis, then it automatically defines the #keyword(display: "axis")[axes] of the space:<topic:basis-defines-axes>
 
 - For a 2d space, we call the directions of the basis vectors as $x$-axis and $y$-axis, respectively. Sho usually writes the basis vectors by $vc(e)_x$ and $vc(e)_y$, but other textbooks may write as $hat(bold(upright(i)))$ and $hat(bold(upright(j)))$.
 
@@ -593,7 +595,7 @@ Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $
 #problem-style-label.update(true)
 #example[
   Prove the following equations in a 2d space.
-  #h-enum(cols: 3, label-style: "(1)", label-align: horizon)[
+  #h-enum(cols: 3, label-style: "(1)")[
     + $display(mat(a; b) + mat(p; q) = mat(a + p; b + q))$
     + $display(mat(a; b) dot mat(p; q) = a p + b q)$
     + $display(lr(|mat(a; b)|) = sqrt(a^2 + b^2))$

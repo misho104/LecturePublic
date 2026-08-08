@@ -138,7 +138,7 @@ This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equ
 #quizzes[
   +
     + If $m r omega^2 = 10.0 unit("kg"*m/s^2)$, $m=5.0kg$, and $r=1.0 meter$, what is $omega$?
-    + If $v_0t + 1/2a t^2=5.0meter$, where $a=-4.0mpss$ and $v_0=7.0 mps$, what is  $t$?
+    + If $v_0t + (1\/2)a t^2=5.0meter$ with $a=-4.0mpss$ and $v_0=7.0 mps$, what is $t$?
     + At time $t=0$, a particle is at $(x,y)=(2.0meter,0)$. It moves with a constant velocity $(v_x,v_y)=(3.0,4.0) mps$. What is its position at $t=1.0 second$?
 ]
 
@@ -350,7 +350,7 @@ Other calculations, such as $sqrt(x)$, $ee^(x)$ or $sin(x)$, need the profession
 As a rule, if $x$ has $m$ significant figures and $y$ has $n$ significant figures, then $x times m$ or $x div y$ should be rounded to have $min(m, n)$ significant figures. ...But the rule is tough to understand. Probably you should see the example, and learn through practice.
 
 #example()[ Calculate the following expressions, using calculators.
-  #h-enum(cols: 4)[
+  #h-enum(cols: 4, label-style: "(1)")[
     + $8.912 times 2.4$
     + $5.0 div 3.14$
     + $2.01 times 49.8$
@@ -409,7 +409,7 @@ You can understand the rules easily if you do long addition and observe which di
 
 #example[
   Calculate the following expressions.
-  #h-enum(cols: (1fr, 1fr, 1fr, 1.5fr))[
+  #h-enum(cols: (1fr, 1fr, 1fr, 1.5fr), label-style: "(1)")[
     + $12.3 + 4.56$
     + $123 + 4.56$
     + $0.50 - 0.032$

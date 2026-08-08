@@ -39,4 +39,4 @@
 #include "6-complex.typ"
 
 #chapter(key: "chap:matrix")[Matrices]
-//#include "7-matrix.typ"
+#include "7-matrix.typ"

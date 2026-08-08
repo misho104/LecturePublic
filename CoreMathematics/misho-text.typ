@@ -69,6 +69,8 @@
   left-margin: 2.5em,
   indent: 17pt,
   problem-label-width: 1.5em,
+  leading: 0.65em, // typst default
+  spacing: 1.2em, // typst default
 )
 
 // ==== Decorations ====================================================================================================
@@ -116,6 +118,7 @@
 #let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
 #let root(n, x) = math.root(move($math.script(#n)$, dy: -0.4em), x)
 #let math-strong(t) = text(font: _font-serif, strong(t))
+#let TT = $thin upright(T)$
 
 // #show math.attach: it => {
 //   if it.has("label") and it.label == <u1> {
@@ -226,7 +229,7 @@
   label-sep: dim.label-sep,
   label-style: auto,
   label-start: 1,
-  label-align: top,
+  label-align: auto,
   v-sep: 1em,
   h-sep: 0mm,
   inset: (:),
@@ -245,20 +248,16 @@
   #let label-width = if label-width == auto {
     if problem-style-label.get() { dim.problem-label-width } else { dim.label-width }
   } else { label-width }
+  #let align-default = if cols == 1 { top } else { horizon }
   #let separator = if (fixed-height == none) { none } else { box(height: fixed-height, "") }
   #set par(first-line-indent: 0em, hanging-indent: 0em)
   #block(..block-spacing, grid(
-    columns: if type(cols) == int { range(cols).map(it => 1fr) } else { cols },
+    columns: (if type(cols) == int { (1fr,) * cols } else { cols }).map(x => (label-width, label-sep, x)).flatten(),
     column-gutter: h-sep,
     row-gutter: v-sep,
-    ..items
-      .pos()
-      .map(((i, body)) => grid(
-        columns: (label-width, label-sep, auto),
-        align: (right + label-align, label-align, left),
-        inset: (inset, 0em, 0em),
-        if (i != none) { style(label-start + i) }, separator, body,
-      ))
+    inset: (inset, 0mm, 0mm),
+    align: ((if label-align == auto { align-default } else { label-align }) + right, horizon, align-default + left),
+    ..items.pos().map(((i, body)) => (if (i != none) { style(label-start + i) }, separator, body)).flatten()
   ))
   #_enum-depth.update(d => d - 1)
 ]
@@ -377,7 +376,7 @@
   let inset = (left: 4mm, right: 4mm, top: 0.6em, bottom: 0.6em, middle-above: 1mm, middle-below: 2mm) + inset
   let _i(key) = inset.at(key, default: 0mm)
   set text(top-edge: "bounds", bottom-edge: "bounds") if call-out
-  set par(leading: 0.43em, spacing: 0.43em) if call-out
+  set par(leading: dim.leading * 2 / 3, spacing: dim.leading * 2 / 3) if call-out
   (it => if indent { pad(left: dim.shift, it) } else { it })[
     #if head-box != none {
       block(
@@ -705,8 +704,8 @@
   set par(
     justify: true,
     first-line-indent: dim.indent,
-    leading: 0.65em, // default
-    spacing: 1.2em, // default
+    leading: dim.leading,
+    spacing: dim.spacing,
     justification-limits: (
       spacing: (min: 100% * 2 / 3, max: 150%), // default
       tracking: (min: -0.01em, max: 0.02em),
