@@ -92,7 +92,7 @@ This document is primarily for first-year undergraduate students in their second
   )
   #i(
     2,
-    [These are #EMPH[intermediate] problems. Solve these if you are aiming for an A+. Note also that, at this level, you are asked to write answers carefully with clear explanations.],
+    [These are #EMPH[intermediate] problems. Solve these if you are aiming for an A+ in this course and also outperform others in your future courses. Note also that, at this level, you are asked to write answers carefully with clear explanations.],
   )
   #i(
     1,

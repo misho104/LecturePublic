@@ -18,7 +18,7 @@
 
 // ----------------------------------------------------------------
 
-= Review: Vectors as Lists of Numbers <sec:mat-vec-review>
+= Review: Vectors as lists of numbers <sec:mat-vec-review>
 We discuss matrices#footnote[One dog, two dogs. One matrix, two matrices. One vertex, two vertices. One index, two indices.] in this chapter.
 A matrix is deeply tied to vectors.
 Since a matrix is described as a two-dimensional list of numbers,
@@ -178,13 +178,16 @@ We introduce matrices as a 2d extension of vectors.
       A_(m 1), A_(m 2), dots, A_(m n);
     ); quad a_(j k) in KK.
   $
-  In particular; we name a #keyword[rows], a #keyword[column] and a #keyword[component] as follows:
+  In particular; we name a #EMPH[row], a #EMPH[column] and a #EMPH[component] as follows:
+  #index("row (vector)")
+  #index("column (vector)")
+  #index("component (vector)")
   $
     j"-th row:" mat(A_(j 1), A_(j 2), dots, A_(j n)); quad
     k"-th column:" mat(A_(1 k); dots.v; A_(m k)); quad
     (j,k)"-component:" A_(j k);
   $
-  "$n times m$" is called the #keyword[size] of the matrix. We write the set of all $n times m$ matrix as $KK^(m,n)$.
+  "$n times m$" is called the #EMPH[size] of the matrix. We write the set of all $n times m$ matrix as $KK^(m,n)$.#index("size (matrix)")
 ]
 For example, we can write #writing[$M$ is a complex $3 times 2$ matrix] by #writing[$M in CC^(3,2)$].
 #remark[
@@ -196,8 +199,14 @@ For example, we can write #writing[$M$ is a complex $3 times 2$ matrix] by #writ
   + Write a $5 times 2$ matrix. Answer the number of its components. Answer how many rows and columns does it have. Answer the number of the components in its first row. Answer the number of the components in its first column.
   + Consider a $a times b$ matrix. Answer the number of its components. Answer how many rows and columns does it have. Answer the number of the components in its first row. Answer the number of the components in its first column.
 ]
-Also, vectors $vc(v)=mat(v_1; dots.v; v_n)$ are called #keyword[column vectors].
-We will later see #keyword[row vectors] $vc(v)^TT=mat(v_1, dots, v_n)$.
+
+Elements at the diagonal, $A_11$, $A_22$, ..., $A_(n n)$ are called the #keyword[diagonal elements]. Meanwhile, other elements, i.e., $A_(i j)$ with $i!=j$, are called the #keyword[off-diagonal elements].
+Also, vectors $vc(v)=mat(v_1; dots.v; v_n)$ are called #EMPH[column vectors].
+We will later see #EMPH[row vectors] $vc(v)^TT=mat(v_1, dots, v_n)$.
+#index("vector", "column vector")
+#index-see("column vector", "vector")
+#index("vector", "row vector")
+#index-see("row vector", "vector")
 #quizzes[
   + $1 times n$ matrices and $n times 1$ matrices can be identified as column vectors or row vectors. Which is which?
 ]
@@ -211,12 +220,12 @@ A real matrix is (of course) a complex matrix, so it is almost enough if you lea
 You need to learn following operations for matrices:
 - addition and scalar multiplication
 - transposition, complex conjugate, and Hermitian conjugate
-- matrix multiplication (@sec:mat-mul)
+- matrix multiplication
 - trace and determinant (@sec:mat-det)
 
-#keyword[Addition] and #keyword[scalar multiplication] are defined just like vectors:
+#EMPH[Addition]#index("addition (matrix)") and #keyword[scalar multiplication] are defined just like vectors:
 #definition(title: [Addition and scalar multiplication])[
-  #keyword[Addition] and #keyword[scalar multiplication] of $m times n$ matrices are defined by
+  #EMPH[Addition] and #keyword[scalar multiplication] of $m times n$ matrices are defined by
   $
     A + B := mat(A_(11) + B_(11), A_(12) + B_(12), dots, A_(1 n) + B_(1 n); A_(21) + B_(21), A_(22) + B_(22), dots, A_(2 n) + B_(2 n); dots.v, dots.v, dots.down, dots.v; A_(m 1) + B_(m 1), A_(m 2) + B_(m 2), dots, A_(m n) + B_(m n)),
     quad

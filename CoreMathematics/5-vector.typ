@@ -402,6 +402,90 @@ However, we can check that
 These properties are independent of the choice of O. Namely, whatever choice we did for origin, $(vc(p)+vc(q))\/2$ represents the midpoint of PQ.
 For further discussion, please check #link("https://misho104.github.io/LecturePublic/", "the Vector Boot Camp").
 
+#problems[
+  + `3` Show that the length of the segment PQ is given by $|vc(q)-vc(p)|$, where $vc(p)$ and $vc(q)$ are the position vectors of points P and Q, respectively.
+  + `2` Let $vc(p)$, $vc(q)$, and $vc(r)$ be the position vectors of points P, Q, R respectively, which are not on the same line.
+    + Show that $(vc(p)+vc(q))\/2$ is the position vector of the midpoint of the segment PQ.
+    + Show that $(vc(p)+vc(q)+vc(r))\/3$ is the position vector of the centroid of the triangle PQR.
+  + `1` Let $vc(a)$, $vc(b)$, and $vc(p)$ be the position vectors of points A, B, P, respectively. Show the following.
+    + #box(width: 10em)[P is on the segment AB] $<==> vc(p) = t vc(a)+(1-t)vc(b) quad "with" 0<= t<= 1$.
+    + #box(width: 10em)[P is on the line AB] $<==> vc(p) = t vc(a)+(1-t)vc(b) quad "with" t in RR$.
+]
+
+= Linear combination <sec:vec-lc>
+#remark[
+  This is a bit advanced. You may well come back when you read @chap:matrix.
+]
+We often consider a #keyword[linear combination]. For example, $3x + 2y$, $-x+sqrt(2)y$, and $-3y$ $(=0x-3y)$ are linear combination of $x$ and $y$.
+Similarly, we can consider linear combinations of vectors.
+#definition(title: "Linear combination of vectors")[
+  For vectors living in the same space, $vc(a), vc(b), vc(c), ...$, and scalars $p, q, r, ...$, we call $ p thin vc(a) + q thin vc(b)+ r thin vc(c) + dots.c $ a #EMPH[linear combination] of $vc(a), vc(b), vc(c), ...$.
+
+  Some of the coefficients $p, q, r, ...$ may be zero. Also, all the coefficients may be zero, where the linear combination results in $vc(0)$.
+]
+#advanced-note[It is sometimes important whether the summation allows infinite terms; in this document, we only allows finite summation as a linear combination.]
+
+#definition(title: "Linearly dependent or independent")[
+  Consider (a finite number of) vectors $\{vc(a), vc(b), vc(c), ...\}$ in the same space.
+  Then, the equation
+  $
+    p thin vc(a) + q thin vc(b)+ r thin vc(c) + dots.c = vc(0)
+  $
+  always has a trivial solution $p=q=r=dots.c=0$.
+  If there are other solutions, we say that $\{vc(a), vc(b), vc(c), ...\}$ are #keyword[linearly dependent]. Meanwhile, if there is no other solution, we say that they are #keyword[linearly independent].
+]
+#example[
+  #let ss(m, c) = (
+    ($lr(\{#m.join($,$)\})$, m.zip((c)).map(i => $#i.at(1) thin #i.at(0)$).join($+$))
+  )
+  #let (x1, x2) = ss(($mat(1; 0)$, $mat(1; 4)$), ($a$, $b$))
+  + The set $x1$ is linearly independent; the equation $x2=vc(0)$ has only one solution $a=b=0$ (_the trivial solution_).
+
+  #let (x1, x2) = ss(($mat(2; 4)$, $mat(1; 2)$), ($a$, $b$))
+  + The set $x1$ is linearly dependent because $x2=vc(0)$ has a non-trivial solution $a=1, b=-2$.
+
+  #let (x1, x2) = ss(($mat(1; 0; 0)$, $mat(1; 1; 0)$, $mat(1; 1; 1)$), ($a$, $b$, $c$))
+  + The set $x1$ is linearly independent; $x2=vc(0)$ is satisfied only by the trivial solution $a=b=c=0$.
+
+  #let (x1, x2) = ss(($mat(2; 0; 0)$, $mat(0; 2; 2)$, $mat(1; 1; 1)$), ($a$, $b$, $c$))
+  + The set $x1$ is linearly dependent; $x2=vc(0)$ has a non-trivial solution $(a,b,c)=(1,1,-2)$.
+]
+If a set is linearly dependent, at least one vector among them can be described as a linear combination of the other vectors.
+For example, in the example above,
+$
+  "(for the second example)" & quad mat(2; 4) = 2 times mat(1; 2), \
+    "(for the last example)" & quad mat(2; 0; 0) = 1 times mat(0; 2; 2) + (-2)times mat(1; 1; 1).
+$
+So, we may understand that $mat(2; 0; 0)$ is "dependent" on $mat(0; 2; 2)$ and $mat(1; 1; 1)$.
+Meanwhile, if a set is linearly independent, it is impossible to do so; every vector in the set is "independent" of the other vectors.
+
+#theorem[
+  Consider (a finite number of) vectors $\{vc(a), vc(b), vc(c), ...\}$.
+
+  - If they are linearly dependent, at least one vector among them can be described as a linear combination of the other vectors.
+
+  - If they are linearly independent, it is impossible to do so. Namely, we cannot express any vector among them as any linear combination of the remaining vectors.
+]<thm:va-lin-dep>
+#quizzes[
+  + Consider the following sets of vectors. Determine whether they are linearly dependent or independent.
+    #h-enum(cols: 3, v-sep: 0em, fixed-height: 3em)[
+      + $lr(\{mat(1; 0), mat(0; 3)\})$
+      + $lr(\{mat(1; 0), mat(1; 1)\})$
+      + $lr(\{mat(1; 2), mat(3; 4)\})$
+      + $lr(\{mat(1; -1), mat(-1; 1)\})$
+      + $lr(\{mat(1; 0), mat(2; 0), mat(3; 0)\})$
+      + $lr(\{mat(1; 0), mat(3; 3), mat(4; 3)\})$
+      + $lr(\{mat(1; 0; 0), mat(0; 1; 0), mat(0; 0; 1)\})$
+      + $lr(\{mat(1; 2; 0), mat(4; 8; 1)\})$
+      + $lr(\{mat(1; 2; 0), mat(4; 8; 0)\})$
+    ]
+]
+#problems[
+  + `4` #TODO[prepare]
+  + `3` #TODO[prepare]
+  + `2` #TODO[prepare]
+
+]
 
 #pagebreak()
 

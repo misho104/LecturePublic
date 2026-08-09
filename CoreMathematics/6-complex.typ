@@ -584,6 +584,10 @@ Using #thick-sf[(B)] of the above, we can define the #EMPH[magnitude] of complex
   + `2` Prove @thm:vc-magnitude-prop. Also, prove #keyword[Cauchy-Schwarz inequality], $lr(|cip(a, b)|) <= |vc(a)||vc(b)|.$
 ]
 
+#make-indent
+Linear combinations of complex vectors are defined similarly as real vectors (see @sec:vec-lc); the only difference is that we can use complex coefficients instead of real coefficients.
+Linear dependence and independence are defined in the same manner, and @thm:va-lin-dep holds, but the solutions now allow complex numbers.
+
 Recall that the component-wise notation was introduced in @sec:vec-comp with respect to a _specific_ orthonormal basis vectors.
 Our discussion in this section is also built over a _specific_ orthonormal basis vectors,
 $
