@@ -23,7 +23,7 @@
 #chapter(key: "chap:deriv")[Derivative (Review)]
 #include "1-derivative.typ"
 
-#chapter(key: "chap:units")[Units and Significant figures]
+#chapter(key: "chap:units")[Units and Significant Figures]
 #include "2-units.typ"
 
 #chapter(key: "chap:logic")[Logic]
@@ -32,7 +32,7 @@
 #chapter(key: "chap:pow")[Power, Exponential, and Logarithm]
 #include "4-power.typ"
 
-#chapter(key: "chap:vector")[Vectors as arrows]
+#chapter(key: "chap:vector")[Vectors as Arrows]
 #include "5-vector.typ"
 
 #chapter(key: "chap:complex")[Complex Numbers]

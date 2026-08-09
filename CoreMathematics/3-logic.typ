@@ -32,7 +32,7 @@ but *what do they mean?*
 
 Elementary educations do not discuss these differences because kids do not know *logical thinking*. Now, you are a grown-up university student. You need to think about it.
 
-= Basic Logics <sec:logic-basic>
+= Basic logics <sec:logic-basic>
 
 Since elementary school, you have written many equalities and inequalities, such as
 #no-num(comma-gap: auto, $3+5=8, 6+2=10, 1+3>-3, 1+3!=0, 3^3=9, 1>2, "and" quad sin(pi)!=0.$)
@@ -119,7 +119,7 @@ Numbers can be manipulated by operators such as $+$, $div$. Similarly, true (T) 
   )
   are both correct, but if you say "$x=1 "and" x=-1$", then it means an impossible equality $x=1=-1$.
 ]
-= Implication ⟹
+= Implication
 
 
 We can discuss the following statements: are they true or false?
@@ -171,7 +171,7 @@ and this is called  #keyword[implication]. For example, the statements in the ab
   Through this definition, it is clear that $A=>B$ is equivalent to $not B => not A$, which we will see below.
 ]
 
-= Equivalent Statements---What does "solve" mean? <sec:logic-equiv>
+= Equivalence and "Solving an equation" <sec:logic-equiv>
 
 Since elementary school, you have solved many equations, but what does "solving an equation" mean?
 
@@ -374,7 +374,7 @@ Before discussing advanced topics on logics, you should do some drills.
     + Explain the reason we can understand $A<=>B$ as $A=B$.
     + Write a truth table for the following expressions:
       #no-num(comma-gap: auto, $A and B, not(A and B), (not A)or(not B), not(A or B), (not A)and(not B)$)
-      Explain that this truth table is considered as a _proof_ of #keyword(display: "de Morgan's theorem")[de Morgan's theorem]
+      Explain that this truth table is considered as a _proof_ of #keyword(display: [de Morgan#sym.quote.r.single;s theorem])[de Morgan's theorem]
       $
         not(A or B) = (not A)and(not B), quad quad not(A and B) = (not A)or(not B).
       $
@@ -453,7 +453,7 @@ Let's see an example.
 
   - Its #keyword[contrapositive] ($"not" A arrow.l.double "not" B$) is $(x^2 >= 4) => (x <= 0 "or" x >= 2)$, which is true.
 ]
-Because the contrapositive of a true statement is always true, we can prove a statement by proving its contrapositive. This method is called #keyword[proof by contrapositive].
+Because the contrapositive of a true statement is always true, we can prove a statement by proving its contrapositive. This method is called #EMPH[proof by contrapositive].#index("proof", "proof by contrapositive")
 #quizzes[
   + For each of the following statements, write its converse, inverse, and contrapositive. Then state whether each of them is true or false.
     #h-enum(cols: 2)[
@@ -470,7 +470,7 @@ Because the contrapositive of a true statement is always true, we can prove a st
       + If $n^2$ is not integer, then $n$ is not integer.
     ]
 ]
-Another powerful method is #keyword[proof by contradiction] (deductio ad absurdum). Imagine you prove "if $A$, then $B$". You assume "$A$" and "not $B$" are both true, and derive a contradiction. If you reach a contradiction, it means "$A$ and not $B$" is false, i.e., "not ($A$ and not $B$)" is true, which means $A=>B$.
+Another powerful method is #EMPH[proof by contradiction] (deductio ad absurdum). Imagine you prove "if $A$, then $B$". You assume "$A$" and "not $B$" are both true, and derive a contradiction. If you reach a contradiction, it means "$A$ and not $B$" is false, i.e., "not ($A$ and not $B$)" is true, which means $A=>B$.#index("proof", "proof by contradiction")
 #quizzes[
   + Prove the following statements by _proof by contradiction_.
     + If $x^2$ is an even integer, then $x$ cannot be an odd integer.
@@ -484,7 +484,7 @@ Another powerful method is #keyword[proof by contradiction] (deductio ad absurdu
 ]
 
 
-= Facts, Definitions, Assumptions, and Conclusions <sec:logic-type>
+= Roles of statements <sec:logic-type>
 
 One of the main reasons students find university physics difficult is that they treat all statements in the same way.
 In physics, every statement has its own role:

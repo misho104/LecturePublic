@@ -42,7 +42,7 @@
   )
 }
 
-A #keyword[physical quantity] is usually not just a number, but also has a #keyword[unit] and an #keyword[uncertainty] (error).
+A #keyword[physical quantity] is usually not just a number, but also has a #keyword(display: "unit (physics)")[unit] and an #keyword[uncertainty] (error).
 For example, "$(72 ± 2)kg$" has a number "72" and a unit "kg", which compose the #keyword[central value] "$72kg$".
 It also has uncertainty because every measurement has an uncertainty.
 In experimental physics, uncertainty is usually more important than the central value, and thus uncertainty handling is a fundamental skill of physicists.
@@ -53,8 +53,8 @@ Further discussions on uncertainty analysis are given in Chapter #TODO[chapter].
 
 = Physical quantity <sec:unit-q>
 
-The expression "$(72 ± 2)kg$" means the central value is $72kg$ and the #keyword[absolute uncertainty] is $2kg$.
-Accordingly, its #keyword[relative uncertainty] is given by $(2kg)\/(72kg)=0.028$.
+The expression "$(72 ± 2)kg$" means the central value is $72kg$ and the #EMPH[absolute uncertainty] is $2kg$.
+Accordingly, its #EMPH[relative uncertainty] is given by $(2kg)\/(72kg)=0.028$.
 Let's see other examples.
 
 #align(center, table(
@@ -67,10 +67,11 @@ Let's see other examples.
   [$(5±1)#EE(-3) coulomb$], [C (coulomb)], $0.005 coulomb$, $0.001 coulomb$, [0.2 (or 20%)],
   [$(50±1)mps$], [m/s], $50 mps$, $1 mps$, [0.02 (or 2%)],
 ))
-#index("uncertainty")
-#index("uncertainty", "absolute")
-#index("uncertainty", "relative")
+#index("uncertainty", "absolute uncertainty")
+#index("uncertainty", "relative uncertainty")
 #index-see("error", "uncertainty")
+#index-see("absolute undertainty", "uncertainty")
+#index-see("relative uncertainty", "uncertainty")
 
 #remark[
   Upper- and lowercase letters are distinguished. "M" *does not* mean "meter". The unit "A" is "ampere", not "Ampere". The unit "coulomb" is "C", not "c".

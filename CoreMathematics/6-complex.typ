@@ -14,7 +14,7 @@ As you learned in @sec:logic-type, try to distinguish between definitions and de
   Geometrical discussions, such as #keyword[complex planes], are not included in this document, mainly because you are expected to be familiar with it.
 ]
 
-= Complex Numbers <sec:comp-intro>
+= Complex numbers <sec:comp-intro>
 #definition(title: [Complex numbers])[
   A #keyword[complex number] is given by the form
   $ z = a + b ii, quad "where" a, b in RR quad "and" quad ii "is a symbol satisfying" ii^2=-1. $<eq:i-def>
@@ -267,7 +267,7 @@ The following relations hold for these operations. They are somewhat obvious, bu
     Prove that if $z_0 in CC$ is a solution of $p(z) = 0$, then so is $overline(z_0)$.
 ]
 
-= Polar Form <sec:comp-polar>
+= Polar form <sec:comp-polar>
 #theorem(title: "Polar form")[
   A complex number $z = a + b ii$, where $a, b in RR$, can be expressed in the following #keyword[polar form]:
   $
@@ -282,8 +282,8 @@ The following relations hold for these operations. They are somewhat obvious, bu
   Since $(a\/r)^2+(b\/r)^2=1$, P is on the unit circle around the origin O and thus can be expressed by $(cos theta, sin theta)$ with $theta$ being the angle from the positive x-axis to $arrow("OP")$ and the choice of $theta$ is unique up to the $2pi$-periodicity. It means $a\/r=cos theta$ and $b\/r = sin theta$, i.e., $z=r cos theta + ii r sin theta$. $qed$
 ]
 #advanced-note[
-  In this document, the #keyword[trigonometric functions] $cos theta$ and $sin theta$ are defined using the unit circle in $x y$-plane and this proof employs that definition.
-  In advanced mathematics, we often take another approach, where we first define $ee^x$ for $x in RR$ by a #keyword[power series]. Then we extend $ee^x$ to $CC$ and, from this complex function $ee^z$, we define $cos x$ and $sin x$ for $x in RR$ by Euler's formula. See #TODO[#lorem(4)] for further discussion.
+  In this document, the #keyword(key: "trigonometric function", [trigonometric functions]) $cos theta$ and $sin theta$ are defined using the unit circle in $x y$-plane and this proof employs that definition.
+  In advanced mathematics, we often take another approach, where we first define $ee^x$ for $x in RR$ by a #index[power series]. Then we extend $ee^x$ to $CC$ and, from this complex function $ee^z$, we define $cos x$ and $sin x$ for $x in RR$ by Euler's formula. See #TODO[#lorem(4)] for further discussion.
 ]
 
 #quizzes[
@@ -377,7 +377,7 @@ The next theorem is extremely important:
     sin theta = Im(ee^(ii theta)) = (ee^(ii theta) - ee^(-ii theta))/(2ii).
   $ <eq:euler-trig>
 ]
-Then for $theta in RR$ and $n in ZZ$, #index[de Moivre's theorem] de Moivre's theorem $(cos theta + ii sin theta)^n = cos(n theta) + ii sin(n theta)$ holds, but we do not need to memorize it. Just use the equation $ee^(ii n theta) = (ee^(ii theta))^n$, e.g.,
+Then for $theta in RR$ and $n in ZZ$, #index[de Moivre#sym.quote.r.single;s theorem] de Moivre's theorem $(cos theta + ii sin theta)^n = cos(n theta) + ii sin(n theta)$ holds, but we do not need to memorize it. Just use the equation $ee^(ii n theta) = (ee^(ii theta))^n$, e.g.,
 #example[
   Express $cos 4theta$ in terms of $cos theta$.
 ]
@@ -479,10 +479,13 @@ The next step is "complex vectors". Let us recall three interpretations of vecto
 There we started from the first interpretation (@def:v-arrow) and reached the second interpretation (@def:va-comp).
 For complex vectors, the first interpretation seems not nice, but @def:va-comp looks nice to _define_ complex vectors: we just extend real numbers to complex numbers.
 #definition(title: "Inner product of Complex vectors")[
-  We define $n$-dimensional #keyword[complex vectors] by a list of $n$ complex number:
+  We define $n$-dimensional #EMPH[complex vectors] by a list of $n$ complex number:
   (cf. @def:va-comp)
   $ vc(v) = mat(v_1; v_2; dots.v; v_n); quad v_k in CC, quad n in NN^+. $
 ]
+#index("vector", "complex vector")
+#index-see("complex vector", "vector")
+
 With this definition, we can analyze complex vectors similarly as real vectors, except for one caveat.
 We would like to use @eq:va-ip-comp to define inner products, but then it would break nice properties such as @eq:vip-norm and #thick-sf[(C)] of @thm:va-ip-prop.
 #quizzes[
@@ -552,10 +555,10 @@ Properties in @thm:va-ip-prop are also valid for complex vectors _with slight mo
 Using #thick-sf[(B)] of the above, we can define the #EMPH[magnitude] of complex vectors by
 #theorem(title: "Magnitude of complex vectors")[
   #no-shift[$
-      "For a complex vector" vc(a)", we define its" #keyword[magnitude] "by"
+      "For a complex vector" vc(a)", we define its" #EMPH[magnitude] "by"
       va(a) := sqrt(cip(a, a)).
     $
-  ]
+  ]#index("magnitude (vector)")
 ]
 #theorem(title: "Properties of complex-vector magnitude")[
   For complex vectors $vc(a)$ and $vc(b)$ and a constant $k in CC$,

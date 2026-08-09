@@ -72,7 +72,7 @@ However, it represents a _mathematical_ nature of vectors. As a *physicist*, you
 
 #definition(title: "Vector for physicists")[
   Consider a space.
-  A #keyword[vector] is a straight arrow drawn in the space, or in general, a quantity that has both #keyword[magnitude] (= length) and #keyword[direction] in the space.
+  A #keyword[vector] is a straight arrow drawn in the space, or in general, a quantity that has both #EMPH[magnitude] (= length) and #EMPH[direction] in the space.#index("direction (vector)")#index("magnitude (vector)")
 ]<def:v-arrow>
 We here do not investigate what "the space" is, but you may well imagine a lecture room as the space.
 #theorem(type: "Notation", title: "Vectors and Scalars")[
@@ -125,9 +125,9 @@ $ |vc(0)|=0. wide va(v) = 0 <==> vc(v)=vc(0). wide va(v)>0 <==> vc(v) != vc(0). 
 = Addition and Scalar multiplication <sec:vec-op>
 Like $+$ and $div$ for numbers and $and$ and $or$ for true/false, we have two operations for vectors:
 
-- #keyword[addition]: two vectors $vc(a)$ and $vc(b)$ can be added; we write the result by $vc(a) + vc(b)$.
+- #EMPH[addition]#index("addition (vector)"): two vectors $vc(a)$ and $vc(b)$ can be added; we write the result by $vc(a) + vc(b)$.
 
-- #keyword[scalar multiplication]: a vector $vc(a)$ is multiplied by a scalar $k$; we write the result by $k vc(a)$.
+- #EMPH[scalar multiplication]#index("scalar multiplication (vector)"): a vector $vc(a)$ is multiplied by a scalar $k$; we write the result by $k vc(a)$.
 
 #definition(title: "Vector addition")[
   If $vc(a)$ and $vc(b)$ are vectors drawn in the same space, we can define $vc(a)+vc(b)$ by the vector obtained by placing the tail of $vc(b)$ at the head of $vc(a)$.
@@ -252,7 +252,7 @@ These properties seem obvious, but in fact, they play a fundamental role in #TOD
   Most of the following discussion is only for _real vectors_ and do not apply for _complex vectors_.
 ]]
 
-= Inner Product <sec:vec-ip>
+= Inner product <sec:vec-ip>
 Imagine two arrows. Probably you can think the angle $theta$ between the arrows. The angle leads you to the following *geometric* definition of the inner product.
 #definition(title: "Inner product (geometrical definition)")[
   For vectors $vc(a)$ and $vc(b)$ drawn in the same space, the #keyword[inner product] is defined by
@@ -268,7 +268,8 @@ Imagine two arrows. Probably you can think the angle $theta$ between the arrows.
     + What is the maximum value of $vc(a) dot vc(b)$? When is it achieved?
     + If $vc(a) dot vc(b) = -3$, what can you say about the angle between $vc(a)$ and $vc(b)$?
   #fail-safe[
-    $vc(a)perp vc(b)$ means that $vc(a)$ and $vc(b)$ are #keyword[perpendicular] to each other, or #keyword[normal] to each other; in other words, the angle $theta$ between them is $pi\/2=90degree$.
+    $vc(a)perp vc(b)$ means that $vc(a)$ and $vc(b)$ are #keyword[perpendicular] to each other, or #EMPH[normal] to each other; in other words, the angle $theta$ between them is $pi\/2=90degree$.
+    #index-see("normal (vector)", "perpendicular")
   ]
 ]
 This inner product has the following properties:
@@ -339,7 +340,7 @@ You need to memorize them securely.
     + Find $c$ such that $vc(B) + c vc(C)$ is perpendicular to $vc(A)$.
 ]
 
-= Cross Product (only for 3d real-vectors) <sec:vec-xp>
+= Cross product (only for 3d real-vectors) <sec:vec-xp>
 For two arrows drawn in three-dimensional space, we can define the #EMPH[cross product].
 #definition(title: "Cross product")[
   For $vc(a)$ and $vc(b)$ drawn in a _three-dimensional_ space, the #keyword[cross product] $vc(a) times vc(b)$ is defined as follows:
@@ -384,7 +385,7 @@ For #thick-sf[(A)], notice $vc(a) times vc(a)$ is not "zero".
   + `1` Prove #thick-sf[(B)] of @thm:va-ip-prop and #thick-sf[(E)] of @thm:vxp-prop geometrically (i.e., based on the definitions given in this chapter). Sho has his own proof but not very confident. Can you find a better proof?
 ]
 
-= Position Vectors <sec:vec-pos>
+= Position vectors <sec:vec-pos>
 We have defined vectors as arrows. Arrows are not positions, so vectors are not positions. However, _once we define the origin_ O in the space, we can use vectors to represent each position in the space.
 
 #definition(title: "Position vector")[
@@ -490,6 +491,7 @@ Then, how about them? Try to ensure that you understand the meaning of each oper
 So far, we have considered vectors as arrows drawn in a space. Vectors are characterized only by the magnitude and direction.
 Now, we are going to _recall_ the component-wise notation such as $vc(a)=mat(1; 2)$. We define "orthonormal basis vectors" and then see we can _describe an arrow by a list of numbers_.
 
+#index(display: "basis [bases]", "basis")
 #definition(title: "Orthonormal basis vectors")[
   If $n$ vectors $vc(e)_1, ..., vc(e)_n$ satisfy the following properties, we call them #EMPH[an] #keyword[orthonormal basis]:
 
@@ -546,7 +548,7 @@ This example shows we can find many orthogonal bases, but *the number* of the me
 In general, a space has _infinitely many_ orthonormal bases and we can choose _an_ orthonormal basis at our convenience; we will come back to this point in @sec:mat-basis-change. However, the number of the orthonormal basis vectors, the #EMPH[dimension], is fixed by the space we considered.
 
 #theorem(title: "Properties of orthonormal basis vectors")[
-  - Any orthonormal bases of a space have the same number of vectors. We call the number #EMPH[the] #keyword[dimension] of the space.
+  - Any orthonormal bases of a space have the same number of vectors. We call the number #EMPH[the dimension] of the space.#index("dimension (vector)")
 
   - If $\{vc(e)_1, vc(e)_2, ..., vc(e)_n\}$ is an orthonormal basis, any arrow $vc(v)$ in the space can be expressed as
     $
@@ -565,7 +567,7 @@ In general, a space has _infinitely many_ orthonormal bases and we can choose _a
 #advanced-note[This theorem seems not difficult to prove because we only think finite-dimensional spaces, but there could be caveats that Sho did not notice. A more rigorous construction is in #TODO[abs-vec].]
 
 #make-indent
-If you choose an orthonormal basis, then it automatically defines the #keyword(display: "axis")[axes] of the space:<topic:basis-defines-axes>
+If you choose an orthonormal basis, then it automatically defines the #keyword(display: "axis [axes]")[axes] of the space:<topic:basis-defines-axes>
 
 - For a 2d space, we call the directions of the basis vectors as $x$-axis and $y$-axis, respectively. Sho usually writes the basis vectors by $vc(e)_x$ and $vc(e)_y$, but other textbooks may write as $hat(bold(upright(i)))$ and $hat(bold(upright(j)))$.
 

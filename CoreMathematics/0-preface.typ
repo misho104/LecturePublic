@@ -341,17 +341,23 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
 
 #pagebreak()
 
-#columns(2, gutter: 0em)[
-  #outline(depth: 2)
+#columns(2, gutter: 1em)[
+  #show outline.entry.where(level: 1): it => {
+    v(12pt, weak: true)
+    strong(it)
+  }
+  #set text(size: 10pt)
+  #outline(depth: 2, indent: 0mm)
 ]
 
-#heading(depth: 1, outlined: false, bookmarked: false)[List of Theorems and Definitions]
-#columns(4, gutter: 1.5em)[
-  #outline(
-    title: none,
-    indent: 1em,
-    target: figure.where(kind: "env"),
-  )]
+//#heading(depth: 1, outlined: false, bookmarked: false)[List of Theorems and Definitions]
+//#columns(3, gutter: 2em)[
+//#set text(size: 10pt)
+//  #outline(
+//    title: none,
+//    indent: 1em,
+//    target: figure.where(kind: "env"),
+//  )]
 #outline(
   title: "List of tables",
   target: figure.where(kind: table),
@@ -364,8 +370,9 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
 
 #pagebreak()
 = Index
-#let no-chop = ("axis", "basis")
-#columns(3)[
+#let no-chop = ("axis", "basis", "series")
+#columns(3, gutter: 1em)[
+  #set text(size: 9pt)
   #make-index(
     section-title: (l, c) => v(3mm),
     entry-casing: e => {

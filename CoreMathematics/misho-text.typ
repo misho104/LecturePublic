@@ -139,15 +139,14 @@
 #let tab(shift: dim.tab, ..args, body) = block(inset: (left: shift), ..args, body)
 
 // equations
-#let no-num(comma-gap: none, shift: true, content) = [
-  #show sym.comma: if comma-gap == none { it => it } else { "," + h(if comma-gap == auto { 1em } else { comma-gap }) }
-  #if shift == false { h(-dim.eq-shift) }
-  #math.equation(block: true, numbering: none, content)
-]
-#let no-shift(comma-gap: none, content) = [
-  #show sym.comma: if comma-gap == none { it => it } else { "," + h(if comma-gap == auto { 1em } else { comma-gap }) }
-  #math.equation(block: true)[#h(-dim.eq-shift)#content]
-]
+#let no-num(comma-gap: none, shift: true, content) = {
+  show sym.comma: if comma-gap == none { it => it } else { "," + h(if comma-gap == auto { 1em } else { comma-gap }) }
+  math.equation(block: true, numbering: none)[#if shift == false { h(-dim.eq-shift) }#content]
+}
+#let no-shift(comma-gap: none, content) = {
+  show sym.comma: if comma-gap == none { it => it } else { "," + h(if comma-gap == auto { 1em } else { comma-gap }) }
+  math.equation(block: true)[#h(-dim.eq-shift)#content]
+}
 
 // ==== Page level styles ==============================================================================================
 // The gray box visually covers the header rule on non-normal pages.

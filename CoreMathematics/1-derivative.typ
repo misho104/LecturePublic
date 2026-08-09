@@ -52,7 +52,7 @@ You will solve many problems and drills, just as an athlete repeats the same mov
 
 #pagebreak()
 
-= Typical Pitfalls
+= Typical pitfalls
 == Notations
 
 #let qeq = $quad = quad$
@@ -129,7 +129,7 @@ Even though, if you see it in a textbook, you need to guess the author's intenti
 ]
 
 
-== Radian and trigonometric functions
+== Radian and Trigonometric functions
 
 At university, angles are almost always measured in #keyword[radians]:
 $ 360 "degree" quad ("or:" 360degree) qeq 2pi "radian" quad ("or:" 2pi "rad") $
@@ -349,7 +349,7 @@ To summarize, we have the following statement:
   The two equations in @eq:deriv-def have similar but different meanings: the first one defines a new function $f'(x)$, while the second one defines a number that is eventually equal to $f'(x)|_(x=a)$. Anyway, we don't care the difference.]
 
 
-= Mathematical Notation
+= Mathematical notation
 As _physicists are lazy_, we usually use the following notation:
 
 #writings(

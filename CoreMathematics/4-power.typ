@@ -68,7 +68,7 @@ Do not worry if you cannot recall all the rules! Learn this section and come bac
   We should first recall $sqrt(a)$... what is that?
 
   #definition(title: [#math-thick-sans[n]-th root of non-negative numbers])[
-    For $a>=0$, we define $root(n, a)$ for $n=2, 3, 4, ...$ by the *positive* solution $x$ of the equation $x^n = a$ and call it the #keyword(index: "root")[#math-thick-sans[n]-th root] of $a$.
+    For $a>=0$, we define $root(n, a)$ for $n=2, 3, 4, ...$ by the *positive* solution $x$ of the equation $x^n = a$ and call it the #keyword(key:"$-th root", display:[$n$-th root])[#math-thick-sans[n]-th root] of $a$.
     In particular, write we $sqrt(a)$ instead of $root(2, a)$.
   ]
 ]
@@ -193,7 +193,7 @@ Two simplest cases are discussed here.
 ]]
 
 
-= Exponential functions and Logarithmic functions <sec:pow-exp>
+= Exponential and Logarithmic functions <sec:pow-exp>
 #set-plot-defaults(
   width: 5,
   height: 5,
@@ -298,8 +298,8 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
 
 #block(breakable: false)[
   = Napier's number and Natural logarithm <sec:pow-e>
-  There is a special number for the base, called #keyword(display: "Napier's number")[Napier's number] $ee$:
-  #index-see("e", "Napier's number")
+  There is a special number for the base, called #keyword(display: [Napier#sym.quote.r.single;s number])[Napier's number] $ee$:
+  #index-see("e", [Napier#sym.quote.r.single;s number])
   $
     ee = 2.718281828... = lim_(n -> oo) (1 + 1/n)^n = sum_(k=0)^oo 1/(k!) = 1 + 1 + 1/2 + 1/6 + 1/24 + 1/120 + ...
   $
@@ -309,7 +309,9 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
       dv(, x) ee^x = ee^x, quad dv(, x) ln x = 1/x,
     $
   ]
-  where the #keyword[natural logarithm] ($ln x$) is defined by $ln x := log_e x$.
+  where the #EMPH[natural logarithm] ($ln x$) is defined by $ln x := log_e x$.
+  #index("logarithm", "natural logarithm")
+  #index-see("natural logarithm", "logarithm")
   Also, we often write $ee^x$ as $exp(x)$.
 ]
 
@@ -441,7 +443,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
 ]
 
 
-= Exponential Growth and Decay <sec:pow-decay>
+= Exponential growth and Decay <sec:pow-decay>
 Consider $f_0(t) = exp(A t)$ with $A in RR$, and imagine $t in RR$ is the time. You may find
 $
   f_0(t) = exp(A t) "is" #math-strong("strictly increasing") "if" A>0, "while"
