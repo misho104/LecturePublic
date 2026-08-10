@@ -1,11 +1,14 @@
 #import "misho-text.typ": *
-#import "physica.typ": Im, Re, bra, braket, ket
+#import "physica.typ": Im, Re, bra, braket, ket  // cspell: disable-line
 #import "2-units.typ": writing
 #import "5-vector.typ": dm, va, vc, vcu, vector-three-ways
+// cspell: ignore multivaluedness Moivre Schwarz
+
 #let Arg = math.op("Arg")
 #let vk(x) = ket(vc(x))
 #let lbk(x, y) = $chevron.l thin#x thin|thin#y thin chevron.r$ // loose bra-ket
 #let cip(x, y) = $lbk(vc(#x), vc(#y))$
+#let cop(x, y) = $|thin #x thin chevron.r chevron.l thin #y thin |$
 
 You have learned complex numbers in high school but it is worth reviewing them in a university style.
 As you learned in @sec:logic-type, try to distinguish between definitions and derived consequences.

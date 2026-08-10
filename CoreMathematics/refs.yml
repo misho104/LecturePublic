@@ -17,6 +17,28 @@ Boas:
   year: 2006
   publisher: Wiley
 
+Goldstein3e:
+  type: book
+  author:
+    - Herbert Goldstein
+    - Charles P. Poole
+    - John L. Safko
+  title: Classical Mechanics
+  edition: 3
+  year: 2001
+  month: 6
+  publisher: Pearson
+  isbn:  9780201657029
+
+Hassani2e:
+  type: book
+  author: Sadri Hassani
+  title: Mathematical Physics
+  edition: 2
+  year: 2013
+  publisher: Springer
+  isbn: 9783319011943
+
 si:
   type: report
   title: "The International System of Units (SI)"

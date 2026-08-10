@@ -200,6 +200,7 @@
   "1.": n => [#n.],
   "A.": n => str.from-unicode(64 + n) + ".",
   "a.": n => str.from-unicode(96 + n) + ".",
+  "・": n => "•",
 )
 // public api. usage: #enum(numbering: enum-style("(1)")); "style" accepts str or lambda.
 #let enum-style(width: dim.label-width, style) = {
@@ -211,7 +212,7 @@
 #let _default-enum-labels(d) = (
   enum-style(
     if problem-style-label.get() {
-      ("(1)", "(a)", "1.").at(d)
+      ("(1)", "(a)", "1.", "1.", "1.").at(d)
     } else {
       ("1.", "A.", "a.", "1.").at(d)
     },
@@ -297,7 +298,7 @@
 }
 
 // ==== Gray title/chapter box =========================================================================================
-// State is updated BEFORE pagebreak so the new page's header sees it.
+// State is updated BEFORE page break so the new page's header sees it.
 // The hidden level-1 heading registers the chapter in #outline().
 #let _draw-chapter-box(number, title) = {
   place(top + left, dx: 0mm, dy: -4.5mm, rect(width: 160mm, height: 32mm, fill: c.dim-gray, stroke: none))
@@ -468,7 +469,7 @@
         label: text-sf(fill: white, size: 11pt, weight: "bold")[
           #h(-.5em)
           #type #context { _chapter-numbering("env") }
-          #if title != none [ #h(1em) (#title)  ]
+          #if title != none [#h(1em)#title]
         ],
         body,
       )),
@@ -501,7 +502,7 @@
       inset: (top: 0.4em, middle-above: 0.5em, middle-below: .3em),
       label: text-sf(fill: c.green, size: 11pt, weight: "bold")[
         Example #context { _chapter-numbering("env") }
-        #if title != none [ #h(1em) (#title) ]
+        #if title != none [#h(1em)#title]
       ],
       body,
     )),
@@ -516,7 +517,7 @@
     above: 0mm,
     label: text-sf(fill: c.green, size: 11pt, weight: "bold")[
       Solution
-      #if title != none [ #h(1em) (#title) ]
+      #if title != none [#h(1em)#title]
     ],
     body,
   )
@@ -635,7 +636,7 @@
   show math.equation: set text(font: "STIX Two Math") // cspell:disable-line
 
   // japanese kana
-  show regex("[ぁ-んァ-ヶ]+"): it => text(features: ("palt",))[#it]
+  show regex("[ぁ-んァ-ヶ]+"): it => text(features: ("palt",))[#it] // cspell: disable-line
 
   // hardcodes ×0.8 scaling for raw blocks; pre-multiply to get net ×0.85.
   show raw: it => text-tt(size: 1em / 0.8, it)

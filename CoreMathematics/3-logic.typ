@@ -1,6 +1,7 @@
 #import "misho-text.typ": *
-#import "physica.typ": *
+#import "physica.typ": dv  // cspell: disable-line
 #import "2-units.typ": bare, writing, writings
+// cspell: ignore deductio
 
 #let bT = math.upright("T")
 #let bF = math.upright("F")

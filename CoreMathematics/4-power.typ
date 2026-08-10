@@ -1,5 +1,5 @@
 #import "misho-text.typ": *
-#import "physica.typ": *
+#import "physica.typ": dv  // cspell: disable-line
 #import "@preview/simple-plot:1.0.0": plot, set-plot-defaults
 
 = Powers <sec:pow-pow>
@@ -68,7 +68,7 @@ Do not worry if you cannot recall all the rules! Learn this section and come bac
   We should first recall $sqrt(a)$... what is that?
 
   #definition(title: [#math-thick-sans[n]-th root of non-negative numbers])[
-    For $a>=0$, we define $root(n, a)$ for $n=2, 3, 4, ...$ by the *positive* solution $x$ of the equation $x^n = a$ and call it the #keyword(key:"$-th root", display:[$n$-th root])[#math-thick-sans[n]-th root] of $a$.
+    For $a>=0$, we define $root(n, a)$ for $n=2, 3, 4, ...$ by the *positive* solution $x$ of the equation $x^n = a$ and call it the #keyword(key: "$-th root", display: [$n$-th root])[#math-thick-sans[n]-th root] of $a$.
     In particular, write we $sqrt(a)$ instead of $root(2, a)$.
   ]
 ]

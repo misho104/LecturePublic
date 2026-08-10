@@ -1,6 +1,8 @@
 #import "misho-text.typ": EMPH, JA, RED, TODO, ZH, c, dim, h-enum, keyword, levels, problems, quizzes, tab, text-sf
 #import "in-dexter.typ": first-letter-up, make-index
-#import "physica.typ": dv
+#import "physica.typ": dv  // cspell: disable-line
+// cspell: ignore Gocho Kiyono Tasaki Arfken
+// cspell: ignore Système Unités
 
 #let ds(body) = text-sf(body) // dimension symbol
 #let Boas = EMPH("[Boas]")
@@ -329,7 +331,7 @@ The content is designed for 150-minute #sym.times 14-week lectures, as it is ori
 + Vectors are arrows.
 + $a dot b$ and $a times b$
 + Matrices (rotation, reflection, scaling)
-+ Complex numbers (polar form, Euler's formula, multi-valuedness)
++ Complex numbers (polar form, Euler's formula, multi-valued-ness)
 + Complex vectors, Hermitian inner product, bra-ket notation
 + Vector calculus (grad, div, rot; example of point charge)
 + ODE basics

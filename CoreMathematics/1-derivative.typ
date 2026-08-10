@@ -1,6 +1,8 @@
 #import "misho-text.typ": *
-#import "physica.typ": *
+#import "physica.typ": dv  // cspell: disable-line
 #import "2-units.typ": writing, writings
+// cspell: ignore Zahl Zahlen
+
 #let eval(expr, size: 80% + 10pt) = $lr(#expr|, size: size)$
 
 = The first step

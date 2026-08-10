@@ -1,7 +1,8 @@
 #import "misho-text.typ": *
-#import "physica.typ": *
+#import "physica.typ": dv  // cspell: disable-line
 #import "2-units.typ": writing
-#import "@preview/cetz:0.5.2": canvas, draw
+#import "@preview/cetz:0.5.2": canvas, draw  // cspell: disable-line
+// cspell: ignore Schwarz
 
 // Vector notation: arrow over symbol
 #let vc(v) = $accent(#v, arrow)$
@@ -416,7 +417,7 @@ For further discussion, please check #link("https://misho104.github.io/LecturePu
 #remark[
   This is a bit advanced. You may well come back when you read @chap:matrix.
 ]
-We often consider a #keyword[linear combination]. For example, $3x + 2y$, $-x+sqrt(2)y$, and $-3y$ $(=0x-3y)$ are linear combination of $x$ and $y$.
+We often consider a #keyword[linear combination]. For example, linear combinations of $x$, $y$, and $z$ are given by $3x + 2y+5z$, $x+sqrt(2)y-1.4z$, $3x-pi y+2z$, $-5z$ $(=0x+0y-5z)$, etc.
 Similarly, we can consider linear combinations of vectors.
 #definition(title: "Linear combination of vectors")[
   For vectors living in the same space, $vc(a), vc(b), vc(c), ...$, and scalars $p, q, r, ...$, we call $ p thin vc(a) + q thin vc(b)+ r thin vc(c) + dots.c $ a #EMPH[linear combination] of $vc(a), vc(b), vc(c), ...$.

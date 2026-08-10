@@ -1,5 +1,5 @@
 #import "misho-text.typ": *
-#import "physica.typ": *
+// cspell: ignore mpss
 
 #let bare(body) = {
   show math.frac: it => [#it.num #sym.slash #it.denom]
@@ -70,7 +70,7 @@ Let's see other examples.
 #index("uncertainty", "absolute uncertainty")
 #index("uncertainty", "relative uncertainty")
 #index-see("error", "uncertainty")
-#index-see("absolute undertainty", "uncertainty")
+#index-see("absolute uncertainty", "uncertainty")
 #index-see("relative uncertainty", "uncertainty")
 
 #remark[
