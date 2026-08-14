@@ -375,7 +375,7 @@ Before discussing advanced topics on logics, you should do some drills.
     + Explain the reason we can understand $A<=>B$ as $A=B$.
     + Write a truth table for the following expressions:
       #no-num(comma-gap: auto, $A and B, not(A and B), (not A)or(not B), not(A or B), (not A)and(not B)$)
-      Explain that this truth table is considered as a _proof_ of #keyword(display: [de Morgan#sym.quote.r.single;s theorem])[de Morgan's theorem]
+      Explain that this truth table is considered as a _proof_ of #keyword(key: "de Morgan's theorem")[de Morgan#sym.quote.r.single;s theorem]
       $
         not(A or B) = (not A)and(not B), quad quad not(A and B) = (not A)or(not B).
       $
@@ -403,7 +403,7 @@ Before discussing advanced topics on logics, you should do some drills.
 
 = A few more notes about logic and proof <sec:logic-note>
 
-There is a useful theorem for "not" operator, called #keyword[de Morgan's theorem].
+There is a useful theorem for "not" operator, called #keyword(key: "de Morgan's theorem")[de Morgan#sym.quote.r.single;s theorem].
 #theorem(title: "De Morgan's theorem")[
   + "not (A and B)" is equivalent to "(not A) or (not B)", i.e., $not(A and B) = (not A) or (not B)$.
 
@@ -450,11 +450,11 @@ Let's see an example.
 
   - Its #keyword[converse] ($A arrow.l.double B$) is $(x^2 < 4) => (0 < x < 2)$, which is false (counterexample: $x = -1$).
 
-  - Its #keyword[inverse] ($"not" A => "not" B$) is $(x <= 0 "or" x >= 2) => (x^2 >= 4)$, which is false.
+  - Its #keyword(display:"inverse (logic)")[inverse] ($"not" A => "not" B$) is $(x <= 0 "or" x >= 2) => (x^2 >= 4)$, which is false.
 
   - Its #keyword[contrapositive] ($"not" A arrow.l.double "not" B$) is $(x^2 >= 4) => (x <= 0 "or" x >= 2)$, which is true.
 ]
-Because the contrapositive of a true statement is always true, we can prove a statement by proving its contrapositive. This method is called #EMPH[proof by contrapositive].#index("proof", "proof by contrapositive")
+Because the contrapositive of a true statement is always true, we can prove a statement by proving its contrapositive. This method is called #keyword-under("proof")[proof by contrapositive].
 #quizzes[
   + For each of the following statements, write its converse, inverse, and contrapositive. Then state whether each of them is true or false.
     #h-enum(cols: 2)[
@@ -471,7 +471,7 @@ Because the contrapositive of a true statement is always true, we can prove a st
       + If $n^2$ is not integer, then $n$ is not integer.
     ]
 ]
-Another powerful method is #EMPH[proof by contradiction] (deductio ad absurdum). Imagine you prove "if $A$, then $B$". You assume "$A$" and "not $B$" are both true, and derive a contradiction. If you reach a contradiction, it means "$A$ and not $B$" is false, i.e., "not ($A$ and not $B$)" is true, which means $A=>B$.#index("proof", "proof by contradiction")
+Another powerful method is #keyword-under("proof")[proof by contradiction] (deductio ad absurdum). Imagine you prove "if $A$, then $B$". You assume "$A$" and "not $B$" are both true, and derive a contradiction. If you reach a contradiction, it means "$A$ and not $B$" is false, i.e., "not ($A$ and not $B$)" is true, which means $A=>B$.
 #quizzes[
   + Prove the following statements by _proof by contradiction_.
     + If $x^2$ is an even integer, then $x$ cannot be an odd integer.

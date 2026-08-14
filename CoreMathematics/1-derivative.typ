@@ -78,7 +78,7 @@ $ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(, x)g(a) quad = quad 2a^2. 
 #fail-safe[
   If you can't see @eq:d1, try setting $a=3$. Then, you notice $g(x)$ is the same function as $f(x)$, and $g'(x)$ should equal $f'(x)$.
 ]
-#EMPH[Higher-order derivatives]#index("order") is written as
+#keyword(display: "order (derivative)")[Higher-order derivatives] is written as
 $
   dv(, x)(dv(f, x)) = dv(f, x, 2)=f''(x) = f^((2))(x),quad
   dv(, x)(dv(, x)(dv(f, x))) = dv(f, x, 3)=f'''(x) = f^((3))(x),
@@ -163,7 +163,7 @@ Because we have chosen radians as the standard, $(sin x)'$ becomes this simple.
 ]
 
 #make-indent
-There are a few remarks in the notation of #keyword(key: "trigonometric function", [trigonometric functions]):
+There are a few remarks in the notation of #keyword[trigonometric functions]:
 $
   & sin^2 x != sin x^2. quad && "Namely,"quad (sin x)^2 = sin^2 x quad   && != quad sin x^2 = sin(x^2). \
   & tan^(-1) x != 1/(tan x). && "Namely,"quad tan^(-1) x = arctan x quad && != quad (tan x)^(-1) = 1/(tan x) = cot x.

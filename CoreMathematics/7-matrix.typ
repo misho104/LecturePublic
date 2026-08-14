@@ -180,7 +180,7 @@ We will come back to this discussion later.
 We introduce matrices as a 2d extension of vectors.
 
 #definition(title: "Matrix")[
-  A (complex / real) $m times n$ #keyword[matrix] is defined as a 2d array of (complex / real) numbers,
+  A (complex / real) $m times n$ #keyword(display: "matrix [matrices]")[matrix] is defined as a 2d array of (complex / real) numbers,
   $
     A = mat(
       A_(1 1), A_(1 2), dots, A_(1 n);
@@ -189,16 +189,13 @@ We introduce matrices as a 2d extension of vectors.
       A_(m 1), A_(m 2), dots, A_(m n);
     ); quad a_(j k) in KK.
   $
-  In particular; we name a #EMPH[row], a #EMPH[column] and a #EMPH[component] as follows:
-  #index("row (vector)")
-  #index("column (vector)")
-  #index("component (vector)")
+  In particular; we name a #keyword(display: "row (vector)")[row], a #keyword(display: "column (vector)")[column] and a #keyword(display: "component (vector)")[component] as follows:
   $
     j"-th row:" mat(A_(j 1), A_(j 2), dots, A_(j n)); quad
     k"-th column:" mat(A_(1 k); dots.v; A_(m k)); quad
     (j,k)"-component:" A_(j k);
   $
-  "$n times m$" is called the #EMPH[size] of the matrix. We write the set of all $n times m$ matrix as $KK^(m,n)$.#index("size (matrix)")
+  "$n times m$" is called the #keyword(display: "size (matrix)")[size] of the matrix. We write the set of all $n times m$ matrix as $KK^(m,n)$.
 ]
 For example, we can write #writing[$M$ is a complex $3 times 2$ matrix] by #writing[$M in CC^(3,2)$].
 #remark[
@@ -212,12 +209,8 @@ For example, we can write #writing[$M$ is a complex $3 times 2$ matrix] by #writ
 ]
 
 Elements at the diagonal, $A_11$, $A_22$, ..., $A_(n n)$ are called the #keyword[diagonal elements]. Meanwhile, other elements, i.e., $A_(i j)$ with $i!=j$, are called the #keyword[off-diagonal elements].
-Also, vectors $vc(v)=mat(v_1; dots.v; v_n)$ are called #EMPH[column vectors].
-We will later see #EMPH[row vectors] $vc(v)^TT=mat(v_1, dots, v_n)$.
-#index("vector", "column vector")
-#index-see("column vector", "vector")
-#index("vector", "row vector")
-#index-see("row vector", "vector")
+Also, vectors $vc(v)=mat(v_1; dots.v; v_n)$ are called #keyword-under("vector")[column vectors].
+We will later see #keyword-under("vector")[row vectors] $vc(v)^TT=mat(v_1, dots, v_n)$.
 #quizzes[
   + $1 times n$ matrices and $n times 1$ matrices can be identified as column vectors or row vectors. Which is which?
 ]
@@ -230,7 +223,7 @@ A real matrix is (of course) a complex matrix, so it is almost enough if you lea
 #divider()
 
 #[
-  #EMPH[Zero matrices]#index("zero matrix"), denoted by $O^(m,n)$, are matrices with all components being zero, such as
+  #keyword-under(display: "zero matrix", "matrix [matrices]")[Zero matrices], denoted by $O^(m,n)$, are matrices with all components being zero, such as
   $
     O^(2,3)=mat(0, 0, 0; 0, 0, 0),quad
     O^(3,3)=mat(0, 0, 0; 0, 0, 0; 0, 0, 0),quad
@@ -239,15 +232,14 @@ A real matrix is (of course) a complex matrix, so it is almost enough if you lea
   Sometimes $O_n$ is used to denote $O^(n,n)$.
   Also, we may simply write $O$ instead of $O^(m,n)$ when the size is clear from context.
 
-  #EMPH[Identity matrices]#index("identity matrix"), denoted by $I_n$, are $n times n$ matrices with diagonal components being one and off-diagonal components being zero. Namely, $n times n$ matrices with $(I_n)_(i j) = delta_(i j)$:
+  #keyword-under(display: "identity matrix", "matrix [matrices]")[Identity matrices], denoted by $I_n$, are $n times n$ matrices with diagonal components being one and off-diagonal components being zero. Namely, $n times n$ matrices with $(I_n)_(i j) = delta_(i j)$:
   $
     I_2 = mat(1, 0; 0, 1),quad
     I_3 = mat(1, 0, 0; 0, 1, 0; 0, 0, 1),quad"etc."
   $
-  #index("identity matrix")
   We may simply write $I$ instead of $I_n$ when the size is clear from context.
 
-  #EMPH[Square matrices]: are matrices that have the same number of rows and columns, i.e., $n times n$ matrices.#index("square matrix") If $A$ is square, $A^TT$, $overline(A)$, and $A^dagger$ are also square matrices.
+  #keyword-under(display: "square matrix", "matrix [matrices]")[Square matrices] are matrices that have the same number of rows and columns, i.e., $n times n$ matrices. If $A$ is square, $A^TT$, $overline(A)$, and $A^dagger$ are also square matrices.
 ]
 
 #let op-style = n => text-sf(weight: "bold", sym.chevron.l + str(numbering("i", n)) + sym.chevron.r)
@@ -264,16 +256,14 @@ You need to learn following operations for matrices:
 #cat-of-operations
 We first review the definitions of these operation. Their properties are postponed to the next section.
 
-#remark[This note does not discuss #EMPH[rank], #EMPH[elementary row operations], matrix as #keyword[linear equations], #keyword[eigenvalues] and #keyword[eigenvectors], and #keyword[diagonalization of matrices], which will be discussed in sophomore courses.]
-#index("rank (matrix)")
-#index("elementary row operations")
+#remark[This note does not discuss #keyword(display: "rank (matrix)")[rank], #keyword[elementary row operations], matrix as #keyword[linear equations], #keyword[eigenvalues] and #keyword[eigenvectors], and #keyword[diagonalization of matrices], which will be discussed in sophomore courses.]
 
 
 #block(breakable: false)[
   #make-indent
-  #EMPH[Addition]#index("addition (matrix)") and #keyword[scalar multiplication] are defined just like vectors:
+  #keyword(display: "addition (matrix)")[Addition] and #keyword(display: "scalar multiplication (matrix)")[scalar multiplication] are defined just like vectors:
   #definition(title: [#op-style(1) Addition and Scalar multiplication])[
-    #EMPH[Addition] and #keyword[scalar multiplication] of $m times n$ matrices are defined by
+    #EMPH[Addition] and #EMPH[scalar multiplication] of $m times n$ matrices are defined by
     $
       A + B := mat(A_(11) + B_(11), A_(12) + B_(12), dots, A_(1 n) + B_(1 n); A_(21) + B_(21), A_(22) + B_(22), dots, A_(2 n) + B_(2 n); dots.v, dots.v, dots.down, dots.v; A_(m 1) + B_(m 1), A_(m 2) + B_(m 2), dots, A_(m n) + B_(m n)),
       quad
@@ -622,7 +612,7 @@ So, the question is whether there exists a matrix $P$ such that $P A = I_2$, and
     det A != 0 & <==> "there exists a matrix" P "such that" P A = I_n \
                & <==> "there exists a matrix" Q "such that" A Q = I_n
   $
-  and $P=Q$ if exists. Here, we call $P=Q$ the #keyword[inverse] of $A$ and denote it by $A^(-1)$.\
+  and $P=Q$ if exists. Here, we call $P=Q$ the #keyword(display: "inverse (matrix)")[inverse] of $A$ and denote it by $A^(-1)$.\
   In particular, if $det A != 0$, then $A^(-1)$ exists such that $A^(-1) A = A A^(-1) = I_n$.
 ]
 So, if $det A != 0$ and $A X = B$, then we can solve it as $X = A^(-1) B$.
@@ -662,7 +652,7 @@ So, if $det A != 0$ and $A X = B$, then we can solve it as $X = A^(-1) B$.
   #show strong: it => {
     it.body // no "strong"
   }
-  #let kw(u) = [#EMPH[#u]#index(u + " matrix")]
+  #let kw(u) = [#keyword-under(display: u + " matrix", "matrix [matrices]")[#u]]
   Square matrices can have various special properties.
   A square matrix $A$ is called
   #list(
@@ -765,11 +755,10 @@ These #EMPH[decompositions] are important in linear algebra.
     + If $A$ is Hermitian, then $A^n$ is also Hermitian for $n in NN^+$.
 ]
 #advanced-note[
-  The following facts will be important when you learn #EMPH[diagonalization of matrices].
+  The following facts will be important when you learn #keyword[diagonalization of matrices].
 
   - A normal matrix is diagonalizable by a unitary matrix.
   - A real symmetric matrix is diagonalizable by an orthogonal matrix.
-  #index("diagonalization of matrices")
 ]
 
 
@@ -835,7 +824,7 @@ For 2d arrows, the following matrices are important.
 
   - $display(V = mat(-1, 0; 0, 1))$ corresponds to vertical #keyword[reflection], or reflection about $x$-axis,  of the arrow.
 
-  - $display(R_theta = mat(cos theta, -sin theta; sin theta, cos theta))$ corresponds to #keyword[rotation] by the angle $theta$ about the origin.
+  - $display(R_theta = mat(cos theta, -sin theta; sin theta, cos theta))$ corresponds to #keyword-under(display: "rotation in 2d", "rotation")[rotation] by the angle $theta$ about the origin.
 
   - $display(M_(s,t)=mat(s, 0; 0, t))$ with $s>0$ and $t>0$ corresponds to #keyword[scaling] by a factor $s$ along $x$-axis and by a factor $t$ along $y$-axis, or in other words, horizontally by $s$ and vertically by $t$.
     In particular, $M_(s,s)=s thin I_2$ magnifies the whole space by $s$.
@@ -860,12 +849,11 @@ For 3d arrows, the following matrices are important:
   - $display(R_(x;theta) = mat(1, 0, 0; 0, cos theta, -sin theta; 0, sin theta, cos theta))$,
     $display(R_(y;theta) = mat(cos theta, 0, sin theta; 0, 1, 0; -sin theta, 0, cos theta))$, and
     $display(R_(z;theta) = mat(cos theta, -sin theta, 0; sin theta, cos theta, 0; 0, 0, 1))$
-    corresponds to #EMPH[rotation] by the angle $theta$ about $x$-axis, $y$-axis, and $z$-axis, respectively.
+    corresponds to #keyword-under(display: "rotation in 3d", "rotation")[rotation] by the angle $theta$ about $x$-axis, $y$-axis, and $z$-axis, respectively.
 
   - $display(M_(s,t,u)=mat(s, 0, 0; 0, t, 0; 0, 0, u))$ with $s,t,u>0$ corresponds to #keyword[scaling] by a factor $s$ along $x$-axis, $t$ along $y$-axis, and $u$ by z-axis.
     In particular, $M_(s,s,s)=s thin I_3$ magnifies the whole space by $s$.
 ]
-#index("rotation", "rotation in 3d")
 Notice that rotations in 3d-space are much more complicated than in 2d. In 2d, we only have one parameter $theta$, while you need three parameters to describe a 3d rotation:
 
 - Any 3d rotation can be expressed by rotation around one axis $vc(n)$ by the angle $theta$ (Euler's rotation theorem). Here, two parameters are to determine the axis $vc(n)$ and one parameter is the angle $theta$.
@@ -878,11 +866,9 @@ We do not discuss it in details except for one _be-careful_ box.
   Notice the order of the operations in $R_(z;gamma)R_(y;beta)R_(x;alpha)$ because they are operating on a vector $vc(v)$ from the left. The first rotation is around $x$-axis; the second one is about $y$-axis; the last one is about $z$-axis.
 ]
 #advanced-note[
-  Also notice that, in $R_(z;gamma)R_(y;beta)R_(x;alpha)$, the second rotation is not about the original $y$-axis, but about $y$-axis after the first rotation (sometimes called $y'$-axis). Similarly, the third rotation is not about the original $z$-axis, but about $z''$-axis after the two rotations. This is called #EMPH[extrinsic rotations]. There is also a concept of #EMPH[intrinsic rotations], which is defined in a different way.
+  Also notice that, in $R_(z;gamma)R_(y;beta)R_(x;alpha)$, the second rotation is not about the original $y$-axis, but about $y$-axis after the first rotation (sometimes called $y'$-axis). Similarly, the third rotation is not about the original $z$-axis, but about $z''$-axis after the two rotations. This is called #keyword-under("rotation")[extrinsic rotations]. There is also a concept of #keyword-under("rotation")[intrinsic rotations], which is defined in a different way.
 
   For more discussions, see Section 4.4--4.6 of @Goldstein3e. Euler's rotation theorem is "physically" obvious, but for rigorous proof, see Theorem 6.6.15 of @Hassani2e.]
-#index("rotation", "intrinsic rotation")
-#index("rotation", "extrinsic rotation")
 
 #quizzes[
   + Show that reflections $P""_x$, $P""_y$, $P""_z$ do not modify the magnitude of a vector.

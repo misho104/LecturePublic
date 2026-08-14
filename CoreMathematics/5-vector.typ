@@ -73,7 +73,7 @@ However, it represents a _mathematical_ nature of vectors. As a *physicist*, you
 
 #definition(title: "Vector for physicists")[
   Consider a space.
-  A #keyword[vector] is a straight arrow drawn in the space, or in general, a quantity that has both #EMPH[magnitude] (= length) and #EMPH[direction] in the space.#index("direction (vector)")#index("magnitude (vector)")
+  A #keyword[vector] is a straight arrow drawn in the space, or in general, a quantity that has both #keyword(display: "magnitude (vector)")[magnitude] (= length) and #keyword(display: "direction (vector)")[direction] in the space.
 ]<def:v-arrow>
 We here do not investigate what "the space" is, but you may well imagine a lecture room as the space.
 #theorem(type: "Notation", title: "Vectors and Scalars")[
@@ -112,7 +112,7 @@ We here do not investigate what "the space" is, but you may well imagine a lectu
 
 There is a special vector "#EMPH[zero vector]", which has magnitude $0$ and no direction.
 #definition(title: "Zero vector")[
-  There is a vector with magnitude 0 and no direction. We call it #EMPH[the] #keyword[zero vector] and denote $vc(0)$.
+  There is a vector with magnitude 0 and no direction. We call it #EMPH[the] #keyword-under("vector")[zero vector] and denote $vc(0)$.
 ]
 Any other vectors have a direction and *positive* magnitude. Namely,
 $ |vc(0)|=0. wide va(v) = 0 <==> vc(v)=vc(0). wide va(v)>0 <==> vc(v) != vc(0). $
@@ -126,9 +126,9 @@ $ |vc(0)|=0. wide va(v) = 0 <==> vc(v)=vc(0). wide va(v)>0 <==> vc(v) != vc(0). 
 = Addition and Scalar multiplication <sec:vec-op>
 Like $+$ and $div$ for numbers and $and$ and $or$ for true/false, we have two operations for vectors:
 
-- #EMPH[addition]#index("addition (vector)"): two vectors $vc(a)$ and $vc(b)$ can be added; we write the result by $vc(a) + vc(b)$.
+- #keyword(display: "addition (vector)")[addition]: two vectors $vc(a)$ and $vc(b)$ can be added; we write the result by $vc(a) + vc(b)$.
 
-- #EMPH[scalar multiplication]#index("scalar multiplication (vector)"): a vector $vc(a)$ is multiplied by a scalar $k$; we write the result by $k vc(a)$.
+- #keyword(display: "scalar multiplication (vector)")[scalar multiplication]: a vector $vc(a)$ is multiplied by a scalar $k$; we write the result by $k vc(a)$.
 
 #definition(title: "Vector addition")[
   If $vc(a)$ and $vc(b)$ are vectors drawn in the same space, we can define $vc(a)+vc(b)$ by the vector obtained by placing the tail of $vc(b)$ at the head of $vc(a)$.
@@ -235,7 +235,7 @@ These properties seem obvious, but in fact, they play a fundamental role in #TOD
     + Write a vector that has magnitude $va(a)$ and is anti-parallel to $vc(a)$.
     + Write a vector that has magnitude $3va(a)$ and is in the same direction as $vc(a)$.
     + Write a vector that has magnitude $3k va(a)$ and is in the same direction as $vc(a)$.
-    Vectors with magnitude $1$ are called #keyword[unit vectors].
+    Vectors with magnitude $1$ are called #keyword-under("vector")[unit vectors].
     #h-enum(cols: 1, label-start: 4)[
       + Write a vector that has magnitude $1$ and is in the same direction as $vc(a)$.\
         (Namely, write a unit vector that has the same direction as $vc(a)$.)
@@ -390,7 +390,7 @@ For #thick-sf[(A)], notice $vc(a) times vc(a)$ is not "zero".
 We have defined vectors as arrows. Arrows are not positions, so vectors are not positions. However, _once we define the origin_ O in the space, we can use vectors to represent each position in the space.
 
 #definition(title: "Position vector")[
-  Consider a space and fix a point O as the origin. To each point P, we associate the vector $arrow("OP")$ and call it the #keyword[position vector] of P.  We often write $vc(p)=arrow("OP")$, $vc(q)=arrow("OQ")$, and so on.
+  Consider a space and fix a point O as the origin. To each point P, we associate the vector $arrow("OP")$ and call it the #keyword-under("vector")[position vector] of P.  We often write $vc(p)=arrow("OP")$, $vc(q)=arrow("OQ")$, and so on.
 ]
 Consider $vc(p)=arrow("OP")$, $vc(q)=arrow("OQ")$, and $vc(r)=arrow("OR")$.
 They are obviously dependent on the choice of the origin O. Also, the point described by $vc(p)+vc(q)$ will be different if we chose a different point as the origin.
@@ -633,7 +633,7 @@ This example shows we can find many orthogonal bases, but *the number* of the me
 In general, a space has _infinitely many_ orthonormal bases and we can choose _an_ orthonormal basis at our convenience; we will come back to this point in @sec:mat-basis-change. However, the number of the orthonormal basis vectors, the #EMPH[dimension], is fixed by the space we considered.
 
 #theorem(title: "Properties of orthonormal basis vectors")[
-  - Any orthonormal bases of a space have the same number of vectors. We call the number #EMPH[the dimension] of the space.#index("dimension (vector)")
+  - Any orthonormal bases of a space have the same number of vectors. We call the number #keyword(display: "dimension (vector)")[the dimension] of the space.
 
   - If $\{vc(e)_1, vc(e)_2, ..., vc(e)_n\}$ is an orthonormal basis, any arrow $vc(v)$ in the space can be expressed as
     $
@@ -666,10 +666,10 @@ Now we are ready to express vectors in their #EMPH[components] because we have r
 #definition(title: "Components of a vector")[
   If we fix an orthonormal basis and label the basis vectors by $vc(e)_1, ..., vc(e)_n$, then @def:va-dimension says any vector $vc(v)$ can be written as
   $vc(v) = c_1 vc(e)_1 + dots + c_n vc(e)_n$ with uniquely determined $c_k := vc(e)_k dot vc(v) in RR.$
-  We call $c_k$ #keyword(display: "component")[the $bold(k)$-th component] of $vc(v)$ and express $vc(v)$ with the components as
+  We call $c_k$ #keyword(display: "component (vector)")[the #math-thick-sf[k]-th component] of $vc(v)$ and express $vc(v)$ with the components as
   $ vc(v) = mat(c_1; c_2; dots.v; c_n)= mat(vc(e)_1 dot vc(v); vc(e)_2 dot vc(v); dots.v; vc(e)_n dot vc(v)). $
 ]<def:va-comp>
-Vectors in $n$-dimensional spaces are called #keyword(key: "$-dimensional vector", display: [$n$-dimensional vector])[$bold(n)$-dimensional vectors].
+Vectors in $n$-dimensional spaces are called #keyword(key: "$-dimensional vector", display: [$n$-dimensional vector])[#math-thick-sf[n]-dimensional vectors].
 Since an orthonormal basis in a $n$-dimensional space has $n$ basis vectors, a $n$-dimensional vectors are expressed with $n$ real numbers $c_1, ..., c_n$.
 
 #advanced-note[

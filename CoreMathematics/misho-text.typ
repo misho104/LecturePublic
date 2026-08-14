@@ -57,7 +57,7 @@
 
 #let thick-sf(..args) = text-sf(weight: 600, ..args)
 
-#let math-thick-sans(s) = text(font: _font-sans, weight: "bold", style: "italic", s)
+#let math-thick-sf(s) = text(font: _font-sans, weight: "bold", style: "italic", s)
 
 // ==== Layout =========================================================================================================
 #let dim = (
@@ -608,8 +608,47 @@
 
 // ==== Index ==========================================================================================================
 #import "in-dexter.typ": index
-#let keyword(..args, key: none, content) = [#index(..args, if key == none { content } else { key })#EMPH(content)]
-#let index-see(keyword, redirect-to) = index(render: it => [→ see #emph(redirect-to)], keyword)
+#let _strip-suffix-no-chop = ("axis", "basis", "series", "matrices")
+
+#let _strip-suffix(e) = {
+  if type(e) == str and e.len() > 0 {
+    let c = e.trim().clusters()
+    let chop = (
+      c.len() >= 3 and c.last() == "s" and c.at(-2) != "s" and not _strip-suffix-no-chop.any(i => e.ends-with(i))
+    )
+    c.slice(0, if chop { -1 }).join()
+  } else {
+    e
+  }
+}
+
+#let keyword(
+  display: auto, // shown in index
+  key: auto, // never displayed; if auto, display | content
+  content, // shown in text body
+) = {
+  let d = if display == auto { _strip-suffix(to-string(content)) } else { display }
+  let entry = if key != auto {
+    if type(key) == array { key } else { (key,) }
+  } else {
+    (d,)
+  }
+  index(display: d, ..entry) + EMPH(content)
+}
+#let index-see(keyword, redirect-to) = index(
+  render: it => [→ see #emph(redirect-to)],
+  _strip-suffix(to-string(keyword)),
+)
+#let keyword-under(
+  display: auto,
+  redirect: auto,
+  under, // str, i.e., only one level
+  content,
+) = {
+  let d = if display == auto { content } else { display }
+  keyword(display: display, key: (under, d), content)
+  if redirect == true or not (to-string(d).starts-with(under)) { index-see(d, under.replace(regex(" *\[.*\]"), "")) }
+}
 
 // ==== Template =======================================================================================================
 // Parameters:

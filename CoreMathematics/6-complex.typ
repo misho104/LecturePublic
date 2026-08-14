@@ -275,7 +275,7 @@ The following relations hold for these operations. They are somewhat obvious, bu
   A complex number $z = a + b ii$, where $a, b in RR$, can be expressed in the following #keyword[polar form]:
   $
     z = r lr(size: #150%, (cos theta + ii sin theta)), quad "where" & r=|z| "is the absolute value of " z, \
-    & theta in RR "is called the" keyword("argument") "of" z.
+    & theta in RR "is called the" keyword(display: "argument (complex number)", "argument") "of" z.
   $<eq:polar>
   For $z!=0$, this expression is unique up to the $2pi$-periodicity of $theta$.
 ]
@@ -285,8 +285,8 @@ The following relations hold for these operations. They are somewhat obvious, bu
   Since $(a\/r)^2+(b\/r)^2=1$, P is on the unit circle around the origin O and thus can be expressed by $(cos theta, sin theta)$ with $theta$ being the angle from the positive x-axis to $arrow("OP")$ and the choice of $theta$ is unique up to the $2pi$-periodicity. It means $a\/r=cos theta$ and $b\/r = sin theta$, i.e., $z=r cos theta + ii r sin theta$. $qed$
 ]
 #advanced-note[
-  In this document, the #keyword(key: "trigonometric function", [trigonometric functions]) $cos theta$ and $sin theta$ are defined using the unit circle in $x y$-plane and this proof employs that definition.
-  In advanced mathematics, we often take another approach, where we first define $ee^x$ for $x in RR$ by a #index[power series]. Then we extend $ee^x$ to $CC$ and, from this complex function $ee^z$, we define $cos x$ and $sin x$ for $x in RR$ by Euler's formula. See #TODO[#lorem(4)] for further discussion.
+  In this document, the #keyword[trigonometric functions] $cos theta$ and $sin theta$ are defined using the unit circle in $x y$-plane and this proof employs that definition.
+  In advanced mathematics, we often take another approach, where we first define $ee^x$ for $x in RR$ by a #keyword[power series]. Then we extend $ee^x$ to $CC$ and, from this complex function $ee^z$, we define $cos x$ and $sin x$ for $x in RR$ by Euler's formula. See #TODO[#lorem(4)] for further discussion.
 ]
 
 #quizzes[
@@ -302,7 +302,7 @@ The following relations hold for these operations. They are somewhat obvious, bu
 ]
 
 Similar to $Re(z)$ and $Im(z)$, we may consider a function $Arg(z)$ to return its argument.
-Here, however, we need to care the #keyword(key: "multivalued", display: "multivalued")[multivaluedness] in $theta$. For example, #thick-sf[(1)] and #thick-sf[(4)] in the above quiz express the same number $z=1+ii$, so there can be multiple values of $theta$ for $z=1+ii$.
+Here, however, we need to care the #keyword(display: "multivalued")[multivaluedness] in $theta$. For example, #thick-sf[(1)] and #thick-sf[(4)] in the above quiz express the same number $z=1+ii$, so there can be multiple values of $theta$ for $z=1+ii$.
 So we need to choose one; a convenient choice is to define $-pi < Arg(z) <= pi$:
 #definition[
   For $z in CC$, $z !=0$,
@@ -328,7 +328,7 @@ So,
     ee^(a + b ii) := ee^a lr(size: #150%, (cos b + ii sin b)).
   $
   #no-shift[$
-    "In particular, for" theta in RR, quad ee^(ii theta) = cos theta + ii sin theta quad (#keyword[Euler’s formula]).
+    "In particular, for" theta in RR, quad ee^(ii theta) = cos theta + ii sin theta quad (#keyword(key: "Euler's formula")[Euler#sym.quote.r.single;s formula]).
   $]
 ]
 #advanced-note[
@@ -380,7 +380,7 @@ The next theorem is extremely important:
     sin theta = Im(ee^(ii theta)) = (ee^(ii theta) - ee^(-ii theta))/(2ii).
   $ <eq:euler-trig>
 ]
-Then for $theta in RR$ and $n in ZZ$, #index[de Moivre#sym.quote.r.single;s theorem] de Moivre's theorem $(cos theta + ii sin theta)^n = cos(n theta) + ii sin(n theta)$ holds, but we do not need to memorize it. Just use the equation $ee^(ii n theta) = (ee^(ii theta))^n$, e.g.,
+Then for $theta in RR$ and $n in ZZ$, #keyword(key: "de Moivre's theorem")[de Moivre#sym.quote.r.single;s theorem] $(cos theta + ii sin theta)^n = cos(n theta) + ii sin(n theta)$ holds, but we do not need to memorize it. Just use the equation $ee^(ii n theta) = (ee^(ii theta))^n$, e.g.,
 #example[
   Express $cos 4theta$ in terms of $cos theta$.
 ]
@@ -482,12 +482,10 @@ The next step is "complex vectors". Let us recall three interpretations of vecto
 There we started from the first interpretation (@def:v-arrow) and reached the second interpretation (@def:va-comp).
 For complex vectors, the first interpretation seems not nice, but @def:va-comp looks nice to _define_ complex vectors: we just extend real numbers to complex numbers.
 #definition(title: "Inner product of Complex vectors")[
-  We define $n$-dimensional #EMPH[complex vectors] by a list of $n$ complex number:
+  We define $n$-dimensional #keyword-under("vector")[complex vectors] by a list of $n$ complex number:
   (cf. @def:va-comp)
   $ vc(v) = mat(v_1; v_2; dots.v; v_n); quad v_k in CC, quad n in NN^+. $
 ]
-#index("vector", "complex vector")
-#index-see("complex vector", "vector")
 
 With this definition, we can analyze complex vectors similarly as real vectors, except for one caveat.
 We would like to use @eq:va-ip-comp to define inner products, but then it would break nice properties such as @eq:vip-norm and #thick-sf[(C)] of @thm:va-ip-prop.
@@ -558,10 +556,10 @@ Properties in @thm:va-ip-prop are also valid for complex vectors _with slight mo
 Using #thick-sf[(B)] of the above, we can define the #EMPH[magnitude] of complex vectors by
 #theorem(title: "Magnitude of complex vectors")[
   #no-shift[$
-      "For a complex vector" vc(a)", we define its" #EMPH[magnitude] "by"
+      "For a complex vector" vc(a)", we define its" #keyword(display: "magnitude (vector)")[magnitude] "by"
       va(a) := sqrt(cip(a, a)).
     $
-  ]#index("magnitude (vector)")
+  ]
 ]
 #theorem(title: "Properties of complex-vector magnitude")[
   For complex vectors $vc(a)$ and $vc(b)$ and a constant $k in CC$,

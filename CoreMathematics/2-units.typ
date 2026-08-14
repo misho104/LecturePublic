@@ -53,9 +53,10 @@ Further discussions on uncertainty analysis are given in Chapter #TODO[chapter].
 
 = Physical quantity <sec:unit-q>
 
-The expression "$(72 ± 2)kg$" means the central value is $72kg$ and the #EMPH[absolute uncertainty] is $2kg$.
-Accordingly, its #EMPH[relative uncertainty] is given by $(2kg)\/(72kg)=0.028$.
+The expression "$(72 ± 2)kg$" means the central value is $72kg$ and the #keyword-under("uncertainty")[absolute uncertainty] is $2kg$.
+Accordingly, its #keyword-under("uncertainty")[relative uncertainty] is given by $(2kg)\/(72kg)=0.028$.
 Let's see other examples.
+#index-see("error", "uncertainty")
 
 #align(center, table(
   columns: (auto, auto, auto, auto, auto),
@@ -67,11 +68,6 @@ Let's see other examples.
   [$(5±1)#EE(-3) coulomb$], [C (coulomb)], $0.005 coulomb$, $0.001 coulomb$, [0.2 (or 20%)],
   [$(50±1)mps$], [m/s], $50 mps$, $1 mps$, [0.02 (or 2%)],
 ))
-#index("uncertainty", "absolute uncertainty")
-#index("uncertainty", "relative uncertainty")
-#index-see("error", "uncertainty")
-#index-see("absolute uncertainty", "uncertainty")
-#index-see("relative uncertainty", "uncertainty")
 
 #remark[
   Upper- and lowercase letters are distinguished. "M" *does not* mean "meter". The unit "A" is "ampere", not "Ampere". The unit "coulomb" is "C", not "c".
@@ -146,7 +142,7 @@ This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equ
 #make-indent
 Every physical concept has its own unit. For example, speed has $bare(m/s)$, acceleration has $bare(m/s^2)$, and energy has $bare("kg"*m/s^2)=bare(N*m)=bare(J)$.
 The next table lists the quantities you have learned.
-Notice that angle (rad) has no dimension. It is called a #keyword[dimensionless] quantity.
+Notice that angle (rad) has no dimension. It is called a #keyword(display: "dimensionless (unit)")[dimensionless] quantity.
 <prob:for-logic>
 
 #align(center, table(

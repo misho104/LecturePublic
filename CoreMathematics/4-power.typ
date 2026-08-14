@@ -67,15 +67,15 @@ Do not worry if you cannot recall all the rules! Learn this section and come bac
   #make-indent
   We should first recall $sqrt(a)$... what is that?
 
-  #definition(title: [#math-thick-sans[n]-th root of non-negative numbers])[
-    For $a>=0$, we define $root(n, a)$ for $n=2, 3, 4, ...$ by the *positive* solution $x$ of the equation $x^n = a$ and call it the #keyword(key: "$-th root", display: [$n$-th root])[#math-thick-sans[n]-th root] of $a$.
+  #definition(title: [#math-thick-sf[n]-th root of non-negative numbers])[
+    For $a>=0$, we define $root(n, a)$ for $n=2, 3, 4, ...$ by the *positive* solution $x$ of the equation $x^n = a$ and call it the #keyword(key: "$-th root", display: [$n$-th root])[#math-thick-sf[n]-th root] of $a$.
     In particular, write we $sqrt(a)$ instead of $root(2, a)$.
   ]
 ]
 Since we have assumed $a>=0$, the equation $x^n=a$ always has a unique positive solution.
 It guarantees that $root(n, a)$ is *always and uniquely* determined; we usually say "$root(n, a)$ is #keyword[well-defined]" to describe this situation.
 Also, notice that $root(n, a)>=0$ _by definition_.
-#example(title: [n-th root of a positive number])[
+#example(title: [#math-thick-sf[n]-th root of a positive number])[
   $root(3, 8)$ is the positive solution of $x^3 = 8$. So, $root(3, 8) = 2$.
   Similarly, $root(4, 1.4641)$ is the positive solution of $x^4 = 1.4641$, so $root(4, 1.4641) = 1.1$. Notice $root(n, 0)$ is always $0$ for any $n=2, 3, 4, ...$
 ]
@@ -298,7 +298,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
 
 #block(breakable: false)[
   = Napier's number and Natural logarithm <sec:pow-e>
-  There is a special number for the base, called #keyword(display: [Napier#sym.quote.r.single;s number])[Napier's number] $ee$:
+  There is a special number for the base, called #keyword(key: "Napier's number")[Napier#sym.quote.r.single;s number] $ee$:
   #index-see("e", [Napier#sym.quote.r.single;s number])
   $
     ee = 2.718281828... = lim_(n -> oo) (1 + 1/n)^n = sum_(k=0)^oo 1/(k!) = 1 + 1 + 1/2 + 1/6 + 1/24 + 1/120 + ...
@@ -309,9 +309,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
       dv(, x) ee^x = ee^x, quad dv(, x) ln x = 1/x,
     $
   ]
-  where the #EMPH[natural logarithm] ($ln x$) is defined by $ln x := log_e x$.
-  #index("logarithm", "natural logarithm")
-  #index-see("natural logarithm", "logarithm")
+  where the #keyword-under("logarithm")[natural logarithm] ($ln x$) is defined by $ln x := log_e x$.
   Also, we often write $ee^x$ as $exp(x)$.
 ]
 
