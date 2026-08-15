@@ -12,7 +12,7 @@ Since a matrix is described as a two-dimensional list of numbers, e.g.,
 $A = mat(1, 2, 3; 4, 5, 6)$ and $B=mat(0, 1+ii; 1-ii, 0)$,
 we will first focus on the list-of-numbers interpretation#footnote[→ The beginning of @chap:vector.] of vectors; in #TODO[section]. we will use the arrow interpretation of vectors.
 
-= Review: Vectors as lists of numbers <sec:mat-vec-review>
+= Review: Vectors as Lists of numbers <sec:mat-vec-review>
 
 #[
   #set par(leading: 0.2em)
@@ -173,7 +173,7 @@ $vc(a) = mat(a'_1; dots.v; a'_n)_(f).$
 ]<thm:mat-basis-change>
 We will come back to this discussion later.
 
-= Matrices <sec:mat-def>
+= What is a Matrix? <sec:mat-def>
 #remark[
   This is a quick review; you should already be familiar with matrix arithmetic.
 ]
@@ -251,7 +251,7 @@ A real matrix is (of course) a complex matrix, so it is almost enough if you lea
   [matrix multiplication],
   [trace and determinant],
 )
-= Basic operations on matrices <sec:mat-ops>
+= Matrix arithmetic <sec:mat-ops>
 You need to learn following operations for matrices:
 #cat-of-operations
 We first review the definitions of these operation. Their properties are postponed to the next section.
@@ -305,14 +305,16 @@ We first review the definitions of these operation. Their properties are postpon
 #block(breakable: false)[
   #make-indent
   Matrix multiplications, defined next, is the most important operation.
+  The definition is somewhat strange, but has a very nice property as we will see in the Remark box on #ref(<rem:mat-mul-definition>, form: "page").
   #definition(title: [#op-style(3) Matrix multiplication])[
     Matrix multiplication $A B$ is defined _iff_ the number of columns of $A$ is equal to the number of rows of $B$. In other words, if $A$ is a $s times t$ matrix and $B$ is a $u times v$ matrix, then $A B$ is defined _iff_ $t=u$.
     The product $A B$ is a $s times v$ matrix defined by
     $
       (A B)_(j k) := sum_(n=1)^t A_(j n) B_(n k).
     $
-  ]
+  ]<def:mat-mul>
 ]
+
 #be-careful[You need a lot of practice to get used to this operation. So...]
 #quizzes[
   + Calculate the following products if defined. Answer "undefined" if the product is not defined.
@@ -369,7 +371,7 @@ For square matrices, we can define the #EMPH[trace] and #EMPH[determinant] as fo
 Obviously, the trace and determinant of real matrices are real numbers.
 #remark[Sometimes $det A$ is written by $|A|$.]
 
-= Properties of matrix operations <sec:mat-prop>
+= Theorems about Matrix arithmetic <sec:mat-prop>
 Now we discuss the properties of the operations
 #cat-of-operations
 one by one.
@@ -590,7 +592,7 @@ Now it's time to do (a lot of) exercises.
   + `1` Consult textbooks to find the definition of determinant for general $n times n$ matrix. Write a $4 times 4$ matrix $A$ with components $A_(j k)=j+k+delta_(j k)$ and calculate $det A$.
 ]
 
-= Inverse of matrices <sec:mat-inverse>
+= Inverse of a matrix <sec:mat-inverse>
 If $x$ is a (complex) number, an equation $a x = b$ with $a != 0$ can be solved by
 #no-num[$ (a dot x) dot a^(-1) = b dot a^(-1) $]
 and then, since $(a dot x) dot a^(-1)=(a dot a^(-1)) dot x$ and $a dot a^(-1) = 1$, we have $x = b a^(-1)$. Can we do the same thing for matrices?
@@ -646,7 +648,7 @@ So, if $det A != 0$ and $A X = B$, then we can solve it as $X = A^(-1) B$.
 ] <thm:mat-prop-inverse>
 
 
-= Matrices with special names <sec:mat-special>
+= Matrices with Special names <sec:mat-special>
 
 #[
   #show strong: it => {
@@ -783,7 +785,7 @@ These #EMPH[decompositions] are important in linear algebra.
     + Find all $2 times 2$ matrices that satisfy $A^2=I_2$.
 ]
 
-= Matrix and Arrows
+= Geometric interpretation of Matrices <sec:mat-geo>
 Consider $2 times 1$ real matrices and $3 times 1$ real matrices, such as $mat(1; 3)$ and $mat(-1; 0; 3)$.
 Because Sho asked you to write a vector in the vertical form, it is natural to identify $n times 1$ real matrices as $n$-dimensional real vectors. And thus,
 #theorem(type: "Statement")[
@@ -805,6 +807,7 @@ $
 ]
 Obviously, $V$ corresponds to a vertical #keyword[reflection] (reflection with respect to $x$-axis), $H$ to a horizontal #EMPH[reflection] (reflection with respect to $y$-axis), and $C$ corresponds to a $90degree$-rotation around the origin.
 Therefore, $V^2$, $H^2$, and $C^4$ must be the identity matrix $I_2$, and $C^2 = H V = V H$.
+
 #quizzes[
   +
     + Calculate $V^(-1)$, $H^(-1)$, and $C^(-1)$.
@@ -815,6 +818,10 @@ Therefore, $V^2$, $H^2$, and $C^4$ must be the identity matrix $I_2$, and $C^2 =
 
 ]
 When we operate $H$ and $V$ on an arrow, we do not have to care about the order because $H V=V H$, i.e., $H$ and $V$ commute. Meanwhile, when we operate reflection $H$ and $90degree$-rotation $C$, the order matters because the operators do not commute.
+
+#remark[You may think it is natural or obvious that the operation $C^2=C C$ is equivalent to the operation "first do $C$, and then $C$", or that $H C$ is equal to the operation "first $C$, and then $H$".
+  However, it is not either obvious, fortune, or accident; rather, it is _by definition_.
+  In fact, the matrix multiplication (@def:mat-mul) is defined so that the product $A B$ becomes equivalent to "operate $B$ and then $A$".]<rem:mat-mul-definition>
 
 For 2d arrows, the following matrices are important.
 #theorem(title: [Matrices as operators on 2d arrows])[
@@ -924,51 +931,103 @@ With this theorem, we can easily show that rotations do not modify the magnitude
 ]
 
 
-= Matrix and Vectors
-Once we identify a vector with a $n times 1$ matrix, we can describe the inner product, @eq:mat-vec2, as a product of two matrices:
+= Matrix as an Operator on Vectors
+In the previous sections, we have done the identification
+#no-num[$ #text[a $n times 1$ real matrix] = #text[a $n$-dimensional real vector] = #text[an arrow in $n$-d space.] $]
+We have seen, for $M in RR^(n,n)$ and $vc(v) in RR^n$, $M vc(v)$ is again a $n$-dimensional vector. So, we could identify
+#no-num[$ #text[a $n times n$ real matrix] = #text[an operator on a  $n$-dimensional real vector.] $]
+In this section, we will do a similar discussion for complex vectors and matrices.
+#no-num[$
+  #text[a $n times 1$ complex matrix] = #text[a $n$-dimensional complex vector,] \
+  #text[a $n times n$ complex matrix] = #text[an operator on a  $n$-dimensional complex vector,]
+$]
+
+#advanced-note[
+  In this document, we have introduced matrices as a 2d list of numbers and identified them as operators. However, in formal mathematics, the operator nature is more fundamental and the 2d list are secondary.
+  We will briefly see this topic in #TODO[chap].
+]
+
+
+#make-indent
+The starting point is the inner product of $vc(v), vc(w) in CC^n$.
+If we regard the vectors as matrices, we can describe the inner product by
 #writings(
   box: (true, false, true),
   align: horizon,
   $display(cip(v, w) = sum_(k=1)^n overline(v_k) w_k)$,
   $=$,
-  $display(mat(overline(v_1), overline(v_2), ..., overline(v_n))thick mat(w_1; w_2; ...; w_n) = (vc(v))^dagger vc(w))$,
+  $display(mat(overline(v_1), overline(v_2), ..., overline(v_n))thick mat(w_1; w_2; ...; w_n) = (vc(v))^dagger vc(w)).$,
 )
-with $vc(v)$ and $vc(w)$ identified as matrices; $(vc(v))^dagger$ is the  Hermitian conjugate of $vc(v)$.
+The first box is just @eq:mat-vec2. In the second box, the vectors are identified as matrices, where $(vc(v))^dagger$ is the  Hermitian conjugate of $vc(v)$.
 This equality motivates us to describe
 #writings(
   box: (false, true, false, true, false),
   align: (left, center, left, center, left),
   [a vector],
   $vc(v)$,
-  [as a #keyword[ket]],
+  [as],
   $ket(vc(v))$,
-  [(or, usually, $thick ket(v)thick$)],
+  [(or simply written by $ket(v)$), which is called a #keyword[ket],],
   [an Hermitian conjugate],
   $(vc(v))^dagger$,
-  [as a #keyword[bra]],
+  [as],
   $bra(vc(v))$,
-  [(or, usually, $thick bra(v)thick$)],
+  [(or simply written by $bra(v)$), which is called a #keyword[bra],],
 )
 and this is why we denote the inner product as $cip(v, w)$.
 #theorem[
   For any vectors $vc(v) in KK^n$ and $vc(w) in KK^n$, we can express the inner product $cip(v, w)$ and the magnitude $|vc(v)|$ by matrix multiplication:
   #no-num[
-    $ cip(v, w) = (vc(v))^dagger vc(w), wide va(v) = sqrt((vc(v))^dagger vc(v)thick), $
+    $ cip(v, w) = (vc(v))^dagger vc(w), wide va(v)^2 = (vc(v))^dagger vc(v), $
   ]
   where the vectors $vc(v)$ and $vc(w)$ are identified as $n times 1$ matrices.
 ]
 
-We saw $cip(v, w)$ is the inner product. How about $cop(vc(v), vc(w))$?
+Since $A vc(v)$ is a vector, we can write $ket(A vc(v))$, or even
+#writings(
+  box: (true, false, true, false),
+  align: (center, center, center, left),
+  [$ket(A vc(v))$],
+  $=$,
+  [$A ket(vc(v))$],
+  [: the vector $A vc(v)$ as a ket, or equivalently, a ket $vc(v)$ with an operation $A$,],
+  [$bra(A vc(v))$],
+  $=$,
+  [$bra(vc(v))A^dagger$],
+  [: the Hermitian conjugate of $ket(A vc(v)).$],
+)
+We can also combine them. For example, if we let $vc(w)=A vc(v)$,
+#writings(
+  box: (true, false),
+  $lbk(vc(v), vc(w))=lbk(vc(v), A vc(v))=bra(vc(v))A ket(vc(v))$,
+  none,
+  $lbk(vc(w), vc(v))=lbk(A vc(v), vc(v))=bra(vc(v))A^dagger ket(vc(v))$,
+  none,
+  $lbk(vc(w), vc(w))=lbk(A vc(v), A vc(v))=bra(vc(v))A^dagger A ket(vc(v))$,
+  "etc.",
+)
+#quizzes[
+  + Consider vectors $vc(v), vc(w) in CC^n$ and matrices $A, B in CC^(n,n)$.
+    + Show that the Hermitian conjugate of $A vc(v)$ is $bra(vc(v))A^dagger$, i.e., $bra(A vc(v))=bra(vc(v))A^dagger$.
+    + Show that $overline(bra(vc(v)) A ket(vc(w))) = bra(vc(w)) A^dagger ket(vc(v))$.
+      #fail-safe(indent: false)[Let $vc(u)=A vc(w)$. Recall $overline(cip(v, u))=cip(u, v)$.]
+    + Show that $bra(vc(v))A ket(vc(v))$ is real if $A$ is Hermitian.
+    + Express $lr(|A vc(v)|)^2$ as the expression $bra(vc(v))dots.c ket(vc(v))$.
+    + Show that $lr(|A vc(v)|)^2 = lr(|vc(v)|)^2$ if $A$ is unitary.
+
+]
+
+#divider()
+
+We saw $cip(v, w)$ is just a complex number. How about $cop(vc(v), vc(w))$?
 $
   cop(vc(v), vc(w)) = mat(v_1; v_2; ...; v_n)mat(overline(w_1), overline(w_2), ..., overline(w_n))
   =
   mat(v_1 overline(w_1), v_1 overline(w_2), ..., v_1 overline(w_n); v_2 overline(w_1), v_2 overline(w_2), ..., v_2 overline(w_n); dots.v, dots.v, dots.down, dots.v; v_n overline(w_1), v_n overline(w_2), ..., v_n overline(w_n))
 $
 and this is a $n times n$ matrix.
-#quizzes[
-  + Check that this matrix is Hermitian.
-]
-Recall that the numbers $v_k$ and $w_k$ are given under some basis vectors $\{vc(e)_k\}$, and thus the matrix expression is also basis-dependent; it will be different if we use another basis.
+Recall that $v_k$ and $w_k$, the components, are given under some basis vectors $\{vc(e)_k\}$.
+The matrix expression is therefore basis-dependent: the value of each element will be different if we use another basis.
 
 The next theorem is useful in your future lectures:
 #theorem(title: [Projection operators])[
@@ -979,8 +1038,30 @@ The next theorem is useful in your future lectures:
 
   - The sum of all projection operators are identity. Namely, $ sum_(k=1)^n P""_k = sum_(k=1)^n fop(k) = I_n. $<eq:mat-proj-sum-id>
 ]
+#example[
+  In this example, we consider $KK^2=CC^2$, assuming that the component-wise notation  $vc(v)=mat(v_1; v_2)$ is given under the basis $\{vc(e)_1,vc(e)_2}$, i.e., $vc(v)=v_1 vc(e)_1+v_2 vc(e)_2$ and $v_k = lbk(vc(e)_k, vc(v))$ for $i=1,2$. Then, $vc(e)_1=mat(1; 0)$ and $vc(e)_2 = mat(0; 1)$.
 
-#divider()
+  $\{vc(e)_1,vc(e)_2\}$ is an orthonormal basis. The projection operators associated to these basis vectors are given by $P_1 = mat(1, 0; 0, 0)$ and $P_2=mat(0, 0; 0, 1)$, so $P_1+P_2=I_2.$
+
+  If we define $vc(f)_1=mat(3\/5; 4\/5)$ and $vc(f)_2=mat(-4\/5; 3\/5)$, then $\{vc(f)_1,vc(f)_2\}$ is an orthonormal basis.
+  Projection operators for these basis vectors are given by
+  $
+    ket(vc(f)_1)bra(vc(f)_1)=mat(9\/25, 12\/25; 12\/25, 16\/25),quad
+    ket(vc(f)_2)bra(vc(f)_2)=mat(16\/25, -12\/25; -12\/25, 9\/25),
+  $
+  and thus $sum ket(vc(f)_k)bra(vc(f)_k)=I_2.$
+
+  #fail-safe[
+    If we used the basis vectors $\{vc(f)_1, vc(f)_2\}$ for the component-wise notation, we would obtain $ket(vc(f)_1)bra(vc(f)_1) = mat(1, 0; 0, 0)_f$ and $ket(vc(f)_2)bra(vc(f)_2)=mat(0, 0; 0, 1)_f$.
+
+  ]
+]
+#quizzes[
+  + Show that #no-num[$ \{vc(g)_1,vc(g)_2\},quad"where"quad
+    vc(g)_1=1/sqrt(2) mat(ee^ii; 1),quad
+    vc(g)_2=1/sqrt(2) mat(1; -ee^ii) $] is an orthonormal basis for $CC^2$. Calculate the projection operators for these basis vectors and check that their sum is $I_2$.
+
+]
 
 With this identity, @thm:mat-basis-change can be understood in a more intuitive way.
 Consider a vector $vc a in KK^n$. Then,
@@ -1025,128 +1106,4 @@ This equation actually means $U$ is a unitary matrix, but we are not going to di
 
 
 
-
-= Linear Transformations
-In formal mathematics, matrices are introduced as #EMPH[linear transformations] of vectors.
-We are not going into the details, but let us "see" the situation briefly.
-
-Consider a real function $f(x)$. If $f$ satisfies $f(x+y) = f(x) + f(y)$ and $f(k x) = k f(x)$ with any $k in RR$, we say $f$ is a #keyword[linear function].
-#quizzes[
-  + Check $f(x)=x^2$ is not linear. #hint[Compare $f(1+1)$ and $f(1)+f(1)$]
-  + For $f(x) = 3x+c$ to be a linear function, what is the value of $c$?
-]
-In these examples, $f(x)$ receives a number $in RR$ and returns a number $in RR$.
-As an extension, we can consider a function $vc(F)(vc(x))$ that receives a vector $vc(x) in KK^n$ a and returns a vector $vc(F)(vc(x))$.
-#example[
-  - The electrostatic potential $V(x, y, z)$ is a function that receives a vector $mat(x; y; z) in RR^3$ and returns a real value $V in RR$.
-  - The electric field $vc(E)(x, y, z)$ is a function that receives a vector in $RR^3$ and returns a vector in $RR^3$.
-]
-Now, what if we require the linearity?
-
-#definition[
-  Consider a function $F$ that receives a vector $x in KK^m$ and returns a vector $vc(f) = F(vc(x)) in KK^n$. If
-
-  - $F(vc(x) + vc(y)) = F(vc(x)) + F(vc(y))$ for any $vc(x), vc(y) in KK^m$,
-
-  - $F(k vc(x)) = k F(vc(x))$ for any $vc(x)in KK^m$ and $k in KK$,
-
-  we call $F$ a #keyword[linear function] or #keyword[linear operator].
-]
-#remark[
-  We can safely mix these two concepts "functions" and "operators", but also you are advised to be cautious about the difference between $f(g(x))$ and $g(f(x))$.
-]
-#theorem[
-  There is an one-to-one correspondence between
-
-  - a matrix in $KK^(m,n)$ and
-  - a linear function that receives a vector $in KK^n$ and returns a vector $in KK^m$.
-
-  In other words, any _linear_ function receiving a vector $in KK^n$ and returning a vector $in KK^m$ can be uniquely described as a $m times n$ matrix $in KK^(m,n)$ and, conversely, any matrix $in KK^(m,n)$ corresponds to a linear function receiving a vector $in KK^n$ and returning vector $in KK^m$.
-]
-We now apply matrices to concrete geometric transformations in $RR^2$.
-Write $vc(v) = dm(x; y)$ and use the standard basis $\{vc(e)_x, vc(e)_y\}$.
-
-== Scaling
-Scaling by $(s_x, s_y)$ means multiplying the $x$-component by $s_x$ and the $y$-component by $s_y$:
-$
-  mat(x; y) |-> mat(s_x x; s_y y) = mat(s_x, 0; 0, s_y) mat(x; y).
-$
-Scaling by a single constant $s$ in all directions (dilation) uses $s I$.
-
-== Reflection
-
-Reflection across the $x$-axis sends $(x, y) |-> (x, -y)$:
-$
-  R_x = mat(1, 0; 0, -1).
-$
-Reflection across the $y$-axis: $R_y = mat(-1, 0; 0, 1)$.
-
-What about reflection across the line $y = x tan alpha$ (a line through the origin at angle $alpha$)?
-The general formula is
-$
-  R_alpha = mat(cos 2alpha, sin 2alpha; sin 2alpha, -cos 2alpha).
-$<eq:mat-reflect>
-
-#quizzes[
-  + Verify @eq:mat-reflect for $alpha = 0$ (reflection across the $x$-axis) and $alpha = pi\/4$ (reflection across $y = x$).
-  + Show that $(R_alpha)^2 = I$ for any $alpha$. Explain this geometrically.
-]
-
-== Rotation
-
-Counterclockwise rotation by angle $theta$ sends $vc(e)_x |-> mat(cos theta; sin theta)$ and $vc(e)_y |-> mat(-sin theta; cos theta)$.
-These become the columns:
-
-#definition(title: [Rotation matrix])[
-  The counterclockwise rotation by $theta$ in $RR^2$ is represented by
-  $
-    R(theta) = mat(cos theta, -sin theta; sin theta, cos theta).
-  $<eq:mat-rotate>
-]
-
-#theorem[
-  $
-    R(theta) R(phi) = R(theta + phi), quad R(theta)^(-1) = R(-theta), quad det R(theta) = 1, quad R(theta)^T R(theta) = I.
-  $
-]
-
-#example(title: [Rotation by $pi\/4$])[
-  The vector $mat(1; 0)$ rotated counterclockwise by $pi\/4$ gives
-  $R(pi\/4) mat(1; 0) = mat(cos(pi/4), -sin(pi/4); sin(pi/4), cos(pi/4)) mat(1; 0) = mat(1\/sqrt(2); 1\/sqrt(2)).$
-]
-
-#quizzes[
-  + Verify $R(theta) R(phi) = R(theta + phi)$ by direct computation.
-    #hint[Use the angle-addition formulas for $sin$ and $cos$.]
-  + For what $theta$ does $R(theta) = I$? For what $theta$ does $R(theta)$ equal reflection across the $x$-axis?
-]
-
-#problems[
-  + `9` Compute $R(theta) vc(v)$ for:
-    #h-enum(cols: 3)[
-      + $theta = pi\/2$, $vc(v) = mat(1; 0)$
-      + $theta = pi$, $vc(v) = mat(0; 1)$
-      + $theta = pi\/3$, $vc(v) = mat(1; 1)$
-      + $theta = -pi\/4$, $vc(v) = mat(sqrt(2); 0)$
-      + $theta = pi\/6$, $vc(v) = mat(sqrt(3); 1)$
-      + $theta = 2pi\/3$, $vc(v) = mat(1; -1)$
-    ]
-  + `4` Show the following.
-    #h-enum(cols: 1)[
-      + $R(theta)$ is orthogonal for all $theta$.
-      + $det R(theta) = 1$ for all $theta$.
-      + $R(theta)^(-1) = R(-theta)$.
-      + Verify the identity $R(theta) R(phi) = R(theta + phi)$.
-    ]
-  + `3` The composition of two reflections is a rotation. Specifically, show that
-    $R_(pi\/2) R_0 = R(pi)$, where $R_0$ is reflection across the $x$-axis and $R_(pi\/2)$ is reflection across the $y$-axis.
-    Then, more generally, show that $R_beta R_alpha = R(2(beta - alpha))$, where $R_alpha$ and $R_beta$ are reflections from @eq:mat-reflect.
-  + `2` A rotation in $RR^3$ about the $z$-axis by angle $theta$ is represented by
-    $
-      R_z(theta) = mat(cos theta, -sin theta, 0; sin theta, cos theta, 0; 0, 0, 1).
-    $
-    Write down analogous matrices $R_x(theta)$ and $R_y(theta)$ for rotations about the $x$- and $y$-axes.
-    Show that $R_x(theta)$, $R_y(theta)$, and $R_z(theta)$ are all orthogonal with determinant 1.
-    + Show that in general $R_x(alpha) R_y(beta) != R_y(beta) R_x(alpha)$ (rotations in 3d do not commute).
-]
 

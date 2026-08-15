@@ -441,7 +441,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
 ]
 
 
-= Exponential growth and Decay <sec:pow-decay>
+= Exponential growth and Exponential decay <sec:pow-decay>
 Consider $f_0(t) = exp(A t)$ with $A in RR$, and imagine $t in RR$ is the time. You may find
 $
   f_0(t) = exp(A t) "is" #math-strong("strictly increasing") "if" A>0, "while"

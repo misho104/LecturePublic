@@ -401,7 +401,7 @@ Before discussing advanced topics on logics, you should do some drills.
 
 #pagebreak()
 
-= A few more notes about logic and proof <sec:logic-note>
+= A few more notes about Logic and Proof <sec:logic-note>
 
 There is a useful theorem for "not" operator, called #keyword(key: "de Morgan's theorem")[de Morgan#sym.quote.r.single;s theorem].
 #theorem(title: "De Morgan's theorem")[
