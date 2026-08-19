@@ -4,6 +4,18 @@ description: Scan Typst source files for !AI marker comments and replace each wi
   generated content. Use when asked to "process AI markers", "run !AI todos", or
   "batch generate content".
 ---
+## Editorial context
+
+This is a physics math drill book for first-year university physics students. The author (Sho) writes with a warm, direct, and slightly humorous voice. Two goals run through every chapter: *fluency* (fast, accurate calculation via drills) and *logical correctness* (sharp distinction between definitions and theorems, rigorous domain statements).
+
+When generating any content:
+- Prefer physics-motivated contexts (forces, oscillation, units, error analysis) over pure algebra.
+- State domains explicitly; flag boundary cases with `#be-careful` where appropriate.
+- Never blur the definition/theorem line: a `#definition` uses `:=` and states a *choice*; a `#theorem` states a *consequence*.
+- Short sentences. No idioms. No "obviously." Define every new symbol on first use.
+- Examples must target a specific student confusion point and show all intermediate steps.
+- Drills must be structured by trap type, not random.
+
 ## What this skill does
 
 Finds every `// !AI ...` comment in the specified file(s), generates the requested
@@ -28,13 +40,13 @@ The `<instruction>` is a free-form hint about what to generate.
 ```typst
 = Chain Rule
 
-// !AI description: explain the chain rule for a composite function f(g(x)), mention the common mistake of forgetting the inner derivative
+// !AI d: explain the chain rule for a composite function f(g(x)), mention the common mistake of forgetting the inner derivative
 
 #quizzes[
   + `4` Differentiate $sin(x^2)$.
 ]
 
-// !AI exercise: add level-4 and level-3 problems for chain rule, focus on cases where students forget the inner derivative
+// !AI p: add level-4 and level-3 problems for chain rule, focus on cases where students forget the inner derivative
 ```
 
 ## Processing algorithm

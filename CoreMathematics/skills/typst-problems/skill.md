@@ -35,10 +35,18 @@ description: Improve existing exercises or add new ones to Typst
 - `1` challenge — only for really important topics
 - `9` drill — Hanon-style repetitive calculation; see drill design rules below
 
-## Design principles for exercises
+## Editorial context
 
-### Focus on student confusion points
-Before writing, ask: *where do students typically go wrong with this topic?*
+This is a physics math drill book. The author (Sho) says explicitly: "Drill problems are the core of this document." Problems must be both educationally precise and physically grounded.
+
+Key rules for problems:
+- Every problem should test **something distinct**. No "more of the same."
+- Level `4` problems must be solvable by any student who read the section carefully.
+- Drills (`9`) must be structured by *trap type*, not randomly. Group items so a student notices a pattern after working through them.
+- Problems that ask students to **find the logical error** in a wrong solution are a valued pattern in this book. Use them for topics where students commonly write things that "look right."
+- Prefer **physics-motivated numbers and contexts** (realistic values: $g = 9.8\,\text{m/s}^2$, speed of light, Planck constant) especially for units/significant-figures drills.
+- State domains in problem statements just as rigorously as the main text does.
+
 Prioritize problems that target:
 - Common sign errors or algebraic slips
 - Notation ambiguity (e.g., $f'(a)$ vs. $\frac{d}{dx}f(a)$, constant vs. variable)

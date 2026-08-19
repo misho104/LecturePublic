@@ -37,10 +37,19 @@ description: Add or improve worked examples with solutions in Typst math lecture
 - Use `#no-num($...$)` for display math that should not be equation-numbered
 - Use `#h-enum(cols: N)[...]` for multi-part sub-problems (N = 2, 3, or 4)
 
-## Design principles for examples
+## Editorial context
 
-### Focus on student confusion points
-Before writing, ask: *where do students typically go wrong with this topic?*
+This is a physics math drill book, not a formal math textbook. The author (Sho) writes with a warm, direct, and slightly humorous voice. This book aims for two things simultaneously: *fluency* (fast, accurate calculation) and *logical correctness*.
+
+Key rules for examples:
+- Every example should target a **specific student confusion point**, not just "show how to do the calculation."
+- Common confusion patterns: sign errors; constant vs. variable ($a$ declared constant vs. $a$ as variable); notation traps ($\sin^2 x$ vs. $\sin x^2$, $\sin^{-1} x$ vs. $1/\sin x$); missing steps that look "obvious."
+- The solution must show **all intermediate steps**. If a first-year student could miss a step, show it.
+- Name pitfalls explicitly in the solution ("Note: do not confuse this with...").
+- Prefer **physics-motivated contexts** (kinetic energy, oscillation, error, electric field) over pure algebra.
+- State domains. If $a > 0$ is required, say so.
+- Address the student in the same voice as the surrounding text.
+
 Common confusion patterns to target:
 - Sign errors and minus handling
 - Constant vs. variable (e.g., $a$ declared as constant vs. as variable)
