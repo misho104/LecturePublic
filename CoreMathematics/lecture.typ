@@ -40,3 +40,6 @@
 
 #chapter(key: "chap:matrix")[Matrices]
 #include "7-matrix.typ"
+
+#chapter(key: "chap:vc")[Vector Calculus]
+#include "8-vc.typ"
