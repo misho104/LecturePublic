@@ -39,6 +39,17 @@ Hassani2e:
   publisher: Springer
   isbn: 9783319011943
 
+Hubbard5e:
+  type: book
+  author:
+    - John Hubbard
+    - Barbara Hubbard
+  title: Vector Calculus, Linear Algebra and Differential Forms
+  edition: 5
+  year: 2015
+  publisher:  Matrix Editions
+  isbn: 9780971576681
+
 si:
   type: report
   title: "The International System of Units (SI)"

@@ -116,6 +116,7 @@
 }
 #let ii = $upright(i)$
 #let ee = $upright(e)$
+#let dd = $upright(d)$
 #let EE(x) = $#h(0.1em)times#h(0.1em)#{ if (x == 1 or x == [1]) { $10$ } else { $10^#x$ } }$
 #let root(n, x) = math.root(move($math.script(#n)$, dy: -0.4em), x)
 #let math-strong(t) = text(font: _font-serif, strong(t))
@@ -191,7 +192,7 @@
 // get int and return content
 #let _label-styles = (
   "problem": n => thick-sf(n),
-  "quiz": n => thick-sf([Q#n.replace(regex(".*\."), "").]),
+  "quiz": n => thick-sf([Q#str(n).replace(regex(".*\."), "").]),
   "(1)": n => thick-sf([(#n)]),
   "(A)": n => box(width: 1.3em, align(center, thick-sf("(" + str.from-unicode(64 + n) + ")"))),
   "(a)": n => box(width: 1.3em, align(center, thick-sf("(" + str.from-unicode(96 + n) + ")"))),
@@ -383,6 +384,7 @@
   main-box: (:), // cannot have stroke and inset
   icon: none,
   label: "Box",
+  breakable: true,
   body,
 ) = {
   let fill = if accent == none { none } else { accent.lighten(80%) }
@@ -413,7 +415,7 @@
     #block(
       fill: fill,
       width: 100%,
-      breakable: true,
+      breakable: breakable,
       below: 0mm,
       inset: (
         left: _i("left"),

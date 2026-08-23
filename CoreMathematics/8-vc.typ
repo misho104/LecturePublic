@@ -1,364 +1,756 @@
 #import "misho-text.typ": *
 #import "physica.typ": dv, pdv  // cspell: disable-line
-#import "5-vector.typ": dm, va, vc, vcu, vip
+#import "5-vector.typ": dm, va, vc, vcu, vip, vxp
+#import "6-complex.typ": Arg
+#import "2-units.typ": writing, writings
 // cspell: ignore Levi Civita
 
 // Chapter-local macros
 #let vt(a, b) = $vc(#a) times vc(#b)$
 #let eps = $epsilon$ // Levi-Civita symbol shorthand
+#let nab = $vc(nabla)$ // cspell: disable-line
+#let grad = math.op("grad")
+#let div = math.op("div")
+#let curl = math.op("curl")
+#let px = $partial_x$
+#let py = $partial_y$
+#let pz = $partial_z$
+#let nm = $mat(px; py; pz)$
 
-#restriction[This chapter assumes all fields are sufficiently smooth (continuously differentiable as many times as we need). We work in Cartesian coordinates $x_1=x$, $x_2=y$, $x_3=z$ unless stated otherwise.]
+#let jacobian(a, b, c, d, e, f) = math.mat(..(d, e, f).map(i => (a, b, c).map(j => $pdv(#i, #j)$)))
 
-This chapter is about how derivatives interact with vectors. A car's temperature sensor gives you one number per point in space---a #keyword[scalar field]. The wind around the car gives you a vector at every point---a #keyword[vector field]. Physics is full of both, and physics equations (Maxwell's equations, the Navier--Stokes equation, the diffusion equation) are written using a small set of derivative operations on these fields: the gradient, the divergence, and the curl. This chapter teaches you to compute with them quickly and to understand what they mean.
 
-= Index Notation: Kronecker Delta and Levi-Civita Symbol <sec:vc-index>
+After we introduced vectors in @chap:vector, we took a long journey through complex numbers, complex vectors, and matrices.
+Those abstract structures are essential for modern physics, but at the end of the day, we physicists live in the real world: the three-dimensional space $RR^3$.
 
-In @chap:matrix we defined the #keyword[Kronecker delta]
-$
-  delta_(i j) := cases(1 "if" i=j",", 0 "if" i != j.)
-$<eq:vc-kronecker>
-for $i, j in {1,2,3}$ (we restrict to three indices in this chapter, since we work in $RR^3$). You have already used $delta_(i j)$ to write orthonormality of a basis compactly. Now we introduce a second symbol that lets us write cross products, and later curls, without drawing a $3 times 3$ determinant every time.
+In this chapter, we return to that world.
+We will focus on vectors in $RR^3$, i.e., arrows in our three-dimensional space, and study #keyword[vector calculus]:
+how to apply the tools of calculus (derivatives and integrals) to such vectors.
+The central objects will be #keyword[scalar fields] and #keyword[vector fields], which we introduce first.
 
-#definition(title: "Levi-Civita symbol")[
-  For $i,j,k in {1,2,3}$, define
-  $
-    eps_(i j k) := cases(
-      +1 & "if" (i,j,k) "is an even permutation of" (1,2,3)",",
-      -1 & "if" (i,j,k) "is an odd permutation of" (1,2,3)",",
-      quad 0 & "if any two of" i,j,k "are equal.",
-    )
-  $<eq:vc-levicivita>
-]<def:levi-civita>
-"Even permutation" means you reach $(i,j,k)$ from $(1,2,3)$ by swapping pairs an even number of times; "odd" means an odd number of swaps. Concretely,
-$
-  eps_(123) = eps_(231) = eps_(312) = +1, quad eps_(132) = eps_(213) = eps_(321) = -1,
-$
-and $eps_(i j k) = 0$ whenever two of the three indices coincide, e.g. $eps_(112) = eps_(233) = 0$. There are $27$ possible triples $(i,j,k)$ with $i,j,k in {1,2,3}$; only $6$ of them are nonzero.
-
-#remark[
-  A quick way to remember the sign: $eps_(i j k)$ flips sign every time you swap two neighbouring indices. Starting from $eps_(123)=+1$, swapping the last two gives $eps_(132) = -1$, swapping the first two of that gives $eps_(312) = +1$, and so on.
-]
-
-#quizzes[
-  + `4` Compute $eps_(213)$, $eps_(321)$, $eps_(122)$, and $eps_(231)$.
-  + `4` Is $eps_(i j k) = eps_(j k i)$ true for all $i,j,k$? #hint[This is a cyclic permutation, not a swap of two indices.]
-]
-
-== Cross Product and the $eps$-$delta$ Identity <sec:vc-eps-delta>
-
-Recall from @chap:matrix (@eq:mat-vec3) that for $vc(a), vc(b) in RR^3$,
-$
-  vc(a) times vc(b) = mat(a_2 b_3 - a_3 b_2; a_3 b_1 - a_1 b_3; a_1 b_2 - a_2 b_1).
-$
-Using $eps_(i j k)$, the $i$-th component of this vector is written compactly as
-$
-  (vc(a) times vc(b))_i = sum_(j=1)^3 sum_(k=1)^3 eps_(i j k) a_j b_k.
-$<eq:vc-cross-index>
-#example(title: "Checking the first component")[
-  Verify @eq:vc-cross-index for $i=1$.
-]
-#solution[
-  Only terms with $eps_(1 j k) != 0$ survive: these are $(j,k) = (2,3)$, giving $eps_(123) = +1$, and $(j,k)=(3,2)$, giving $eps_(132)=-1$. So
-  $
-    sum_(j,k) eps_(1 j k) a_j b_k = eps_(123) a_2 b_3 + eps_(132) a_3 b_2 = a_2 b_3 - a_3 b_2,
-  $
-  which matches the first component of $vc(a) times vc(b)$ above.
-]
-
-The real power of index notation shows up when you need to simplify an expression with two cross products, like the "BAC-CAB" formula $vc(a) times (vc(b) times vc(c))$. The following identity is the tool that makes such calculations mechanical instead of painful.
-
-#theorem(title: "The $eps$-$delta$ identity")[
-  For all $i,j,l,m in {1,2,3}$,
-  $
-    sum_(k=1)^3 eps_(i j k) eps_(k l m) = delta_(i l) delta_(j m) - delta_(i m) delta_(j l).
-  $<eq:vc-eps-delta>
-]<thm:eps-delta>
+#restriction[
+  In this chapter, vectors are real and three-dimensional ($in RR^3$) unless otherwise stated. Also, we will assume all functions are smooth enough (or "friendly to physicists"); we do not consider functions with singularities, discontinuities, or other "pathological" behaviors.]
 #advanced-note[
-  A full proof checks all $3^4 = 81$ combinations of $(i,j,l,m)$ by cases, which is tedious but elementary; both sides vanish unless $\{i,j\} = \{l,m\}$ as sets, and then a short case check confirms the two remaining cases $i=l,j=m$ and $i=m,j=l$. Sho will not reproduce all 81 cases here---this is a drill book, not an encyclopedia---but you can verify a handful of cases yourself to build confidence.
+  Mathematically, all functions in this chapter are assumed to be #keyword(key: "C2", display: $C^2$)[class $#math-thick-sf[C]^#math-thick-sf[2]$].
+  A function is called $C^p$ if we can calculate its $p$-th partial derivative in any combinations and the derivatives are all continuous.
+  So, we assume $px^2 f$, $px py f$, $py px f$, ..., and $pz^2 f$ are all existent and continuous.
+  This is a sufficient condition to ensure the symmetry of second derivatives, $partial_i partial_j f = partial_j partial_i f$ #cite(supplement: [pp. 732--733], <Hubbard5e>).
 ]
 
-#example(title: "Deriving the BAC-CAB rule")[
-  Use @eq:vc-eps-delta to show that for $vc(a),vc(b),vc(c) in RR^3$,
-  $
-    vc(a) times (vc(b) times vc(c)) = vc(b) (vip(a,c)) - vc(c) (vip(a,b)).
-  $<eq:vc-bac-cab>
-]
-#solution[
-  Write the $i$-th component using @eq:vc-cross-index twice, first for the outer product and then for $(vc(b) times vc(c))_k$:
-  $
-    (vc(a) times (vc(b) times vc(c)))_i
-    = sum_(j,k) eps_(i j k) a_j (vc(b) times vc(c))_k
-    = sum_(j,k) eps_(i j k) a_j sum_(l,m) eps_(k l m) b_l c_m.
-  $
-  Reorder the sums and group the two $eps$ factors that share the index $k$:
-  $
-    = sum_(j,l,m) a_j b_l c_m sum_k eps_(i j k) eps_(k l m).
-  $
-  Now $eps_(k l m) = eps_(l m k)$ (a cyclic permutation does not change the sign, see the quiz above), so $sum_k eps_(i j k) eps_(l m k) = sum_k eps_(i j k) eps_(k l m)$ still matches the pattern in @thm:eps-delta with the roles $(i,j,l,m) mapsto (i,j,l,m)$. Applying @eq:vc-eps-delta:
-  $
-    = sum_(j,l,m) a_j b_l c_m (delta_(i l) delta_(j m) - delta_(i m) delta_(j l)).
-  $
-  The Kronecker deltas collapse the sums: $delta_(i l)$ forces $l=i$, and $delta_(j m)$ forces $m=j$, giving the term $sum_j a_j b_i c_j = b_i sum_j a_j c_j = b_i vip(a,c)$. The second term similarly gives $-c_i vip(a,b)$. Adding them:
-  $
-    (vc(a) times (vc(b) times vc(c)))_i = b_i vip(a,c) - c_i vip(a,b),
-  $
-  which is exactly the $i$-th component of @eq:vc-bac-cab.
-]
-#be-careful[
-  A very common slip is to write $vc(a) times (vc(b) times vc(c)) = (vc(a) times vc(b)) times vc(c)$, i.e. to assume the cross product is associative. It is *not*. The two sides differ in general; only @eq:vc-bac-cab (with $vc(a)$ acting on the *inner* product) is correct for the left-hand form. If you need the other grouping, apply @eq:vc-bac-cab after rewriting $(vc(a) times vc(b)) times vc(c) = -vc(c) times (vc(a) times vc(b))$.
+In this section, we introduce the short-hand notation for partial derivatives,
+$
+  px = pdv(, x), quad py = pdv(, y), quad pz = pdv(, z); quad "we also use"quad partial_1 = px, quad partial_2 = py, quad partial_3 = pz.
+$
+For example, $px(3x + 2x y + y + 1) = pdv(, x)(3x + 2x y + y + 1)=3+2y$.
+#quizzes[
+  + With $f(x,y)=x^3 + 4x^2 + 5x y^2 + 7y^2$, calculate the following.
+    #h-enum(cols: 5)[
+      + $px f$
+      + $py f$
+      + $px py f$
+      + $py px f$
+      + $px^2 f$
+    ]
 ]
 
-#problems[
-  + `4` Compute $vc(a) times vc(b)$ for $vc(a) = (1,0,2)^TT$ and $vc(b) = (0,3,-1)^TT$ using @eq:vc-cross-index directly (sum over $j,k$ by hand for each $i$), then check against the determinant formula from @chap:matrix.
-  + `3` Prove the scalar triple product formula $vip(a, (vc(b) times vc(c))) = sum_(i,j,k) eps_(i j k) a_i b_j c_k$, and use it to show $vip(a,(vc(b) times vc(c))) = vip((vc(a) times vc(b)),c)$.
-  + `2` Use @thm:eps-delta to prove Lagrange's identity $va(vc(a) times vc(b))^2 = va(vc(a))^2 va(vc(b))^2 - vip(a,b)^2$.
-  + `9` (drill: reading $eps$) Evaluate without a table: (a) $eps_(132)$, (b) $eps_(313)$, (c) $eps_(321)$, (d) $eps_(111)$.
-  + `9` (drill: contracting one index) Simplify each sum: (a) $sum_k eps_(i j k) delta_(j k)$, (b) $sum_(j,k) eps_(i j k) eps_(l j k)$. #hint[For (b), use @thm:eps-delta and then set $m=k$, summing over $k$ at the end.]
-]
 
-= Scalar and Vector Fields <sec:vc-fields>
 
-You already know functions like $f(x) = x^2$: one number in, one number out. Physics needs richer objects: quantities that depend on *where* you are in space.
 
-#definition(title: "Scalar field")[
-  A #keyword[scalar field] is a function
-  $
-    f: RR^3 -> RR, quad (x,y,z) |-> f(x,y,z),
-  $
-  assigning a single real number to every point of (a region of) space.
-]<def:scalar-field>
+= Scalar fields and Vector fields <sec:fields>
 
-#definition(title: "Vector field")[
-  A #keyword[vector field] is a function
-  $
-    vc(F): RR^3 -> RR^3, quad (x,y,z) |-> vc(F)(x,y,z) = (F_x (x,y,z), F_y (x,y,z), F_z (x,y,z))^TT,
-  $
-  assigning a vector to every point of (a region of) space.
-]<def:vector-field>
+You already know functions like $f(x) = x^2$: one number in, one number out.
+It is natural to extend the idea to "many numbers in, many numbers out". For example,
 
-The distinction matters more than it looks. A scalar field has *no direction*: temperature at a point is just a number, $20 #unit("°C")$, not an arrow. A vector field has both magnitude and direction at each point: wind velocity at a point is "$8 unit(m/s)$ towards the north-east," not just "$8$."
+- $v(t) = mat(2t; 1-t^2; 0)$ ... one number in, three numbers (= a vector) out.
 
-#h-enum(cols: 2)[
-  + Temperature $T(x,y,z)$ in a room --- scalar field.
-  + Air pressure $p(x,y,z)$ in the atmosphere --- scalar field.
-  + Electric potential $V(x,y,z)$ --- scalar field.
-  + Electric field $vc(E)(x,y,z)$ --- vector field.
-  + Gravitational field $vc(g)(x,y,z)$ --- vector field.
-  + Fluid velocity $vc(v)(x,y,z)$ in a river --- vector field.
-]
+- $T(x, y, z) = sqrt(x^2 + y^2 + z^2)$ ... three numbers in, one number out.
 
-#remark[
-  A field is a *function of position*, not a single vector or number. Writing $vc(F)$ for a vector field and $vc(a)$ for a fixed vector both use an arrow, but $vc(F)$ secretly depends on $(x,y,z)$ while $vc(a)$ does not. Keep this distinction in your head even when the notation does not show it explicitly.
-]
+- $vc(F)(x, y, z) = mat(3x+2y; y + z; x+y+z)=mat(3, 2, 0; 0, 1, 1; 1, 1, 1)mat(x; y; z)$ ... three numbers in, three numbers out.
 
-We say a field is #keyword[differentiable] at a point if all its partial derivatives (with respect to $x$, $y$, $z$; for a vector field, of each component) exist and are continuous near that point. Informally: the field has no jumps, kinks, or infinite spikes there. We will not need a more precise definition in this drill book; when a formula like $1\/r$ blows up at $r=0$, we simply exclude that point from the domain, as you already do for ordinary derivatives.
+Here, if you recall the concept of position vectors ($->$ @sec:vec-pos), you notice that the input $(x,y,z)$ may represent a point in space. Namely, we can understand the above functions as
+
+- $T(x, y, z) = sqrt(x^2 + y^2 + z^2)$ ... a function that assigns a scalar value $T$ for each position $(x, y, z)$,
+
+- $vc(F)(x, y, z) = mat(3x+2y; y + z; x+y+z)$ ... a function that assigns a vector value $vc(F)$ for each position $(x, y, z)$,
+
+and they are called #keyword[scalar field] and #keyword[vector field], respectively. Or, more formally,
+
+
+#definition(title: "Scalar field and Vector field")[
+  #no-shift[$
+    "A" #keyword[scalar field] "is a function" f: RR^3 -> RR, quad (x,y,z) |-> f(x,y,z).
+  $]
+  #no-shift[$
+    "A" #keyword[vector field] "is a function" vc(F): RR^3 -> RR^3, quad (x,y,z) |-> vc(F)(x,y,z) = mat(F_1 (x,y,z); F_2 (x,y,z); F_3 (x,y,z)).
+  $]
+  They assign a scalar or a vector, respectively, to every point in some region of the space.
+]<def:field>
+
+Here we have used a mathematical notation, $f: RR^3 -> RR$, which means $f$ accepts an element of $RR^3$ and returns an element of $RR$.
+For physicists, however, it is more important to notice the physical meaning: $f(x,y,z)$ and $vc(F)(x,y,z)$ *assigns* some value to each point. For example...
 
 #quizzes[
-  + `4` Classify as scalar or vector field: (a) the density $rho(x,y,z)$ of a fluid, (b) the magnetic field $vc(B)(x,y,z)$, (c) the height $h(x,y)$ of a mountain above sea level, (d) the acceleration $vc(a)(x,y,z)$ of a falling particle at position $(x,y,z)$.
-  + `4` Sho says "the wind speed (not velocity) at each point of the atmosphere is a scalar field." Is Sho right? #hint[Speed is the magnitude of a vector; a magnitude is a single number.]
+  + Choose scalar fields. Choose vector fields.
+    #h-enum(cols: 2)[
+      + Velocity of a car
+      + Wind velocity in Kaohsiung
+      + Water velocity in a sea
+      + PM2.5 density in Kaohsiung air
+      + Air temperature in a room
+      + Age of people in Kaohsiung
+      + Population in cities in Taiwan
+      + Air pressure in the atmosphere
+      + Electric field in a space
+      + Voltage at points in a circuit
+    ]
 ]
+Among them, wind velocity in a city, water velocity in a sea, and electric field in a space are vector fields; PM2.5 density and air temperature, and air pressure are scalar fields.
+Velocity of a car is a vector but not a vector field since it is just for a single point, not for every point in a space.
+Similarly, age of people, population of cities, and voltage at points in a circuit are scalars but not scalar fields.
 
-#problems[
-  + `4` Give one physics example each of a scalar field and a vector field not already listed above.
-  + `3` The function $f(x,y,z) = 1\/sqrt(x^2+y^2+z^2)$ is a scalar field. State its domain explicitly (where is it *not* defined?).
-  + `9` (drill: scalar vs. vector) For each quantity, write "scalar" or "vector": kinetic energy density, momentum density, stress at a point in a solid (skip if unfamiliar), voltage, current density, humidity.
+#quizzes[
+  + #kill-line()
+    + Assume $vc(F)(x,y,z)$ is a vector field. How about its $x$-component $F_1(x,y,z)$? #hint[It is a scalar field. Explain why.]
+    + How about "wind speed in Kaohsiung"? Is it a scalar field or a vector field?
 ]
+#definition(title: "Fields and Position vectors")[
+  For a field, we often use position vector $vc(r)$ to express the input numbers:
 
-= The Nabla Operator: Gradient, Divergence, Curl, Laplacian <sec:vc-nabla>
+  - a scalar field $f(x,y,z)$ is also written $f(vc(r))$.
+  - a vector field $vc(F)(x,y,z)$ is also written $display(vc(F)(vc(r)))$, $display(mat(F_1\(vc(r)\); F_2\(vc(r)\); F_3\(vc(r)\)))$, or $display(mat(F_1(x,y,z); F_2(x,y,z); F_3(x,y,z))).$
 
-We now introduce the central character of this chapter, the symbol $nabla$ (pronounced "nabla" or "del"). It looks like a vector, and we manipulate it *as if* it were one, but you should know from the start that it is not.
+  In addition, we often write $F_x$, $F_y$, $F_z$ instead of $F_1$, $F_2$, $F_3$. So,
 
-#definition(title: "Nabla operator")[
-  $
-    nabla := mat(pdv((), x); pdv((), y); pdv((), z)).
-  $<eq:vc-nabla-def>
-]<def:nabla>
+  - a vector field $vc(F)(x,y,z)$ is written $display(vc(F)(vc(r)))$, $display(mat(F_x\(vc(r)\); F_y\(vc(r)\); F_z\(vc(r)\)))$, or $display(mat(F_x (x,y,z); F_y (x,y,z); F_z (x,y,z))).$
+]
 
 #be-careful[
-  $nabla$ is *not* a vector of numbers. It is a #keyword[vector of differential operators]: each entry is an instruction "take the partial derivative with respect to this variable," waiting for a field to act on. Writing $nabla$ alone, without a field to its right, is meaningless---compare to writing "$dv(,x)$" with nothing to differentiate. Do not add $nabla$ to an ordinary vector $vc(a)$ (e.g. $nabla + vc(a)$ makes no sense) and do not treat $nabla dot vc(a)$ for constant $vc(a)$ as anything but $0$ (since every derivative of a constant is $0$).
+  Do not confuse the two "$x$"s in $F_x (x,y,z)$. The first $x$ is just a function name ($=F_1$), while the second $x$ is a variable: the $x$-coordinate of a position. In other words,
+  #RED[$vc(F)(5,7,9)=mat(F_5 (5,7,9); F_7 (5,7,9); F_9 (5,7,9))$] is incorrect, but
+  $vc(F)(5,7,9)=mat(F_x (5,7,9); F_y (5,7,9); F_z (5,7,9))$.
 ]
 
-$nabla$ combines with scalar and vector fields in three ways, giving three new fields.
 
-== Gradient <sec:vc-grad>
+#advanced-note(breakable: false)[
+  In mathematics, we use the following notation to express a function $f$:
+  #{
+    set text(top-edge: "cap-height", bottom-edge: "baseline")
+    writings(
+      box: (true, false, true),
+      align: horizon,
+      column-gutter: 1em,
+      grid(
+        columns: 5,
+        align: center + top,
+        column-gutter: 2mm,
+        row-gutter: 2mm,
 
+        $f:$, $RR^3$, $-->$, $RR$, none,
+        none, rotate(-90deg, $in$), [], rotate(-90deg, $in$), none,
+        none, $vc(r)$, $arrow.r.long.bar$, $f(vc(r))$, $= |vc(r)|^2$,
+      ),
+      "or equivalently,",
+      $f: RR^3 --> RR, quad vc(r) arrow.r.long.bar f(vc(r))=|vc(r)|^2.$,
+    )
+  }
+  This means that the function $f$
+  - can accept any element of $RR^3$ as an input,
+  - returns an element of $RR$ as an output,
+  - returns $f(vc(r))=|vc(r)|^2$ if an input $vc(r) in RR^3$ is given.
+  As declared, the output $|vc(r)|^2$ is an element of $RR$.
+
+  In general, for a function $f: A-->B$, we call $A$ the #keyword[domain]; $f$ needs to accept any elements of $A$.
+  Meanwhile, the output does not have to cover all of $B$, but a subset of $B$, called #keyword[image].
+  For example, if we consider $h(x) = x^(-2)$, we cannot write $h: RR --> RR$ because we cannot accept $x=0$. Instead, we write
+  #no-num[$h: RR without {0} --> RR, quad x arrow.r.long.bar x^(-2) .$]
+  The #EMPH[domain] of $h$ is $RR without {0}$ and the #EMPH[image] is $RR^+ = {y in RR | y>0}$ since $1\/x^2$ is always positive.
+]
+
+
+#problems[
+  + `1` Assume $x in RR$ and $z in CC$. Write the following functions as given in the first box of the above "advanced note". Find its domain and image.
+
+    #h-enum(cols: 6)[
+      + $x^2$
+      + $ln(x)$
+      + $sqrt(x)$
+      + $(x+2)^2$
+      + $overline(z^2)$
+      + $|z|^2$
+    ]
+]
+
+
+= Gradient, Divergence, Curl, and Laplacian <sec:vc-nabla>
+We can analyze scalar and vector fields by derivatives and integrals.
+For derivatives, the following operations are useful.
 #definition(title: "Gradient")[
-  For a scalar field $f: RR^3 -> RR$, the #keyword[gradient] of $f$ is the vector field
+  #let pdv(f, x) = $partial #f\/partial #x$
+  For a scalar field $f: RR^3 -> RR$, the #keyword[gradient] of $f$, #writing[$grad f$] or #writing[$nab f$], is defined by
   $
-    nabla f := mat(pdv(f,x); pdv(f,y); pdv(f,z)).
+    grad f := mat(pdv(f, x); pdv(f, y); pdv(f, z)) = mat(px f; py f; pz f).
   $<eq:vc-grad-def>
 ]<def:gradient>
-
-The gradient turns a scalar field into a vector field: at each point, it collects the three partial derivatives into a vector. Geometrically, $nabla f$ at a point $vc(p)$ points in the direction in which $f$ increases *fastest*, and its magnitude $va(nabla f)$ is exactly that fastest rate of increase. If you walk in any other direction, $f$ changes more slowly. A second geometric fact: $nabla f$ is perpendicular to the #keyword[level surface] of $f$ through $vc(p)$ (the surface $f(x,y,z) = f(vc(p))$, e.g. a single contour line on a topographic map, thickened to a surface in 3D).
-
-#example(title: "Gradient of $1/r$")[
-  Let $r := va(vc(r)) = sqrt(x^2+y^2+z^2)$ for $vc(r) = (x,y,z)^TT != vc(0)$. Compute $nabla (1\/r)$.
-]
-#solution[
-  $
-    pdv((1\/r), x) = pdv((x^2+y^2+z^2)^(-1\/2), x) = -1/2 (x^2+y^2+z^2)^(-3\/2) dot 2x = -x/r^3,
-  $
-  and similarly for $y, z$. So
-  $
-    nabla (1/r) = mat(-x\/r^3; -y\/r^3; -z\/r^3) = -vc(r)/r^3 = -vcu(r)/r^2,
-  $<eq:vc-grad-1-over-r>
-  where $vcu(r) = vc(r)\/r$ is the unit vector pointing radially outward. This formula is *not* defined at $vc(r) = vc(0)$, where $r=0$ and division by zero occurs; the domain is $RR^3 without {vc(0)}$.
-]
-#remark[
-  You will recognise @eq:vc-grad-1-over-r from electrostatics: the electric field of a point charge is $vc(E) = -nabla V$ with $V prop 1\/r$, and the result is the familiar $vc(E) prop vcu(r)\/r^2$.
+#quizzes[
+  + #kill-line()
+    + In this definition, we did not write the argument $(x,y,z)$ for simplicity. Write the equation @eq:vc-grad-def with the argument $(x,y,z)$ explicitly.
+    + $grad f$ is a vector field. Explain why.
+    + Let $f(x,y,z)=x(x+y)^2 + 2z$. Calculate $grad f$. Also, calculate $grad f$ at the origin $(0,0,0)$.
 ]
 
-== Divergence <sec:vc-div>
-
-#definition(title: "Divergence")[
-  For a vector field $vc(F) = (F_x, F_y, F_z)^TT$, the #keyword[divergence] of $vc(F)$ is the scalar field
+#definition(title: "Divergence and Curl")[
+  For a vector field $vc(F): RR^3 -> RR^3$, the #keyword[divergence], #writing[$div vc(F)$] or #writing[$nab dot vc(F)$], is defined by
   $
-    nabla dot vc(F) := pdv(F_x,x) + pdv(F_y,y) + pdv(F_z,z).
+    div vc(F) := pdv(F_x, x) + pdv(F_y, y) + pdv(F_z, z) = sum_(k=1)^3 partial_k F_k
   $<eq:vc-div-def>
-]<def:divergence>
+  and the #keyword[curl], #writing[$curl vc(F)$] or #writing[$nab times vc(F)$], is defined by
+  #let pdv(f, x) = $partial #f\/partial #x$
+  $
+    curl vc(F) := mat(pdv(F_z, y) - pdv(F_y, z); pdv(F_x, z) - pdv(F_z, x); pdv(F_y, x) - pdv(F_x, y)) = mat(py F_z - pz F_y; pz F_x - px F_z; px F_y - py F_x).
+  $<eq:vc-curl-def>
+  Curl is also called #keyword(display: "rotation (vector calculus)")[rotation] and written by #writing[$op("rot") vc(F)$] in some textbooks.
+]<def:div-curl>
+#quizzes[
+  + #kill-line()
+    + Again, write @eq:vc-div-def and @eq:vc-curl-def with the argument $(x,y,z)$ explicitly.
+    + $grad f$ is a vector field. How about $div vc(F)$ and $curl vc(F)$?
+    + Let $vc(F)(x,y,z)=mat(x^2+y^2; x y z; z^2)$. Calculate $div vc(F)$ and $curl vc(F)$. Also, calculate $div vc(F)$ and $curl vc(F)$ at the point $(1,1,1)$.
+]
 
-The divergence turns a vector field into a scalar field. At a point $vc(p)$, $nabla dot vc(F)$ measures how much the field "spreads outward" from $vc(p)$: if $vc(F)$ is the velocity field of a fluid, $nabla dot vc(F) (vc(p)) > 0$ means fluid is being created (a source) at $vc(p)$ or, more precisely, that more fluid flows out of a tiny volume around $vc(p)$ than flows in; $nabla dot vc(F)(vc(p)) < 0$ means fluid is disappearing there (a sink); $nabla dot vc(F) = 0$ everywhere means the fluid is #keyword[incompressible] (what flows in always equals what flows out).
+#definition(title: "Laplacian")[
+  #let pdv0(f, x) = $partial_#x #f$
+  #let pdv2(f, x) = $partial^2_#x #f$
+  #let lp(f) = $pdv2(#f, x) + pdv2(#f, y) + pdv2(#f, z)$
+  For a scalar field $f(vc(r))$, the #keyword[Laplacian] of $f$, #writing[$laplace f$] or #writing[$nabla^2 f$], is defined by
+  $
+    laplace f := div(grad f) = div mat(pdv0(f, x); pdv0(f, y); pdv0(f, z)) = lp(f).
+  $<eq:vc-laplacian-scalar>
+  We may also consider laplacian for a vector field $vc(F)$:
+  $
+    laplace vc(F) := mat(laplace F_x; laplace F_y; laplace F_z)=
+    mat(lp(F_x); lp(F_y); lp(F_z)).
+  $<eq:vc-laplacian-vector>
+]<def:laplacian>
+#quizzes[
+  + #kill-line()
+    + Again, write @eq:vc-laplacian-scalar with the argument $(x,y,z)$ explicitly.
+    + Calculate $div(grad f)$ and check that it is equal to $px^2 f + py^2 f + pz^2 f$.
+    + Calculate $laplace f$ for $f(x,y,z)=x(x+y)^2 + z^2$.
+]
+We are going to analyze the properties of these operations and their physical meanings, but before that, we prepare some notations in the next section.
+
+= Kronecker, Levi-Civita, and Nabla <sec:vc-index>
+In @chap:matrix we defined the #keyword[Kronecker delta] (see @eq:mat-kronecker)
+#no-num[$
+  delta_(i j) := cases(1 "if" i=j",", 0 "if" i !=j",") quad "where " i, j in {1,2,3} quad #text[(recall that we are focusing on $RR^3$).]
+$]
+Here we introduce the #keyword[Levi-Civita symbol] $epsilon_(i j k)$:
+$
+  & epsilon_(1 2 3) = epsilon_(2 3 1) = epsilon_(3 1 2) = +1, \
+  & epsilon_(1 3 2) = epsilon_(2 1 3) = epsilon_(3 2 1) = -1, \
+  & epsilon_(i j k) = 0 "if any two indices are equal".
+$
+#quizzes[
+  + Calculate the following.
+    #h-enum(cols: 5)[
+      + $epsilon_(123)$
+      + $epsilon_(321)$
+      + $display(sum_(a=1)^3 epsilon_(a 2 3))$
+      + $display(sum_(a=1)^3sum_(b=1)^3 epsilon_(a b 3))$
+      + $display(sum_(a=1)^3 a^2delta_(2 a))$
+    ]
+    #fail-safe[Just expand the summation: $sum_(a=1)^3 epsilon_(a 2 3) = epsilon_(1 2 3) + epsilon_(2 2 3) + epsilon_(3 2 3)$.]
+]
+
+#block(breakable: false)[
+  This symbol allows us to write the cross product in a simple way:
+  $
+    vxp(A, B) = sum_(i=1)^3sum_(j=1)^3sum_(k=1)^3 epsilon_(i j k) vc(e)_i A_j B_k
+  $<vc:vxp-levi-1>
+  or, considering the $i$-th component of $vxp(A, B)$,
+  $
+    \(vxp(A, B)\)_i = sum_(j=1)^3 sum_(k=1)^3 epsilon_(i j k) A_j B_k.
+    wide("very similar to" vip(A, B) = sum_(j=1)^3 sum_(k=1)^3 delta_(j k) A_j B_k.)
+  $<vc:vxp-levi-2>
+]
+#proof[
+  According to @def:va-comp, the $i$-th component of $vc(v)$ is given by $v_i = vc(e)_i dot vc(v)$; here $i=1, 2, 3$ means $i=x,y,z$, respectively.
+  So, the $i$-th component of $vxp(A, B)$ is given by
+  #no-num[$
+    \(vxp(A, B)\)_i & = vc(e)_i dot (sum_(p=1)^3sum_(j=1)^3sum_(k=1)^3 epsilon_(p j k) vc(e)_p A_j B_k)
+                      = sum_(p=1)^3sum_(j=1)^3sum_(k=1)^3 epsilon_(p j k) (vc(e)_i dot vc(e)_p) A_j B_k
+                      = sum_(p=1)^3sum_(j=1)^3sum_(k=1)^3 epsilon_(p j k) delta_(i p) A_j B_k \
+                    & = sum_(j=1)^3sum_(k=1)^3 epsilon_(i j k) A_j B_k. qed
+  $]
+]
+#quizzes[
+  + #kill-line()
+    + Show @vc:vxp-levi-1. #hint[Just expand the right-hand side!]
+    + Show @vc:vxp-levi-2. The proof is given above, but can you do it by yourself?
+]
+
+The Levi-Civita symbol satisfies the following identities:
+#theorem(title: "Properties of Levi-Civita symbol")[
+  #v-enum(cols: (1fr, 0.7fr), label-style: "(A)")[
+    + $epsilon_(a b c) =
+      epsilon_(b c a) =
+      epsilon_(c a b) =
+      -epsilon_(c b a) =
+      -epsilon_(b a c) =
+      -epsilon_(a c b)$
+    + $display(sum_(i=1)^3 epsilon_(i a b) epsilon_(i x y) = delta_(a x) delta_(b y) - delta_(a y) delta_(b x).)$
+    + $display(sum_(i,j=1)^3 epsilon_(i j a) epsilon_(i j x) = 2delta_(a x).)$
+    + $display(sum_(i,j,k=1)^3 epsilon_(i j k) epsilon_(i j k) = 6.)$
+    + $display(
+        epsilon_(a b c)epsilon_(x y z)
+        = det mat(
+          delta_(a x), delta_(a y), delta_(a z); delta_(b x), delta_(b y), delta_(b z); delta_(c x), delta_(c y), delta_(c z)
+        )
+      )$
+    + $display(
+        epsilon_(a b c)
+        = det mat(
+          delta_(a 1), delta_(a 2), delta_(a 3); delta_(b 1), delta_(b 2), delta_(b 3); delta_(c 1), delta_(c 2), delta_(c 3)
+        )
+      )$
+  ]]<thm:vc-levi-civita>
+#quizzes[
+  + #kill-line()
+    + Simplify the following expressions:
+      #h-enum(cols: 2)[
+        + $epsilon_(123)delta_(11)+epsilon_(121)delta_(11)$
+        + $sum_(a=1)^3 epsilon_(1 2 a) (delta_(1 a)+delta_(a 3))$
+        + $sum_(a=1)^3 epsilon_(1 3 a) epsilon_(1 3 a)$
+        + $epsilon_(a b c) - epsilon_(b a c) +2epsilon_(c b a)$
+        + $sum_(a=1)^3 epsilon_(a x y) (delta_(a x) + delta_(a y) + delta_(a b))$
+        + $sum_(a=1)^3 epsilon_(a b c) epsilon_(a 2 3)$
+      ]
+]
+
+#problems[
+  + `2` #kill-line()
+    + Prove #thick-sf[(A)]--#thick-sf[(D)] of @thm:vc-levi-civita.
+    + Show that $det M = sum_(i,j,k=1)^3 epsilon_(i j k) M_(1 i) M_(2 j) M_(3 k)$ for a $3 times 3$ matrix $M in CC^(3,3)$.
+    + Show #thick-sf[(E)]. #hint[Use #thick-sf[(2)]. What $M$ should we use?]
+    + Show #thick-sf[(F)]. #hint[Substitute #thick-sf[(E)] with $x=1$, $y=2$, $z=3$.]
+
+  + `9`
+    + $display(sum_(a=1)^3sum_(b=1)^3 delta_(a b))$
+    + $display(sum_(a=1)^3sum_(b=1)^3 a delta_(a b))$
+    + $display(sum_(a=1)^3sum_(b=1)^3 |epsilon_(a b 3)|)$
+]
+
+#advanced-note[
+  The Levi-Civita symbol is related to the sign of a #keyword[permutation].
+  A permutation is a rearrangement of elements in a list $(1,2,...,n)$, such as $(1234)->(4132)$.
+  The simplest permutations are transpositions, a swap of two elements with the rest unchanged, such as $(1234)->(1432)$. Any permutation can be decomposed into a sequence of transpositions, and although neither the decomposition nor the number of transpositions is unique, it always turns out that the number is either always even or always odd.
+  So, we can define the "sign" of a permutation $sigma$ as $op("sgn")sigma = +1$ $(-1)$ for an even (odd) permutation. Then,  can define the Levi-Civita symbol by $epsilon_(i j k) = op("sgn")sigma_((123)->(i j k))$.
+]
+
+With the above properties, it is easy to prove the following:
+
+#let vt0(a, b) = $\(vc(#a) times vc(#b)\)$
+#let vip0(a, b) = $\(vip(#a, #b)\)$
+#theorem(title: "Properties of Levi-Civita symbol")[
+  #v-enum(cols: 1, label-style: "(1)", v-sep: 2em)[
+    + $vc(A) dot vt0(B, C) = vc(B) dot vt0(C, A) = vc(C) dot vt0(A, B)$ #h(2em) (scalar triple product)
+    + $vc(A)times vt0(B, C) = vip0(A, C)vc(B)-vip0(A, B)vc(C)$ #h(2em) (vector triple product)
+    + $vc(A) times vt0(B, C)
+      +vc(B) times vt0(C, A)
+      +vc(C) times vt0(A, B)=0$ #h(2em) (Jacobi identity)
+
+  ]]<thm:vc-inner-cross>
+#proof[
+  #thick-sf[(1)] is obvious (why?) once we write $vc(A) dot vt0(B, C) = sum A_i vt0(B, C)_i = sum A_i epsilon_(i j k) B_j C_k$. For #thick-sf[(2)], we write
+  #no-num[$
+    vc(A)times vt0(B, C)
+    = sum epsilon_(i j k) A_i vt0(B, C)_j vc(e)_k
+    = sum epsilon_(i j k) A_i (epsilon_(j l m) B_l C_m) vc(e)_k
+  $]
+  using #thick-sf[(B)] of @thm:vc-levi-civita, and then use #thick-sf[(D)] of @thm:vc-levi-civita:
+  #no-num[$
+    sum epsilon_(i j k) A_i (epsilon_(j l m) B_l C_m) vc(e)_k
+    = sum epsilon_(j k i) A_i (epsilon_(j l m) B_l C_m) vc(e)_k
+    = sum (delta_(k l)delta_(i m)- delta_(k m)delta_(i l)) A_i B_l C_m vc(e)_k;
+  $]
+  so, please continue and complete these proofs in the next problems.
+]
+#problems[
+  + `4` Using @thm:vc-levi-civita, prove #thick-sf[(A)] and #thick-sf[(B)] of @thm:vc-inner-cross.
+  + `2` Prove #thick-sf[(C)] of @thm:vc-inner-cross. Also, prove
+    $
+      vt0(A, B) dot vt0(C, D) = vip0(A, C)vip0(B, D)-vip0(A, D)vip0(B, C).
+    $
+]
+
+We also introduce one more notation, called #keyword[nabla]:
+$
+  nab = mat(partial_x; partial_y; partial_z)
+  quad "with an abbreviation" quad
+  partial_x = pdv(, x), quad
+  partial_y = pdv(, y), quad
+  partial_z = pdv(, z).
+$
+This notation is helpful to recall the definitions of gradient, divergence, and curl:
+#no-num[$
+  & grad f = mat(partial_x f; partial_y f; partial_z f) = nab f, wide
+    div vc(F) = partial_x F_x + partial_y F_y + partial_z F_z = nab dot vc(F), wide
+    curl vc(F) = nab times vc(F).
+$]
+#be-careful[
+  Like $px$, $py$, and $pz$, we can understand $grad$, $div$, and $curl$ as operators. Meanwhil, it is a bit dangerous to regard $nab$ itself as an operator; Sho recommends you to consider it a "symbol" or "way of writing". Also, please _do not_ think $nab$ is a vector. It just looks like a vector, but it is not!
+
+  However, the $nab$-notation is often abused, such as $\(vc(A) dot nab\)$: we can understood it as
+  #no-num[$
+    \(vc(A) dot nab\) f = mat(A_x; A_y; A_z) dot [mat(partial_x; partial_y; partial_z)f]
+    = vc(A) dot \(nab f\) = A_x partial_x f + A_y partial_y f + A_z partial_z f,
+  $]
+  but sometimes you may be confused by such abuse.
+  In general, when you see $nab$, you should carefully identify the author's intention.
+]
+We can express them in terms of Kronecker delta and Levi-Civita symbol:
+#theorem[
+  For a scalar field $f$ and a vector field $vc(F)$,
+  $
+    &grad f = sum_i vc(e)_i partial_i f, wide&
+    &div vc(F) = sum_i partial_i F_i, wide&
+    &curl vc(F) = sum_(i, j, k) epsilon_(i j k)vc(e)_i partial_j F_k,\
+    &\(grad f)_i = partial_i f,&&&
+    &\(curl vc(F)\)_i = sum_(j, k) epsilon_(i j k)partial_j F_k.
+  $<eq:vc-nabla-in-component>
+]
+#quizzes[
+  + Check @eq:vc-nabla-in-component. #hint[You just expand all the terms.]
+]
+
+
+Now, we are going to combine all the above to understand the properties and physical meanings of gradient, divergence, curl, and Laplacian.
+
+= Geometrical Interpretations <sec:vc-geometrical>
+
+First, let us recall what are the input and output types of the vector-calculus operators.
+#theorem(type: "Summary", title: "Type rules for vector-calculus operators")[
+  - #box(width: 2.2em)[$grad$] turns a scalar field into a vector field.
+  - #box(width: 2.2em)[$div$] turns a vector field into a scalar field.
+  - #box(width: 2.2em)[$curl$] turns a vector field into a vector field.
+  - #box(width: 2.2em)[$laplace$] turns a scalar field into a scalar field and a vector field into a vector field.
+]
+#example[
+  Consider $vc(r) = mat(x; y; z)$, and let $r = va(r).$ Then, $r=sqrt(x^2+y^2+z^2)$ and
+
+  #no-num[
+    $
+      grad 1/r = nm 1/sqrt(x^2+y^2+z^2) = mat(-x\/(x^2+y^2+z^2)^(3\/2); -y\/(x^2+y^2+z^2)^(3\/2); -z\/(x^2+y^2+z^2)^(3\/2)) = -vc(r)/r^3,
+    $
+  ]
+  i.e., $nab(1\/r) = -vc(r)\/r^3$. In this calculation, $vc(r)$ is not a vector; rather, we should understand it as a vector field, which receives a position and returns a vector. Similarly, $r$ and $1\/r$ should be regarded as scalar fields.
+  The operation "$grad$" turns a scalar field $1\/r$ to a vector field $-vc(r)\/r^3$.
+
+  Similarly, we can calculate $div vc(r)$ and $curl vc(r)$:
+  #no-num[
+    $
+      div vc(r) = pdv(x, x) + pdv(y, y) + pdv(z, z) = 1+1+1 = 3, quad curl vc(r) = vc(0).
+    $
+  ]
+  These $3$ and $vc(0)$ are understood as constant fields returning $3$ and $vc(0)$ for any position, respectively.
+]<ex:vc-grad>
+
+#quizzes[
+  + Let $vc(r) = mat(x; y; z)$, $r=va(r)$, and $vc(a)=mat(1; -1; 2)$. Calculate the following if defined:
+    #h-enum(cols: 4)[
+      + $grad (1\/r)$
+      + $grad r^2$
+      + $grad(vc(a) dot vc(r))$
+      + $div vc(a)$
+      + $div(vc(a) times vc(r))$
+      + $curl(vc(a)times vc(r))$
+      + $laplace(vc(r) dot vc(r))$
+      + $laplace(1\/r)$
+    ]
+]
+
+#make-indent
+Consider a scalar function $f(x,y,z)$ and its gradient $(grad f)(x,y,z)$; recall $grad f$ is a vector field, which means $grad f$ for a given point $vc(p)$ is a vector.
+#theorem(title: "Meaning of Gradient")[
+  Consider a scalar field $f(vc(r))$. Its #keyword[gradient] at a point $vc(p)$, which we write $(grad f)(vc(p))$, is a vector with
+
+  - direction: the direction in which $f$ increases fastest from the point.
+  - magnitude: the fastest rate of the increase.
+
+  Also, if we consider the _isosurface_ (the two-dimensional surface surface on which the value of $f(vc(x))$ is the same as $f(vc(p))$), then $(grad f)(vc(p))$ is perpendicular to the isosurface at the point $vc(p)$.
+]
+The isosurface is also called _equivalue surface_ or, in mathematics, _level surface_.
+
+#grid(
+  columns: (1fr, auto),
+  column-gutter: 1.5em,
+  align: (top + left, horizon + center),
+  [
+    #make-indent
+    To understand gradient, it is easier to consider a scalar field which has no dependence on $z$.
+    Then, $\(grad f\)_z=pz f=0$ and we can draw the vectors on the $x y$-plane, as in the figure to the right.
+    There, the black contours show the isosurface of $f$, i.e., the value of $f$ is the same at all the point on each line.
+    The arrows show $grad f$ at representative points.
+
+    You should observe the following properties:
+
+    - $f$ is smaller in the central region; larger in the outer area.
+    - $grad f$ is always perpendicular to the isosurface.
+    - $|grad f|$ is larger in the left-hand side than the right-hand side, which means the "slope" is steeper in the left-hand side.
+  ],
+  image("figures/8-vc-grad.pdf", width: 55mm),
+)
+#quizzes[
+  #grid(
+    columns: (1fr, auto),
+    column-gutter: 1.5em,
+    align: (top + left, horizon + center),
+    [
+      + The figure to the right shows $grad f$ for a scalar field $f(x,y,z)$ drawn on $x y$-plane.
+        We assume that $f$ is independent of $z$, so that $grad f$ has no $z$-component.
+
+        + Try to draw contour lines describing the isosurface of $f$.
+        + At what point is $f$ the largest?
+        + At what point is $f$ the smallest?
+
+      + In @ex:vc-grad we got $nab(r^(-1)) = -vc(r)\/r^3$. Try to visualize this vector field, $-vc(r)\/r^3$.
+    ],
+    block(fill: white, image("figures/8-vc-grad-ex1.pdf", width: 55mm)),
+  )
+]
+#be-careful[
+  Vector calculus is always on the three-dimensional space, so your imagination is crucial.
+  If you feel difficulties in 3D visualization, search for videos, animations, or interactive applications on the internet; they will help your imagination.
+]
+
+The divergence and curl are considered for a vector field $vc(F)$, and thus it is difficult to visualize them here.
+Rather, it is important to notice when the divergence and curl are positive, negative, or zero.
+
+#example[Consider the following vector fields. _Because we use the right-handed Cartesian coordinate system_, the $z$-axis is perpendicular to the page, running toward you.
+  #v(1em)
+  #import "figures/8-vc-vector-field.typ": draw-vector-field
+  #let dvf(f) = align(center, [#v(-.5em) #draw-vector-field(f, length: 1.45cm, s: 0.8)])
+  #grid(
+    columns: (1fr, 1fr, 1fr, 1fr),
+    align: left,
+    row-gutter: 2em,
+    column-gutter: 0mm,
+    [#thick-sf[(A)]#h(1em)$vc(F) = mat(1.5; 0.7; 0)$\ #dvf((x, y) => (1.5, 0.7))],
+    [#thick-sf[(B)]#h(1em)$vc(F) = mat(1.5; x; 0)$ \ #dvf((x, y) => (1.5, x))],
+    [#thick-sf[(C)]#h(1em)$vc(F) = mat(x; y; 0)$ \ #dvf((x, y) => (x, y))],
+    [#thick-sf[(D)]#h(1em)$vc(F) = mat(-x; -y; 0)$ \ #dvf((x, y) => (-x, -y))],
+
+    [#thick-sf[(E)]#h(1em)$vc(F) = mat(-y; x; 0)$ \ #dvf((x, y) => (-y, x))],
+    [#thick-sf[(F)]#h(1em)$vc(F) = mat(y; -x; 0)$ \ #dvf((x, y) => (y, -x))],
+    [#thick-sf[(G)]#h(1em)$vc(F) = mat(x^2+y^2; 2x y; 0)$ \ #dvf((x, y) => (x * x + y * y, 2 * x * y))],
+    [#thick-sf[(H)]#h(1em)$vc(F) = mat(x^2-y^2; 2x y; 0)$ \ #dvf((x, y) => (x * x - y * y, 2 * x * y))],
+  )
+  If you calculate $div vc(F)$, you should notice
+  - #thick-sf[(A)] and #thick-sf[(B)] has no divergence.
+  - #thick-sf[(C)] has positive divergence at every point of $x y$-plane.
+  - #thick-sf[(D)] has negative divergence at every point of $x y$-plane.
+  These #thick-sf[(C)] and #thick-sf[(D)] are the typical situations for positive and negative divergence, respectively.
+
+  For curl, you should notice
+  - #thick-sf[(A)], #thick-sf[(C)], and #thick-sf[(D)] has no curl.
+  - For #thick-sf[(E)], $curl vc(F)=mat(0; 0; 2)=2vc(e)_z$. Meanwhile, #thick-sf[(F)] has  $curl vc(F)=mat(0; 0; -2)=-2vc(e)_z$.
+  You see some _rotation_ in #thick-sf[(E)] and #thick-sf[(F)]. What is the direction of the rotations?
+  If you recall that we use the right-hand rule to describe the rotation, you can observe that $curl vc(F)$ gives the direction of rotation.
+]<ex:vc-div-curl>
+These are the typical cases and you can guess the divergence and curl from the visualizations.
+However, in general, it is difficult to see the divergence and curl.
+As a first learner, you should focus on the following points:
+
+#theorem(type: "Summary", title: "Geometric properties of divergence and curl")[
+  - $"div"=0$ means the flow is conserved _at the point_, without any source or sink.
+  - $"div">0$ means the point has a source; some flow is coming out from the point.
+  - $"div"<0$ means the point has a sink; some flow is absorbed at the point.
+  - $"curl"!=0$ means the vector field has some rotational motion. The rotation direction is given by the right-hand rule with respect to the direction of curl.
+]
+#quizzes[
+  + Calculate $div vc(F)$ and $curl vc(F)$ for each vector field in @ex:vc-div-curl. Can you find the following features?
+    - #thick-sf[(B)] has some rotational movement.
+    - #thick-sf[(E)] and #thick-sf[(F)] has no source or sink in this region.
+    - In #thick-sf[(G)] and #thick-sf[(H)], some regions have sources of the flow and some regions have sinks of the flow.
+    - In #thick-sf[(H)], there is one region that has a rotational movement, and there is another region that has a rotational movement in the opposite direction of the first region. Meanwhile, #thick-sf[(G)] has no rotational movement.
+]
+
+#theorem(title: "Vanishing combination")[
+  $
+    "For any scalar field" f, quad curl(grad f) = vc(0).\
+    "For any vector field" vc(F), quad div\(curl vc(F)\)= 0.
+  $
+]
+#quizzes[
+  + Prove this theorem. You may assume $px py f=py px f$, etc.
+]
+#advanced-note[
+  The equality $partial_i partial_j f = partial_j partial_i f$ holds because we have assumed the fields are in class $C^2$.
+]
+
+#block(breakable: false)[
+  = Formulae in Vector calculus <sec:vc-formulae>
+  Since $grad f$ is a vector field, we can apply "div" and "curl" to it; but then what will happen?
+  #theorem(title: "Double derivatives")[
+    For a scalar field $f$ and a vector field $vc(F)$,
+    #grid(columns: (1fr, 1.5fr))[
+      - #box(width: 4.5em, "curl grad:") $nab times \(nab f\)= vc(0)$.
+
+      - #box(width: 4.5em, "div curl:")  $nab dot \(nab times vc(F)\) = 0$.
+    ][
+      - #box(width: 4.5em, "div grad:") $nab dot \(nab f\) = laplace f = px^2 f + py^2 f + pz^2 f.$
+
+      - #box(width: 4.5em, "grad div:") $nab\(nab dot vc(F)\) = mat(
+          px(px F_x+py F_y+pz F_z);
+          py(px F_x+py F_y+pz F_z);
+          pz(px F_x+py F_y+pz F_z)
+        )$.
+      - #box(width: 4.5em, "curl curl:") $nab times \(nab times vc(F)\) = nab \(nab dot vc(F)\)-laplace vc(F)$.
+
+    ]
+  ]
+]
+
+#quizzes[
+  + We have three operations (div, curl, grad), so nine combinations are possible, but only the five are listed above. Why are the remaining four not shown?
+  + Show the above five equations.
+    #fail-safe(
+      indent: false,
+    )[Use @eq:vc-nabla-in-component. Notice that $vc(e)_i$ is a constant, so $partial_i vc(e)_j=vc(0)$.
+    ]
+]
+
+We may have other formulae such as
+#block[
+  #let Div = $nab dot$
+  #let DIV(x) = $Div vc(#x)$
+  #let Cur = $nab times$
+  #let CUR(x) = $Cur vc(#x)$
+  #show "(": "("
+  #show ")": ")"
+
+  $ nab(f g) = f nab g + g nab f $<eq:vc-chain1>
+  $ Div(f vc(F)) = f thick DIV(F) + (nab f) dot vc(F) $<eq:vc-chain2>
+  $ Cur(f vc(F)) = f thick CUR(F) + (nab f) times vc(F) $<eq:vc-chain3>
+  $ Div(vxp(F, G))= (CUR(F)) dot vc(G) - vc(F)dot (CUR(G)) $<eq:vc-chain4>
+]
+but usually you will not need them; instead, it is better to use @eq:vc-nabla-in-component and the chain rule.
+
+#example[
+  Recalling $\(vxp(F, G)\)_i=epsilon_(i j k)F_j G_k$, we can calculate
+  #no-num[$
+    nab dot \(vxp(F, G)\)
+    = sum partial_i \(vxp(F, G)\)_i
+    = sum partial_i \(epsilon_(i j k)F_j G_k\)
+    = sum epsilon_(i j k)[(partial_i F_j)G_k + F_j (partial_i G_k)].
+  $]
+  Then, looking at @eq:vc-nabla-in-component carefully, we may obtain
+  $sum epsilon_(i j k)(partial_i F_j)G_k = sum (curl F)_k G_k$
+  and $sum epsilon_(i j k)F_j (partial_i G_k) = -sum F_j (curl G)_j$, which leads to
+  #no-num[$
+    nab dot \(vxp(F, G)\) = \(nab times vc(F)\)dot vc(G) - vc(F) dot \(nab times vc(G)\).
+  $]
+
+  Similarly, we can expand $nab times \(vxp(F, G)\)$ by
+  #no-num[$
+    \[nab times \(vxp(F, G)\)\]_a & = sum epsilon_(a b c) partial_b \(vxp(F, G)\)_c \
+    & = sum epsilon_(a b c) partial_b \(epsilon_(c j k) F_j G_k\) \
+    & = sum epsilon_(c a b)epsilon_(c j k) [\( partial_b F_j\) G_k + F_j \(partial_b G_k\)]\
+    & = sum (delta_(a j)delta_(b k) - delta_(a k)delta_(b j)) [\( partial_b F_j\) G_k + F_j \(partial_b G_k\)]\
+    & = sum [\( partial_b F_a\) G_b + F_a \(partial_b G_b\) - \( partial_b F_b\) G_a - F_b \(partial_b G_a\)]\
+    & = sum [\( partial_b F_a\) G_b + F_a \(nab dot vc(G)\) - \(nab dot vc(F)\) G_a - F_b \(partial_b G_a\)].
+  $]
+]<ex:vc-component-wise-expansion>
+#problems[
+  + `4` Repeating @ex:vc-component-wise-expansion, prove @eq:vc-chain1 -- @eq:vc-chain4.
+]
+
 
 #example(title: "Divergence of the position field")[
   Compute $nabla dot vc(r)$ for $vc(r) = (x,y,z)^TT$.
 ]
 #solution[
   $
-    nabla dot vc(r) = pdv(x,x) + pdv(y,y) + pdv(z,z) = 1+1+1 = 3.
+    nabla dot vc(r) = pdv(x, x) + pdv(y, y) + pdv(z, z) = 1+1+1 = 3.
   $<eq:vc-div-r>
   Every point in space is a source: the field $vc(r)$ points away from the origin everywhere and grows in magnitude, so it "spreads out" at every point, consistently with the constant, positive divergence.
 ]
-
-== Curl <sec:vc-curl>
-
-#definition(title: "Curl")[
-  For a vector field $vc(F) = (F_x,F_y,F_z)^TT$, the #keyword[curl] of $vc(F)$ is the vector field
-  $
-    nabla times vc(F) := mat(pdv(F_z,y) - pdv(F_y,z); pdv(F_x,z) - pdv(F_z,x); pdv(F_y,x) - pdv(F_x,y))
-    = det(mat(vc(e)_x, vc(e)_y, vc(e)_z; pdv((),x), pdv((),y), pdv((),z); F_x,F_y,F_z)),
-  $<eq:vc-curl-def>
-  where $vc(e)_x, vc(e)_y, vc(e)_z$ are the standard basis vectors and the determinant is expanded symbolically along the first row, exactly as with the ordinary cross product formula.
-]<def:curl>
-
-The curl turns a vector field into another vector field. It measures *local rotation*: if you place a tiny paddle wheel at a point $vc(p)$ and let the field push on it, the wheel spins with axis along $nabla times vc(F)(vc(p))$ (by the right-hand rule) and angular speed equal to $va(nabla times vc(F))\/2$ at that point. A field with $nabla times vc(F) = vc(0)$ everywhere is called #keyword[irrotational]: no tiny paddle wheel anywhere in it ever spins.
 
 #example(title: "Curl of the position field")[
   Compute $nabla times vc(r)$ for $vc(r) = (x,y,z)^TT$.
 ]
 #solution[
   $
-    (nabla times vc(r))_x = pdv(z,y) - pdv(y,z) = 0-0=0,
-  $
+    (nabla times vc(r))_x = pdv(z, y) - pdv(y, z) = 0-0=0,
+  $<eq:vc-curl-r>
   and the other two components vanish the same way, since each component of $vc(r)$ depends on only one coordinate. So $nabla times vc(r) = vc(0)$: the position field does not rotate around any point, which matches the intuition that $vc(r)$ points straight out from the origin everywhere, with no swirl.
-]<eq:vc-curl-r>
+]
 
-== Laplacian <sec:vc-laplacian>
-
-#definition(title: "Laplacian")[
-  For a scalar field $f$, the #keyword[Laplacian] of $f$ is
-  $
-    nabla^2 f := nabla dot (nabla f) = pdv(f,x,2) + pdv(f,y,2) + pdv(f,z,2).
-  $<eq:vc-laplacian-scalar>
-  For a vector field $vc(F)$, the #keyword[vector Laplacian] is the componentwise Laplacian
-  $
-    nabla^2 vc(F) := mat(nabla^2 F_x; nabla^2 F_y; nabla^2 F_z).
-  $<eq:vc-laplacian-vector>
-]<def:laplacian>
 
 $nabla^2 f$ is a scalar field: it is the divergence of the gradient, i.e. "the gradient of $f$, then take its divergence." It appears everywhere in physics: the diffusion equation, the wave equation, and Laplace's equation $nabla^2 V = 0$ for the electric potential in charge-free regions all use it.
+
 
 #example(title: "Laplacian of $1/r$")[
   Show that $nabla^2 (1\/r) = 0$ for $r != 0$.
 ]
 #solution[
-  From @eq:vc-grad-1-over-r, $nabla(1\/r) = -vc(r)\/r^3$, with components $-x\/r^3, -y\/r^3, -z\/r^3$. Differentiate the $x$-component again with respect to $x$ (using the product rule, since $r$ depends on $x$):
+  $nabla(1\/r) = -vc(r)\/r^3$, with components $-x\/r^3, -y\/r^3, -z\/r^3$. Differentiate the $x$-component again with respect to $x$ (using the product rule, since $r$ depends on $x$):
   $
-    pdv((), x) (-x/r^3) = -1/r^3 - x dot (-3) r^(-4) pdv(r,x) = -1/r^3 + (3x)/r^4 dot x/r = -1/r^3 + (3x^2)/r^5,
+    pdv((), x) (-x/r^3) = -1/r^3 - x dot (-3) r^(-4) pdv(r, x) = -1/r^3 + (3x)/r^4 dot x/r = -1/r^3 + (3x^2)/r^5,
   $
-  using $pdv(r,x) = x\/r$ (same calculation as in the gradient example, applied to $r$ itself instead of $1\/r$). Summing the analogous results for $y$ and $z$:
+  using $pdv(r, x) = x\/r$ (same calculation as in the gradient example, applied to $r$ itself instead of $1\/r$). Summing the analogous results for $y$ and $z$:
   $
     nabla^2 (1/r) = -3/r^3 + (3(x^2+y^2+z^2))/r^5 = -3/r^3 + (3r^2)/r^5 = -3/r^3+3/r^3 = 0,
   $
   for all $vc(r) != vc(0)$. This fact is the mathematical heart of why the electric potential of a point charge solves Laplace's equation everywhere except at the charge itself.
 ]
 
-#theorem(title: "A gradient has no curl")[
-  For every twice-differentiable scalar field $f$,
-  $
-    nabla times (nabla f) = vc(0).
-  $<eq:vc-curl-of-grad>
-]<thm:curl-grad-zero>
-#proof[
-  The $x$-component of $nabla times (nabla f)$ is $pdv((nabla f)_z, y) - pdv((nabla f)_y, z) = pdv(f,z,y) - pdv(f,y,z)$ (mixed second partial derivatives). By Schwarz's theorem (symmetry of mixed partials, assumed throughout this chapter), $pdv(f,z,y) = pdv(f,y,z)$, so this component vanishes. The other two components vanish by the same argument, cycling through $x,y,z$.
-]
-
-#theorem(title: "The curl of a curl-source has no divergence")[
-  For every twice-differentiable vector field $vc(F)$,
-  $
-    nabla dot (nabla times vc(F)) = 0.
-  $<eq:vc-div-of-curl>
-]<thm:div-curl-zero>
-#proof[
-  $
-    nabla dot (nabla times vc(F)) = pdv((),x)(pdv(F_z,y) - pdv(F_y,z)) + pdv((),y)(pdv(F_x,z)-pdv(F_z,x)) + pdv((),z)(pdv(F_y,x)-pdv(F_x,y)).
-  $
-  Every mixed second partial derivative here, e.g. $pdv(F_z,x,y)$, appears exactly twice with opposite sign (once from each term that contains $F_z$), and by Schwarz's theorem the two mixed partials in each such pair are equal, so they cancel. All six terms cancel in pairs, leaving $0$.
-]
-
-#be-careful[
-  @thm:curl-grad-zero and @thm:div-curl-zero are *theorems*, proved from Schwarz's symmetry of mixed partial derivatives---they are not extra axioms to memorise blindly, and they are not always true if $f$ or $vc(F)$ fails to be twice continuously differentiable somewhere in the domain (a common exception in physics is a field with a singularity, like $1\/r$ at $r=0$). Do not apply @eq:vc-curl-of-grad or @eq:vc-div-of-curl at a point where the field is not defined or not smooth.
-]
-
 #quizzes[
   + `4` For $f(x,y,z) = x^2 y + z$, compute $nabla f$.
   + `4` For $vc(F) = (x^2, y^2, z^2)^TT$, compute $nabla dot vc(F)$.
   + `4` For $vc(F) = (-y,x,0)^TT$, compute $nabla times vc(F)$. What direction does the curl point in, and what does that tell you about the rotation of this field?
-  + `4` True or false: $nabla dot vc(F)$ is a vector field. #hint[Check @def:divergence again.]
+  + `4` True or false: $nabla dot vc(F)$ is a vector field. #hint[Check @def:div-curl again.]
 ]
 
 #problems[
   + `4` Compute $nabla f$, $nabla dot vc(F)$, $nabla times vc(F)$, and $nabla^2 f$ for $f = x y z$ and $vc(F) = (y z, x z, x y)^TT$.
-  + `3` Show directly (without using @thm:curl-grad-zero) that $nabla times (nabla f) = vc(0)$ for $f(x,y,z) = x^3 y^2 + sin(z)$, by computing both $nabla f$ and its curl.
+  + `3` Show directly (without using thm:curl-grad-zero) that $nabla times (nabla f) = vc(0)$ for $f(x,y,z) = x^3 y^2 + sin(z)$, by computing both $nabla f$ and its curl.
   + `3` Let $vc(F) = vc(r)\/r^3$ for $vc(r) != vc(0)$. Show $nabla dot vc(F) = 0$ for $r != 0$. #hint[This is the divergence-free electric field of a point charge, away from the charge itself.]
   + `2` Compute $nabla^2 f$ for $f = ln r$ (with $r = sqrt(x^2+y^2)$, i.e. treat this as a field on $RR^2$, ignoring $z$), and comment on where it is undefined.
   + `9` (drill: which operator, which output type) For each expression below, state whether it is defined, and if so, whether the result is a scalar field or a vector field: (a) $nabla f$, (b) $nabla times f$, (c) $nabla dot vc(F)$, (d) $nabla times (nabla dot vc(F))$, (e) $nabla (nabla dot vc(F))$, (f) $nabla dot vc(F) times nabla g$.
 ]
 
-= Vector Identities <sec:vc-identities>
 
-The following identities let you simplify combinations of gradient, divergence, and curl without redoing an index calculation every time. Some are read off almost immediately from the definitions; others need the $eps$-$delta$ identity (@thm:eps-delta) or a careful product-rule bookkeeping. All assume $f,g$ are twice-differentiable scalar fields and $vc(A), vc(B), vc(F)$ are twice-differentiable vector fields, on whatever domain makes both sides defined.
+
+
+
+#be-careful[
+  A very common slip is to write $vc(a) times (vc(b) times vc(c)) = (vc(a) times vc(b)) times vc(c)$, i.e. to assume the cross product is associative.
+]
+
+#problems[
+  + `4` Compute $vc(a) times vc(b)$ for $vc(a) = (1,0,2)^TT$ and $vc(b) = (0,3,-1)^TT$ using eq:vc-cross-index directly (sum over $j,k$ by hand for each $i$), then check against the determinant formula from @chap:matrix.
+  + `3` Prove the scalar triple product formula $vip(a, (vc(b) times vc(c))) = sum_(i,j,k) eps_(i j k) a_i b_j c_k$, and use it to show $vip(a, (vc(b) times vc(c))) = vip((vc(a) times vc(b)), c)$.
+  + `2` Use thm:eps-delta to prove Lagrange's identity $va(vc(a) times vc(b))^2 = va(vc(a))^2 va(vc(b))^2 - vip(a, b)^2$.
+  + `9` (drill: reading $eps$) Evaluate without a table: (a) $eps_(132)$, (b) $eps_(313)$, (c) $eps_(321)$, (d) $eps_(111)$.
+  + `9` (drill: contracting one index) Simplify each sum: (a) $sum_k eps_(i j k) delta_(j k)$, (b) $sum_(j,k) eps_(i j k) eps_(l j k)$. #hint[For (b), use thm:eps-delta and then set $m=k$, summing over $k$ at the end.]
+]
+
 
 #theorem(title: "Vector calculus identities")[
   $
-    nabla times (nabla f) &= vc(0) & #[(proved above, @thm:curl-grad-zero)] \
-    nabla dot (nabla times vc(F)) &= 0 & #[(proved above, @thm:div-curl-zero)] \
+    nabla times (nabla f) &= vc(0) & #[(proved above, thm:curl-grad-zero)] \
+    nabla dot (nabla times vc(F)) &= 0 & #[(proved above, thm:div-curl-zero)] \
     nabla (f g) &= f nabla g + g nabla f & \
     nabla dot (f vc(F)) &= f (nabla dot vc(F)) + vc(F) dot (nabla f) & \
     nabla times (f vc(F)) &= f (nabla times vc(F)) + (nabla f) times vc(F) & \
-    nabla (vip(A,B)) &= (vc(A) dot nabla) vc(B) + (vc(B) dot nabla) vc(A) + vc(A) times (nabla times vc(B)) + vc(B) times (nabla times vc(A)) & \
+    nabla (vip(A, B)) &= (vc(A) dot nabla) vc(B) + (vc(B) dot nabla) vc(A) + vc(A) times (nabla times vc(B)) + vc(B) times (nabla times vc(A)) & \
     nabla dot (vc(A) times vc(B)) &= vc(B) dot (nabla times vc(A)) - vc(A) dot (nabla times vc(B)) & \
     nabla times (vc(A) times vc(B)) &= vc(A) (nabla dot vc(B)) - vc(B) (nabla dot vc(A)) + (vc(B) dot nabla) vc(A) - (vc(A) dot nabla) vc(B) & \
     nabla^2 vc(F) &= nabla (nabla dot vc(F)) - nabla times (nabla times vc(F)). &
   $<eq:vc-identities>
 ]<thm:vc-identities>
-Here $(vc(A) dot nabla)$ denotes the scalar differential operator $A_x pdv((),x) + A_y pdv((),y) + A_z pdv((),z)$, applied componentwise to the vector field that follows it; it is *not* the same object as $nabla dot vc(A)$ (a scalar field), so keep the parentheses.
-
-#proof[
-  We prove the third identity, $nabla(f g) = f nabla g + g nabla f$, since it is a direct application of the ordinary product rule. The $x$-component of the left side is $pdv((f g), x) = f pdv(g,x) + g pdv(f,x)$ by the product rule for ordinary partial derivatives. This equals the $x$-component of $f nabla g + g nabla f$. The same argument applies to the $y$- and $z$-components, proving the identity.
-]
-#proof[
-  We prove the fourth identity, $nabla dot (f vc(F)) = f(nabla dot vc(F)) + vc(F) dot (nabla f)$. By definition,
-  $
-    nabla dot (f vc(F)) = pdv((f F_x),x) + pdv((f F_y),y) + pdv((f F_z),z).
-  $
-  Apply the product rule to each term: $pdv((f F_x),x) = f pdv(F_x,x) + F_x pdv(f,x)$, and similarly for $y,z$. Summing all three,
-  $
-    nabla dot (f vc(F)) = f (pdv(F_x,x) + pdv(F_y,y) + pdv(F_z,z)) + (F_x pdv(f,x) + F_y pdv(f,y) + F_z pdv(f,z)) = f(nabla dot vc(F)) + vc(F) dot (nabla f).
-  $
-]
-#advanced-note[
-  The remaining identities in @thm:vc-identities follow by the same style of calculation: expand every component using the definitions, apply the ordinary product rule to each partial derivative, and regroup terms. The two identities with $vc(A) times vc(B)$ additionally use the $eps$-$delta$ identity from @thm:eps-delta to simplify sums of two $eps$ symbols. Sho leaves these as problems below, since working through at least one of them yourself is the best way to trust the whole list.
-]
+Here $(vc(A) dot nabla)$ denotes the scalar differential operator $A_x pdv((), x) + A_y pdv((), y) + A_z pdv((), z)$, applied componentwise to the vector field that follows it; it is *not* the same object as $nabla dot vc(A)$ (a scalar field), so keep the parentheses.
 
 #quizzes[
   + `4` Using the fourth identity in @eq:vc-identities, simplify $nabla dot (r^2 vc(r))$ where $r = va(vc(r))$, given that $nabla dot vc(r) = 3$ (@eq:vc-div-r) and $nabla (r^2) = 2 r nabla r = 2vc(r)$.
@@ -367,236 +759,147 @@ Here $(vc(A) dot nabla)$ denotes the scalar differential operator $A_x pdv((),x)
 
 #problems[
   + `3` Prove $nabla dot (f vc(F)) = f (nabla dot vc(F)) + vc(F) dot (nabla f)$ for the specific fields $f = x^2+y^2$ and $vc(F) = (z,z,x+y)^TT$: compute both sides directly and check they agree.
-  + `2` Prove the identity $nabla dot (vc(A) times vc(B)) = vc(B) dot (nabla times vc(A)) - vc(A) dot (nabla times vc(B))$ using index notation (write $nabla dot (vc(A) times vc(B)) = sum_i pdv((),x_i) sum_(j,k) eps_(i j k) A_j B_k$, apply the product rule, and regroup).
+  + `2` Prove the identity $nabla dot (vc(A) times vc(B)) = vc(B) dot (nabla times vc(A)) - vc(A) dot (nabla times vc(B))$ using index notation (write $nabla dot (vc(A) times vc(B)) = sum_i pdv((), x_i) sum_(j,k) eps_(i j k) A_j B_k$, apply the product rule, and regroup).
   + `2` Use @eq:vc-identities to simplify $nabla times (f nabla f)$ (a curl of a field built from a single scalar field $f$). #hint[Which of the two terms in the fifth identity of @eq:vc-identities vanishes, and why?]
-  + `1` Prove the identity $nabla times (vc(A) times vc(B)) = vc(A)(nabla dot vc(B)) - vc(B)(nabla dot vc(A)) + (vc(B) dot nabla) vc(A) - (vc(A) dot nabla) vc(B)$ using @thm:eps-delta.
+  + `1` Prove the identity $nabla times (vc(A) times vc(B)) = vc(A)(nabla dot vc(B)) - vc(B)(nabla dot vc(A)) + (vc(B) dot nabla) vc(A) - (vc(A) dot nabla) vc(B)$ using thm:eps-delta.
   + `9` (drill: which identity to reach for) For each target expression, name which line of @eq:vc-identities you would use first: (a) $nabla times (r^2 vc(F))$, (b) $nabla dot (nabla times (nabla f))$ (careful, this one is a trick), (c) $nabla (f^2)$.
 ]
 
-= Gauss's Divergence Theorem <sec:vc-gauss>
 
-So far, $nabla dot vc(F)$ and $nabla times vc(F)$ are *local* quantities: they describe behaviour at a single point. Two theorems relate these local quantities to *global*, integrated quantities over a surface or volume. The first is Gauss's theorem.
+#pagebreak()
 
-Let $V subset RR^3$ be a solid region (a volume) and let $S$ be its boundary: a #keyword[closed surface] (one with no edge, like a sphere or the surface of a potato, as opposed to an open sheet like a disc). At each point of $S$, let $vcu(n)$ be the #keyword[outward unit normal] vector, and write $d vc(S) := vcu(n) thin d S$ for the vector surface element, where $d S$ is an infinitesimal patch of area on $S$.
+= More Topics are Waiting for You
 
-#theorem(title: "Gauss's divergence theorem")[
-  Let $vc(F)$ be a differentiable vector field on (an open region containing) $V union S$. Then
+We have completed the overview of the *derivative* operations in vector calculus.
+You will use them in _electromagnetism_, but there you will also need *integral* operations.
+We postpone the discussions to the course _Mathematics and Codings on Physics_ #JA[（物理數學與數值方法）], which you will take in the next semester.
+
+There, you will learn integrals about a scalar field $f(vc(r))$, such as
+#no-num[$
+    "line integral" integral f(vc(r)) dd s, quad
+    "surface integral" integral.double f(vc(r)) dd A, quad
+    "volume integral" integral.triple f(vc(r)) dd V,
   $
-    integral.surf.double_S vc(F) dot d vc(S) = integral.triple_V (nabla dot vc(F)) thin d V.
-  $<eq:vc-gauss>
-]<thm:gauss>
+]
+and define integrals about a vector field $vc(F)(vc(r))$:
+#no-num[$
+    "line integral" integral vc(F)(vc(r)) dot dd vc(s)
+    , quad
+    "surface integral" integral.double F(vc(r)) dot dd vc(A).
+  $
+]
+These integrals are used to describe the #keyword[Maxwell equations] in electromagnetism,
+#block[
 
-In words: the total #keyword[flux] of $vc(F)$ out through the closed surface $S$ (left side) equals the total "amount of source" of $vc(F)$ produced inside the volume $V$ (right side). If $vc(F)$ is a fluid velocity field, the left side is the net volume of fluid leaving $V$ per unit time; the right side adds up, over every point inside $V$, how much fluid is being created or destroyed there. The two must agree, since fluid cannot vanish or appear inside $V$ without eventually crossing the boundary $S$.
+  #let rt = $\(vc(r),t\)$
+  $
+    &integral.double_(partial V) vc(E)rt dot dd vc(A) = integral.triple_V (rho rt)/epsilon_0 dd V,quad&
+    &integral_(partial S) vc(E)rt dot dd vc(s) = integral.double_S (-pdv(vc(B)rt, t)) dot dd vc(A),\
+    &integral.double vc(B)rt dot dd vc(A) = 0,&
+    &integral_(partial S) vc(B)rt dot dd vc(s) = integral.double_S mu_0 [vc(J)rt + epsilon_0 pdv(vc(E)rt, t)]dot dd vc(A),
+  $
+  or more precisely,
+  $
+    & nab dot vc(E)rt = (rho rt)/epsilon_0,wide && nab times vc(E)rt = -pdv(vc(B)rt, t), \
+    & nab dot vc(B)rt = 0,                      && nab times vc(B)rt = mu_0 vc(J)rt + mu_0 epsilon_0 pdv(vc(E)rt, t).
+  $
+  You will learn these equations are related by the #keyword[Gauss's theorem] and #keyword[Stokes' theorem],
+  $
+    integral.double_(partial V) vc(F) dot dd vc(A) = integral.triple_V (nab dot vc(F)) dd V,quad
+    integral_(partial S) vc(F) dot dd vc(s) = integral.double_S (nab times vc(F)) dot dd vc(A).
+  $
+]
 
+#divider()
+
+You will also need the #keyword[cylindrical coordinates] $(r, theta, z)$ and the #keyword[spherical coordinates] $(r,theta, phi)$ to analyze the Maxwell equations.
+They are related to the #keyword[Cartesian coordinates] $(x,y,z)$ by
+$
+  "cylindrical:" quad & (x, y, z) = (r cos theta, r sin theta, zeta), \
+    "spherical:" quad & (x, y, z) = (r sin theta cos phi, r sin theta sin phi, r cos theta),
+$
+and then, as the biggest challenge, you will convert the gradient, divergence, curl, and Laplacian, as well as $dd S$ and $dd V$, into these coordinates.
+#remark[Usually the cylindrical coordinate is written by $(r,theta,z)$ because $z=zeta$ is unchanged, but here we use $zeta$ (zeta) to avoid confusion.]
+
+This document does not go into these advanced topics, but just in case you are motivated to prepare for the next course, several exercises are left below.
+
+#problems[
+  + `1` Consider the cylindrical coordinates $(r, theta, zeta)$.
+    + The $3times 3$ matrix $J=display(jacobian(r, theta, zeta, x, y, z))$, which we often write by $partial(x, y, z) / partial(r, theta, zeta)$, is called the #keyword[Jacobian matrix] of the coordinate change $(r,theta,zeta)->(x,y,z)$ and its determinant $det J$ is called #keyword[Jacobian]. Compute $J$ and confirm that $det J=r$.
+      #be-careful(indent: false)[
+        Be aware that we here regard $(r,theta,zeta)$ as the "old" coordinate and $(x,y,z)$ as the "new" coordinate. So, $x$, $y$, and $z$ are functions of $(r, theta, zeta)$, and thus $J$ is a function of $(r,theta,zeta)$.
+      ]
+    + Express $(r, theta, zeta)$ in terms of $(x, y, z)$. This gives the inverse transformation, $(x,y,z)->(r,theta,zeta)$. #hint[Your answer will contain $arctan(x\/y)$, but what is "arctan"?]
+    + Let us $J'=display(jacobian(x, y, z, r, theta, zeta))$, i.e., the Jacobian matrix for the inverse transformation $(x,y,z)->(r,theta,zeta)$. Calculate $J'$ and $det J'$.
+    + Confirm $J J'=I_3$. It means $J'$ is the inverse matrix of $J$, and thus $det J'=1\/det J$.
+  + `1` Do the same calculation for the spherical coordinates $(r, theta, phi)$.
+    + Calculate $J = partial(x, y, z) / partial(r, theta, phi)$ and confirm that $det J=r^2 sin theta$.
+    + Express $(r, theta, phi)$ in terms of $(x, y, z)$.
+    + Calculate $J'=partial(r, theta, phi) / partial(x, y, z)$ and $det J'$. Confirm $JJ'=I_3$ by the direct calculation.
+]
 #advanced-note[
-  The proof, in full, chops $V$ into a grid of tiny cubes, applies the definition of divergence to each cube (the flux out of a tiny cube of side $dx$ is, to leading order, $(nabla dot vc(F)) thin dx^3$), and observes that the flux through the internal faces shared by two neighbouring cubes cancels (what flows out of one cube flows into its neighbour), leaving only the flux through the faces on the outer boundary $S$. We do not carry out this limiting argument in detail here; it belongs to a course in analysis, not this drill book.
+  The #keyword[Jacobian] $det J$ is used to transform integrals. With its *absolute value* $lr(|det J|)$,
+  $
+    integral.triple f(x,y,z) dd x dd y dd z = integral.triple f(x,y,z) lr(|det partial(x, y, z) / partial(r, theta, phi)|) dd r dd theta dd phi quad "etc."
+  $
+  (note the absolute-value symbol!), where $f(x,y,z)$ in the second expression is written in terms of $(r, theta, phi)$.
 ]
-
-#example(title: "Gauss's theorem for the position field on a sphere")[
-  Verify @eq:vc-gauss for $vc(F) = vc(r)$ and $V$ the solid ball of radius $R$ centred at the origin, with $S$ the sphere of radius $R$.
-]
-#solution[
-  *Right side.* From @eq:vc-div-r, $nabla dot vc(r) = 3$ everywhere, so
-  $
-    integral.triple_V (nabla dot vc(r)) thin d V = 3 integral.triple_V d V = 3 dot (4/3 pi R^3) = 4 pi R^3.
-  $
-  *Left side.* On the sphere $S$ of radius $R$, the outward unit normal is $vcu(n) = vc(r)\/R$ (the position vector itself, normalised), and $vc(r) dot vcu(n) = vc(r) dot vc(r)\/R = R^2\/R = R$ (constant on $S$, since every point of $S$ has $va(vc(r)) = R$). So
-  $
-    integral.surf.double_S vc(r) dot d vc(S) = integral.surf.double_S R thin dS = R dot (4 pi R^2) = 4 pi R^3,
-  $
-  using that the total area of $S$ is $4 pi R^2$. Both sides equal $4 pi R^3$.
-]
-
-#example(title: "Gauss's law from Gauss's theorem")[
-  In electrostatics, Gauss's law in integral form states that the electric flux through a closed surface $S$ equals the enclosed charge divided by $epsilon_0$:
-  $
-    integral.surf.double_S vc(E) dot d vc(S) = Q_"enc" / epsilon_0 = 1/epsilon_0 integral.triple_V rho thin dV,
-  $
-  where $rho$ is the charge density. Derive the differential form $nabla dot vc(E) = rho\/epsilon_0$.
-]
-#solution[
-  Apply @eq:vc-gauss to the left side:
-  $
-    integral.surf.double_S vc(E) dot d vc(S) = integral.triple_V (nabla dot vc(E)) thin dV.
-  $
-  Combining with the integral law,
-  $
-    integral.triple_V (nabla dot vc(E)) thin dV = integral.triple_V rho/epsilon_0 thin dV.
-  $
-  This must hold for *every* choice of volume $V$, however small. Two functions whose integrals agree over every possible volume must be equal at every point (shrink $V$ to a tiny ball around any point $vc(p)$; the average value of each side over that tiny ball converges to the value at $vc(p)$). Hence $nabla dot vc(E) = rho\/epsilon_0$ at every point.
-]
-
-#quizzes[
-  + `4` For a vector field with $nabla dot vc(F) = 0$ everywhere inside $V$, what does @eq:vc-gauss say about the total flux out of $S$?
-  + `4` Why must the surface $S$ in Gauss's theorem be closed (no edge)? #hint[Try to picture the theorem applied to just half a sphere.]
-]
-
 #problems[
-  + `4` Use Gauss's theorem to compute $integral.surf.double_S vc(F) dot d vc(S)$ for $vc(F) = (x,y,z)^TT$ and $S$ the surface of the cube $[0,1]^3$, without parametrising the six faces. #hint[Compute $nabla dot vc(F)$ and integrate over the cube.]
-  + `3` Let $vc(F) = (x^3, y^3, z^3)^TT$ and let $V$ be the ball of radius $R$. Compute $integral.triple_V (nabla dot vc(F)) thin dV$ using spherical coordinates (preview: see @sec:vc-curvilinear) or by symmetry with Cartesian coordinates, and interpret the flux.
-  + `2` Explain, using Gauss's theorem, why a source-free vector field ($nabla dot vc(F) = 0$ everywhere) has zero total flux through *any* closed surface, even one shaped like a torus (donut).
+  + `1` We here compute the derivative operators in the cylindrical coordinates $(r, theta, zeta)$. Let us begin with the gradient. It should be
+    $ nab f = vc(e)_x px f + vc(e)_y py f + vc(e)_z pz f
+    = vc(e)_r #JA[●] + vc(e)_theta #JA[▲] + vc(e)_zeta #JA[■] $ and we want to find the unknown expressions #JA[●], #JA[▲], and #JA[■].
+    + Express $px f$, $py f$, and $pz f$ in terms of $partial_r f$, $partial_theta f$, and $partial_zeta f$.
+      #fail-safe(indent: false)[
+        As $x$ is a function of $(r, theta, zeta)$, the chain rule $pdv(, x) =pdv(r, x) pdv(, r) + pdv(theta, x) pdv(, theta) + pdv(zeta, x) pdv(, zeta)$ serves.
+      ]
+    + The difficulty is that the meaning of $vc(e)_r$, $vc(e)_theta$, and $vc(e)_zeta$.
+      They should be the unit vectors forming an orthonormal basis and $vc(e)_r$ should points in the positive $r$-direction.
+      However, the positive $r$-direction depends on the position $(x,y,z)$, so $vc(e)_r$ (and thus $vc(e)_theta$) depends on the position, as shown in @fig:vc-cylinder.
+
+      For point P$(x,y,z)$ or $(r,theta,zeta)$, the unit vectors are given by
+      $
+        vc(e)_r = vc(e)_x cos theta + vc(e)_y sin theta, quad
+        vc(e)_theta = -vc(e)_x sin theta+vc(e)_y cos theta,quad
+        vc(e)_zeta = vc(e)_z.
+      $
+      Express them in the matrix form. Confirm this is consistent with @fig:vc-cylinder. Express $vc(e)_r$ and $vc(e)_theta$ without using $r$ and $theta$. Confirm $(vc(e)_r, vc(e)_theta, vc(e)_zeta)$ form an orthonormal basis and obey the right-hand rule.
+      #advanced-note(indent: false)[
+        In general, $vc(e)_X$ has the same direction as $pdv(vc(r), X)$. Namely, we can obtain the basis vectors by  normalizing
+        $
+          pdv(vc(r), r) = pdv(, r)mat(r cos theta; r sin theta; zeta) = mat(cos theta; sin theta; 0),quad
+          pdv(vc(r), theta) = mat(-r sin theta; r cos theta; 0),quad"and"quad
+          pdv(vc(r), zeta) = mat(0; 0; 1).
+        $
+        This method is useful for the spherical coordinates.
+      ]
+    + Express $vc(e)_x$, $vc(e)_y$, and $vc(e)_z$ only with $theta$, $vc(e)_r$, $vc(e)_theta$, and $vc(e)_zeta$.
+    + Substitute the above expressions into $nab f = vc(e)_x px f + vc(e)_y py f + vc(e)_z pz f$ and reach
+      $
+        nab f = vc(e)_r pdv(f, r) + vc(e)_theta/r pdv(f, theta) + vc(e)_zeta pdv(f, zeta).
+      $
+
+  + `1` Let us consider divergence in cylindrical coordinates. As divergence is for a vector field
+    $vc(F) = F_x vc(e)_x + F_y vc(e)_y + F_z vc(e)_z = F_r vc(e)_r + F_theta vc(e)_theta + F_zeta vc(e)_zeta,$
+    we should use $F_r$, $F_theta$, and $F_zeta$ instead of $F_x$, $F_y$, and $F_z$.
+    So, what we need to calculate is
+    $
+      nab dot vc(F) = (vc(e)_r partial_r + (vc(e)_theta\/r) partial_theta + vc(e)_zeta partial_zeta) dot (F_r vc(e)_r + F_theta vc(e)_theta + F_zeta vc(e)_zeta).
+    $
+    + Calculate $partial_r vc(e)_r$, $partial_r vc(e)_theta$, $partial_r vc(e)_zeta$, $partial_theta vc(e)_r$, $partial_theta vc(e)_theta$, $partial_theta vc(e)_zeta$, $partial_zeta vc(e)_r$, $partial_zeta vc(e)_theta$, and $partial_zeta vc(e)_zeta$.
+    + Confirm $display(nab dot vc(F) = 1/r partial_r (r F_r) + 1/r partial_theta F_theta + partial_zeta F_zeta)$
+    + Find $nab times vc(F)$ and $laplace f$. Compare your answer with online resources.
 ]
 
-= Stokes' Theorem <sec:vc-stokes>
+#import "figures/8-vc-cylinder.typ": cylinder-fig
+#import "figures/8-vc-vector-field.typ": draw-vector-field-eig
 
-Gauss's theorem related a volume integral to an integral over its boundary surface. Stokes' theorem plays the same role one dimension down: it relates a surface integral to an integral over the boundary *curve* of that surface.
-
-Let $S$ be an #keyword[open surface] (one with an edge, e.g. a hemisphere or a disc, unlike the closed surfaces of the previous section), and let $C$ be its boundary curve. Orient $C$ using the #keyword[right-hand rule]: if the fingers of your right hand curl in the direction you traverse $C$, your thumb points in the direction of $d vc(S) = vcu(n) thin dS$ on $S$.
-
-#theorem(title: "Stokes' theorem")[
-  Let $vc(F)$ be a differentiable vector field on (an open region containing) $S union C$. Then
-  $
-    integral.cont_C vc(F) dot d vc(l) = integral.surf.double_S (nabla times vc(F)) dot d vc(S),
-  $<eq:vc-stokes>
-  where $d vc(l)$ is the infinitesimal tangent vector along $C$, pointing in the direction of traversal.
-]<thm:stokes>
-
-In words: the total #keyword[circulation] of $vc(F)$ around the boundary curve $C$ (left side) equals the total curl of $vc(F)$ passing through the surface $S$ (right side). If $vc(F)$ is a fluid velocity field, the left side measures how much the fluid tends to rotate along the loop $C$; the right side adds up all the tiny local rotations (measured by the curl) over every point of the surface $S$ that $C$ bounds.
-
-#example(title: "Circulation of a rotation field")[
-  Let $vc(F) = (-y,x,0)^TT$ and let $S$ be the disc of radius $R$ in the $x y$-plane centred at the origin, with $C$ its boundary circle traversed counterclockwise (viewed from $+z$). Verify @eq:vc-stokes.
-]
-#solution[
-  *Right side.* From @eq:vc-curl-r, this field has $nabla times vc(F) = (0,0,2)^TT$ (a direct calculation: $pdv(F_y,x)-pdv(F_x,y) = 1-(-1) = 2$, and the other two components vanish). Since $d vc(S) = (0,0,1)^TT thin dS$ on this disc (outward, i.e. $+z$, matching the right-hand rule for counterclockwise traversal),
-  $
-    integral.surf.double_S (nabla times vc(F)) dot d vc(S) = integral.surf.double_S 2 thin dS = 2 dot (pi R^2) = 2 pi R^2.
-  $
-  *Left side.* Parametrise $C$ by $(x,y) = (R cos t, R sin t)$ for $t in [0, 2pi)$, so $d vc(l) = (-R sin t, R cos t, 0)^TT thin dt$. On $C$, $vc(F) = (-R sin t, R cos t, 0)^TT$, so
-  $
-    vc(F) dot d vc(l) = R^2 sin^2 t + R^2 cos^2 t = R^2,
-  $
-  giving
-  $
-    integral.cont_C vc(F) dot d vc(l) = integral_0^(2pi) R^2 thin dt = 2 pi R^2.
-  $
-  Both sides equal $2 pi R^2$.
-]
-
-#example(title: "Faraday's law from Stokes' theorem")[
-  Faraday's law in integral form states $integral.cont_C vc(E) dot d vc(l) = -dv(Phi_B, t)$, where $Phi_B = integral.surf.double_S vc(B) dot d vc(S)$ is the magnetic flux through $S$. Use Stokes' theorem to derive the differential form $nabla times vc(E) = -pdv(vc(B),t)$.
-]
-#solution[
-  Applying @eq:vc-stokes to the left side, $integral.cont_C vc(E) dot d vc(l) = integral.surf.double_S (nabla times vc(E)) dot d vc(S)$. Assuming the surface $S$ is fixed in time (does not move), $dv(Phi_B,t) = integral.surf.double_S pdv(vc(B),t) dot d vc(S)$. Substituting both into Faraday's law,
-  $
-    integral.surf.double_S (nabla times vc(E)) dot d vc(S) = -integral.surf.double_S pdv(vc(B),t) dot d vc(S).
-  $
-  As in the Gauss's law derivation, this holds for every choice of surface $S$, so the integrands must be equal at every point: $nabla times vc(E) = -pdv(vc(B),t)$.
-]
-
-#theorem(title: "Conservative fields are irrotational")[
-  If $nabla times vc(F) = vc(0)$ everywhere on a surface $S$ bounded by a curve $C$, then $integral.cont_C vc(F) dot d vc(l) = 0$. Consequently, for such a field, the line integral $integral_(vc(p)_1)^(vc(p)_2) vc(F) dot d vc(l)$ between two points does not depend on the path chosen (as long as any two paths together bound a surface on which $nabla times vc(F) = vc(0)$); such a field is called #keyword[conservative].
-]<thm:conservative>
-#proof[
-  The first claim is immediate from @eq:vc-stokes: the right side is an integral of $vc(0)$, hence $0$. For the second claim, let $C_1$ and $C_2$ be two paths from $vc(p)_1$ to $vc(p)_2$. The loop that goes along $C_1$ and back along $C_2$ reversed is a closed curve bounding some surface $S$; the circulation around it is $0$ by the first claim, and this circulation equals $integral_(C_1) vc(F) dot d vc(l) - integral_(C_2) vc(F) dot d vc(l)$, so the two path integrals are equal.
-]
-#remark[
-  This is exactly why a conservative force (like gravity or the electrostatic force) has a well-defined potential energy: since $nabla times vc(F) = vc(0)$ for such forces, the work done moving between two points does not depend on the path taken.
-]
-
-#quizzes[
-  + `4` For the field $vc(F) = (-y,x,0)^TT$ from the worked example, is $vc(F)$ conservative? Why or why not?
-  + `4` Sho claims "if $integral.cont_C vc(F) dot d vc(l) = 0$ for one particular closed loop $C$, then $vc(F)$ is conservative." Is Sho right? #hint[Compare to @thm:conservative, which requires the statement for *every* loop, not just one.]
-]
-
-#problems[
-  + `4` Verify Stokes' theorem for $vc(F) = (0,0,x y)^TT$ and $S$ the unit disc in the $x y$-plane. #hint[Compute $nabla times vc(F)$ first; it may make one side of the calculation trivial.]
-  + `3` Show that $vc(F) = (2xy, x^2, 0)^TT$ is conservative by computing its curl, then find a scalar field $f$ with $vc(F) = nabla f$.
-  + `2` Explain, using Stokes' theorem, why the circulation of $vc(F) = -y\/(x^2+y^2) thin vc(e)_x + x\/(x^2+y^2) thin vc(e)_y$ around a circle enclosing the origin does not depend on the radius of the circle, even though $nabla times vc(F) = vc(0)$ everywhere except at the origin (where $vc(F)$ is undefined). #hint[The theorem requires $vc(F)$ to be defined and differentiable on all of $S$, including its interior.]
-]
-
-= Curvilinear Coordinates: Cylindrical and Spherical <sec:vc-curvilinear>
-
-Cartesian coordinates $(x,y,z)$ are not always the easiest choice. A solenoid (a coil of wire) has an axis of symmetry; a point charge or the hydrogen atom has a centre of symmetry. Writing the fields for these problems in $(x,y,z)$ obscures the symmetry and leads to unnecessarily messy algebra. #keyword[Cylindrical] and #keyword[spherical] coordinates are built to match these symmetries directly.
-
-== Cylindrical Coordinates <sec:vc-cylindrical>
-
-#definition(title: "Cylindrical coordinates")[
-  Cylindrical coordinates $(r,phi,z)$ are related to Cartesian coordinates by
-  $
-    x = r cos phi, quad y = r sin phi, quad z=z,
-  $<eq:vc-cyl-def>
-  with domain $r >= 0$, $0 <= phi < 2pi$, $z in RR$.
-]<def:cylindrical>
-Here $r$ is the distance from the $z$-axis (not the distance from the origin---that will be the role of $r$ in spherical coordinates, a different quantity with an unfortunately shared letter) and $phi$ is the angle measured counterclockwise from the positive $x$-axis, viewed from $+z$.
-
-At each point (away from the $z$-axis, where $r=0$ and $phi$ is undefined, since every angle gives the same point), define unit vectors $vcu(e)_r, vcu(e)_phi, vcu(e)_z$ pointing, respectively, in the direction of increasing $r$ (radially outward from the $z$-axis), increasing $phi$ (tangent to the circle of radius $r$, counterclockwise), and increasing $z$ (same as the Cartesian $vcu(e)_z$). In Cartesian components,
-$
-  vcu(e)_r = (cos phi, sin phi, 0)^TT, quad vcu(e)_phi = (-sin phi, cos phi, 0)^TT, quad vcu(e)_z = (0,0,1)^TT.
-$<eq:vc-cyl-basis>
-#be-careful[
-  Unlike the fixed Cartesian basis $vcu(e)_x,vcu(e)_y,vcu(e)_z$, the cylindrical basis vectors $vcu(e)_r, vcu(e)_phi$ *depend on the point* (through $phi$): they rotate as you move around the $z$-axis. Do not treat $vcu(e)_r$ or $vcu(e)_phi$ as constant vectors when differentiating a field expressed in cylindrical components; this is a common source of sign errors.
-]
-
-The #keyword[scale factors] $h_r = 1$, $h_phi = r$, $h_z = 1$ measure how much physical distance corresponds to a unit change in each coordinate (moving by $d phi$ at radius $r$ covers an arc length $r thin d phi$, hence $h_phi = r$). The volume element is
-$
-  d V = r thin d r thin d phi thin d z.
-$<eq:vc-cyl-volume>
-The gradient, divergence, and Laplacian take the form
-$
-  nabla f &= pdv(f,r) vcu(e)_r + 1/r pdv(f,phi) vcu(e)_phi + pdv(f,z) vcu(e)_z, \
-  nabla dot vc(F) &= 1/r pdv((r F_r),r) + 1/r pdv(F_phi,phi) + pdv(F_z,z), \
-  nabla^2 f &= 1/r pdv((),r) (r pdv(f,r)) + 1/r^2 pdv(f,phi,2) + pdv(f,z,2).
-$<eq:vc-cyl-ops>
-(The curl in cylindrical coordinates exists too but Sho will spare you the formula here; look it up when a specific problem needs it, and use the Cartesian definition to re-derive it if you must.)
-
-#example(title: "Laplacian of $ln r$ in cylindrical coordinates")[
-  For $f = ln r$ (a field on the plane, independent of $phi$ and $z$; $r > 0$), compute $nabla^2 f$ using @eq:vc-cyl-ops.
-]
-#solution[
-  Since $f$ does not depend on $phi$ or $z$, only the first term of the Laplacian survives:
-  $
-    nabla^2 f = 1/r pdv((),r) (r pdv((ln r),r)) = 1/r pdv((),r) (r dot 1/r) = 1/r pdv((1),r) = 1/r dot 0 = 0,
-  $
-  for all $r > 0$. Compare this to trying the same calculation directly in Cartesian coordinates, where $ln r = 1/2 ln(x^2+y^2)$: it can be done, but the cylindrical route above is much shorter, precisely because $f$ only depends on $r$.
-]
-
-== Spherical Coordinates <sec:vc-spherical>
-
-#definition(title: "Spherical coordinates")[
-  Spherical coordinates $(r,theta,phi)$ are related to Cartesian coordinates by
-  $
-    x = r sin theta cos phi, quad y = r sin theta sin phi, quad z = r cos theta,
-  $<eq:vc-sph-def>
-  with domain $r >= 0$, $0 <= theta <= pi$, $0 <= phi < 2pi$.
-]<def:spherical>
-Here $r$ is the distance from the origin, $theta$ is the #keyword[polar angle] measured from the positive $z$-axis, and $phi$ is the same #keyword[azimuthal angle] as in cylindrical coordinates.
-
-#be-careful[
-  This course follows the *physics convention*: $theta$ is the polar angle (from the $z$-axis, ranging over $[0,pi]$) and $phi$ is the azimuthal angle (around the $z$-axis, ranging over $[0,2pi)$). Many mathematics textbooks swap these two letters, calling the polar angle $phi$ and the azimuthal angle $theta$. When you read a formula from an unfamiliar source, check its convention before trusting the symbols; do not assume $theta$ always means the same angle.
-]
-
-The basis vectors $vcu(e)_r, vcu(e)_theta, vcu(e)_phi$ point in the directions of increasing $r$ (radially outward), increasing $theta$ (tangent to a meridian, "southward"), and increasing $phi$ (tangent to a circle of latitude, "eastward"), respectively; like the cylindrical basis, they depend on the point. The scale factors are $h_r = 1$, $h_theta = r$, $h_phi = r sin theta$ (a small change $d phi$ sweeps an arc length $r sin theta thin dphi$, since the circle of latitude at polar angle $theta$ has radius $r sin theta$, not $r$). The volume element is
-$
-  dV = r^2 sin theta thin d r thin d theta thin d phi.
-$<eq:vc-sph-volume>
-The gradient, divergence, and Laplacian take the form
-$
-  nabla f &= pdv(f,r) vcu(e)_r + 1/r pdv(f,theta) vcu(e)_theta + 1/(r sin theta) pdv(f,phi) vcu(e)_phi, \
-  nabla dot vc(F) &= 1/r^2 pdv((r^2 F_r),r) + 1/(r sin theta) pdv((sin theta thin F_theta),theta) + 1/(r sin theta) pdv(F_phi,phi), \
-  nabla^2 f &= 1/r^2 pdv((),r) (r^2 pdv(f,r)) + 1/(r^2 sin theta) pdv((),theta) (sin theta pdv(f,theta)) + 1/(r^2 sin^2 theta) pdv(f,phi,2).
-$<eq:vc-sph-ops>
-
-#example(title: "Laplacian of $1/r$ in spherical coordinates")[
-  Recompute $nabla^2 (1\/r)$ for $r != 0$, this time using @eq:vc-sph-ops, and compare to the Cartesian calculation earlier in this chapter.
-]
-#solution[
-  Since $f = 1\/r$ depends on $r$ alone, only the first term survives:
-  $
-    nabla^2 (1/r) = 1/r^2 pdv((),r) (r^2 pdv((1\/r),r)) = 1/r^2 pdv((),r) (r^2 dot (-1/r^2)) = 1/r^2 pdv((-1),r) = 1/r^2 dot 0 = 0,
-  $
-  for all $r > 0$. This matches @eq:vc-laplacian-scalar computed directly in Cartesian coordinates, but the spherical route takes three short lines instead of a page of product-rule bookkeeping. This is the entire point of using curvilinear coordinates: match the coordinate system to the symmetry of the problem, and the calculation becomes easy.
-]
-
-#quizzes[
-  + `4` Convert the Cartesian point $(1,1,0)$ to cylindrical coordinates $(r,phi,z)$.
-  + `4` Convert the Cartesian point $(0,0,2)$ to spherical coordinates $(r,theta,phi)$. #hint[This point lies on the positive $z$-axis; what is $theta$ there?]
-  + `4` In spherical coordinates, which coordinate ranges over $[0,pi]$ and which ranges over $[0,2pi)$?
-]
-
-#problems[
-  + `4` Convert the point $(x,y,z) = (0,3,4)$ to both cylindrical and spherical coordinates.
-  + `3` Compute the volume of a sphere of radius $R$ by integrating the volume element @eq:vc-sph-volume over the full domain of $theta$ and $phi$, and check you recover $4/3 pi R^3$.
-  + `3` A scalar field depends only on the cylindrical radius, $f = f(r)$. Show that $nabla^2 f = 1/r dv(,r)(r dv(f,r))$, a special case of @eq:vc-cyl-ops with no $phi$- or $z$-dependence, and use it to solve $nabla^2 f = 0$ for $f(r)$ (up to two constants of integration). #hint[This is the electric potential between two coaxial cylinders.]
-  + `2` Using @eq:vc-sph-ops, verify that $f = 1\/r^2$ does *not* satisfy $nabla^2 f = 0$ for $r>0$ (unlike $f=1\/r$). Compute $nabla^2(1\/r^2)$ explicitly.
-  + `9` (drill: reading off scale factors) State the scale factor $h$ for each coordinate: (a) $h_z$ in cylindrical, (b) $h_phi$ in cylindrical, (c) $h_theta$ in spherical, (d) $h_r$ in spherical.
-]
+#figure(caption: [
+  (left) The cylindrical coordinates, where the position of point P is described by $(r, theta, zeta)$.
+  (right) The basis vector, $(vc(e)_r, vc(e)_theta, vc(e)_zeta)$, of the cylindrical coordinates.
+  Since the direction of $vc(e)_r$ and $vc(e)_theta$ depends on the position, they are drawn for each point, described by a gray dot; $vc(e)_r$ are drawn in black and $vc(e)_theta$ are drawn in red. Meanwhile, $vc(e)_zeta$ is a constant vector $mat(0; 0; 1)$. Notice that $(vc(e)_r, vc(e)_theta, vc(e)_zeta)$ forms an orthonormal basis and obeys the #keyword[right-hand rule].
+])[#grid(
+  columns: 2,
+  align: center + bottom,
+  column-gutter: 5%,
+  cylinder-fig, draw-vector-field-eig(length: 2cm, s: 1),
+)]<fig:vc-cylinder>

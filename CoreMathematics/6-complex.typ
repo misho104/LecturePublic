@@ -320,7 +320,7 @@ Due to the subtlety of $Arg(z)$, we do not discuss $Arg(z)$ in the rest of this 
 
 = Euler's formula <sec:comp-e>
 We have seen five types of operations on complex numbers: $overline(z)$, $|z|$, $z+w$, $z w$, and $z^n$ for $n in ZZ$.
-The next step is to define $ee^z$ for $z in CC$, but we want to define it nicely: we want to keep the key properties of $ee^x$ such as $upright(d)ee^(a x)\/upright(d)x = a ee^(a x)$ and $ee^(a+b) = ee^a ee^b$ even for $a, b in CC$.
+The next step is to define $ee^z$ for $z in CC$, but we want to define it nicely: we want to keep the key properties of $ee^x$ such as $dd ee^(a x)\/dd x = a ee^(a x)$ and $ee^(a+b) = ee^a ee^b$ even for $a, b in CC$.
 So,
 #theorem(type: "Definition")[
   We *define*, for a complex number $z=a+b ii$ ($a, b in RR$),
@@ -333,7 +333,7 @@ So,
 ]
 #advanced-note[
   Let $a, b, x in RR$. Then, we want to keep $ee^((a+b ii)x)=ee^(a x) ee^(b ii x)$ and thus we just have to define $ee^(ii theta)$ for a real number $theta = b x$. Letting $ee^(ii theta)=f(theta) + ii g(theta)$, the requirement of derivative is given by
-  $upright(d)ee^(ii b x)\/upright(d)x = ii b ee^(ii b x)$, where the LHS is $b dot upright(d)ee^(ii theta)\/upright(d)theta = b f'(theta) + ii b g'(theta)$ and the RHS is $ii b (f(theta)+ii g(theta)) )$.
+  $dd ee^(ii b x)\/dd x = ii b ee^(ii b x)$, where the LHS is $b dot dd ee^(ii theta)\/dd theta = b f'(theta) + ii b g'(theta)$ and the RHS is $ii b (f(theta)+ii g(theta)) )$.
   It means $f'(theta)=-g(theta)$ and $g'(theta)=f(theta)$. Together with $f(0)=1$ and $g(0)=0$, we get $f(theta)=cos theta$ and $g(theta)=sin theta$ and now we have understand our wanted definition is $ee^(a+ii b)=ee^(a)(cos b+ii sin b)$.
 ]
 Accordingly, the polar form of complex numbers is given by

@@ -63,15 +63,15 @@ For complex vectors or real vectors other than 3d, the cross product is not defi
 We also discussed orthogonal bases of $KK^n$. _An_ orthogonal basis is made of $n$ vectors $vc(e)_1, ..., vc(e)_n$, where $vc(e)_k in KK^n$, that satisfy
 $
   lr(size: #1.5em, (thick|vc(e)_k| = 1thick)) thick and thick lr(size: #1.5em, (thick j != k ==> lbk(vc(e)_j, vc(e)_k) = 0thick))quad "for all" j, k = 1, ..., n,
-$<eq:mat-vec-basis>
+$<eq:mat-vec-basis-def1>
 or more simply,
 $
   lbk(vc(e)_j, vc(e)_k) = delta_(j k)quad "for all" j, k = 1, ..., n,
-$<eq:mat-vec-basis-def1>
+$<eq:mat-vec-basis-def2>
 where we introduced the #keyword[Kronecker delta] $delta_(j k)$, which is defined as
 $
   delta_(j k) := cases(1 "if" j=k",", 0 "if" j != k.)
-$<eq:mat-vec-basis-def2>
+$<eq:mat-kronecker>
 #problems[
   + `4` Prove @eq:mat-vec-basis-def1 and @eq:mat-vec-basis-def2 are equivalent.
   + `1` This discussion assumes an orthonormal basis of $KK^n$ always have $n$ vectors, which we have not proved yet. So, prove that the number of basis vectors in an orthonormal basis of $KK^n$ is always $n$. #hint[Linear dependency, discussed after this problem, will be useful.]
