@@ -10,7 +10,7 @@ Solve @prob:for-logic (on #ref(<prob:for-logic>, form: "page")) again.
 
 #context {
   set enum(numbering: enum-style("(1)"))
-  query(selector(figure.where(kind: "quiz")).before(<prob:for-logic>)).last().body.children.at(2)
+  query(selector(figure.where(kind: "quiz")).before(<prob:for-logic>)).last().body.body.body.children.slice(2).join()
 }
 
 The answers are
@@ -177,7 +177,7 @@ and this is called  #keyword[implication]. For example, the statements in the ab
 Since elementary school, you have solved many equations, but what does "solving an equation" mean?
 
 #quizzes[
-  +
+  + #kill-line()
     + Choose true statements.
       #h-enum(cols: 2, label-style: "(a)")[
         + $2x - 1 = 0 ==> x=1\/2.$
@@ -271,7 +271,7 @@ When you solve an equation, you have to check that the solution is *necessary an
 - If you don't check sufficiency, you may have an "extraneous solution".
 
 #quizzes[
-  +
+  + #kill-line()
     + Solve $sqrt(x + 2) = x$. You might reach an _extraneous solution_, which you need to _exclude_ it.
     + Solve $|2x|=|x+1|$. Obviously $x=1$ satisfies this equation, but it is an _incomplete solution_ and you need to find more solutions.
 ]
@@ -369,7 +369,7 @@ Before discussing advanced topics on logics, you should do some drills.
     #h-enum(cols: 1, label-start: 5)[
       + Solve the equation $sqrt(x^2)=a$, noting that $a$ can be negative.
     ]
-  + `2`
+  + `2` #kill-line()
     + Recall that $A=>B$ is defined by $(not A) or B$. Also, recall that $A<=>B$ is defined by $A=>B and A arrow.l.double B$.
       Write a truth table (see #ref(<tab:truth-table>, form: "page")) for $A=>B$, $A arrow.l.double B$, and $A<=>B$.
     + Explain the reason we can understand $A<=>B$ as $A=B$.
@@ -450,7 +450,7 @@ Let's see an example.
 
   - Its #keyword[converse] ($A arrow.l.double B$) is $(x^2 < 4) => (0 < x < 2)$, which is false (counterexample: $x = -1$).
 
-  - Its #keyword(display:"inverse (logic)")[inverse] ($"not" A => "not" B$) is $(x <= 0 "or" x >= 2) => (x^2 >= 4)$, which is false.
+  - Its #keyword(display: "inverse (logic)")[inverse] ($"not" A => "not" B$) is $(x <= 0 "or" x >= 2) => (x^2 >= 4)$, which is false.
 
   - Its #keyword[contrapositive] ($"not" A arrow.l.double "not" B$) is $(x^2 >= 4) => (x <= 0 "or" x >= 2)$, which is true.
 ]
@@ -576,7 +576,7 @@ Meanwhile, *assumption* is what we can impose freely. For example, you can decid
       + If $A$ is false, then $A => B$ is always true, for any $B$.
     ]
 
-  + `1`
+  + `1` #kill-line()
     + What is a #keyword[proposition]?
     + Prove the following statements on propositions $P$, $Q$, and $R$.
       + $(P => Q and Q => R) ==> P => R$. #h(1em) (#keyword[syllogism])

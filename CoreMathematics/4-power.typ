@@ -9,7 +9,7 @@ Let's begin with a review: can you recall all the rules for powers...?
 #quizzes[
   + Calculate without a calculator.
     #show sym.comma: "," + math.quad
-    #h-enum(cols: 1, label-align: horizon)[
+    #h-enum(cols: 1)[
       + $2^4, 3^5, 4^2, 10^3, 1^25, 2^10$
       + $5^0, 3^0, 2^0, 1^0$
       + $2^(-1), 12^(-1), 3^(-3), 2^(-4), 5^(-2), 2^(-10)$
@@ -475,7 +475,7 @@ If the number at $t=0$ is $N$ (we assume $N>0$), we should use $N ee^(A t)$:
   with $tau:=1\/Gamma$. Since $tau$ has the same _dimension_#footnote[→ @chap:units] as the time $t$, we call $tau$ the #keyword[lifetime].
   We also define the #keyword[half-life] $th$ so that, at the time $th$, the number becomes half ($N\/2$) of the number $N$ at $t=0$.
   #quizzes[
-    +
+    + #kill-line()
       #h-enum(cols: 1)[
         + Show that $f'(t) = -Gamma f(t)$.
         + Show that $th = tau ln 2$. Namely, show $f(t)=N\/2$ at the time $t= tau ln 2$.

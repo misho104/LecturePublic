@@ -101,7 +101,7 @@ We here do not investigate what "the space" is, but you may well imagine a lectu
       + $vc(x) + va(x)$
       + direction of $vc(v)$
     ]
-  +
+  + #kill-line()
     + What do we call $va(v)$? Also, clearly write down its definition.
     + What do we call $|v|$?   Also, clearly write down its definition.
 ]
@@ -714,14 +714,14 @@ There are a few more statements to be proved:
 
 #quizzes[
   + Consider a 2d space.
-    #h-enum(cols: 1, label-align: horizon)[
+    #h-enum(cols: 1)[
       + Prove $vc(0)=dm(0; 0)$, $vc(e)_x = dm(1; 0)$, and $vc(e)_y = dm(0; 1)$. #hint[Recall $c_k= vc(e)_k dot vc(v)$.]
       + Prove $k dm(a; b)= dm(k a; k b)$, where $k in RR$.
     ]
 ]
 #problems[
   + `3` Consider a 3d space. An orthonormal basis $(vc(e)_x, vc(e)_y, vc(e)_z)$ is taken according to the right-hand rule. Let $vc(a) = dm(a; b; c)$ and $vc(p)=dm(p; q; r)$.
-    #h-enum(cols: 1, label-align: horizon)[
+    #h-enum(cols: 1)[
       + Prove $vc(0)=dm(0; 0; 0)$, $vc(e)_x = dm(1; 0; 0)$, $vc(e)_y = dm(0; 1; 0)$, and $vc(e)_z = dm(0; 0; 1)$.
       + Prove $k vc(a)+ l vc(b) = dm(k a+l p; k b + l q; k c + l r).$
       + Prove $vc(a)dot vc(p)=a p+b q+c r$ and $|vc(a)|=sqrt(a^2+b^2+c^2)$.

@@ -577,7 +577,7 @@ Using #thick-sf[(B)] of the above, we can define the #EMPH[magnitude] of complex
 
 #problems[
   Compare these problems with @thm:va-ip-prop2.
-  + `4`
+  + `4` #kill-line()
     + Verify $|vc(a) + vc(b)|^2 = |vc(a)|^2 + 2Re cip(a, b) + |vc(b)|^2$.
     + Simplify $|(3+4ii) vc(v)|+|5 vc(v)|.$
     + Expand $lr(size: #120%, |vc(v) - vc(w)|^2)$, $lr(size: #120%, |vc(v) + ii vc(w)|)^2$, and $lr(size: #120%, |vc(v) + k vc(w)|)^2$ with $k in CC$.

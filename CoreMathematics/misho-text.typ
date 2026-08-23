@@ -72,6 +72,7 @@
   leading: 0.65em, // typst default
   spacing: 1.2em, // typst default
 )
+#let kill-line(height: -dim.leading - dim.spacing) = v(height)
 
 // ==== Decorations ====================================================================================================
 // cspell:disable
@@ -229,38 +230,51 @@
   label-sep: dim.label-sep,
   label-style: auto,
   label-start: 1,
-  label-align: auto,
   v-sep: 1em,
   h-sep: 0mm,
   inset: (:),
   block-spacing: (:),
-  fixed-height: none,
-  ..items, // must be passed after enumerate()
-) = [
-  #_enum-depth.update(d => d + 1)
-  #let style = if label-style == auto {
+  fixed-height: auto,
+  ..items, // must be passed as (count, body) pairs
+) = {
+  _enum-depth.update(d => d + 1)
+  let style = if label-style == auto {
     _default-enum-labels(_enum-depth.get() - 1)
   } else if type(label-style) == str {
     _label-styles.at(label-style)
   } else {
     label-style
   }
-  #let label-width = if label-width == auto {
+  let label-width = if label-width == auto {
     if problem-style-label.get() { dim.problem-label-width } else { dim.label-width }
   } else { label-width }
-  #let align-default = if cols == 1 { top } else { horizon }
-  #let separator = if (fixed-height == none) { none } else { box(height: fixed-height, "") }
-  #set par(first-line-indent: 0em, hanging-indent: 0em)
-  #block(..block-spacing, grid(
-    columns: (if type(cols) == int { (1fr,) * cols } else { cols }).map(x => (label-width, label-sep, x)).flatten(),
-    column-gutter: h-sep,
+  let col-width = if type(cols) == int { (1fr,) * cols } else { cols }
+  let n-cols = col-width.len()
+  let blocks = items
+    .pos()
+    .enumerate()
+    .map(((i, (step, body))) => (
+      box(width: label-width, if (step != none) { align(right, style(label-start + step)) } else { "" }),
+      box(width: label-sep, height: fixed-height, ""),
+      box(width: col-width.at(calc.rem(i, n-cols)), body),
+    ).join())
+  let blocks-with-fillers = {
+    let cc = calc.rem(blocks.len(), n-cols)
+    if (cc == 0) { blocks } else {
+      blocks + col-width.slice(cc).map(i => box(width: label-width + label-sep, "") + box(width: i, ""))
+    }
+  }
+  set par(first-line-indent: 0em, hanging-indent: 0em)
+  block(..block-spacing, grid(
+    columns: 1,
     row-gutter: v-sep,
-    inset: (inset, 0mm, 0mm),
-    align: ((if label-align == auto { align-default } else { label-align }) + right, horizon, align-default + left),
-    ..items.pos().map(((i, body)) => (if (i != none) { style(label-start + i) }, separator, body)).flatten()
+    inset: inset,
+    align: horizon + left,
+    ..(blocks-with-fillers.chunks(n-cols).map(row => row.join(box(width: h-sep, ""))))
   ))
-  #_enum-depth.update(d => d - 1)
-]
+  _enum-depth.update(d => d - 1)
+}
+
 #let _enum-vertical(cols: 1, ..args) = {
   let items = args.pos()
   let n = items.len()
@@ -524,12 +538,16 @@
 }
 
 // ==== Problems and Quizzes ===========================================================================================
+#let _func-space = [ ].func()
 #let _extract-level(item) = {
   if (
     item.has("children")
       and item.children.first().func() == raw
       and (item.children.first().text.contains(regex("^\d+$")))
-  ) { (levels.at(item.children.first().text, default: "?"), item.children.slice(1).join()) } else { ("", item) }
+  ) {
+    let k = if (item.children.at(1).func() == _func-space) { 2 } else { 1 }
+    (levels.at(item.children.first().text, default: "?"), item.children.slice(k).join())
+  } else { ("", item) }
 }
 
 #let _problem-box(t, body) = {
@@ -557,14 +575,17 @@
         set par(first-line-indent: 0em, hanging-indent: 0em)
         it
           .children
-          .map(it => [
-            #let (level, body) = _extract-level(it.body)
-            #figure(caption: none, kind: t.counter, supplement: t.supplement, numbering: _chapter-numbering, grid(
-              columns: (dim.label-width + 3mm, dim.label-sep, 1fr),
-              align: (top + right, top, horizon + left),
-              context { level + _label-styles.at(t.counter)(_chapter-numbering(t.counter)) }, "", body,
+          .map(it => {
+            let (level, body) = _extract-level(it.body)
+            let label = context { level + _label-styles.at(t.counter)(_chapter-numbering(t.counter)) }
+            let dx = -measure(label).width - dim.label-sep
+
+            figure(caption: none, kind: t.counter, supplement: t.supplement, numbering: _chapter-numbering, block(
+              inset: (left: dim.label-width + dim.label-sep, y: 0.1em),
+              width: 100%,
+              align(left, box(width: 0mm, context { move(dx: dx, box(width: 10em, label)) }) + body),
             ))
-          ])
+          })
           .join()
         _enum-depth.update(d => d - 1)
       } else {

@@ -34,7 +34,7 @@ we will first focus on the list-of-numbers interpretation#footnote[→ The begin
   ]
 ]
 
-#divider()#v
+#divider()
 
 First, we summarize what we have discussed about vectors.
 A $n$-dimensional (real / complex) vector, $vc(v) in KK^n$, is a column array of $n$ (real / complex) numbers $v_k in KK$:
@@ -293,8 +293,8 @@ We first review the definitions of these operation. Their properties are postpon
   $A^T = display(mat(1, -4ii; 2+ii, 5+6ii; 3ii, -7ii))$, complex conjugate is $overline(A) = display(mat(1, 2-ii, -3ii; 4ii, 5-6ii, 7ii))$, and Hermitian conjugate is $A^dagger = display(mat(1, 4ii; 2-ii, 5-6ii; -3ii, 7ii)).$
 ]
 #quizzes[
-  +
-    #h-enum(cols: 1, label-align: horizon)[
+  + #kill-line()
+    #h-enum(cols: 1)[
       + Let $A = mat(1, 2+ii; -3ii, 4)$. Compute $A^T$, $overline(A)$, and $A^dagger$.
       + Write a $3 times 2$ matrix $A$ whose elements are given by $A_(i j) = i + j$.
       + For a matrix $A$, determine the condition under which $A + A^TT$ is defined.
@@ -604,7 +604,7 @@ First, consider an equation $A X = B$ with $A, B, X in RR^(2,2)$. If there is a 
 $]
 So, the question is whether there exists a matrix $P$ such that $P A = I_2$, and the answer is given in the next theorem.
 #quizzes[
-  +
+  + #kill-line()
     + Assume $P A = I_2$ and $det A = 3$. Find $det P$.
     + Assume $det A=0$. It is impossible to find $P$ such that $P A = I_2$, but why?
 ]
@@ -779,7 +779,7 @@ These #EMPH[decompositions] are important in linear algebra.
     + $A$ is singular. #hint[Find its determinant.]
     + $(I_n-A)(I_n+A+A^2+dots.c+A^(k-1))=I_n$. (It means $I-A$ is invertible.)
 
-  + `2`
+  + `2` #kill-line()
     + Find all $2 times 2$ idempotent matrices.
     + Find all $2 times 2$ nilpotent matrices.
     + Find all $2 times 2$ matrices that satisfy $A^2=I_2$.
@@ -799,7 +799,7 @@ $
   C=mat(cos 90degree, -sin 90 degree; sin 90 degree, cos 90 degree) = mat(0, -1; 1, 0).
 $
 #quizzes[
-  +
+  + #kill-line()
     + Draw $vc(v)=mat(1; 2)$ as an arrow on a $x y$-plane.
     + Calculate $V vc(v)$, $H vc(v)$, and $C vc(v)$ and draw them on the plane.
     + Think about the meanings of these matrices $V$, $H$, and $C$.
@@ -809,7 +809,7 @@ Obviously, $V$ corresponds to a vertical #keyword[reflection] (reflection with r
 Therefore, $V^2$, $H^2$, and $C^4$ must be the identity matrix $I_2$, and $C^2 = H V = V H$.
 
 #quizzes[
-  +
+  + #kill-line()
     + Calculate $V^(-1)$, $H^(-1)$, and $C^(-1)$.
     + Show that $V$, $H$, $C$ are orthogonal. (Also, show that they are unitary.)
   + Let us define $[A, B] := A B - B A$, which we call it #keyword[commutator]. Show that
@@ -838,7 +838,7 @@ For 2d arrows, the following matrices are important.
 ]
 #be-careful[You need to memorize $R_theta$.]
 #quizzes[
-  +
+  + #kill-line()
     + Show that $R_theta R_phi = R_(theta+phi)$. Also, show that $R_theta$ and $R_phi$ commute.
     + Show that $R_theta$ is orthogonal (and unitary).
     + Show that the inverse of $R_theta$ is $R_(-theta)$ and the inverse of $M_(s,t)$ is $M_(1\/s,1\/t)$. #hint(head: "Remark: ", [It means they are invertible.])

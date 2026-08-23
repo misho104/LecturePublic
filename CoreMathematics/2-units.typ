@@ -133,7 +133,7 @@ This second equation is incorrect because $m$ is not equal to $0.11$; $m$ is equ
 ]
 
 #quizzes[
-  +
+  + #kill-line()
     + If $m r omega^2 = 10.0 unit("kg"*m/s^2)$, $m=5.0kg$, and $r=1.0 meter$, what is $omega$?
     + If $v_0t + (1\/2)a t^2=5.0meter$ with $a=-4.0mpss$ and $v_0=7.0 mps$, what is $t$?
     + At time $t=0$, a particle is at $(x,y)=(2.0meter,0)$. It moves with a constant velocity $(v_x,v_y)=(3.0,4.0) mps$. What is its position at $t=1.0 second$?
