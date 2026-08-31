@@ -446,8 +446,9 @@
     #text-sf(weight: "bold", size: 11pt, "Be careful: ") #body
   ]
 }
-#let fail-safe(..args, body) = {
-  _box(indent: true, accent: c.gray, head-box: none, ..args)[
+#let fail-safe(..args, body) = context {
+  let indent = not(problem-style-label.get())
+  _box(indent: indent, accent: c.gray, head-box: none, ..args)[
     #text(size: 9pt)[#text-sf(weight: "bold", "Fail safe note: ") #body]
   ]
 }
@@ -624,6 +625,7 @@
     supplement: "Problem",
     indent: false,
   ),
+  ..args,
   body,
 )
 

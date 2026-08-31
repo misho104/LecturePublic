@@ -12,6 +12,7 @@
 #let dm(..args) = math.display(math.mat(..args))
 
 #let vip(a, b) = $vc(#a) dot vc(#b)$
+#let vxp(a, b) = $vc(#a) times vc(#b)$
 
 #let xy-plus(p, q) = (p.at(0) + q.at(0), p.at(1) + q.at(1))
 #let vector(p, d, label: none, end: "stealth", offset: (0, 0), color: black, thickness: 1.5pt, dash: none) = {
@@ -268,10 +269,10 @@ Imagine two arrows. Probably you can think the angle $theta$ between the arrows.
     + If $vc(a)$ and $vc(b)$ are anti-parallel, what is $vc(a) dot vc(b)$?
     + What is the maximum value of $vc(a) dot vc(b)$? When is it achieved?
     + If $vc(a) dot vc(b) = -3$, what can you say about the angle between $vc(a)$ and $vc(b)$?
-  #fail-safe[
-    $vc(a)perp vc(b)$ means that $vc(a)$ and $vc(b)$ are #keyword[perpendicular] to each other, or #EMPH[normal] to each other; in other words, the angle $theta$ between them is $pi\/2=90degree$.
-    #index-see("normal (vector)", "perpendicular")
-  ]
+    #fail-safe[
+      $vc(a)perp vc(b)$ means that $vc(a)$ and $vc(b)$ are #keyword[perpendicular] to each other, or #EMPH[normal] to each other; in other words, the angle $theta$ between them is $pi\/2=90degree$.
+      #index-see("normal (vector)", "perpendicular")
+    ]
 ]
 This inner product has the following properties:
 #theorem(title: "Real-vector inner product")[

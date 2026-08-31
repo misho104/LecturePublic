@@ -323,7 +323,7 @@ We here review basic properties of $log_a x$. Drill problems are prepared later 
       + $dv(, x)ln(3x)$
       + $dv(, x)log_b x$
     ]
-  #fail-safe[Review @prob:exp-change-base for (3). Review @eq:log-base-change for (5). Recall $ee$ is just a number.]
+    #fail-safe[Review @prob:exp-change-base for #thick-sf[(3)] and @eq:log-base-change for #thick-sf[(5)]. Recall $ee$ is just a number.]
 ]
 
 #problems[

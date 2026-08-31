@@ -347,7 +347,7 @@ We first review the definitions of these operation. Their properties are postpon
       C=mat(3, 1; 0, 0; 0, 1),quad
       D=mat(2; 1; 0).
     $]
-    #fail-safe(indent: false)[$A^2$ means $A A$. Also, $A^3=A A A$, $(A B)^2=A B A B$, and $(A B)^3=A B A B A B$.]
+    #fail-safe[$A^2$ means $A A$. Also, $A^3=A A A$, $(A B)^2=A B A B$, and $(A B)^3=A B A B A B$.]
 ]
 You can calculate the product of a matrix and a vector, such as
 $
@@ -887,10 +887,8 @@ Here, instead, we use the following theorem:
 #theorem[
   Consider a vector $vc(v)in KK^n$ and a matrix $A in KK^(n,n)$. Then,
   $ |A vc(v)|^2 = (A vc(v))""^dagger A vc(v) = vc(v)^dagger A^dagger A vc(v). $
-
-  #fail-safe(indent: false)[
-    Recall $(A B)^dagger = B^dagger A^dagger$. Also, if $A$ and $vc(v)$ are real, we may write $|A vc(v)|^2 = (A vc(v))""^TT (A vc(v)) = vc(v)^TT A^TT A vc(v)$.  ]
 ]<thm:mat-magnitude-0>
+#fail-safe[Recall $(A B)^dagger = B^dagger A^dagger$. Also, if $A$ and $vc(v)$ are real, we may write $|A vc(v)|^2 = (A vc(v))""^TT (A vc(v)) = vc(v)^TT A^TT A vc(v)$.  ]
 #proof[
   $A vc(v)$ is a vector with components $(A vc(v))_k = sum A_(k j)v_j$. So, its magnitude squared is given by
   #no-num[$
@@ -1010,7 +1008,7 @@ We can also combine them. For example, if we let $vc(w)=A vc(v)$,
   + Consider vectors $vc(v), vc(w) in CC^n$ and matrices $A, B in CC^(n,n)$.
     + Show that the Hermitian conjugate of $A vc(v)$ is $bra(vc(v))A^dagger$, i.e., $bra(A vc(v))=bra(vc(v))A^dagger$.
     + Show that $overline(bra(vc(v)) A ket(vc(w))) = bra(vc(w)) A^dagger ket(vc(v))$.
-      #fail-safe(indent: false)[Let $vc(u)=A vc(w)$. Recall $overline(cip(v, u))=cip(u, v)$.]
+       #fail-safe[Let $vc(u)=A vc(w)$. Recall $overline(cip(v, u))=cip(u, v)$.]
     + Show that $bra(vc(v))A ket(vc(v))$ is real if $A$ is Hermitian.
     + Express $lr(|A vc(v)|)^2$ as the expression $bra(vc(v))dots.c ket(vc(v))$.
     + Show that $lr(|A vc(v)|)^2 = lr(|vc(v)|)^2$ if $A$ is unitary.
@@ -1051,11 +1049,10 @@ The next theorem is useful in your future lectures:
   $
   and thus $sum ket(vc(f)_k)bra(vc(f)_k)=I_2.$
 
-  #fail-safe[
-    If we used the basis vectors $\{vc(f)_1, vc(f)_2\}$ for the component-wise notation, we would obtain $ket(vc(f)_1)bra(vc(f)_1) = mat(1, 0; 0, 0)_f$ and $ket(vc(f)_2)bra(vc(f)_2)=mat(0, 0; 0, 1)_f$.
-
-  ]
 ]
+#fail-safe[
+    If we used the basis vectors $\{vc(f)_1, vc(f)_2\}$ for the component-wise notation, we would obtain $ket(vc(f)_1)bra(vc(f)_1) = mat(1, 0; 0, 0)_f$ and $ket(vc(f)_2)bra(vc(f)_2)=mat(0, 0; 0, 1)_f$.
+  ]
 #quizzes[
   + Show that #no-num[$ \{vc(g)_1,vc(g)_2\},quad"where"quad
     vc(g)_1=1/sqrt(2) mat(ee^ii; 1),quad

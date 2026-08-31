@@ -73,17 +73,17 @@ $ g'(a) qeq eval(g'(x))_(x=a) qeq dv(g, x)(a) qeq dv(, x)g(a) quad = quad 2a^2. 
 
 #be-careful[
   #show math.frac: math.display
-  The notation $dv(, x)g(a)$ does *not* mean $dv(, x)lr([g(a)], size: #150%) = dv(, x)(a^3+2a)=0$.
+  The notation $dv(, x)g(a)$ does *not* mean #RED[$dv(, x)lr([g(a)], size: #150%) = dv(, x)(a^3+2a)=0$].
 ]
 #fail-safe[
-  If you can't see @eq:d1, try setting $a=3$. Then, you notice $g(x)$ is the same function as $f(x)$, and $g'(x)$ should equal $f'(x)$.
+  If you can't see @eq:d1, try setting $a=3$. Then, $g(x)$ becomes $3x^2+6$, which is the same as $f(x)$, and $g'(x)$ should equal $f'(x)$.
 ]
 #keyword(display: "order (derivative)")[Higher-order derivatives] is written as
 $
   dv(, x)(dv(f, x)) = dv(f, x, 2)=f''(x) = f^((2))(x),quad
-  dv(, x)(dv(, x)(dv(f, x))) = dv(f, x, 3)=f'''(x) = f^((3))(x),
+  dv(, x)(dv(, x)(dv(f, x))) = dv(f, x, 3)=f'''(x) = f^((3))(x), quad "etc."
 $
-etc. Please be careful on the position of "2" and "3".
+Please be careful on the position of "2" and "3".
 
 #quizzes[
   + Let $a$ be a constant and $g(x)=a x^2+2a$. Calculate
@@ -334,7 +334,7 @@ To summarize, we have the following statement:
       + $log_10(10.01)$
       + $sqrt(1.001)sin 0.001$
     ]
-  #fail-safe[If you are not sure about $root(3, 1.001)$, $(1.001)^(-0.9)$, etc., study @chap:pow first.]
+    #fail-safe[If you are not sure about $root(3, 1.001)$, $(1.001)^(-0.9)$, etc., study @chap:pow first.]
   + `2` For the following $f(x)$, calculate $f^((n))(x)$ for all positive integers $n=1,2,3,...$.
     #h-enum(cols: 5)[
       + $x^10$
